@@ -1,0 +1,12 @@
+{
+  "variants": {
+    "metal=copper": { "model": "FunOres:BlockCopper" },
+    "metal=tin": { "model": "FunOres:BlockTin" },
+    "metal=silver": { "model": "FunOres:BlockSilver" },
+    "metal=lead": { "model": "FunOres:BlockLead" },
+    "metal=nickel": { "model": "FunOres:BlockNickel" },
+    "metal=platinum": { "model": "FunOres:BlockPlatinum" },
+    "metal=aluminium": { "model": "FunOres:BlockAluminium" },
+    "metal=zinc": { "model": "FunOres:BlockZinc" }
+  }
+}

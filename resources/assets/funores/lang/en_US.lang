@@ -1,0 +1,57 @@
+# Creative tabs
+
+itemGroup.tabFunOres=Fun Ores
+
+# Block localizations
+
+tile.funores:MeatOre0.name=Pig Ore
+tile.funores:MeatOre1.name=Fish Ore
+tile.funores:MeatOre2.name=Cow Ore
+tile.funores:MeatOre3.name=Chicken Ore
+tile.funores:MeatOre4.name=Rabbit Ore
+tile.funores:MeatOre5.name=Sheep Ore
+
+tile.funores:MetalBlock0.name=Copper Block
+tile.funores:MetalBlock1.name=Tin Block
+tile.funores:MetalBlock2.name=Silver Block
+tile.funores:MetalBlock3.name=Lead Block
+tile.funores:MetalBlock4.name=Nickel Block
+tile.funores:MetalBlock5.name=Platinum Block
+tile.funores:MetalBlock6.name=Aluminium Block
+tile.funores:MetalBlock7.name=Zinc Block
+
+tile.funores:MetalOre0.name=Copper Ore
+tile.funores:MetalOre1.name=Tin Ore
+tile.funores:MetalOre2.name=Silver Ore
+tile.funores:MetalOre3.name=Lead Ore
+tile.funores:MetalOre4.name=Nickel Ore
+tile.funores:MetalOre5.name=Platinum Ore
+tile.funores:MetalOre6.name=Aluminium Ore
+tile.funores:MetalOre7.name=Zinc Ore
+
+# Item localizations
+
+item.funores:MetalIngot0.name=Copper Ingot
+item.funores:MetalIngot1.name=Tin Ingot
+item.funores:MetalIngot2.name=Silver Ingot
+item.funores:MetalIngot3.name=Lead Ingot
+item.funores:MetalIngot4.name=Nickel Ingot
+item.funores:MetalIngot5.name=Platinum Ingot
+item.funores:MetalIngot6.name=Aluminium Ingot
+item.funores:MetalIngot7.name=Zinc Ingot
+
+item.funores:MetalNugget0.name=Copper Nugget
+item.funores:MetalNugget1.name=Tin Nugget
+item.funores:MetalNugget2.name=Silver Nugget
+item.funores:MetalNugget3.name=Lead Nugget
+item.funores:MetalNugget4.name=Nickel Nugget
+item.funores:MetalNugget5.name=Platinum Nugget
+item.funores:MetalNugget6.name=Aluminium Nugget
+item.funores:MetalNugget7.name=Zinc Nugget
+
+
+
+# Misc Stuff
+
+misc.funores:PressCtrl=<Press Ctrl>
+misc.funores:PressShift=<Press Shift>
