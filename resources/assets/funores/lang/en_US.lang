@@ -29,6 +29,18 @@ tile.funores:MetalOre5.name=Platinum Ore
 tile.funores:MetalOre6.name=Aluminium Ore
 tile.funores:MetalOre7.name=Zinc Ore
 
+tile.funores:MobOre0.name=Zombie Ore
+tile.funores:MobOre1.name=Skeleton Ore
+tile.funores:MobOre2.name=Creeper Ore
+tile.funores:MobOre3.name=Spider Ore
+tile.funores:MobOre4.name=Enderman Ore
+tile.funores:MobOre5.name=Slime Ore
+tile.funores:MobOre6.name=Witch Ore
+tile.funores:MobOre7.name=Zombie Pigman Ore
+tile.funores:MobOre8.name=Ghast Ore
+tile.funores:MobOre9.name=Magma Cube Ore
+tile.funores:MobOre10.name=Wither Ore
+
 # Item localizations
 
 item.funores:MetalIngot0.name=Copper Ingot
@@ -48,6 +60,8 @@ item.funores:MetalNugget4.name=Nickel Nugget
 item.funores:MetalNugget5.name=Platinum Nugget
 item.funores:MetalNugget6.name=Aluminium Nugget
 item.funores:MetalNugget7.name=Zinc Nugget
+
+item.funores:Shard0.name=Ender Shard
 
 
 

@@ -89,7 +89,7 @@ public class FunOresGenerator implements IWorldGenerator {
         BlockPos pos = new BlockPos(x, y, z);
         IBlockState state = ((IHasOre) ore.ore).getOre();
         
-        LogHelper.debug(ore.oreName + " at " + pos);
+//        LogHelper.debug(ore.oreName + " at " + pos);
         new WorldGenMinable(state, ore.clusterSize).generate(world, random, pos);
       }
     }
