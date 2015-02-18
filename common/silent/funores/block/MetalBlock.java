@@ -24,7 +24,7 @@ public class MetalBlock extends BlockSG {
     super(EnumMetal.count(), Material.iron);
 
     setHardness(3.0f);
-    setResistance(5.0f);
+    setResistance(30.0f);
     setStepSound(Block.soundTypeMetal);
     setHarvestLevel("pickaxe", 1);
     

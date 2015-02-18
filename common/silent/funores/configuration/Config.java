@@ -128,7 +128,7 @@ public class Config {
        */
       
       int meatClusterCount = 1;
-      int meatClusterSize = 28;
+      int meatClusterSize = 20;
       int meatMinY = 32;
       int meatMaxY = 84;
       int meatRarity = 20;
@@ -186,10 +186,12 @@ public class Config {
        */
       
       int mobClusterCount = 1;
-      int mobClusterSize = 28;
-      int mobMinY = 32;
-      int mobMaxY = 84;
+      int mobClusterSize = 17;
+      int mobMinY = 28;
+      int mobMaxY = 86;
       int mobRarity = 30;
+      
+      // Overworld
       
       zombie.enabled = true;
       zombie.clusterCount = mobClusterCount;
@@ -246,6 +248,14 @@ public class Config {
       witch.maxY = mobMaxY;
       witch.rarity = mobRarity;
       witch.loadValue(c, CATEGORY_MOB_ORE);
+      
+      // Nether
+      
+      mobClusterCount = 2;
+      mobClusterSize = 17;
+      mobMinY = 48;
+      mobMaxY = 116;
+      mobRarity = 30;
       
       pigman.enabled = true;
       pigman.clusterCount = mobClusterCount;

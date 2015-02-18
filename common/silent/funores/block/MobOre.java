@@ -33,7 +33,7 @@ public class MobOre extends BlockSG {
     super(EnumMob.count(), Material.rock);
 
     setHardness(1.5f);
-    setResistance(2.0f);
+    setResistance(10.0f);
     setStepSound(Block.soundTypeStone);
     setHarvestLevel("pickaxe", 0);
     
