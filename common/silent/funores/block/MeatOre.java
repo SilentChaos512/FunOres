@@ -20,6 +20,9 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import silent.funores.FunOres;
+import silent.funores.configuration.ConfigItemDrop;
+import silent.funores.configuration.ConfigOptionOreGenBonus;
+import silent.funores.core.util.LogHelper;
 import silent.funores.lib.EnumMeat;
 import silent.funores.lib.Names;
 
@@ -122,21 +125,38 @@ public class MeatOre extends BlockSG {
     List<ItemStack> ret = new ArrayList<ItemStack>();
 
     Random rand = world instanceof World ? ((World) world).rand : RANDOM;
-
-    Item mainDrop = getItemDropped(state, rand, fortune);
-    ItemStack bonusDrop = getBonusItemDropped(state, rand, fortune);
     
-    int count = quantityDropped(state, fortune, rand);
-    for (int i = 0; i < count; ++i) {
-      if (mainDrop != null) {
-        ret.add(new ItemStack(mainDrop, 1, 0));
+    ConfigOptionOreGenBonus config = ((EnumMeat) state.getValue(MEAT)).getConfig();
+    
+    for (ConfigItemDrop drop : config.drops) {
+      // Make sure drop config isn't null.
+      if (drop != null) {
+        // Should we do the drop?
+        if (rand.nextFloat() < drop.getDropChance(fortune)) {
+          // How many to drop?
+          ItemStack stack = drop.getStack().copy();
+          stack.stackSize = drop.getDropCount(fortune, rand);
+          // Drop stuff.
+          for (int i = 0; i < stack.stackSize; ++i) {
+            ret.add(new ItemStack(stack.getItem(), 1, stack.getItemDamage()));
+          }
+        }
       }
     }
-    if (bonusDrop != null) {
-      for (int i = 0; i < bonusDrop.stackSize; ++i) {
-        ret.add(new ItemStack(bonusDrop.getItem(), 1, bonusDrop.getItemDamage()));
-      }
-    }
+    
+    // Old
+    
+//    int count = quantityDropped(state, fortune, rand);
+//    for (int i = 0; i < count; ++i) {
+//      if (mainDrop != null) {
+//        ret.add(new ItemStack(mainDrop, 1, 0));
+//      }
+//    }
+//    if (bonusDrop != null) {
+//      for (int i = 0; i < bonusDrop.stackSize; ++i) {
+//        ret.add(new ItemStack(bonusDrop.getItem(), 1, bonusDrop.getItemDamage()));
+//      }
+//    }
 
     return ret;
   }
@@ -173,7 +193,7 @@ public class MeatOre extends BlockSG {
           return null;
         }
       case CHICKEN:
-        if (rand.nextInt(100) < 20) {
+        if (rand.nextInt(100) < 15) {
           return new ItemStack(Items.egg, 2 + rand.nextInt(fortune + 1));
         } else if (rand.nextInt(100) < 50 + 8 * fortune) {
           return new ItemStack(Items.feather, 2 + rand.nextInt(fortune + 1));
@@ -184,13 +204,13 @@ public class MeatOre extends BlockSG {
         r = rand.nextInt(100);
         if (r < 60 + 5 * fortune) {
           return new ItemStack(Items.rabbit_hide, 1 + rand.nextInt(fortune + 1));
-        } else if (r < 77 + 5 * fortune) {
+        } else if (r < 65 + 5 * fortune) {
           return new ItemStack(Items.rabbit_foot, 1 + rand.nextInt(fortune / 2 + 1));
         } else {
           return null;
         }
       case SHEEP:
-        if (rand.nextInt(100) < 60 + 6 * fortune) {
+        if (rand.nextInt(100) < 45 + 6 * fortune) {
           return new ItemStack(Blocks.wool, 1 + rand.nextInt(fortune + 1));
         } else {
           return null;
@@ -200,32 +220,32 @@ public class MeatOre extends BlockSG {
     }
   }
 
-  @Override
-  public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+//  @Override
+//  public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+//
+//    switch ((EnumMeat) state.getValue(MEAT)) {
+//      case PIG:
+//        return Items.porkchop;
+//      case FISH:
+//        return Items.fish;
+//      case COW:
+//        return Items.beef;
+//      case CHICKEN:
+//        return Items.chicken;
+//      case RABBIT:
+//        return Items.rabbit;
+//      case SHEEP:
+//        return Items.mutton;
+//      default:
+//        return Items.rotten_flesh;
+//    }
+//  }
 
-    switch ((EnumMeat) state.getValue(MEAT)) {
-      case PIG:
-        return Items.porkchop;
-      case FISH:
-        return Items.fish;
-      case COW:
-        return Items.beef;
-      case CHICKEN:
-        return Items.chicken;
-      case RABBIT:
-        return Items.rabbit;
-      case SHEEP:
-        return Items.mutton;
-      default:
-        return Items.rotten_flesh;
-    }
-  }
-
-  @Override
-  public int quantityDropped(Random random) {
-
-    return 1;
-  }
+//  @Override
+//  public int quantityDropped(Random random) {
+//
+//    return 1;
+//  }
 
   @Override
   public int quantityDroppedWithBonus(int fortune, Random random) {

@@ -1,9 +1,11 @@
 package silent.funores.lib;
 
-import silent.funores.block.MobOre;
-import silent.funores.block.ModBlocks;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.IStringSerializable;
+import silent.funores.block.MobOre;
+import silent.funores.block.ModBlocks;
+import silent.funores.configuration.Config;
+import silent.funores.configuration.ConfigOptionOreGenBonus;
 
 
 public enum EnumMob implements IStringSerializable, IHasOre {
@@ -39,6 +41,30 @@ public enum EnumMob implements IStringSerializable, IHasOre {
 
     return name;
   }
+  
+  @Override
+  public IBlockState getOre() {
+
+    return ModBlocks.mobOre.getDefaultState().withProperty(MobOre.MOB, this);
+  }
+  
+  public ConfigOptionOreGenBonus getConfig() {
+    
+    switch (meta) {
+      case 0: return Config.zombie;
+      case 1: return Config.skeleton;
+      case 2: return Config.creeper;
+      case 3: return Config.spider;
+      case 4: return Config.enderman;
+      case 5: return Config.slime;
+      case 6: return Config.witch;
+      case 7: return Config.pigman;
+      case 8: return Config.ghast;
+      case 9: return Config.magmaCube;
+      case 10: return Config.wither;
+      default: return null;
+    }
+  }
 
   public static EnumMob byMetadata(int meta) {
     
@@ -51,11 +77,5 @@ public enum EnumMob implements IStringSerializable, IHasOre {
   public static int count() {
     
     return values().length;
-  }
-
-  @Override
-  public IBlockState getOre() {
-
-    return ModBlocks.mobOre.getDefaultState().withProperty(MobOre.MOB, this);
   }
 }

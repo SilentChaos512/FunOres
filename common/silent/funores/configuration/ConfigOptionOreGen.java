@@ -26,12 +26,6 @@ public class ConfigOptionOreGen extends ConfigOption {
     this.ore = ore;
     this.oreName = ore.getName();
   }
-  
-  public ConfigOptionOreGen(IStringSerializable ore, boolean isExample) {
-    
-    this.ore = ore;
-    this.oreName = "example";
-  }
 
   @Override
   public ConfigOption loadValue(Configuration c, String category) {
@@ -48,7 +42,6 @@ public class ConfigOptionOreGen extends ConfigOption {
     minY = c.getInt("MinY", category, minY, 0, 255, COMMENT_MIN_Y);
     maxY = c.getInt("MaxY", category, maxY, 0, 255, COMMENT_MAX_Y);
     rarity = c.getInt("Rarity", category, rarity, 0, 1000, COMMENT_RARITY);
-    
 
     return this;
   }

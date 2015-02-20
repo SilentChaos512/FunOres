@@ -1,10 +1,11 @@
 package silent.funores.lib;
 
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.IStringSerializable;
 import silent.funores.block.MeatOre;
 import silent.funores.block.ModBlocks;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Items;
-import net.minecraft.util.IStringSerializable;
+import silent.funores.configuration.Config;
+import silent.funores.configuration.ConfigOptionOreGenBonus;
 
 public enum EnumMeat implements IStringSerializable, IHasOre {
   
@@ -34,6 +35,25 @@ public enum EnumMeat implements IStringSerializable, IHasOre {
 
     return name;
   }
+  
+  @Override
+  public IBlockState getOre() {
+
+    return ModBlocks.meatOre.getDefaultState().withProperty(MeatOre.MEAT, this);
+  }
+  
+  public ConfigOptionOreGenBonus getConfig() {
+    
+    switch (meta) {
+      case 0: return Config.pig;
+      case 1: return Config.fish;
+      case 2: return Config.cow;
+      case 3: return Config.chicken;
+      case 4: return Config.rabbit;
+      case 5: return Config.sheep;
+      default: return null;
+    }
+  }
 
   public static EnumMeat byMetadata(int meta) {
     
@@ -46,11 +66,5 @@ public enum EnumMeat implements IStringSerializable, IHasOre {
   public static int count() {
     
     return values().length;
-  }
-
-  @Override
-  public IBlockState getOre() {
-
-    return ModBlocks.meatOre.getDefaultState().withProperty(MeatOre.MEAT, this);
   }
 }

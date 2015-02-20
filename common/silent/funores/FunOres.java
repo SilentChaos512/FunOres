@@ -14,8 +14,10 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import silent.funores.block.ModBlocks;
 import silent.funores.configuration.Config;
+import silent.funores.configuration.ConfigOptionOreGenBonus;
 import silent.funores.core.proxy.CommonProxy;
 import silent.funores.core.registry.SRegistry;
+import silent.funores.core.util.LogHelper;
 import silent.funores.item.ModItems;
 import silent.funores.world.FunOresGenerator;
 
@@ -62,6 +64,8 @@ public class FunOres {
   public void postInit(FMLPostInitializationEvent event) {
     
     proxy.postInit();
+    
+    ConfigOptionOreGenBonus.initItemKeys();
   }
   
   public static CreativeTabs tabFunOres = new CreativeTabs("tabFunOres") {

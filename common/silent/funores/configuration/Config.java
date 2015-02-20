@@ -22,31 +22,31 @@ public class Config {
   public static ConfigOptionOreGen zinc = new ConfigOptionOreGen(EnumMetal.ZINC);
   
   // Meat ores
-  public static ConfigOptionOreGen pig = new ConfigOptionOreGen(EnumMeat.PIG);
-  public static ConfigOptionOreGen fish = new ConfigOptionOreGen(EnumMeat.FISH);
-  public static ConfigOptionOreGen cow = new ConfigOptionOreGen(EnumMeat.COW);
-  public static ConfigOptionOreGen chicken = new ConfigOptionOreGen(EnumMeat.CHICKEN);
-  public static ConfigOptionOreGen rabbit = new ConfigOptionOreGen(EnumMeat.RABBIT);
-  public static ConfigOptionOreGen sheep = new ConfigOptionOreGen(EnumMeat.SHEEP);
+  public static ConfigOptionOreGenBonus pig = new ConfigOptionOreGenBonus(EnumMeat.PIG);
+  public static ConfigOptionOreGenBonus fish = new ConfigOptionOreGenBonus(EnumMeat.FISH);
+  public static ConfigOptionOreGenBonus cow = new ConfigOptionOreGenBonus(EnumMeat.COW);
+  public static ConfigOptionOreGenBonus chicken = new ConfigOptionOreGenBonus(EnumMeat.CHICKEN);
+  public static ConfigOptionOreGenBonus rabbit = new ConfigOptionOreGenBonus(EnumMeat.RABBIT);
+  public static ConfigOptionOreGenBonus sheep = new ConfigOptionOreGenBonus(EnumMeat.SHEEP);
   
   // Mob ores
-  public static ConfigOptionOreGen zombie = new ConfigOptionOreGen(EnumMob.ZOMBIE);
-  public static ConfigOptionOreGen skeleton = new ConfigOptionOreGen(EnumMob.SKELETON);
-  public static ConfigOptionOreGen creeper = new ConfigOptionOreGen(EnumMob.CREEPER);
-  public static ConfigOptionOreGen spider = new ConfigOptionOreGen(EnumMob.SPIDER);
-  public static ConfigOptionOreGen enderman = new ConfigOptionOreGen(EnumMob.ENDERMAN);
-  public static ConfigOptionOreGen slime = new ConfigOptionOreGen(EnumMob.SLIME);
-  public static ConfigOptionOreGen witch = new ConfigOptionOreGen(EnumMob.WITCH);
-  public static ConfigOptionOreGen pigman = new ConfigOptionOreGen(EnumMob.PIGMAN);
-  public static ConfigOptionOreGen ghast = new ConfigOptionOreGen(EnumMob.GHAST);
-  public static ConfigOptionOreGen magmaCube = new ConfigOptionOreGen(EnumMob.MAGMA_CUBE);
-  public static ConfigOptionOreGen wither = new ConfigOptionOreGen(EnumMob.WITHER);
+  public static ConfigOptionOreGenBonus zombie = new ConfigOptionOreGenBonus(EnumMob.ZOMBIE);
+  public static ConfigOptionOreGenBonus skeleton = new ConfigOptionOreGenBonus(EnumMob.SKELETON);
+  public static ConfigOptionOreGenBonus creeper = new ConfigOptionOreGenBonus(EnumMob.CREEPER);
+  public static ConfigOptionOreGenBonus spider = new ConfigOptionOreGenBonus(EnumMob.SPIDER);
+  public static ConfigOptionOreGenBonus enderman = new ConfigOptionOreGenBonus(EnumMob.ENDERMAN);
+  public static ConfigOptionOreGenBonus slime = new ConfigOptionOreGenBonus(EnumMob.SLIME);
+  public static ConfigOptionOreGenBonus witch = new ConfigOptionOreGenBonus(EnumMob.WITCH);
+  public static ConfigOptionOreGenBonus pigman = new ConfigOptionOreGenBonus(EnumMob.PIGMAN);
+  public static ConfigOptionOreGenBonus ghast = new ConfigOptionOreGenBonus(EnumMob.GHAST);
+  public static ConfigOptionOreGenBonus magmaCube = new ConfigOptionOreGenBonus(EnumMob.MAGMA_CUBE);
+  public static ConfigOptionOreGenBonus wither = new ConfigOptionOreGenBonus(EnumMob.WITHER);
   
   private static Configuration c;
 
-  public static final String CATEGORY_METAL_ORE = "WorldGen.MetalOre";
-  public static final String CATEGORY_MEAT_ORE = "WorldGen.MeatOre";
-  public static final String CATEGORY_MOB_ORE = "WorldGen.MobOre";
+  public static final String CATEGORY_METAL_ORE = "MetalOre";
+  public static final String CATEGORY_MEAT_ORE = "MeatOre";
+  public static final String CATEGORY_MOB_ORE = "MobOre";
   
   public static void init(File file) {
     
@@ -128,10 +128,10 @@ public class Config {
        */
       
       int meatClusterCount = 1;
-      int meatClusterSize = 20;
+      int meatClusterSize = 15;
       int meatMinY = 32;
       int meatMaxY = 84;
-      int meatRarity = 20;
+      int meatRarity = 25;
       
       pig.enabled = true;
       pig.clusterCount = meatClusterCount;
@@ -139,6 +139,8 @@ public class Config {
       pig.minY = meatMinY;
       pig.maxY = meatMaxY;
       pig.rarity = meatRarity;
+      pig.addDrop(ConfigItemDrop.getKey("minecraft:porkchop", 1, 0, 1.0f, 0.0f, 1.0f));
+      pig.addDrop(ConfigItemDrop.getKey("minecraft:saddle", 1, 0, 0.025f, 0.01f, 0.0f));
       pig.loadValue(c, CATEGORY_MEAT_ORE);
       
       fish.enabled = true;
@@ -147,6 +149,10 @@ public class Config {
       fish.minY = meatMinY;
       fish.maxY = meatMaxY;
       fish.rarity = meatRarity;
+      fish.addDrop(ConfigItemDrop.getKey("minecraft:fish", 1, 0, 1.0f, 0.0f, 1.0f));
+      fish.addDrop(ConfigItemDrop.getKey("minecraft:fish", 1, 1, 0.3f, 0.0f, 0.5f));
+      fish.addDrop(ConfigItemDrop.getKey("minecraft:fish", 1, 2, 0.1f, 0.0f, 0.5f));
+      fish.addDrop(ConfigItemDrop.getKey("minecraft:fish", 1, 3, 0.1f, 0.0f, 0.5f));
       fish.loadValue(c, CATEGORY_MEAT_ORE);
       
       cow.enabled = true;
@@ -155,6 +161,8 @@ public class Config {
       cow.minY = meatMinY;
       cow.maxY = meatMaxY;
       cow.rarity = meatRarity;
+      cow.addDrop(ConfigItemDrop.getKey("minecraft:beef", 1, 0, 1.0f, 0.0f, 1.0f));
+      cow.addDrop(ConfigItemDrop.getKey("minecraft:leather", 1, 0, 0.75f, 0.03f, 1.0f));
       cow.loadValue(c, CATEGORY_MEAT_ORE);
       
       chicken.enabled = true;
@@ -163,6 +171,9 @@ public class Config {
       chicken.minY = meatMinY;
       chicken.maxY = meatMaxY;
       chicken.rarity = meatRarity;
+      chicken.addDrop(ConfigItemDrop.getKey("minecraft:chicken", 1, 0, 1.0f, 0.0f, 1.0f));
+      chicken.addDrop(ConfigItemDrop.getKey("minecraft:feather", 2, 0, 0.36f, 0.04f, 1.0f));
+      chicken.addDrop(ConfigItemDrop.getKey("minecraft:egg", 2, 0, 0.15f, 0.02f, 0.7f));
       chicken.loadValue(c, CATEGORY_MEAT_ORE);
       
       rabbit.enabled = true;
@@ -171,6 +182,9 @@ public class Config {
       rabbit.minY = meatMinY;
       rabbit.maxY = meatMaxY;
       rabbit.rarity = meatRarity;
+      rabbit.addDrop(ConfigItemDrop.getKey("minecraft:rabbit", 1, 0, 1.0f, 0.0f, 1.0f));
+      rabbit.addDrop(ConfigItemDrop.getKey("minecraft:rabbit_hide", 1, 0, 0.6f, 0.05f, 1.0f));
+      rabbit.addDrop(ConfigItemDrop.getKey("minecraft:rabbit_foot", 1, 0, 0.07f, 0.01f, 0.5f));
       rabbit.loadValue(c, CATEGORY_MEAT_ORE);
       
       sheep.enabled = true;
@@ -179,6 +193,8 @@ public class Config {
       sheep.minY = meatMinY;
       sheep.maxY = meatMaxY;
       sheep.rarity = meatRarity;
+      sheep.addDrop(ConfigItemDrop.getKey("minecraft:mutton", 1, 0, 1.0f, 0.0f, 1.0f));
+      sheep.addDrop(ConfigItemDrop.getKey("minecraft:wool", 1, 0, 0.5f, 0.05f, 0.7f));
       sheep.loadValue(c, CATEGORY_MEAT_ORE);
       
       /*
@@ -199,6 +215,11 @@ public class Config {
       zombie.minY = mobMinY;
       zombie.maxY = mobMaxY;
       zombie.rarity = mobRarity;
+      zombie.addDrop(ConfigItemDrop.getKey("minecraft:rotten_flesh", 1, 0, 1.0f, 0.0f, 1.0f));
+      zombie.addDrop(ConfigItemDrop.getKey("minecraft:skull", 1, 2, 0.03f, 0.015f, 0.0f));
+      zombie.addDrop(ConfigItemDrop.getKey("minecraft:iron_ingot", 1, 0, 0.01f, 0.005f, 0.0f));
+      zombie.addDrop(ConfigItemDrop.getKey("minecraft:carrot", 1, 0, 0.01f, 0.005f, 0.0f));
+      zombie.addDrop(ConfigItemDrop.getKey("minecraft:potato", 1, 0, 0.01f, 0.005f, 0.0f));
       zombie.loadValue(c, CATEGORY_MOB_ORE);
       
       skeleton.enabled = true;
@@ -207,6 +228,9 @@ public class Config {
       skeleton.minY = mobMinY;
       skeleton.maxY = mobMaxY;
       skeleton.rarity = mobRarity;
+      skeleton.addDrop(ConfigItemDrop.getKey("minecraft:bone", 1, 0, 1.0f, 0.0f, 1.0f));
+      skeleton.addDrop(ConfigItemDrop.getKey("minecraft:arrow", 1, 0, 0.75f, 0.0f, 0.7f));
+      skeleton.addDrop(ConfigItemDrop.getKey("minecraft:skull", 1, 0, 0.03f, 0.015f, 0.0f));
       skeleton.loadValue(c, CATEGORY_MOB_ORE);
       
       creeper.enabled = true;
@@ -215,6 +239,8 @@ public class Config {
       creeper.minY = mobMinY;
       creeper.maxY = mobMaxY;
       creeper.rarity = mobRarity;
+      creeper.addDrop(ConfigItemDrop.getKey("minecraft:gunpowder", 1, 0, 1.0f, 0.0f, 1.0f));
+      creeper.addDrop(ConfigItemDrop.getKey("minecraft:skull", 1, 4, 0.03f, 0.015f, 0.0f));
       creeper.loadValue(c, CATEGORY_MOB_ORE);
       
       spider.enabled = true;
@@ -223,6 +249,8 @@ public class Config {
       spider.minY = mobMinY;
       spider.maxY = mobMaxY;
       spider.rarity = mobRarity;
+      spider.addDrop(ConfigItemDrop.getKey("minecraft:string", 1, 0, 1.0f, 0.0f, 1.0f));
+      spider.addDrop(ConfigItemDrop.getKey("minecraft:spider_eye", 1, 0, 0.5f, 0.0f, 0.7f));
       spider.loadValue(c, CATEGORY_MOB_ORE);
       
       enderman.enabled = true;
@@ -231,6 +259,8 @@ public class Config {
       enderman.minY = mobMinY;
       enderman.maxY = mobMaxY;
       enderman.rarity = mobRarity;
+      enderman.addDrop(ConfigItemDrop.getKey("FunOres:Shard", 1, 0, 1.0f, 0.0f, 0.7f));
+      enderman.addDrop(ConfigItemDrop.getKey("FunOres:Shard", 1, 0, 0.10f, 0.0f, 0.4f));
       enderman.loadValue(c, CATEGORY_MOB_ORE);
       
       slime.enabled = true;
@@ -239,6 +269,8 @@ public class Config {
       slime.minY = mobMinY;
       slime.maxY = mobMaxY;
       slime.rarity = mobRarity;
+      slime.addDrop(ConfigItemDrop.getKey("minecraft:slime_ball", 1, 0, 1.0f, 0.0f, 1.5f));
+      slime.addDrop(ConfigItemDrop.getKey("minecraft:slime_ball", 1, 0, 0.5f, 0.05f, 0.5f));
       slime.loadValue(c, CATEGORY_MOB_ORE);
       
       witch.enabled = true;
@@ -247,6 +279,15 @@ public class Config {
       witch.minY = mobMinY;
       witch.maxY = mobMaxY;
       witch.rarity = mobRarity;
+      // Witch ore may occasionally drop nothing because of this, but I didn't want to make an
+      // exception for it.
+      witch.addDrop(ConfigItemDrop.getKey("minecraft:glass_bottle", 1, 0, 0.25f, 0.0f, 1.0f));
+      witch.addDrop(ConfigItemDrop.getKey("minecraft:glowstone_dust", 1, 0, 0.25f, 0.0f, 1.0f));
+      witch.addDrop(ConfigItemDrop.getKey("minecraft:gunpowder", 1, 0, 0.25f, 0.0f, 1.0f));
+      witch.addDrop(ConfigItemDrop.getKey("minecraft:redstone", 1, 0, 0.25f, 0.0f, 1.0f));
+      witch.addDrop(ConfigItemDrop.getKey("minecraft:spider_eye", 1, 0, 0.25f, 0.0f, 1.0f));
+      witch.addDrop(ConfigItemDrop.getKey("minecraft:stick", 1, 0, 0.25f, 0.0f, 1.0f));
+      witch.addDrop(ConfigItemDrop.getKey("minecraft:sugar", 1, 0, 0.25f, 0.0f, 1.0f));
       witch.loadValue(c, CATEGORY_MOB_ORE);
       
       // Nether
@@ -263,6 +304,9 @@ public class Config {
       pigman.minY = mobMinY;
       pigman.maxY = mobMaxY;
       pigman.rarity = mobRarity;
+      pigman.addDrop(ConfigItemDrop.getKey("minecraft:rotten_flesh", 1, 0, 1.0f, 0.0f, 1.0f));
+      pigman.addDrop(ConfigItemDrop.getKey("minecraft:gold_nugget", 1, 0, 0.50f, 0.06f, 0.7f));
+      pigman.addDrop(ConfigItemDrop.getKey("minecraft:gold_ingot", 1, 0, 0.025f, 0.01f, 0.0f));
       pigman.loadValue(c, CATEGORY_MOB_ORE);
       
       ghast.enabled = true;
@@ -271,6 +315,8 @@ public class Config {
       ghast.minY = mobMinY;
       ghast.maxY = mobMaxY;
       ghast.rarity = mobRarity;
+      ghast.addDrop(ConfigItemDrop.getKey("minecraft:gunpowder", 1, 0, 1.0f, 0.0f, 1.0f));
+      ghast.addDrop(ConfigItemDrop.getKey("minecraft:ghast_tear", 1, 0, 0.44f, 0.04f, 0.7f));
       ghast.loadValue(c, CATEGORY_MOB_ORE);
       
       magmaCube.enabled = true;
@@ -279,6 +325,7 @@ public class Config {
       magmaCube.minY = mobMinY;
       magmaCube.maxY = mobMaxY;
       magmaCube.rarity = mobRarity;
+      magmaCube.addDrop(ConfigItemDrop.getKey("minecraft:magma_cream", 1, 0, 1.0f, 0.0f, 1.0f));
       magmaCube.loadValue(c, CATEGORY_MOB_ORE);
       
       wither.enabled = true;
@@ -287,10 +334,14 @@ public class Config {
       wither.minY = mobMinY;
       wither.maxY = mobMaxY;
       wither.rarity = mobRarity;
+      wither.addDrop(ConfigItemDrop.getKey("minecraft:bone", 1, 0, 1.0f, 0.0f, 1.0f));
+      wither.addDrop(ConfigItemDrop.getKey("minecraft:coal", 1, 0, 0.6f, 0.05f, 1.0f));
+      wither.addDrop(ConfigItemDrop.getKey("minecraft:skull", 1, 1, 0.03f, 0.01f, 0.0f));
       wither.loadValue(c, CATEGORY_MOB_ORE);
       
     } catch (Exception e) {
       LogHelper.severe("Oh noes!!! Couldn't load configuration file properly!");
+      LogHelper.severe(e);
     } finally {
       c.save();
     }
