@@ -4,6 +4,9 @@ itemGroup.tabFunOres=Fun Ores
 
 # Block localizations
 
+tile.funores:AlloyBlock0.name=Bronze Block
+tile.funores:AlloyBlock1.name=Brass Block
+
 tile.funores:MeatOre0.name=Pig Ore
 tile.funores:MeatOre1.name=Fish Ore
 tile.funores:MeatOre2.name=Cow Ore
@@ -42,6 +45,12 @@ tile.funores:MobOre9.name=Magma Cube Ore
 tile.funores:MobOre10.name=Wither Ore
 
 # Item localizations
+
+item.funores:AlloyIngot0.name=Bronze Ingot
+item.funores:AlloyIngot1.name=Brass Ingot
+
+item.funores:AlloyNugget0.name=Bronze Nugget
+item.funores:AlloyNugget1.name=Brass Nugget
 
 item.funores:MetalIngot0.name=Copper Ingot
 item.funores:MetalIngot1.name=Tin Ingot

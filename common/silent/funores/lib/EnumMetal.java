@@ -2,6 +2,7 @@ package silent.funores.lib;
 
 import silent.funores.block.MetalOre;
 import silent.funores.block.ModBlocks;
+import silent.funores.item.ModItems;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
@@ -54,5 +55,20 @@ public enum EnumMetal implements IStringSerializable, IHasOre {
   public IBlockState getOre() {
 
     return ModBlocks.metalOre.getDefaultState().withProperty(MetalOre.METAL, this);
+  }
+  
+  public ItemStack getBlock() {
+    
+    return new ItemStack(ModBlocks.metalBlock, 1, meta);
+  }
+  
+  public ItemStack getIngot() {
+    
+    return new ItemStack(ModItems.metalIngot, 1, meta);
+  }
+  
+  public ItemStack getNugget() {
+    
+    return new ItemStack(ModItems.metalNugget, 1, meta);
   }
 }

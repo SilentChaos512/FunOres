@@ -7,27 +7,28 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import silent.funores.FunOres;
-import silent.funores.lib.EnumMetal;
+import silent.funores.lib.EnumAlloy;
 import silent.funores.lib.Names;
 
-public class MetalNugget extends ItemSG {
 
-  public MetalNugget() {
+public class AlloyNugget extends ItemSG {
 
-    super(EnumMetal.count());
+  public AlloyNugget() {
 
+    super(EnumAlloy.count());
+    
     setMaxStackSize(64);
     setHasSubtypes(true);
     setMaxDamage(0);
-    setUnlocalizedName(Names.METAL_NUGGET);
+    setUnlocalizedName(Names.ALLOY_NUGGET);
   }
-  
+
   @Override
   public void addOreDict() {
-
-    for (EnumMetal metal : EnumMetal.values()) {
-      String name = "nugget" + metal.getName();
-      int meta = metal.getMeta();
+    
+    for (EnumAlloy alloy : EnumAlloy.values()) {
+      String name = "nugget" + alloy.getName();
+      int meta = alloy.getMeta();
       OreDictionary.registerOre(name, new ItemStack(this, 1, meta));
     }
   }
@@ -35,10 +36,10 @@ public class MetalNugget extends ItemSG {
   @Override
   public String[] getVariantNames() {
     
-    String[] result = new String[EnumMetal.count()];
+    String[] result = new String[EnumAlloy.count()];
     
-    for (int i = 0; i < EnumMetal.count(); ++i) {
-      result[i] = FunOres.MOD_ID + ":Nugget" + EnumMetal.values()[i].getName();
+    for (int i = 0; i < EnumAlloy.count(); ++i) {
+      result[i] = FunOres.MOD_ID + ":Nugget" + EnumAlloy.values()[i].getName();
     }
     
     return result;
@@ -47,7 +48,7 @@ public class MetalNugget extends ItemSG {
   @Override
   public void getSubItems(Item item, CreativeTabs tab, List list) {
     
-    for (int i = 0; i < EnumMetal.count(); ++i) {
+    for (int i = 0; i < EnumAlloy.count(); ++i) {
       list.add(new ItemStack(this, 1, i));
     }
   }

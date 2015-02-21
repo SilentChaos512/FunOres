@@ -22,6 +22,7 @@ import net.minecraft.world.World;
 import silent.funores.FunOres;
 import silent.funores.core.registry.IAddRecipe;
 import silent.funores.core.registry.IHasVariants;
+import silent.funores.lib.EnumMetal;
 import silent.funores.lib.Names;
 import silent.funores.tile.TileMetalFurnace;
 
@@ -79,7 +80,7 @@ public class MetalFurnace extends BlockContainer implements IAddRecipe, IHasVari
   @Override
   public void addRecipes() {
 
-    // TODO Auto-generated method stub
+    // TODO: Add recipe(s)!
   }
 
   @Override
