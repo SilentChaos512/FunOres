@@ -130,7 +130,7 @@ public class Config {
       int meatClusterCount = 1;
       int meatClusterSize = 15;
       int meatMinY = 32;
-      int meatMaxY = 84;
+      int meatMaxY = 96;
       int meatRarity = 25;
       
       pig.enabled = true;

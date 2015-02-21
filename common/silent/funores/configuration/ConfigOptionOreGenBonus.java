@@ -4,20 +4,19 @@ import java.util.ArrayList;
 
 import net.minecraft.item.Item;
 import net.minecraft.util.IStringSerializable;
-import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
 import silent.funores.core.util.LogHelper;
 
 public class ConfigOptionOreGenBonus extends ConfigOptionOreGen {
 
-  private static final ArrayList<ConfigOptionOreGenBonus> LOAD_CONFIGS = new ArrayList<>();
+  private static final ArrayList<ConfigOptionOreGenBonus> LOADED_CONFIGS = new ArrayList<ConfigOptionOreGenBonus>();
 
   public static final String COMMENT_DROP = "The items drop by this ore. The parameters are "
       + "itemName, count, meta, baseChance, fortuneChanceBonus, fortuneCountBonus.";
 
-  public ArrayList<ConfigItemDrop> drops = new ArrayList<>();
+  public ArrayList<ConfigItemDrop> drops = new ArrayList<ConfigItemDrop>();
 
-  private ArrayList<String> dropKeys = new ArrayList<>();
+  private ArrayList<String> dropKeys = new ArrayList<String>();
 
   public ConfigOptionOreGenBonus(IStringSerializable ore) {
 
@@ -30,10 +29,10 @@ public class ConfigOptionOreGenBonus extends ConfigOptionOreGen {
    */
   public static void initItemKeys() {
 
-    for (ConfigOptionOreGenBonus config : LOAD_CONFIGS) {
+    for (ConfigOptionOreGenBonus config : LOADED_CONFIGS) {
       config.drops.clear();
       for (String dropKey : config.dropKeys) {
-//        LogHelper.debug(dropKey);
+        // LogHelper.debug(dropKey);
         ConfigItemDrop drop = config.parseItem(dropKey);
         if (drop != null) {
           config.drops.add(drop);
@@ -84,7 +83,7 @@ public class ConfigOptionOreGenBonus extends ConfigOptionOreGen {
     // + " drops for each ore! You will not see some drops you entered!");
     // }
 
-    LOAD_CONFIGS.add(this);
+    LOADED_CONFIGS.add(this);
     return this;
   }
 

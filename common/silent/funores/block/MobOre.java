@@ -58,7 +58,7 @@ public class MobOre extends BlockSG {
   
   private void addSmelting(int meta, Item result) {
     
-    GameRegistry.addSmelting(new ItemStack(this, 1, meta), new ItemStack(result, 3), 0.2f);
+    GameRegistry.addSmelting(new ItemStack(this, 1, meta), new ItemStack(result, 2), 0.2f);
   }
   
   @Override

@@ -11,6 +11,7 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import silent.funores.block.ModBlocks;
 import silent.funores.configuration.Config;
@@ -18,6 +19,7 @@ import silent.funores.configuration.ConfigOptionOreGenBonus;
 import silent.funores.core.proxy.CommonProxy;
 import silent.funores.core.registry.SRegistry;
 import silent.funores.core.util.LogHelper;
+import silent.funores.gui.GuiHandlerFunOres;
 import silent.funores.item.ModItems;
 import silent.funores.world.FunOresGenerator;
 
@@ -48,6 +50,8 @@ public class FunOres {
     Config.save();
     
     proxy.preInit();
+    
+    NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandlerFunOres());
   }
   
   @EventHandler
