@@ -69,6 +69,7 @@ item.funores:MetalNugget4.name=Nickel Nugget
 item.funores:MetalNugget5.name=Platinum Nugget
 item.funores:MetalNugget6.name=Aluminium Nugget
 item.funores:MetalNugget7.name=Zinc Nugget
+item.funores:MetalNugget16.name=Iron Nugget
 
 item.funores:Shard0.name=Ender Shard
 
