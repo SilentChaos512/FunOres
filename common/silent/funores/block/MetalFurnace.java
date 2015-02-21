@@ -19,9 +19,12 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 import silent.funores.FunOres;
 import silent.funores.core.registry.IAddRecipe;
 import silent.funores.core.registry.IHasVariants;
+import silent.funores.lib.EnumAlloy;
 import silent.funores.lib.EnumMetal;
 import silent.funores.lib.Names;
 import silent.funores.tile.TileMetalFurnace;
@@ -80,7 +83,11 @@ public class MetalFurnace extends BlockContainer implements IAddRecipe, IHasVari
   @Override
   public void addRecipes() {
 
-    // TODO: Add recipe(s)!
+    // TODO: Fix highly temporary recipes!
+    GameRegistry.addRecipe(new ShapedOreRecipe(this, true, "iii", "i i", "bib", 'i',
+        EnumAlloy.BRONZE.getIngot(), 'b', EnumAlloy.BRONZE.getBlock()));
+    GameRegistry.addRecipe(new ShapedOreRecipe(this, true, "iii", "i i", "bib", 'i',
+        EnumAlloy.BRASS.getIngot(), 'b', EnumAlloy.BRASS.getBlock()));
   }
 
   @Override
@@ -220,7 +227,7 @@ public class MetalFurnace extends BlockContainer implements IAddRecipe, IHasVari
       TileEntity tileentity = world.getTileEntity(pos);
 
       if (tileentity instanceof TileMetalFurnace) {
-//         ((TileMetalFurnace) tileentity).setCustomInventoryName(stack.getDisplayName());
+        // ((TileMetalFurnace) tileentity).setCustomInventoryName(stack.getDisplayName());
       }
     }
   }
@@ -239,57 +246,57 @@ public class MetalFurnace extends BlockContainer implements IAddRecipe, IHasVari
 
     super.breakBlock(world, pos, state);
   }
-  
+
   @Override
   public boolean hasComparatorInputOverride() {
-    
+
     return true;
   }
-  
+
   @Override
   public int getComparatorInputOverride(World world, BlockPos pos) {
-    
+
     return Container.calcRedstone(world.getTileEntity(pos));
   }
-  
+
   @Override
   public Item getItem(World world, BlockPos pos) {
-    
+
     return Item.getItemFromBlock(this);
   }
-  
+
   @Override
   public int getRenderType() {
-    
+
     return 3;
   }
-  
+
   @Override
   public IBlockState getStateForEntityRender(IBlockState state) {
-    
+
     return this.getDefaultState().withProperty(FACING, EnumFacing.SOUTH);
   }
-  
+
   public IBlockState getStateFromMeta(int meta) {
-    
+
     EnumFacing enumFacing = EnumFacing.getFront(meta);
-    
+
     if (enumFacing.getAxis() == EnumFacing.Axis.Y) {
       enumFacing = EnumFacing.NORTH;
     }
-    
+
     return this.getDefaultState().withProperty(FACING, enumFacing);
   }
-  
+
   @Override
   public int getMetaFromState(IBlockState state) {
-    
+
     return ((EnumFacing) state.getValue(FACING)).getIndex();
   }
-  
+
   @Override
   protected BlockState createBlockState() {
-    
+
     return new BlockState(this, new IProperty[] { FACING });
   }
 }
