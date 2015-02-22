@@ -11,6 +11,8 @@ import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.Item;
@@ -84,10 +86,10 @@ public class MetalFurnace extends BlockContainer implements IAddRecipe, IHasVari
   public void addRecipes() {
 
     // TODO: Fix highly temporary recipes!
-    GameRegistry.addRecipe(new ShapedOreRecipe(this, true, "iii", "i i", "bib", 'i',
-        EnumAlloy.BRONZE.getIngot(), 'b', EnumAlloy.BRONZE.getBlock()));
-    GameRegistry.addRecipe(new ShapedOreRecipe(this, true, "iii", "i i", "bib", 'i',
-        EnumAlloy.BRASS.getIngot(), 'b', EnumAlloy.BRASS.getBlock()));
+    GameRegistry.addRecipe(new ShapedOreRecipe(this, true, "bib", "i i", "rrr", 'i',
+        EnumAlloy.BRONZE.getIngot(), 'b', EnumAlloy.BRONZE.getBlock(), 'r', Blocks.brick_block));
+    GameRegistry.addRecipe(new ShapedOreRecipe(this, true, "bib", "i i", "rrr", 'i',
+        EnumAlloy.BRASS.getIngot(), 'b', EnumAlloy.BRASS.getBlock(), 'r', Blocks.brick_block));
   }
 
   @Override

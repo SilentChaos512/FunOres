@@ -6,6 +6,7 @@ itemGroup.tabFunOres=Fun Ores
 
 tile.funores:AlloyBlock0.name=Bronze Block
 tile.funores:AlloyBlock1.name=Brass Block
+tile.funores:AlloyBlock2.name=Steel Block
 
 tile.funores:MeatOre0.name=Pig Ore
 tile.funores:MeatOre1.name=Fish Ore
@@ -22,6 +23,8 @@ tile.funores:MetalBlock4.name=Nickel Block
 tile.funores:MetalBlock5.name=Platinum Block
 tile.funores:MetalBlock6.name=Aluminium Block
 tile.funores:MetalBlock7.name=Zinc Block
+
+tile.funores:MetalFurnace.name=Metal Furnace
 
 tile.funores:MetalOre0.name=Copper Ore
 tile.funores:MetalOre1.name=Tin Ore
@@ -48,9 +51,11 @@ tile.funores:MobOre10.name=Wither Ore
 
 item.funores:AlloyIngot0.name=Bronze Ingot
 item.funores:AlloyIngot1.name=Brass Ingot
+item.funores:AlloyIngot2.name=Steel Ingot
 
 item.funores:AlloyNugget0.name=Bronze Nugget
 item.funores:AlloyNugget1.name=Brass Nugget
+item.funores:AlloyNugget2.name=Steel Nugget
 
 item.funores:MetalIngot0.name=Copper Ingot
 item.funores:MetalIngot1.name=Tin Ingot

@@ -7,7 +7,9 @@ import silent.funores.item.ModItems;
 
 public enum EnumAlloy implements IStringSerializable {
 
-  BRONZE(0, "Bronze"), BRASS(1, "Brass");
+  BRONZE(0, "Bronze"),
+  BRASS(1, "Brass"),
+  STEEL(2, "Steel");
 
   private final int meta;
   private final String name;

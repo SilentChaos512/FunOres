@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "FunOres:MetalFurnace" },
+    "facing=south": { "model": "FunOres:MetalFurnace", "y": 180 },
+    "facing=west":  { "model": "FunOres:MetalFurnace", "y": 270 },
+    "facing=east":  { "model": "FunOres:MetalFurnace", "y": 90 }
+  }
+}

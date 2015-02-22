@@ -3,6 +3,7 @@ package silent.funores.item;
 import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -36,6 +37,11 @@ public class MetalIngot extends ItemSG {
       // Nuggets <--> Ingots
       RecipeHelper.addCompressionRecipe(nugget, ingot, 9);
     }
+    
+    // Iron
+    ItemStack nugget = new ItemStack(ModItems.metalNugget, 1, MetalNugget.META_IRON);
+    ItemStack ingot = new ItemStack(Items.iron_ingot);
+    RecipeHelper.addCompressionRecipe(nugget, ingot, 9);
   }
 
   @Override
