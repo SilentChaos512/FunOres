@@ -281,13 +281,14 @@ public class Config {
       witch.rarity = mobRarity;
       // Witch ore may occasionally drop nothing because of this, but I didn't want to make an
       // exception for it.
-      witch.addDrop(ConfigItemDrop.getKey("minecraft:glass_bottle", 1, 0, 0.25f, 0.0f, 1.0f));
-      witch.addDrop(ConfigItemDrop.getKey("minecraft:glowstone_dust", 1, 0, 0.25f, 0.0f, 1.0f));
-      witch.addDrop(ConfigItemDrop.getKey("minecraft:gunpowder", 1, 0, 0.25f, 0.0f, 1.0f));
-      witch.addDrop(ConfigItemDrop.getKey("minecraft:redstone", 1, 0, 0.25f, 0.0f, 1.0f));
-      witch.addDrop(ConfigItemDrop.getKey("minecraft:spider_eye", 1, 0, 0.25f, 0.0f, 1.0f));
-      witch.addDrop(ConfigItemDrop.getKey("minecraft:stick", 1, 0, 0.25f, 0.0f, 1.0f));
-      witch.addDrop(ConfigItemDrop.getKey("minecraft:sugar", 1, 0, 0.25f, 0.0f, 1.0f));
+      witch.addDrop(ConfigItemDrop.getKey("minecraft:glass_bottle", 2, 0, 1.0f, 0.0f, 1.0f));
+      witch.addDrop(ConfigItemDrop.getKey("minecraft:glowstone_dust", 1, 0, 1.0f, 0.0f, 1.0f));
+      witch.addDrop(ConfigItemDrop.getKey("minecraft:gunpowder", 1, 0, 1.0f, 0.0f, 1.0f));
+      witch.addDrop(ConfigItemDrop.getKey("minecraft:redstone", 1, 0, 1.0f, 0.0f, 1.0f));
+      witch.addDrop(ConfigItemDrop.getKey("minecraft:spider_eye", 1, 0, 1.0f, 0.0f, 1.0f));
+      witch.addDrop(ConfigItemDrop.getKey("minecraft:stick", 2, 0, 1.0f, 0.0f, 1.0f));
+      witch.addDrop(ConfigItemDrop.getKey("minecraft:sugar", 2, 0, 1.0f, 0.0f, 1.0f));
+      witch.pick = 2;
       witch.loadValue(c, CATEGORY_MOB_ORE);
       
       // Nether

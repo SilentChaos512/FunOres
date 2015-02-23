@@ -149,7 +149,18 @@ public class MobOre extends BlockSG {
 
     ConfigOptionOreGenBonus config = ((EnumMob) state.getValue(MOB)).getConfig();
 
-    for (ConfigItemDrop drop : config.drops) {
+    ConfigItemDrop[] dropsToTry;
+    // Pick a certain number from the list, or try them all?
+    if (config.pick != 0) {
+      dropsToTry = new ConfigItemDrop[config.pick];
+      for (int i = 0; i < config.pick; ++i) {
+        dropsToTry[i] = config.drops.get(rand.nextInt(config.drops.size()));
+      }
+    } else {
+      dropsToTry = config.drops.toArray(new ConfigItemDrop[] {});
+    }
+    
+    for (ConfigItemDrop drop : dropsToTry) {
       // Make sure drop config isn't null.
       if (drop != null) {
         // Should we do the drop?

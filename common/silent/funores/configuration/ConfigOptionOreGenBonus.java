@@ -14,8 +14,17 @@ public class ConfigOptionOreGenBonus extends ConfigOptionOreGen {
   public static final String COMMENT_DROP = "The items drop by this ore. The parameters are "
       + "itemName, count, meta, baseChance, fortuneChanceBonus, fortuneCountBonus.";
 
+  /**
+   * The number of drops from the list to attempt to drop when mining the ore.
+   */
+  public int pick = 0;
+  /**
+   * The drops that the player can get from the ore.
+   */
   public ArrayList<ConfigItemDrop> drops = new ArrayList<ConfigItemDrop>();
-
+  /**
+   * The unparsed drops read from the config file.
+   */
   private ArrayList<String> dropKeys = new ArrayList<String>();
 
   public ConfigOptionOreGenBonus(IStringSerializable ore) {
@@ -41,6 +50,10 @@ public class ConfigOptionOreGenBonus extends ConfigOptionOreGen {
     }
   }
 
+  /**
+   * Used to add default drops.
+   * @param key
+   */
   public void addDrop(String key) {
 
     dropKeys.add(key);
@@ -64,29 +77,18 @@ public class ConfigOptionOreGenBonus extends ConfigOptionOreGen {
     for (String key : keys) {
       dropKeys.add(key);
     }
-
-    // int i = 0;
-    // // Get default values.
-    // for (; i < dropKeys.size(); ++i) {
-    // dropKeys.set(i, c.getString("Drop" + i, category, dropKeys.get(i), COMMENT_DROP));
-    // }
-    // // Get additional values.
-    // while (c.hasKey(category, "Drop" + i) && i < MAX_DROPS_COUNT) {
-    // dropKeys.set(i, c.getString("Drop" + i, category, dropKeys.get(i), COMMENT_DROP));
-    // LogHelper.derp(dropKeys.get(i));
-    // ++i;
-    // }
-    //
-    // // Did user add more than max items?
-    // if (i >= MAX_DROPS_COUNT && c.hasKey(category, "Drop" + i)) {
-    // LogHelper.warning("You may only enter " + MAX_DROPS_COUNT
-    // + " drops for each ore! You will not see some drops you entered!");
-    // }
+    
+    pick = c.get(category, "Pick", pick).getInt();
 
     LOADED_CONFIGS.add(this);
     return this;
   }
 
+  /**
+   * Parses the String read from the config file into something useable.
+   * @param input
+   * @return
+   */
   private ConfigItemDrop parseItem(String input) {
 
     // minecraft:stick, count, meta, chance, fortuneChanceBonus, fortuneCountBonus

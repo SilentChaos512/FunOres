@@ -125,10 +125,21 @@ public class MeatOre extends BlockSG {
     List<ItemStack> ret = new ArrayList<ItemStack>();
 
     Random rand = world instanceof World ? ((World) world).rand : RANDOM;
-    
+
     ConfigOptionOreGenBonus config = ((EnumMeat) state.getValue(MEAT)).getConfig();
-    
-    for (ConfigItemDrop drop : config.drops) {
+
+    ConfigItemDrop[] dropsToTry;
+    // Pick a certain number from the list, or try them all?
+    if (config.pick != 0) {
+      dropsToTry = new ConfigItemDrop[config.pick];
+      for (int i = 0; i < config.pick; ++i) {
+        dropsToTry[i] = config.drops.get(rand.nextInt(config.drops.size()));
+      }
+    } else {
+      dropsToTry = config.drops.toArray(new ConfigItemDrop[] {});
+    }
+
+    for (ConfigItemDrop drop : dropsToTry) {
       // Make sure drop config isn't null.
       if (drop != null) {
         // Should we do the drop?
@@ -143,26 +154,12 @@ public class MeatOre extends BlockSG {
         }
       }
     }
-    
-    // Old
-    
-//    int count = quantityDropped(state, fortune, rand);
-//    for (int i = 0; i < count; ++i) {
-//      if (mainDrop != null) {
-//        ret.add(new ItemStack(mainDrop, 1, 0));
-//      }
-//    }
-//    if (bonusDrop != null) {
-//      for (int i = 0; i < bonusDrop.stackSize; ++i) {
-//        ret.add(new ItemStack(bonusDrop.getItem(), 1, bonusDrop.getItemDamage()));
-//      }
-//    }
 
     return ret;
   }
-  
+
   private ItemStack getBonusItemDropped(IBlockState state, Random rand, int fortune) {
-    
+
     int r;
     switch ((EnumMeat) state.getValue(MEAT)) {
       case PIG:
@@ -220,32 +217,32 @@ public class MeatOre extends BlockSG {
     }
   }
 
-//  @Override
-//  public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-//
-//    switch ((EnumMeat) state.getValue(MEAT)) {
-//      case PIG:
-//        return Items.porkchop;
-//      case FISH:
-//        return Items.fish;
-//      case COW:
-//        return Items.beef;
-//      case CHICKEN:
-//        return Items.chicken;
-//      case RABBIT:
-//        return Items.rabbit;
-//      case SHEEP:
-//        return Items.mutton;
-//      default:
-//        return Items.rotten_flesh;
-//    }
-//  }
+  // @Override
+  // public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+  //
+  // switch ((EnumMeat) state.getValue(MEAT)) {
+  // case PIG:
+  // return Items.porkchop;
+  // case FISH:
+  // return Items.fish;
+  // case COW:
+  // return Items.beef;
+  // case CHICKEN:
+  // return Items.chicken;
+  // case RABBIT:
+  // return Items.rabbit;
+  // case SHEEP:
+  // return Items.mutton;
+  // default:
+  // return Items.rotten_flesh;
+  // }
+  // }
 
-//  @Override
-//  public int quantityDropped(Random random) {
-//
-//    return 1;
-//  }
+  // @Override
+  // public int quantityDropped(Random random) {
+  //
+  // return 1;
+  // }
 
   @Override
   public int quantityDroppedWithBonus(int fortune, Random random) {
