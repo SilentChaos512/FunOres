@@ -54,6 +54,12 @@ public class Config {
     
     try {
       c.load();
+
+      /*
+       * Example Ore
+       */
+      
+      (new ConfigOptionOreGenBonus(true)).loadValue(c, "");
       
       /*
        * Metal Ores
