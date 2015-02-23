@@ -78,6 +78,20 @@ item.funores:MetalNugget16.name=Iron Nugget
 
 item.funores:Shard0.name=Ender Shard
 
+# Tool localizations
+
+item.funores:SwordBronze.name=Bronze Sword
+item.funores:PickaxeBronze.name=Bronze Pickaxe
+item.funores:ShovelBronze.name=Bronze Shovel
+item.funores:AxeBronze.name=Bronze Axe
+item.funores:HoeBronze.name=Bronze Hoe
+
+item.funores:SwordSteel.name=Steel Sword
+item.funores:PickaxeSteel.name=Steel Pickaxe
+item.funores:ShovelSteel.name=Steel Shovel
+item.funores:AxeSteel.name=Steel Axe
+item.funores:HoeSteel.name=Steel Hoe
+
 
 
 # Misc Stuff

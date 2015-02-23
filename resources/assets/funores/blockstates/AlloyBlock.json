@@ -1,6 +1,7 @@
 {
   "variants": {
     "alloy=bronze": { "model": "FunOres:BlockBronze" },
-    "alloy=brass": { "model": "FunOres:BlockBrass" }
+    "alloy=brass": { "model": "FunOres:BlockBrass" },
+    "alloy=steel": { "model": "FunOres:BlockSteel" }
   }
 }

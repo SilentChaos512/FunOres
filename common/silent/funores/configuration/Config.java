@@ -131,7 +131,7 @@ public class Config {
       int meatClusterSize = 15;
       int meatMinY = 32;
       int meatMaxY = 96;
-      int meatRarity = 25;
+      int meatRarity = 18;
       
       pig.enabled = true;
       pig.clusterCount = meatClusterCount;
@@ -203,9 +203,9 @@ public class Config {
       
       int mobClusterCount = 1;
       int mobClusterSize = 17;
-      int mobMinY = 28;
+      int mobMinY = 24;
       int mobMaxY = 86;
-      int mobRarity = 30;
+      int mobRarity = 26;
       
       // Overworld
       

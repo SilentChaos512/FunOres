@@ -1,7 +1,13 @@
 package silent.funores.item;
 
+import net.minecraft.item.ItemAxe;
+import net.minecraft.item.ItemHoe;
+import net.minecraft.item.ItemPickaxe;
+import net.minecraft.item.ItemSpade;
+import net.minecraft.item.ItemSword;
 import silent.funores.core.registry.SRegistry;
 import silent.funores.lib.Names;
+import silent.funores.material.ModMaterials;
 
 public class ModItems {
   
@@ -18,5 +24,17 @@ public class ModItems {
     alloyIngot = (AlloyIngot) SRegistry.registerItem(AlloyIngot.class, Names.ALLOY_INGOT);
     alloyNugget = (AlloyNugget) SRegistry.registerItem(AlloyNugget.class, Names.ALLOY_NUGGET);
     shard = (Shard) SRegistry.registerItem(Shard.class, Names.SHARD);
+    
+    SRegistry.registerItem(Sword.class, "SwordBronze", ModMaterials.toolBronze);
+    SRegistry.registerItem(Pickaxe.class, "PickaxeBronze", ModMaterials.toolBronze);
+    SRegistry.registerItem(Shovel.class, "ShovelBronze", ModMaterials.toolBronze);
+    SRegistry.registerItem(Axe.class, "AxeBronze", ModMaterials.toolBronze);
+    SRegistry.registerItem(Hoe.class, "HoeBronze", ModMaterials.toolBronze);
+    
+    SRegistry.registerItem(Sword.class, "SwordSteel", ModMaterials.toolSteel);
+    SRegistry.registerItem(Pickaxe.class, "PickaxeSteel", ModMaterials.toolSteel);
+    SRegistry.registerItem(Shovel.class, "ShovelSteel", ModMaterials.toolSteel);
+    SRegistry.registerItem(Axe.class, "AxeSteel", ModMaterials.toolSteel);
+    SRegistry.registerItem(Hoe.class, "HoeSteel", ModMaterials.toolSteel);
   }
 }

@@ -3,6 +3,7 @@ package silent.funores.item;
 import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -14,6 +15,8 @@ import silent.funores.lib.EnumMetal;
 import silent.funores.lib.Names;
 
 public class AlloyIngot extends ItemSG {
+  
+  public static final String ORE_DICT_COPPER_ALLOY = "ingotCopperAlloy";
 
   public AlloyIngot() {
 
@@ -41,14 +44,18 @@ public class AlloyIngot extends ItemSG {
     ItemStack copperIngot = EnumMetal.COPPER.getIngot();
     ItemStack tinIngot = EnumMetal.TIN.getIngot();
     ItemStack zincIngot = EnumMetal.ZINC.getIngot();
+    ItemStack ironIngot = new ItemStack(Items.iron_ingot);
+    ItemStack coal = new ItemStack(Items.coal);
 
     ItemStack bronzeIngot = EnumAlloy.BRONZE.getIngot();
     bronzeIngot.stackSize = 4;
     ItemStack brassIngot = EnumAlloy.BRASS.getIngot();
     brassIngot.stackSize = 4;
+    ItemStack steelIngot = EnumAlloy.STEEL.getIngot();
 
     GameRegistry.addShapelessRecipe(bronzeIngot, copperIngot, copperIngot, copperIngot, tinIngot);
     GameRegistry.addShapelessRecipe(brassIngot, copperIngot, copperIngot, copperIngot, zincIngot);
+    GameRegistry.addShapelessRecipe(steelIngot, ironIngot, coal, coal, coal);
   }
 
   @Override
@@ -59,6 +66,9 @@ public class AlloyIngot extends ItemSG {
       int meta = alloy.getMeta();
       OreDictionary.registerOre(name, new ItemStack(this, 1, meta));
     }
+    
+    OreDictionary.registerOre(ORE_DICT_COPPER_ALLOY, EnumAlloy.BRONZE.getIngot());
+    OreDictionary.registerOre(ORE_DICT_COPPER_ALLOY, EnumAlloy.BRASS.getIngot());
   }
 
   @Override
