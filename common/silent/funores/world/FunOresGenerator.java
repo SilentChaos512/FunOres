@@ -36,7 +36,7 @@ public class FunOresGenerator implements IWorldGenerator {
       case 1:
         generateEnd(world, random, x, z);
       default:
-        return;
+        generateSurface(world, random, x, z);;
     }
   }
 

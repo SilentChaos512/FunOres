@@ -6,9 +6,12 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import silent.funores.FunOres;
 import silent.funores.inventory.ContainerMetalFurnace;
 
+@SideOnly(Side.CLIENT)
 public class GuiMetalFurnace extends GuiContainer {
 
   private static final ResourceLocation guiTextures = new ResourceLocation(FunOres.MOD_ID,

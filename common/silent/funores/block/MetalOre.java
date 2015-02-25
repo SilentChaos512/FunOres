@@ -27,7 +27,7 @@ public class MetalOre extends BlockSG {
     
     super(EnumMetal.count(), Material.rock);
     
-    setHardness(2.0f);
+    setHardness(3.0f);
     setResistance(15.0f);
     setStepSound(Block.soundTypeStone);
     

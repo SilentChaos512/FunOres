@@ -28,9 +28,10 @@ import silent.funores.inventory.ContainerMetalFurnace;
 
 public class TileMetalFurnace extends TileEntity implements IUpdatePlayerListBox, ISidedInventory {
 
-  // private static final int COOK_TIME_FOR_COMPLETION = 200;
   public static final int COOK_TIME_NO_SECONDARY = 133;
-  public static final int COOK_TIME_WITH_SECONDARY = 400;
+  public static final int COOK_TIME_WITH_SECONDARY = 266;
+  public static final int BONUS_NUGGETS_MIN = 2;
+  public static final int BONUS_NUGGETS_MAX = 6;
 
   public static final int SLOT_INPUT = 0;
   public static final int SLOT_FUEL = 1;
@@ -46,9 +47,9 @@ public class TileMetalFurnace extends TileEntity implements IUpdatePlayerListBox
   private int currentItemBurnTime;
   private int cookTime;
   private int totalCookTime;
-  
+
   public int getCookTime() {
-    
+
     return getSecondaryOutput() == null ? COOK_TIME_NO_SECONDARY : COOK_TIME_WITH_SECONDARY;
   }
 
@@ -371,7 +372,7 @@ public class TileMetalFurnace extends TileEntity implements IUpdatePlayerListBox
     if (inputStack == null) {
       return null;
     }
-    
+
     ItemStack outputPrimary = FurnaceRecipes.instance().getSmeltingResult(inputStack);
     if (outputPrimary == null) {
       return null;
@@ -391,7 +392,8 @@ public class TileMetalFurnace extends TileEntity implements IUpdatePlayerListBox
             List<ItemStack> nuggets = OreDictionary.getOres("nugget" + inputName);
             if (!nuggets.isEmpty()) {
               ItemStack result = nuggets.get(0).copy();
-              result.stackSize = 3 + FunOres.instance.random.nextInt(5);
+              result.stackSize = BONUS_NUGGETS_MIN
+                  + FunOres.instance.random.nextInt(BONUS_NUGGETS_MAX - BONUS_NUGGETS_MIN + 1);
               return result;
             } else {
               return null;

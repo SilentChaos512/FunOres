@@ -47,7 +47,7 @@ public class MetalFurnace extends BlockContainer implements IAddRecipe, IHasVari
     setHardness(4.0f);
     setResistance(6000.0f);
     setStepSound(Block.soundTypeMetal);
-    setHarvestLevel("pickaxe", 2);
+    setHarvestLevel("pickaxe", 1);
 
     // setHasSubtypes(true);
     setUnlocalizedName(Names.METAL_FURNACE);
