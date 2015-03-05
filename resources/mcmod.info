@@ -7,15 +7,10 @@
   "mcversion": "${mcversion}",
   "url": "",
   "updateUrl": "",
-  "authors": [
-    "SilentChaos512"
-  ],
+  "authorList": ["SilentChaos512"],
   "credits": "",
   "logoFile": "",
-  "screenshots": [
-  ],
-  "parent":"",
-  "dependencies": [
-  ]
+  "screenshots": [],
+  "dependencies": []
 }
 ]
