@@ -8,6 +8,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.core.util.RecipeHelper;
 import net.silentchaos512.funores.lib.EnumAlloy;
@@ -41,10 +42,10 @@ public class AlloyIngot extends ItemSG {
 
     // TODO: Temporary recipes?
 
-    ItemStack copperIngot = EnumMetal.COPPER.getIngot();
-    ItemStack tinIngot = EnumMetal.TIN.getIngot();
-    ItemStack zincIngot = EnumMetal.ZINC.getIngot();
-    ItemStack ironIngot = new ItemStack(Items.iron_ingot);
+    String copper = "ingotCopper";
+    String tin = "ingotTin";
+    String zinc = "ingotZinc";
+    String iron = "ingotIron";
     ItemStack coal = new ItemStack(Items.coal);
 
     ItemStack bronzeIngot = EnumAlloy.BRONZE.getIngot();
@@ -53,9 +54,9 @@ public class AlloyIngot extends ItemSG {
     brassIngot.stackSize = 4;
     ItemStack steelIngot = EnumAlloy.STEEL.getIngot();
 
-    GameRegistry.addShapelessRecipe(bronzeIngot, copperIngot, copperIngot, copperIngot, tinIngot);
-    GameRegistry.addShapelessRecipe(brassIngot, copperIngot, copperIngot, copperIngot, zincIngot);
-    GameRegistry.addShapelessRecipe(steelIngot, ironIngot, coal, coal, coal);
+    GameRegistry.addRecipe(new ShapelessOreRecipe(bronzeIngot, copper, copper, copper, tin));
+    GameRegistry.addRecipe(new ShapelessOreRecipe(brassIngot, copper, copper, copper, zinc));
+    GameRegistry.addRecipe(new ShapelessOreRecipe(steelIngot, iron, coal, coal, coal));
   }
 
   @Override
