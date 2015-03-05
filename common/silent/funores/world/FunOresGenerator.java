@@ -92,6 +92,10 @@ public class FunOresGenerator implements IWorldGenerator {
 
   public void generateOre(ConfigOptionOreGen ore, World world, Random random, int posX, int posZ,
       Predicate predicate) {
+    
+    if (!ore.enabled) {
+      return;
+    }
 
     if (!(ore.ore instanceof IHasOre)) {
       LogHelper.debug(ore.oreName + " is not an ore?");
