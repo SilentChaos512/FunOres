@@ -31,10 +31,13 @@ public class FunOresGenerator implements IWorldGenerator {
     switch (dimension) {
       case -1:
         generateNether(world, random, x, z);
+        break;
       case 0:
         generateSurface(world, random, x, z);
+        break;
       case 1:
         generateEnd(world, random, x, z);
+        break;
       default:
         generateSurface(world, random, x, z);;
     }
