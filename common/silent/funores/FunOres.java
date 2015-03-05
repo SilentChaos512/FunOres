@@ -23,12 +23,12 @@ import silent.funores.gui.GuiHandlerFunOres;
 import silent.funores.item.ModItems;
 import silent.funores.world.FunOresGenerator;
 
-@Mod(modid = FunOres.MOD_ID, name = FunOres.MOD_NAME, version = FunOres.VERSION_NUMBER)
+@Mod(modid = FunOres.MOD_ID, name = FunOres.MOD_NAME, version = FunOres.VERSION_NUMBER, useMetadata = true)
 public class FunOres {
 
   public static final String MOD_ID = "FunOres";
   public static final String MOD_NAME = "Fun Ores";
-  public static final String VERSION_NUMBER = "0.1.00";
+  public static final String VERSION_NUMBER = "@VERSION@";
   public static final String RESOURCE_PREFIX = MOD_ID.toLowerCase() + ":";
 
   @Instance(MOD_ID)

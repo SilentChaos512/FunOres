@@ -12,7 +12,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.Item;
@@ -27,7 +26,6 @@ import silent.funores.FunOres;
 import silent.funores.core.registry.IAddRecipe;
 import silent.funores.core.registry.IHasVariants;
 import silent.funores.lib.EnumAlloy;
-import silent.funores.lib.EnumMetal;
 import silent.funores.lib.Names;
 import silent.funores.tile.TileMetalFurnace;
 
