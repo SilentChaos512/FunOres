@@ -19,10 +19,10 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.OreDictionary;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.configuration.ConfigItemDrop;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGenBonus;
-import net.silentchaos512.funores.core.util.LogHelper;
 import net.silentchaos512.funores.lib.EnumMeat;
 import net.silentchaos512.funores.lib.Names;
 
@@ -62,7 +62,9 @@ public class MeatOre extends BlockSG {
   @Override
   public void addOreDict() {
 
-    // TODO
+    for (EnumMeat meat : EnumMeat.values()) {
+      OreDictionary.registerOre("ore" + meat.getName(), new ItemStack(this, 1, meat.getMeta()));
+    }
   }
 
   @Override

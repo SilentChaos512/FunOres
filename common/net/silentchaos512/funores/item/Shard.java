@@ -7,10 +7,12 @@ import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.lib.Names;
 
 public class Shard extends ItemSG {
+  
+  public static final String[] NAMES = { "Ender", "Blaze" };
 
   public Shard() {
 
-    super(1);
+    super(NAMES.length);
     
     setMaxStackSize(64);
     setHasSubtypes(true);
@@ -21,14 +23,24 @@ public class Shard extends ItemSG {
   @Override
   public void addRecipes() {
     
-    ItemStack shard = new ItemStack(this, 1, 0);
+    ItemStack enderShard = new ItemStack(this, 1, 0);
     ItemStack enderPearl = new ItemStack(Items.ender_pearl);
-    GameRegistry.addShapedRecipe(enderPearl, "ss", "ss", 's', shard);
+    GameRegistry.addShapedRecipe(enderPearl, "ss", "ss", 's', enderShard);
+    
+    ItemStack blazeShard = new ItemStack(this, 1, 1);
+    ItemStack blazeRod = new ItemStack(Items.blaze_rod);
+    GameRegistry.addShapedRecipe(blazeRod, "ss", "ss", 's', blazeShard);
   }
   
   @Override
   public String[] getVariantNames() {
     
-    return new String[] { FunOres.MOD_ID + ":EnderShard" };
+    String[] result = new String[NAMES.length];
+    
+    for (int i = 0; i < NAMES.length; ++i) {
+      result[i] = FunOres.MOD_ID + ":" + NAMES[i] + "Shard";
+    }
+    
+    return result;
   }
 }

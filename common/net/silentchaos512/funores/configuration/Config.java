@@ -8,9 +8,8 @@ import net.silentchaos512.funores.lib.EnumMeat;
 import net.silentchaos512.funores.lib.EnumMetal;
 import net.silentchaos512.funores.lib.EnumMob;
 
-
 public class Config {
-  
+
   // Metal ores
   public static ConfigOptionOreGen copper = new ConfigOptionOreGen(EnumMetal.COPPER);
   public static ConfigOptionOreGen tin = new ConfigOptionOreGen(EnumMetal.TIN);
@@ -20,7 +19,7 @@ public class Config {
   public static ConfigOptionOreGen platinum = new ConfigOptionOreGen(EnumMetal.PLATINUM);
   public static ConfigOptionOreGen aluminium = new ConfigOptionOreGen(EnumMetal.ALUMINIUM);
   public static ConfigOptionOreGen zinc = new ConfigOptionOreGen(EnumMetal.ZINC);
-  
+
   // Meat ores
   public static ConfigOptionOreGenBonus pig = new ConfigOptionOreGenBonus(EnumMeat.PIG);
   public static ConfigOptionOreGenBonus fish = new ConfigOptionOreGenBonus(EnumMeat.FISH);
@@ -28,7 +27,8 @@ public class Config {
   public static ConfigOptionOreGenBonus chicken = new ConfigOptionOreGenBonus(EnumMeat.CHICKEN);
   public static ConfigOptionOreGenBonus rabbit = new ConfigOptionOreGenBonus(EnumMeat.RABBIT);
   public static ConfigOptionOreGenBonus sheep = new ConfigOptionOreGenBonus(EnumMeat.SHEEP);
-  
+  public static ConfigOptionOreGenBonus squid = new ConfigOptionOreGenBonus(EnumMeat.SQUID);
+
   // Mob ores
   public static ConfigOptionOreGenBonus zombie = new ConfigOptionOreGenBonus(EnumMob.ZOMBIE);
   public static ConfigOptionOreGenBonus skeleton = new ConfigOptionOreGenBonus(EnumMob.SKELETON);
@@ -41,30 +41,47 @@ public class Config {
   public static ConfigOptionOreGenBonus ghast = new ConfigOptionOreGenBonus(EnumMob.GHAST);
   public static ConfigOptionOreGenBonus magmaCube = new ConfigOptionOreGenBonus(EnumMob.MAGMA_CUBE);
   public static ConfigOptionOreGenBonus wither = new ConfigOptionOreGenBonus(EnumMob.WITHER);
-  
+  public static ConfigOptionOreGenBonus blaze = new ConfigOptionOreGenBonus(EnumMob.BLAZE);
+
+  public static boolean enableBronzeRecipe = true;
+  public static boolean enableBrassRecipe = true;
+  public static boolean enableSteelRecipe = true;
+
   private static Configuration c;
 
   public static final String CATEGORY_METAL_ORE = "MetalOre";
   public static final String CATEGORY_MEAT_ORE = "MeatOre";
   public static final String CATEGORY_MOB_ORE = "MobOre";
-  
+  public static final String CATEGORY_RECIPE = "Recipe";
+
   public static void init(File file) {
-    
+
     c = new Configuration(file);
-    
+
     try {
       c.load();
 
       /*
+       * Misc configs
+       */
+
+      enableBronzeRecipe = c.getBoolean("BronzeRecipe.Enabled", CATEGORY_RECIPE,
+          enableBronzeRecipe, "Enable the recipe for bronze ingots.");
+      enableBrassRecipe = c.getBoolean("BrassRecipe.Enabled", CATEGORY_RECIPE, enableBrassRecipe,
+          "Enable the recipe for brass ingots.");
+      enableSteelRecipe = c.getBoolean("SteelRecipe.Enabled", CATEGORY_RECIPE, enableSteelRecipe,
+          "Enable the recipe for steel ingots");
+
+      /*
        * Example Ore
        */
-      
+
       (new ConfigOptionOreGenBonus(true)).loadValue(c, "");
-      
+
       /*
        * Metal Ores
        */
-      
+
       copper.enabled = true;
       copper.clusterCount = 10;
       copper.clusterSize = 8;
@@ -72,7 +89,7 @@ public class Config {
       copper.maxY = 75;
       copper.rarity = 1;
       copper.loadValue(c, CATEGORY_METAL_ORE);
-      
+
       tin.enabled = true;
       tin.clusterCount = 10;
       tin.clusterSize = 8;
@@ -80,7 +97,7 @@ public class Config {
       tin.maxY = 55;
       tin.rarity = 1;
       tin.loadValue(c, CATEGORY_METAL_ORE);
-      
+
       silver.enabled = true;
       silver.clusterCount = 6;
       silver.clusterSize = 8;
@@ -88,7 +105,7 @@ public class Config {
       silver.maxY = 30;
       silver.rarity = 1;
       silver.loadValue(c, CATEGORY_METAL_ORE);
-      
+
       lead.enabled = true;
       lead.clusterCount = 4;
       lead.clusterSize = 8;
@@ -96,7 +113,7 @@ public class Config {
       lead.maxY = 35;
       lead.rarity = 1;
       lead.loadValue(c, CATEGORY_METAL_ORE);
-      
+
       nickel.enabled = true;
       nickel.clusterCount = 2;
       nickel.clusterSize = 4;
@@ -104,7 +121,7 @@ public class Config {
       nickel.maxY = 20;
       nickel.rarity = 1;
       nickel.loadValue(c, CATEGORY_METAL_ORE);
-      
+
       platinum.enabled = true;
       platinum.clusterCount = 4;
       platinum.clusterSize = 6;
@@ -112,7 +129,7 @@ public class Config {
       platinum.maxY = 15;
       platinum.rarity = 10;
       platinum.loadValue(c, CATEGORY_METAL_ORE);
-      
+
       aluminium.enabled = true;
       aluminium.clusterCount = 6;
       aluminium.clusterSize = 7;
@@ -120,7 +137,7 @@ public class Config {
       aluminium.maxY = 50;
       aluminium.rarity = 1;
       aluminium.loadValue(c, CATEGORY_METAL_ORE);
-      
+
       zinc.enabled = true;
       zinc.clusterCount = 4;
       zinc.clusterSize = 8;
@@ -128,17 +145,17 @@ public class Config {
       zinc.maxY = 70;
       zinc.rarity = 1;
       zinc.loadValue(c, CATEGORY_METAL_ORE);
-      
+
       /*
        * Meat Ores
        */
-      
+
       int meatClusterCount = 1;
       int meatClusterSize = 15;
       int meatMinY = 32;
       int meatMaxY = 96;
       int meatRarity = 18;
-      
+
       pig.enabled = true;
       pig.clusterCount = meatClusterCount;
       pig.clusterSize = meatClusterSize;
@@ -148,7 +165,7 @@ public class Config {
       pig.addDrop(ConfigItemDrop.getKey("minecraft:porkchop", 1, 0, 1.0f, 0.0f, 1.0f));
       pig.addDrop(ConfigItemDrop.getKey("minecraft:saddle", 1, 0, 0.025f, 0.01f, 0.0f));
       pig.loadValue(c, CATEGORY_MEAT_ORE);
-      
+
       fish.enabled = true;
       fish.clusterCount = meatClusterCount;
       fish.clusterSize = meatClusterSize;
@@ -160,7 +177,7 @@ public class Config {
       fish.addDrop(ConfigItemDrop.getKey("minecraft:fish", 1, 2, 0.1f, 0.0f, 0.5f));
       fish.addDrop(ConfigItemDrop.getKey("minecraft:fish", 1, 3, 0.1f, 0.0f, 0.5f));
       fish.loadValue(c, CATEGORY_MEAT_ORE);
-      
+
       cow.enabled = true;
       cow.clusterCount = meatClusterCount;
       cow.clusterSize = meatClusterSize;
@@ -170,7 +187,7 @@ public class Config {
       cow.addDrop(ConfigItemDrop.getKey("minecraft:beef", 1, 0, 1.0f, 0.0f, 1.0f));
       cow.addDrop(ConfigItemDrop.getKey("minecraft:leather", 1, 0, 0.75f, 0.03f, 1.0f));
       cow.loadValue(c, CATEGORY_MEAT_ORE);
-      
+
       chicken.enabled = true;
       chicken.clusterCount = meatClusterCount;
       chicken.clusterSize = meatClusterSize;
@@ -181,7 +198,7 @@ public class Config {
       chicken.addDrop(ConfigItemDrop.getKey("minecraft:feather", 2, 0, 0.36f, 0.04f, 1.0f));
       chicken.addDrop(ConfigItemDrop.getKey("minecraft:egg", 2, 0, 0.15f, 0.02f, 0.7f));
       chicken.loadValue(c, CATEGORY_MEAT_ORE);
-      
+
       rabbit.enabled = true;
       rabbit.clusterCount = meatClusterCount;
       rabbit.clusterSize = meatClusterSize;
@@ -192,7 +209,7 @@ public class Config {
       rabbit.addDrop(ConfigItemDrop.getKey("minecraft:rabbit_hide", 1, 0, 0.6f, 0.05f, 1.0f));
       rabbit.addDrop(ConfigItemDrop.getKey("minecraft:rabbit_foot", 1, 0, 0.07f, 0.01f, 0.5f));
       rabbit.loadValue(c, CATEGORY_MEAT_ORE);
-      
+
       sheep.enabled = true;
       sheep.clusterCount = meatClusterCount;
       sheep.clusterSize = meatClusterSize;
@@ -203,18 +220,27 @@ public class Config {
       sheep.addDrop(ConfigItemDrop.getKey("minecraft:wool", 1, 0, 0.5f, 0.05f, 0.7f));
       sheep.loadValue(c, CATEGORY_MEAT_ORE);
       
+      squid.enabled = true;
+      squid.clusterCount = meatClusterCount;
+      squid.clusterSize = meatClusterSize;
+      squid.minY = meatMinY;
+      squid.maxY = meatMaxY;
+      squid.rarity = meatRarity;
+      squid.addDrop(ConfigItemDrop.getKey("minecraft:dye", 1, 0, 1.0f, 0.0f, 1.0f));
+      squid.loadValue(c, CATEGORY_MEAT_ORE);
+
       /*
        * Mob Ores
        */
-      
+
       int mobClusterCount = 1;
       int mobClusterSize = 17;
       int mobMinY = 24;
       int mobMaxY = 86;
       int mobRarity = 26;
-      
+
       // Overworld
-      
+
       zombie.enabled = true;
       zombie.clusterCount = mobClusterCount;
       zombie.clusterSize = mobClusterSize;
@@ -227,7 +253,7 @@ public class Config {
       zombie.addDrop(ConfigItemDrop.getKey("minecraft:carrot", 1, 0, 0.01f, 0.005f, 0.0f));
       zombie.addDrop(ConfigItemDrop.getKey("minecraft:potato", 1, 0, 0.01f, 0.005f, 0.0f));
       zombie.loadValue(c, CATEGORY_MOB_ORE);
-      
+
       skeleton.enabled = true;
       skeleton.clusterCount = mobClusterCount;
       skeleton.clusterSize = mobClusterSize;
@@ -238,7 +264,7 @@ public class Config {
       skeleton.addDrop(ConfigItemDrop.getKey("minecraft:arrow", 1, 0, 0.75f, 0.0f, 0.7f));
       skeleton.addDrop(ConfigItemDrop.getKey("minecraft:skull", 1, 0, 0.03f, 0.015f, 0.0f));
       skeleton.loadValue(c, CATEGORY_MOB_ORE);
-      
+
       creeper.enabled = true;
       creeper.clusterCount = mobClusterCount;
       creeper.clusterSize = mobClusterSize;
@@ -248,7 +274,7 @@ public class Config {
       creeper.addDrop(ConfigItemDrop.getKey("minecraft:gunpowder", 1, 0, 1.0f, 0.0f, 1.0f));
       creeper.addDrop(ConfigItemDrop.getKey("minecraft:skull", 1, 4, 0.03f, 0.015f, 0.0f));
       creeper.loadValue(c, CATEGORY_MOB_ORE);
-      
+
       spider.enabled = true;
       spider.clusterCount = mobClusterCount;
       spider.clusterSize = mobClusterSize;
@@ -258,7 +284,7 @@ public class Config {
       spider.addDrop(ConfigItemDrop.getKey("minecraft:string", 1, 0, 1.0f, 0.0f, 1.0f));
       spider.addDrop(ConfigItemDrop.getKey("minecraft:spider_eye", 1, 0, 0.5f, 0.0f, 0.7f));
       spider.loadValue(c, CATEGORY_MOB_ORE);
-      
+
       enderman.enabled = true;
       enderman.clusterCount = mobClusterCount;
       enderman.clusterSize = mobClusterSize;
@@ -268,7 +294,7 @@ public class Config {
       enderman.addDrop(ConfigItemDrop.getKey("FunOres:Shard", 1, 0, 1.0f, 0.0f, 0.7f));
       enderman.addDrop(ConfigItemDrop.getKey("FunOres:Shard", 1, 0, 0.10f, 0.0f, 0.4f));
       enderman.loadValue(c, CATEGORY_MOB_ORE);
-      
+
       slime.enabled = true;
       slime.clusterCount = mobClusterCount;
       slime.clusterSize = mobClusterSize;
@@ -278,15 +304,13 @@ public class Config {
       slime.addDrop(ConfigItemDrop.getKey("minecraft:slime_ball", 1, 0, 1.0f, 0.0f, 1.5f));
       slime.addDrop(ConfigItemDrop.getKey("minecraft:slime_ball", 1, 0, 0.5f, 0.05f, 0.5f));
       slime.loadValue(c, CATEGORY_MOB_ORE);
-      
+
       witch.enabled = true;
       witch.clusterCount = mobClusterCount;
       witch.clusterSize = mobClusterSize;
       witch.minY = mobMinY;
       witch.maxY = mobMaxY;
       witch.rarity = mobRarity;
-      // Witch ore may occasionally drop nothing because of this, but I didn't want to make an
-      // exception for it.
       witch.addDrop(ConfigItemDrop.getKey("minecraft:glass_bottle", 2, 0, 1.0f, 0.0f, 1.0f));
       witch.addDrop(ConfigItemDrop.getKey("minecraft:glowstone_dust", 1, 0, 1.0f, 0.0f, 1.0f));
       witch.addDrop(ConfigItemDrop.getKey("minecraft:gunpowder", 1, 0, 1.0f, 0.0f, 1.0f));
@@ -296,15 +320,15 @@ public class Config {
       witch.addDrop(ConfigItemDrop.getKey("minecraft:sugar", 2, 0, 1.0f, 0.0f, 1.0f));
       witch.pick = 2;
       witch.loadValue(c, CATEGORY_MOB_ORE);
-      
+
       // Nether
-      
+
       mobClusterCount = 2;
       mobClusterSize = 17;
       mobMinY = 48;
       mobMaxY = 116;
       mobRarity = 30;
-      
+
       pigman.enabled = true;
       pigman.clusterCount = mobClusterCount;
       pigman.clusterSize = mobClusterSize;
@@ -315,7 +339,7 @@ public class Config {
       pigman.addDrop(ConfigItemDrop.getKey("minecraft:gold_nugget", 1, 0, 0.50f, 0.06f, 0.7f));
       pigman.addDrop(ConfigItemDrop.getKey("minecraft:gold_ingot", 1, 0, 0.025f, 0.01f, 0.0f));
       pigman.loadValue(c, CATEGORY_MOB_ORE);
-      
+
       ghast.enabled = true;
       ghast.clusterCount = mobClusterCount;
       ghast.clusterSize = mobClusterSize;
@@ -325,7 +349,7 @@ public class Config {
       ghast.addDrop(ConfigItemDrop.getKey("minecraft:gunpowder", 1, 0, 1.0f, 0.0f, 1.0f));
       ghast.addDrop(ConfigItemDrop.getKey("minecraft:ghast_tear", 1, 0, 0.44f, 0.04f, 0.7f));
       ghast.loadValue(c, CATEGORY_MOB_ORE);
-      
+
       magmaCube.enabled = true;
       magmaCube.clusterCount = mobClusterCount;
       magmaCube.clusterSize = mobClusterSize;
@@ -334,7 +358,7 @@ public class Config {
       magmaCube.rarity = mobRarity;
       magmaCube.addDrop(ConfigItemDrop.getKey("minecraft:magma_cream", 1, 0, 1.0f, 0.0f, 1.0f));
       magmaCube.loadValue(c, CATEGORY_MOB_ORE);
-      
+
       wither.enabled = true;
       wither.clusterCount = mobClusterCount;
       wither.clusterSize = mobClusterSize;
@@ -346,6 +370,16 @@ public class Config {
       wither.addDrop(ConfigItemDrop.getKey("minecraft:skull", 1, 1, 0.03f, 0.01f, 0.0f));
       wither.loadValue(c, CATEGORY_MOB_ORE);
       
+      blaze.enabled = true;
+      blaze.clusterCount = mobClusterCount;
+      blaze.clusterSize = mobClusterSize;
+      blaze.minY = mobMinY;
+      blaze.maxY = mobMaxY;
+      blaze.rarity = mobRarity;
+      blaze.addDrop(ConfigItemDrop.getKey("FunOres:Shard", 1, 1, 1.0f, 0.0f, 0.7f));
+      blaze.addDrop(ConfigItemDrop.getKey("FunOres:Shard", 1, 1, 0.10f, 0.0f, 0.4f));
+      blaze.loadValue(c, CATEGORY_MOB_ORE);
+
     } catch (Exception e) {
       LogHelper.severe("Oh noes!!! Couldn't load configuration file properly!");
       LogHelper.severe(e);
@@ -353,9 +387,9 @@ public class Config {
       c.save();
     }
   }
-  
+
   public static void save() {
-    
+
     c.save();
   }
 }

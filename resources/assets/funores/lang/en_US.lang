@@ -14,6 +14,7 @@ tile.funores:MeatOre2.name=Cow Ore
 tile.funores:MeatOre3.name=Chicken Ore
 tile.funores:MeatOre4.name=Rabbit Ore
 tile.funores:MeatOre5.name=Sheep Ore
+tile.funores:MeatOre6.name=Squid Ore
 
 tile.funores:MetalBlock0.name=Copper Block
 tile.funores:MetalBlock1.name=Tin Block
@@ -46,6 +47,7 @@ tile.funores:MobOre7.name=Zombie Pigman Ore
 tile.funores:MobOre8.name=Ghast Ore
 tile.funores:MobOre9.name=Magma Cube Ore
 tile.funores:MobOre10.name=Wither Ore
+tile.funores:MobOre11.name=Blaze Ore
 
 # Item localizations
 
@@ -77,6 +79,7 @@ item.funores:MetalNugget7.name=Zinc Nugget
 item.funores:MetalNugget16.name=Iron Nugget
 
 item.funores:Shard0.name=Ender Shard
+item.funores:Shard1.name=Blaze Shard
 
 # Tool localizations
 
@@ -98,3 +101,4 @@ item.funores:HoeSteel.name=Steel Hoe
 
 misc.funores:PressCtrl=<Press Ctrl>
 misc.funores:PressShift=<Press Shift>
+misc.funores:PossibleDrops=Possible Drops:

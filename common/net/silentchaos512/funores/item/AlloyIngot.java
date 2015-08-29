@@ -10,6 +10,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import net.silentchaos512.funores.FunOres;
+import net.silentchaos512.funores.configuration.Config;
 import net.silentchaos512.funores.core.util.RecipeHelper;
 import net.silentchaos512.funores.lib.EnumAlloy;
 import net.silentchaos512.funores.lib.EnumMetal;
@@ -54,9 +55,15 @@ public class AlloyIngot extends ItemSG {
     brassIngot.stackSize = 4;
     ItemStack steelIngot = EnumAlloy.STEEL.getIngot();
 
-    GameRegistry.addRecipe(new ShapelessOreRecipe(bronzeIngot, copper, copper, copper, tin));
-    GameRegistry.addRecipe(new ShapelessOreRecipe(brassIngot, copper, copper, copper, zinc));
-    GameRegistry.addRecipe(new ShapelessOreRecipe(steelIngot, iron, coal, coal, coal));
+    if (Config.enableBronzeRecipe) {
+      GameRegistry.addRecipe(new ShapelessOreRecipe(bronzeIngot, copper, copper, copper, tin));
+    }
+    if (Config.enableBrassRecipe) {
+      GameRegistry.addRecipe(new ShapelessOreRecipe(brassIngot, copper, copper, copper, zinc));
+    }
+    if (Config.enableSteelRecipe) {
+      GameRegistry.addRecipe(new ShapelessOreRecipe(steelIngot, iron, coal, coal, coal));
+    }
   }
 
   @Override

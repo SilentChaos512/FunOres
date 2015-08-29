@@ -20,7 +20,8 @@ public enum EnumMob implements IStringSerializable, IHasOre {
   PIGMAN(7, "Pigman"),
   GHAST(8, "Ghast"),
   MAGMA_CUBE(9, "MagmaCube"),
-  WITHER(10, "Wither");
+  WITHER(10, "Wither"),
+  BLAZE(11, "Blaze");
   
   private final int meta;
   private final String name;
@@ -62,6 +63,7 @@ public enum EnumMob implements IStringSerializable, IHasOre {
       case 8: return Config.ghast;
       case 9: return Config.magmaCube;
       case 10: return Config.wither;
+      case 11: return Config.blaze;
       default: return null;
     }
   }

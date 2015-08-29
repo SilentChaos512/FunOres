@@ -20,6 +20,7 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.OreDictionary;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.configuration.ConfigItemDrop;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGenBonus;
@@ -65,7 +66,9 @@ public class MobOre extends BlockSG {
   @Override
   public void addOreDict() {
 
-    // TODO
+    for (EnumMob mob : EnumMob.values()) {
+      OreDictionary.registerOre("ore" + mob.getName(), new ItemStack(this, 1, mob.getMeta()));
+    }
   }
 
   @Override
@@ -129,7 +132,8 @@ public class MobOre extends BlockSG {
     super.dropBlockAsItemWithChance(world, pos, state, chance, fortune);
 
     // Spawn Endermites?
-    if ((EnumMob) state.getValue(MOB) == EnumMob.ENDERMAN && FunOres.instance.random.nextInt(100) < 15) {
+    if ((EnumMob) state.getValue(MOB) == EnumMob.ENDERMAN
+        && FunOres.instance.random.nextInt(100) < 15) {
       if (!world.isRemote && world.getGameRules().getGameRuleBooleanValue("doTileDrops")) {
         EntityEndermite entity = new EntityEndermite(world);
         entity.setLocationAndAngles((double) pos.getX() + 0.5, (double) pos.getY(),
@@ -159,7 +163,7 @@ public class MobOre extends BlockSG {
     } else {
       dropsToTry = config.drops.toArray(new ConfigItemDrop[] {});
     }
-    
+
     for (ConfigItemDrop drop : dropsToTry) {
       // Make sure drop config isn't null.
       if (drop != null) {

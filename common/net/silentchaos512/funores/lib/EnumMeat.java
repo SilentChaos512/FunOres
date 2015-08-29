@@ -14,7 +14,8 @@ public enum EnumMeat implements IStringSerializable, IHasOre {
   COW(2, "Cow"),
   CHICKEN(3, "Chicken"),
   RABBIT(4, "Rabbit"),
-  SHEEP(5, "Sheep");
+  SHEEP(5, "Sheep"),
+  SQUID(6, "Squid");
   
   private final int meta;
   private final String name;
@@ -51,6 +52,7 @@ public enum EnumMeat implements IStringSerializable, IHasOre {
       case 3: return Config.chicken;
       case 4: return Config.rabbit;
       case 5: return Config.sheep;
+      case 6: return Config.squid;
       default: return null;
     }
   }

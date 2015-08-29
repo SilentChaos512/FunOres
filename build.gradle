@@ -17,9 +17,9 @@ buildscript {
 
 apply plugin: 'forge'
 
-version = "1.8-0.1.1-beta"
+version = "1.0.0"
 group= "net.silentchaos512.funores" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "FunOres"
+archivesBaseName = "FunOres-1.8"
 
 minecraft {
     version = "1.8-11.14.1.1334"
