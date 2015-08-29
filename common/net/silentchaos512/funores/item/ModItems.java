@@ -13,6 +13,7 @@ public class ModItems {
   
   public static MetalIngot metalIngot;
   public static MetalNugget metalNugget;
+  public static MetalDust metalDust;
   public static AlloyIngot alloyIngot;
   public static AlloyNugget alloyNugget;
   public static Shard shard;
@@ -21,6 +22,7 @@ public class ModItems {
     
     metalIngot = (MetalIngot) SRegistry.registerItem(MetalIngot.class, Names.METAL_INGOT);
     metalNugget = (MetalNugget) SRegistry.registerItem(MetalNugget.class, Names.METAL_NUGGET);
+    metalDust = (MetalDust) SRegistry.registerItem(MetalDust.class, Names.METAL_DUST);
     alloyIngot = (AlloyIngot) SRegistry.registerItem(AlloyIngot.class, Names.ALLOY_INGOT);
     alloyNugget = (AlloyNugget) SRegistry.registerItem(AlloyNugget.class, Names.ALLOY_NUGGET);
     shard = (Shard) SRegistry.registerItem(Shard.class, Names.SHARD);

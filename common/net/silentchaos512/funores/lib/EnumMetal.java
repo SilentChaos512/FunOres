@@ -71,4 +71,9 @@ public enum EnumMetal implements IStringSerializable, IHasOre {
     
     return new ItemStack(ModItems.metalNugget, 1, meta);
   }
+  
+  public ItemStack getDust() {
+    
+    return new ItemStack(ModItems.metalDust, 1, meta);
+  }
 }
