@@ -11,6 +11,8 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.lib.EnumMetal;
 import net.silentchaos512.funores.lib.Names;
@@ -74,5 +76,11 @@ public class MetalBlock extends BlockSG {
   protected BlockState createBlockState() {
     
     return new BlockState(this, new IProperty[] { METAL });
+  }
+  
+  @Override
+  public boolean isBeaconBase(IBlockAccess worldObj, BlockPos pos, BlockPos beacon) {
+    
+    return true;
   }
 }

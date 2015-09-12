@@ -50,6 +50,8 @@ public class ItemBlockOreDrops extends ItemBlockSG {
         EnumChatFormatting format = this.getRarityColor(drop);
         list.add(format + str);
       }
+    } else {
+      list.add(EnumChatFormatting.ITALIC + LocalizationHelper.getMiscText("PressShift"));
     }
   }
 

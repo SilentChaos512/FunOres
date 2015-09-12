@@ -2,6 +2,9 @@ package net.silentchaos512.funores;
 
 import java.util.Random;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.Mod;
@@ -30,14 +33,15 @@ public class FunOres {
   public static final String MOD_NAME = "Fun Ores";
   public static final String VERSION_NUMBER = "@VERSION@";
   public static final String RESOURCE_PREFIX = MOD_ID.toLowerCase() + ":";
+  
+  public Random random = new Random();
+  public static Logger logger = LogManager.getLogger(MOD_NAME);
 
   @Instance(MOD_ID)
   public static FunOres instance;
   
   @SidedProxy(clientSide = "net.silentchaos512.funores.core.proxy.ClientProxy", serverSide = "net.silentchaos512.funores.core.proxy.CommonProxy")
   public static CommonProxy proxy;
-  
-  public Random random = new Random();
   
   @EventHandler
   public void preInit(FMLPreInitializationEvent event) {

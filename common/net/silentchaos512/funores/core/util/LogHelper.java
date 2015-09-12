@@ -1,76 +1,28 @@
 package net.silentchaos512.funores.core.util;
 
-import java.util.Date;
-import java.util.logging.Logger;
-
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.BlockPos;
-import net.minecraftforge.fml.common.FMLLog;
 import net.silentchaos512.funores.FunOres;
 
 public class LogHelper {
 
-  private final static String CONFIG = "[CONFIG]";
-  private final static String DEBUG = "[DEBUG]";
-  private final static String FINE = "[FINE]";
-  private final static String FINER = "[FINER]";
-  private final static String FINEST = "[FINEST]";
-  private final static String INFO = "[INFO]";
-  private final static String SEVERE = "[SEVERE]";
-  private final static String WARNING = "[WARNING]";
-
-  private static Logger logger = Logger.getLogger(FunOres.MOD_ID);
-
-  public static void init() {
-
-    logger.setParent((Logger) FMLLog.getLogger());
-  }
-
-  public static void log(String logLevel, Object object) {
-
-    // logger.log(logLevel, object.toString());
-    System.out.println((new Date()).toString() + " [" + FunOres.MOD_ID + "] " + logLevel + " "
-        + object.toString());
-  }
-
   public static void severe(Object object) {
 
-    log(SEVERE, object.toString());
+    FunOres.logger.error(object);
   }
 
   public static void debug(Object object) {
 
-    log(DEBUG, object.toString());
+    FunOres.logger.debug(object);
+    System.out.println(object);
   }
 
   public static void warning(Object object) {
 
-    log(WARNING, object.toString());
+    FunOres.logger.warn(object);
   }
 
   public static void info(Object object) {
 
-    log(INFO, object.toString());
-  }
-
-  public static void config(Object object) {
-
-    log(CONFIG, object.toString());
-  }
-
-  public static void fine(Object object) {
-
-    log(FINE, object.toString());
-  }
-
-  public static void finer(Object object) {
-
-    log(FINER, object.toString());
-  }
-
-  public static void finest(Object object) {
-
-    log(FINEST, object.toString());
+    FunOres.logger.info(object);
   }
 
   /**
@@ -78,12 +30,12 @@ public class LogHelper {
    */
   public static void derp() {
 
-    log(DEBUG, "Derp!");
+    debug("Derp!");
   }
 
-  public static void derp(Object object) {
+  public static void derp(String message) {
 
-    log(DEBUG, "Derp! " + object);
+    debug("Derp! " + message);
   }
 
   public static void derpRand() {
@@ -92,33 +44,13 @@ public class LogHelper {
     for (int i = 0; i < FunOres.instance.random.nextInt(6); ++i) {
       s += " ";
     }
-    log(DEBUG, s + "Derp!");
+    debug(s + "Derp!");
   }
 
   public static void yay() {
 
-    log(DEBUG, "Yay!");
+    debug("Yay!");
   }
-
-  // Prints XYZ coordinates in a nice format.
-  public static String coord(int x, int y, int z) {
-
-    return "(" + x + ", " + y + ", " + z + ")";
-  }
-
-  public static String coord(BlockPos pos) {
-
-    return coord(pos.getX(), pos.getY(), pos.getZ());
-  }
-
-//  public static String coordFromNBT(NBTTagCompound tags) {
-//
-//    if (!NBTHelper.hasValidXYZD(tags)) {
-//      return "(invalid coords)";
-//    }
-//
-//    return coord(tags.getInteger("X"), tags.getInteger("Y"), tags.getInteger("Z"));
-//  }
 
   public static void list(Object... objects) {
 
@@ -129,6 +61,6 @@ public class LogHelper {
       }
       s += objects[i];
     }
-    log(DEBUG, s);
+    debug(s);
   }
 }

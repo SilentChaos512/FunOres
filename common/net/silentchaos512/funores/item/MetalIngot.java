@@ -73,4 +73,10 @@ public class MetalIngot extends ItemSG {
       list.add(new ItemStack(this, 1, i));
     }
   }
+  
+  @Override
+  public boolean isBeaconPayment(ItemStack stack) {
+    
+    return true;
+  }
 }

@@ -111,3 +111,4 @@ item.funores:HoeSteel.name=Steel Hoe
 misc.funores:PressCtrl=<Press Ctrl>
 misc.funores:PressShift=<Press Shift>
 misc.funores:PossibleDrops=Possible Drops:
+misc.funores:BeaconBase=Valid beacon base.
