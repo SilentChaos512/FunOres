@@ -24,6 +24,7 @@ tile.funores:MetalBlock4.name=Nickel Block
 tile.funores:MetalBlock5.name=Platinum Block
 tile.funores:MetalBlock6.name=Aluminium Block
 tile.funores:MetalBlock7.name=Zinc Block
+tile.funores:MetalBlock8.name=Titanium Block
 
 tile.funores:MetalFurnace.name=Metal Furnace
 
@@ -35,6 +36,7 @@ tile.funores:MetalOre4.name=Nickel Ore
 tile.funores:MetalOre5.name=Platinum Ore
 tile.funores:MetalOre6.name=Aluminium Ore
 tile.funores:MetalOre7.name=Zinc Ore
+tile.funores:MetalOre8.name=Titanium Ore
 
 tile.funores:MobOre0.name=Zombie Ore
 tile.funores:MobOre1.name=Skeleton Ore
@@ -67,6 +69,7 @@ item.funores:MetalDust4.name=Nickel Dust
 item.funores:MetalDust5.name=Platinum Dust
 item.funores:MetalDust6.name=Aluminium Dust
 item.funores:MetalDust7.name=Zinc Dust
+item.funores:MetalDust8.name=Titanium Dust
 
 item.funores:MetalIngot0.name=Copper Ingot
 item.funores:MetalIngot1.name=Tin Ingot
@@ -76,6 +79,7 @@ item.funores:MetalIngot4.name=Nickel Ingot
 item.funores:MetalIngot5.name=Platinum Ingot
 item.funores:MetalIngot6.name=Aluminium Ingot
 item.funores:MetalIngot7.name=Zinc Ingot
+item.funores:MetalIngot8.name=Titanium Ingot
 
 item.funores:MetalNugget0.name=Copper Nugget
 item.funores:MetalNugget1.name=Tin Nugget
@@ -85,6 +89,7 @@ item.funores:MetalNugget4.name=Nickel Nugget
 item.funores:MetalNugget5.name=Platinum Nugget
 item.funores:MetalNugget6.name=Aluminium Nugget
 item.funores:MetalNugget7.name=Zinc Nugget
+item.funores:MetalNugget8.name=Titanium Nugget
 item.funores:MetalNugget16.name=Iron Nugget
 
 item.funores:Shard0.name=Ender Shard
