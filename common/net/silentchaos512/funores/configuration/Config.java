@@ -7,6 +7,7 @@ import net.silentchaos512.funores.core.util.LogHelper;
 import net.silentchaos512.funores.lib.EnumMeat;
 import net.silentchaos512.funores.lib.EnumMetal;
 import net.silentchaos512.funores.lib.EnumMob;
+import net.silentchaos512.funores.lib.ExtraRecipes;
 
 public class Config {
 
@@ -61,13 +62,14 @@ public class Config {
 
     try {
       c.load();
+      ExtraRecipes.config = c;
 
       /*
        * Misc configs
        */
 
-      enableBronzeRecipe = c.getBoolean("BronzeRecipe.Enabled", CATEGORY_RECIPE,
-          enableBronzeRecipe, "Enable the recipe for bronze ingots.");
+      enableBronzeRecipe = c.getBoolean("BronzeRecipe.Enabled", CATEGORY_RECIPE, enableBronzeRecipe,
+          "Enable the recipe for bronze ingots.");
       enableBrassRecipe = c.getBoolean("BrassRecipe.Enabled", CATEGORY_RECIPE, enableBrassRecipe,
           "Enable the recipe for brass ingots.");
       enableSteelRecipe = c.getBoolean("SteelRecipe.Enabled", CATEGORY_RECIPE, enableSteelRecipe,
@@ -146,7 +148,7 @@ public class Config {
       zinc.maxY = 70;
       zinc.rarity = 1;
       zinc.loadValue(c, CATEGORY_METAL_ORE);
-      
+
       titanium.enabled = true;
       titanium.clusterCount = 3;
       titanium.clusterSize = 6;
@@ -228,7 +230,7 @@ public class Config {
       sheep.addDrop(ConfigItemDrop.getKey("minecraft:mutton", 1, 0, 1.0f, 0.0f, 1.0f));
       sheep.addDrop(ConfigItemDrop.getKey("minecraft:wool", 1, 0, 0.5f, 0.05f, 0.7f));
       sheep.loadValue(c, CATEGORY_MEAT_ORE);
-      
+
       squid.enabled = true;
       squid.clusterCount = meatClusterCount;
       squid.clusterSize = meatClusterSize;
@@ -378,7 +380,7 @@ public class Config {
       wither.addDrop(ConfigItemDrop.getKey("minecraft:coal", 1, 0, 0.6f, 0.05f, 1.0f));
       wither.addDrop(ConfigItemDrop.getKey("minecraft:skull", 1, 1, 0.03f, 0.01f, 0.0f));
       wither.loadValue(c, CATEGORY_MOB_ORE);
-      
+
       blaze.enabled = true;
       blaze.clusterCount = mobClusterCount;
       blaze.clusterSize = mobClusterSize;
@@ -392,13 +394,13 @@ public class Config {
     } catch (Exception e) {
       LogHelper.severe("Oh noes!!! Couldn't load configuration file properly!");
       LogHelper.severe(e);
-    } finally {
-      c.save();
     }
   }
 
   public static void save() {
 
-    c.save();
+    if (c.hasChanged()) {
+      c.save();
+    }
   }
 }

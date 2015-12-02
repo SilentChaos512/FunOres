@@ -24,6 +24,7 @@ import net.silentchaos512.funores.core.registry.SRegistry;
 import net.silentchaos512.funores.core.util.LogHelper;
 import net.silentchaos512.funores.gui.GuiHandlerFunOres;
 import net.silentchaos512.funores.item.ModItems;
+import net.silentchaos512.funores.lib.ExtraRecipes;
 import net.silentchaos512.funores.world.FunOresGenerator;
 
 @Mod(modid = FunOres.MOD_ID, name = FunOres.MOD_NAME, version = FunOres.VERSION_NUMBER, useMetadata = true)
@@ -51,8 +52,6 @@ public class FunOres {
     ModBlocks.init();
     ModItems.init();
     
-    Config.save();
-    
     proxy.preInit();
     
     NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandlerFunOres());
@@ -62,6 +61,9 @@ public class FunOres {
   public void load(FMLInitializationEvent event) {
     
     SRegistry.addRecipesAndOreDictEntries();
+    ExtraRecipes.init();
+    
+    Config.save();
     
     proxy.init();
     
