@@ -17,19 +17,26 @@ public enum EnumMob implements IStringSerializable, IHasOre {
   ENDERMAN(4, "Enderman"),
   SLIME(5, "Slime"),
   WITCH(6, "Witch"),
-  PIGMAN(7, "Pigman"),
-  GHAST(8, "Ghast"),
-  MAGMA_CUBE(9, "MagmaCube"),
-  WITHER(10, "Wither"),
-  BLAZE(11, "Blaze");
+  PIGMAN(7, "Pigman", -1),
+  GHAST(8, "Ghast", -1),
+  MAGMA_CUBE(9, "MagmaCube", -1),
+  WITHER(10, "Wither", -1),
+  BLAZE(11, "Blaze", -1);
   
-  private final int meta;
-  private final String name;
+  public final int meta;
+  public final String name;
+  public final int dimension;
   
   private EnumMob(int meta, String name) {
     
+    this(meta, name, 0);
+  }
+  
+  private EnumMob(int meta, String name, int dimension) {
+    
     this.meta = meta;
     this.name = name;
+    this.dimension = dimension;
   }
   
   public int getMeta() {

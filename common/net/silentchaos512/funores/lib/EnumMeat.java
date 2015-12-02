@@ -17,13 +17,20 @@ public enum EnumMeat implements IStringSerializable, IHasOre {
   SHEEP(5, "Sheep"),
   SQUID(6, "Squid");
   
-  private final int meta;
-  private final String name;
+  public final int meta;
+  public final String name;
+  public final int dimension;
   
   private EnumMeat(int meta, String name) {
     
+    this(meta, name, 0);
+  }
+  
+  private EnumMeat(int meta, String name, int dimension) {
+    
     this.meta = meta;
     this.name = name;
+    this.dimension = dimension;
   }
   
   public int getMeta() {

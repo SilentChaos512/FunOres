@@ -2,10 +2,11 @@ package net.silentchaos512.funores.world;
 
 import java.util.Random;
 
+import com.google.common.base.Predicate;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.block.state.pattern.BlockHelper;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -14,9 +15,10 @@ import net.minecraftforge.fml.common.IWorldGenerator;
 import net.silentchaos512.funores.configuration.Config;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGen;
 import net.silentchaos512.funores.core.util.LogHelper;
+import net.silentchaos512.funores.lib.EnumMeat;
+import net.silentchaos512.funores.lib.EnumMetal;
+import net.silentchaos512.funores.lib.EnumMob;
 import net.silentchaos512.funores.lib.IHasOre;
-
-import com.google.common.base.Predicate;
 
 public class FunOresGenerator implements IWorldGenerator {
 
@@ -45,39 +47,44 @@ public class FunOresGenerator implements IWorldGenerator {
 
   private void generateSurface(World world, Random random, int posX, int posZ) {
 
-    generateOre(Config.copper, world, random, posX, posZ);
-    generateOre(Config.tin, world, random, posX, posZ);
-    generateOre(Config.silver, world, random, posX, posZ);
-    generateOre(Config.lead, world, random, posX, posZ);
-    generateOre(Config.nickel, world, random, posX, posZ);
-    generateOre(Config.platinum, world, random, posX, posZ);
-    generateOre(Config.aluminium, world, random, posX, posZ);
-    generateOre(Config.zinc, world, random, posX, posZ);
-
-    generateOre(Config.pig, world, random, posX, posZ);
-    generateOre(Config.fish, world, random, posX, posZ);
-    generateOre(Config.cow, world, random, posX, posZ);
-    generateOre(Config.chicken, world, random, posX, posZ);
-    generateOre(Config.rabbit, world, random, posX, posZ);
-    generateOre(Config.sheep, world, random, posX, posZ);
-
-    generateOre(Config.zombie, world, random, posX, posZ);
-    generateOre(Config.skeleton, world, random, posX, posZ);
-    generateOre(Config.creeper, world, random, posX, posZ);
-    generateOre(Config.spider, world, random, posX, posZ);
-    generateOre(Config.enderman, world, random, posX, posZ);
-    generateOre(Config.slime, world, random, posX, posZ);
-    generateOre(Config.witch, world, random, posX, posZ);
+    final int dim = 0;
+    for (EnumMetal metal : EnumMetal.values()) {
+      if (metal.dimension == dim) {
+        generateOre(metal.getConfig(), world, random, posX, posZ);
+      }
+    }
+    for (EnumMeat meat : EnumMeat.values()) {
+      if (meat.dimension == dim) {
+        generateOre(meat.getConfig(), world, random, posX, posZ);
+      }
+    }
+    for (EnumMob mob : EnumMob.values()) {
+      if (mob.dimension == dim) {
+        generateOre(mob.getConfig(), world, random, posX, posZ);
+      }
+    }
   }
 
   private void generateNether(World world, Random random, int posX, int posZ) {
 
     Predicate predicate = BlockHelper.forBlock(Blocks.netherrack);
 
-    generateOre(Config.pigman, world, random, posX, posZ, predicate);
-    generateOre(Config.ghast, world, random, posX, posZ, predicate);
-    generateOre(Config.magmaCube, world, random, posX, posZ, predicate);
-    generateOre(Config.wither, world, random, posX, posZ, predicate);
+    final int dim = -1;
+    for (EnumMetal metal : EnumMetal.values()) {
+      if (metal.dimension == dim) {
+        generateOre(metal.getConfig(), world, random, posX, posZ, predicate);
+      }
+    }
+    for (EnumMeat meat : EnumMeat.values()) {
+      if (meat.dimension == dim) {
+        generateOre(meat.getConfig(), world, random, posX, posZ, predicate);
+      }
+    }
+    for (EnumMob mob : EnumMob.values()) {
+      if (mob.dimension == dim) {
+        generateOre(mob.getConfig(), world, random, posX, posZ, predicate);
+      }
+    }
   }
 
   private void generateEnd(World world, Random random, int posX, int posZ) {

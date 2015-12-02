@@ -19,6 +19,7 @@ public class Config {
   public static ConfigOptionOreGen platinum = new ConfigOptionOreGen(EnumMetal.PLATINUM);
   public static ConfigOptionOreGen aluminium = new ConfigOptionOreGen(EnumMetal.ALUMINIUM);
   public static ConfigOptionOreGen zinc = new ConfigOptionOreGen(EnumMetal.ZINC);
+  public static ConfigOptionOreGen titanium = new ConfigOptionOreGen(EnumMetal.TITANIUM);
 
   // Meat ores
   public static ConfigOptionOreGenBonus pig = new ConfigOptionOreGenBonus(EnumMeat.PIG);
@@ -145,6 +146,14 @@ public class Config {
       zinc.maxY = 70;
       zinc.rarity = 1;
       zinc.loadValue(c, CATEGORY_METAL_ORE);
+      
+      titanium.enabled = true;
+      titanium.clusterCount = 3;
+      titanium.clusterSize = 6;
+      titanium.minY = 5;
+      titanium.maxY = 20;
+      titanium.rarity = 10;
+      titanium.loadValue(c, CATEGORY_METAL_ORE);
 
       /*
        * Meat Ores
