@@ -8,7 +8,7 @@ import net.silentchaos512.funores.lib.Names;
 
 public class Shard extends ItemSG {
   
-  public static final String[] NAMES = { "Ender", "Blaze" };
+  public static final String[] NAMES = { "Ender", "Blaze", "Ghast" };
 
   public Shard() {
 
@@ -30,6 +30,10 @@ public class Shard extends ItemSG {
     ItemStack blazeShard = new ItemStack(this, 1, 1);
     ItemStack blazeRod = new ItemStack(Items.blaze_rod);
     GameRegistry.addShapedRecipe(blazeRod, "ss", "ss", 's', blazeShard);
+    
+    ItemStack ghastShard = new ItemStack(this, 1, 2);
+    ItemStack ghastTear = new ItemStack(Items.ghast_tear);
+    GameRegistry.addShapedRecipe(ghastTear, "ss", "ss", 's', ghastShard);
   }
   
   @Override
