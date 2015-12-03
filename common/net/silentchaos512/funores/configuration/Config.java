@@ -357,8 +357,9 @@ public class Config {
       ghast.minY = mobMinY;
       ghast.maxY = mobMaxY;
       ghast.rarity = mobRarity;
+      ghast.addDrop(ConfigItemDrop.getKey("FunOres:Shard", 1, 2, 1.0f, 0.00f, 0.7f));
+      ghast.addDrop(ConfigItemDrop.getKey("FunOres:Shard", 1, 2, 0.25f, 0.0f, 0.4f));
       ghast.addDrop(ConfigItemDrop.getKey("minecraft:gunpowder", 1, 0, 1.0f, 0.0f, 1.0f));
-      ghast.addDrop(ConfigItemDrop.getKey("minecraft:ghast_tear", 1, 0, 0.44f, 0.04f, 0.7f));
       ghast.loadValue(c, CATEGORY_MOB_ORE);
 
       magmaCube.enabled = true;
