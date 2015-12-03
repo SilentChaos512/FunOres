@@ -46,24 +46,6 @@ public class MobOre extends BlockSG {
   }
 
   @Override
-  public void addRecipes() {
-
-    for (EnumMob mob : EnumMob.values()) {
-      if (mob == EnumMob.WITCH) {
-        addSmelting(mob.getMeta(), Items.glass_bottle);
-      } else {
-        IBlockState state = this.getDefaultState().withProperty(MOB, mob);
-        addSmelting(mob.getMeta(), getItemDropped(state, RANDOM, 0));
-      }
-    }
-  }
-
-  private void addSmelting(int meta, Item result) {
-
-    GameRegistry.addSmelting(new ItemStack(this, 1, meta), new ItemStack(result, 2), 0.2f);
-  }
-
-  @Override
   public void addOreDict() {
 
     for (EnumMob mob : EnumMob.values()) {

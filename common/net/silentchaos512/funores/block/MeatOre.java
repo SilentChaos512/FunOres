@@ -44,22 +44,6 @@ public class MeatOre extends BlockSG {
   }
 
   @Override
-  public void addRecipes() {
-
-    addSmelting(EnumMeat.PIG.getMeta(), Items.cooked_porkchop);
-    addSmelting(EnumMeat.FISH.getMeta(), Items.cooked_fish);
-    addSmelting(EnumMeat.COW.getMeta(), Items.cooked_beef);
-    addSmelting(EnumMeat.CHICKEN.getMeta(), Items.cooked_chicken);
-    addSmelting(EnumMeat.RABBIT.getMeta(), Items.cooked_rabbit);
-    addSmelting(EnumMeat.SHEEP.getMeta(), Items.cooked_mutton);
-  }
-
-  private void addSmelting(int meta, Item result) {
-
-    GameRegistry.addSmelting(new ItemStack(this, 1, meta), new ItemStack(result, 2), 0.2f);
-  }
-
-  @Override
   public void addOreDict() {
 
     for (EnumMeat meat : EnumMeat.values()) {
