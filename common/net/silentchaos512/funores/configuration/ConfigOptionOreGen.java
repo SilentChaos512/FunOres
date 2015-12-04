@@ -61,11 +61,13 @@ public class ConfigOptionOreGen extends ConfigOption {
     }
 
     enabled = c.get(category, "Enabled", enabled).getBoolean();
-    clusterCount = c.get(category, "ClusterCount", clusterCount).getInt();
-    clusterSize = c.get(category, "ClusterSize", clusterSize).getInt();
-    minY = c.get(category, "MinY", minY).getInt();
-    maxY = c.get(category, "MaxY", maxY).getInt();
-    rarity = c.get(category, "Rarity", rarity).getInt();
+    if (enabled) {
+      clusterCount = c.get(category, "ClusterCount", clusterCount).getInt();
+      clusterSize = c.get(category, "ClusterSize", clusterSize).getInt();
+      minY = c.get(category, "MinY", minY).getInt();
+      maxY = c.get(category, "MaxY", maxY).getInt();
+      rarity = c.get(category, "Rarity", rarity).getInt();
+    }
 
     return this.validate();
   }

@@ -16,7 +16,7 @@ public class ConfigOptionOreGenBonus extends ConfigOptionOreGen {
       + "itemName, count, meta, baseChance, fortuneChanceBonus, fortuneCountBonus.";
   public static final String COMMENT_PICK = "If greater than 0, try this many drops from the "
       + "list when mining the ore. If 0, try them all.";
-  
+
   public static final int PICK_MIN = 0;
   public static final int PICK_MAX = 9001;
 
@@ -73,7 +73,7 @@ public class ConfigOptionOreGenBonus extends ConfigOptionOreGen {
 
   @Override
   public ConfigOption loadValue(Configuration c, String category, String comment) {
-    
+
     if (isExample) {
       return loadExample(c);
     }
@@ -82,18 +82,20 @@ public class ConfigOptionOreGenBonus extends ConfigOptionOreGen {
 
     // Did I forget to add default drops?
     if (dropKeys.isEmpty()) {
-      LogHelper.severe("The ore " + oreName
-          + " has no drops assigned! You will get poisonous potatoes!");
+      LogHelper.warning(
+          "The ore " + oreName + " has no drops assigned! You will get poisonous potatoes!");
       dropKeys.add("minecraft:poisonous_potato, 1, 0, 1.0, 0.0, 0.0");
     }
 
-    String[] keys = c.get(category, "Drops", dropKeys.toArray(new String[] {})).getStringList();
-    dropKeys.clear();
-    for (String key : keys) {
-      dropKeys.add(key);
-    }
+    if (enabled) {
+      String[] keys = c.get(category, "Drops", dropKeys.toArray(new String[] {})).getStringList();
+      dropKeys.clear();
+      for (String key : keys) {
+        dropKeys.add(key);
+      }
 
-    pick = c.get(category, "Pick", pick).getInt();
+      pick = c.get(category, "Pick", pick).getInt();
+    }
 
     LOADED_CONFIGS.add(this);
     return this.validate();
@@ -112,12 +114,12 @@ public class ConfigOptionOreGenBonus extends ConfigOptionOreGen {
 
     return this;
   }
-  
+
   @Override
   public ConfigOption validate() {
-    
+
     pick = MathHelper.clamp_int(pick, PICK_MIN, PICK_MAX);
-    
+
     return super.validate();
   }
 
