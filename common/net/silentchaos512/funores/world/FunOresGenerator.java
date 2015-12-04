@@ -12,12 +12,14 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraftforge.fml.common.IWorldGenerator;
-import net.silentchaos512.funores.configuration.Config;
+import net.silentchaos512.funores.configuration.ConfigOption;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGen;
+import net.silentchaos512.funores.configuration.ConfigOptionOreGenReplace;
 import net.silentchaos512.funores.core.util.LogHelper;
 import net.silentchaos512.funores.lib.EnumMeat;
 import net.silentchaos512.funores.lib.EnumMetal;
 import net.silentchaos512.funores.lib.EnumMob;
+import net.silentchaos512.funores.lib.EnumVanillaOre;
 import net.silentchaos512.funores.lib.IHasOre;
 
 public class FunOresGenerator implements IWorldGenerator {
@@ -48,6 +50,11 @@ public class FunOresGenerator implements IWorldGenerator {
   private void generateSurface(World world, Random random, int posX, int posZ) {
 
     final int dim = 0;
+    for (EnumVanillaOre vanilla : EnumVanillaOre.values()) {
+      if (vanilla.dimension == dim) {
+        generateOre(vanilla.getConfig(), world, random, posX, posZ);
+      }
+    }
     for (EnumMetal metal : EnumMetal.values()) {
       if (metal.dimension == dim) {
         generateOre(metal.getConfig(), world, random, posX, posZ);
@@ -70,6 +77,11 @@ public class FunOresGenerator implements IWorldGenerator {
     Predicate predicate = BlockHelper.forBlock(Blocks.netherrack);
 
     final int dim = -1;
+    for (EnumVanillaOre vanilla : EnumVanillaOre.values()) {
+      if (vanilla.dimension == dim) {
+        generateOre(vanilla.getConfig(), world, random, posX, posZ);
+      }
+    }
     for (EnumMetal metal : EnumMetal.values()) {
       if (metal.dimension == dim) {
         generateOre(metal.getConfig(), world, random, posX, posZ, predicate);
@@ -108,6 +120,13 @@ public class FunOresGenerator implements IWorldGenerator {
       LogHelper.debug(ore.oreName + " is not an ore?");
       return;
     }
+    
+    if (ore instanceof ConfigOptionOreGenReplace) {
+      ConfigOptionOreGenReplace oreGenReplace = (ConfigOptionOreGenReplace) ore;
+      if (oreGenReplace.replaceExisting) {
+        removeExistingOres(oreGenReplace, world, posX, posZ);
+      }
+    }
 
     for (int i = 0; i < ore.clusterCount; ++i) {
       if (random.nextInt(ore.rarity) == 0) {
@@ -122,6 +141,31 @@ public class FunOresGenerator implements IWorldGenerator {
           new WorldGenMinable(state, ore.clusterSize).generate(world, random, pos);
         } else {
           new WorldGenMinable(state, ore.clusterSize, predicate).generate(world, random, pos);
+        }
+      }
+    }
+  }
+  
+  private void removeExistingOres(ConfigOptionOreGenReplace ore, World world, int posX, int posZ) {
+
+    IBlockState state = ((IHasOre) ore.ore).getOre();
+    IBlockState stone = Blocks.stone.getDefaultState();
+    BlockPos pos;
+    
+    int maxHeight = 256;
+    if (ore.ore instanceof EnumVanillaOre) {
+      EnumVanillaOre vanilla = (EnumVanillaOre) ore.ore;
+      maxHeight = vanilla.dimension == -1 ? 128 : maxHeight;
+    }
+
+    for (int y = 0; y < maxHeight; ++y) {
+      for (int z = 0; z < 16; ++z) {
+        for (int x = 0; x < 16; ++x) {
+          pos = new BlockPos(posX + x, y, posZ + z);
+          if (world.getBlockState(pos) == state) {
+            world.setBlockState(pos, stone);
+//            LogHelper.debug(pos + ", " + state);
+          }
         }
       }
     }

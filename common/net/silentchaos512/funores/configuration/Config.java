@@ -7,6 +7,7 @@ import net.silentchaos512.funores.core.util.LogHelper;
 import net.silentchaos512.funores.lib.EnumMeat;
 import net.silentchaos512.funores.lib.EnumMetal;
 import net.silentchaos512.funores.lib.EnumMob;
+import net.silentchaos512.funores.lib.EnumVanillaOre;
 import net.silentchaos512.funores.lib.ExtraRecipes;
 
 public class Config {
@@ -45,6 +46,21 @@ public class Config {
   public static ConfigOptionOreGenBonus wither = new ConfigOptionOreGenBonus(EnumMob.WITHER);
   public static ConfigOptionOreGenBonus blaze = new ConfigOptionOreGenBonus(EnumMob.BLAZE);
 
+  // Vanilla ores
+  public static ConfigOptionOreGenReplace iron = new ConfigOptionOreGenReplace(EnumVanillaOre.IRON);
+  public static ConfigOptionOreGenReplace gold = new ConfigOptionOreGenReplace(EnumVanillaOre.GOLD);
+  public static ConfigOptionOreGenReplace diamond = new ConfigOptionOreGenReplace(
+      EnumVanillaOre.DIAMOND);
+  public static ConfigOptionOreGenReplace emerald = new ConfigOptionOreGenReplace(
+      EnumVanillaOre.EMERALD);
+  public static ConfigOptionOreGenReplace coal = new ConfigOptionOreGenReplace(EnumVanillaOre.COAL);
+  public static ConfigOptionOreGenReplace redstone = new ConfigOptionOreGenReplace(
+      EnumVanillaOre.REDSTONE);
+  public static ConfigOptionOreGenReplace lapis = new ConfigOptionOreGenReplace(
+      EnumVanillaOre.LAPIS);
+  public static ConfigOptionOreGenReplace quartz = new ConfigOptionOreGenReplace(
+      EnumVanillaOre.QUARTZ);
+
   public static boolean enableBronzeRecipe = true;
   public static boolean enableBrassRecipe = true;
   public static boolean enableSteelRecipe = true;
@@ -54,6 +70,7 @@ public class Config {
   public static final String CATEGORY_METAL_ORE = "MetalOre";
   public static final String CATEGORY_MEAT_ORE = "MeatOre";
   public static final String CATEGORY_MOB_ORE = "MobOre";
+  public static final String CATEGORY_VANILLA_ORE = "vanilla_ore";
   public static final String CATEGORY_RECIPE = "Recipe";
 
   public static void init(File file) {
@@ -391,6 +408,51 @@ public class Config {
       blaze.addDrop(ConfigItemDrop.getKey("FunOres:Shard", 1, 1, 1.0f, 0.0f, 0.7f));
       blaze.addDrop(ConfigItemDrop.getKey("FunOres:Shard", 1, 1, 0.10f, 0.0f, 0.4f));
       blaze.loadValue(c, CATEGORY_MOB_ORE);
+
+      // Vanilla Ores
+      // All are disabled by default. Default settings are set so that bonus ores will spawn if
+      // enabled, not replacements.
+
+      iron.enabled = false;
+      iron.clusterCount = 4;
+      iron.maxY = 64;
+      iron.loadValue(c, CATEGORY_VANILLA_ORE);
+
+      gold.enabled = false;
+      gold.clusterCount = 4;
+      gold.maxY = 32;
+      gold.loadValue(c, CATEGORY_VANILLA_ORE);
+
+      diamond.enabled = false;
+      diamond.clusterCount = 1;
+      diamond.maxY = 16;
+      diamond.loadValue(c, CATEGORY_VANILLA_ORE);
+
+      emerald.enabled = false;
+      emerald.clusterCount = 2;
+      emerald.clusterSize = 1;
+      emerald.minY = 8;
+      emerald.maxY = 32;
+      emerald.rarity = 24;
+      emerald.loadValue(c, CATEGORY_VANILLA_ORE);
+
+      coal.enabled = false;
+      coal.loadValue(c, CATEGORY_VANILLA_ORE);
+
+      redstone.enabled = false;
+      redstone.clusterCount = 2;
+      redstone.maxY = 16;
+      redstone.loadValue(c, CATEGORY_VANILLA_ORE);
+
+      lapis.enabled = false;
+      lapis.clusterCount = 0;
+      lapis.maxY = 16;
+      lapis.loadValue(c, CATEGORY_VANILLA_ORE);
+
+      quartz.enabled = false;
+      quartz.clusterCount = 0;
+      quartz.clusterSize = 13;
+      quartz.loadValue(c, CATEGORY_VANILLA_ORE);
 
     } catch (Exception e) {
       LogHelper.severe("Oh noes!!! Couldn't load configuration file properly!");
