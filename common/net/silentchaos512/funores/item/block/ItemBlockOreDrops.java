@@ -2,6 +2,8 @@ package net.silentchaos512.funores.item.block;
 
 import java.util.List;
 
+import org.lwjgl.input.Keyboard;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
@@ -14,8 +16,6 @@ import net.silentchaos512.funores.configuration.ConfigOptionOreGenBonus;
 import net.silentchaos512.funores.core.util.LocalizationHelper;
 import net.silentchaos512.funores.lib.EnumMeat;
 import net.silentchaos512.funores.lib.EnumMob;
-
-import org.lwjgl.input.Keyboard;
 
 public class ItemBlockOreDrops extends ItemBlockSG {
 
@@ -42,13 +42,17 @@ public class ItemBlockOreDrops extends ItemBlockSG {
         return;
       }
 
-      list.add(EnumChatFormatting.DARK_BLUE + LocalizationHelper.getMiscText("PossibleDrops"));
+      if (config.enabled) {
+        list.add(EnumChatFormatting.DARK_BLUE + LocalizationHelper.getMiscText("PossibleDrops"));
 
-      for (ConfigItemDrop drop : config.drops) {
-        String str = drop.stack.getUnlocalizedName() + ".name";
-        str = StatCollector.translateToLocal(str);
-        EnumChatFormatting format = this.getRarityColor(drop);
-        list.add(format + str);
+        for (ConfigItemDrop drop : config.drops) {
+          String str = drop.stack.getUnlocalizedName() + ".name";
+          str = StatCollector.translateToLocal(str);
+          EnumChatFormatting format = this.getRarityColor(drop);
+          list.add(format + str);
+        }
+      } else {
+        list.add(EnumChatFormatting.DARK_BLUE + LocalizationHelper.getMiscText("Disabled"));
       }
     } else {
       list.add(EnumChatFormatting.ITALIC + LocalizationHelper.getMiscText("PressShift"));
