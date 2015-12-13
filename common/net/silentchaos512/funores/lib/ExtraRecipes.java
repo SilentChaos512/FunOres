@@ -1,6 +1,7 @@
 package net.silentchaos512.funores.lib;
 
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -34,6 +35,11 @@ public class ExtraRecipes {
         Blocks.chest);
     add("Hopper.Aluminum", comment, result, "a a", "aca", " a ", 'a', "ingotAluminum", 'c',
         Blocks.chest);
+    // Shears
+    comment = "Shears recipe using an ingot other than iron.";
+    result = new ItemStack(Items.shears);
+    add("Shears.Aluminium", comment, result, " a", "a ", 'a', "ingotAluminium");
+    add("Shears.Aluminum", comment, result, " a", "a ", 'a', "ingotAluminum");
   }
 
   public static void add(String configName, String comment, ItemStack result, Object... params) {
