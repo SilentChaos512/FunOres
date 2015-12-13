@@ -437,6 +437,8 @@ public class Config {
       emerald.loadValue(c, CATEGORY_VANILLA_ORE);
 
       coal.enabled = false;
+      coal.clusterCount = 0;
+      coal.clusterSize = 16;
       coal.loadValue(c, CATEGORY_VANILLA_ORE);
 
       redstone.enabled = false;
