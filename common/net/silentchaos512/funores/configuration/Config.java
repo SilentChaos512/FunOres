@@ -73,6 +73,13 @@ public class Config {
   public static final String CATEGORY_VANILLA_ORE = "vanilla_ore";
   public static final String CATEGORY_RECIPE = "Recipe";
 
+  public static final String COMMENT_EXAMPLE = "An example ore with comments on each individual setting.";
+  public static final String COMMENT_METAL_ORE = "The metal ores like copper and titanium.";
+  public static final String COMMENT_MEAT_ORE = "The meat (passive mob) ores.";
+  public static final String COMMENT_MOB_ORE = "The mob (hostile mob) ores.";
+  public static final String COMMENT_VANILLA_ORE = "Fun Ores can optionally add to or replace vanilla ores. By default, these are all disabled. Defaults if\n"
+      + "enabled are set to add to vanilla generation, rather than replace it.";
+
   public static void init(File file) {
 
     c = new Configuration(file);
@@ -96,11 +103,15 @@ public class Config {
        * Example Ore
        */
 
+      c.setCategoryComment(ConfigOptionOreGen.CATEGORY_EXAMPLE, COMMENT_EXAMPLE);
+
       (new ConfigOptionOreGenBonus(true)).loadValue(c, "");
 
       /*
        * Metal Ores
        */
+
+      c.setCategoryComment(CATEGORY_METAL_ORE, COMMENT_METAL_ORE);
 
       copper.enabled = true;
       copper.clusterCount = 10;
@@ -177,6 +188,8 @@ public class Config {
       /*
        * Meat Ores
        */
+
+      c.setCategoryComment(CATEGORY_MEAT_ORE, COMMENT_MEAT_ORE);
 
       int meatClusterCount = 1;
       int meatClusterSize = 15;
@@ -260,6 +273,8 @@ public class Config {
       /*
        * Mob Ores
        */
+
+      c.setCategoryComment(CATEGORY_MOB_ORE, COMMENT_MOB_ORE);
 
       int mobClusterCount = 1;
       int mobClusterSize = 17;
@@ -413,9 +428,7 @@ public class Config {
       // All are disabled by default. Default settings are set so that bonus ores will spawn if
       // enabled, not replacements.
 
-      c.setCategoryComment(CATEGORY_VANILLA_ORE,
-          "Fun Ores can optionally add to or replace vanilla ores. By default, these are all disabled. "
-              + "Defaults if enabled are set to add to vanilla generation, rather than replace it.");
+      c.setCategoryComment(CATEGORY_VANILLA_ORE, COMMENT_VANILLA_ORE);
 
       iron.enabled = false;
       iron.clusterCount = 4;
