@@ -28,7 +28,7 @@ public class MetalDust extends ItemSG {
     for (EnumMetal metal : EnumMetal.values()) {
       ItemStack dust = metal.getDust();
       ItemStack ingot = metal.getIngot();
-      GameRegistry.addSmelting(dust, ingot, 0.0f);
+      GameRegistry.addSmelting(dust, ingot, 0.6f);
     }
   }
 
