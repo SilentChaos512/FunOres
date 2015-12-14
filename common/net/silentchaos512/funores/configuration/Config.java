@@ -413,6 +413,10 @@ public class Config {
       // All are disabled by default. Default settings are set so that bonus ores will spawn if
       // enabled, not replacements.
 
+      c.setCategoryComment(CATEGORY_VANILLA_ORE,
+          "Fun Ores can optionally add to or replace vanilla ores. By default, these are all disabled. "
+              + "Defaults if enabled are set to add to vanilla generation, rather than replace it.");
+
       iron.enabled = false;
       iron.clusterCount = 4;
       iron.maxY = 64;
