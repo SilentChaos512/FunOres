@@ -116,7 +116,7 @@ public class MobOre extends BlockSG {
     // Spawn Endermites?
     if ((EnumMob) state.getValue(MOB) == EnumMob.ENDERMAN
         && FunOres.instance.random.nextInt(100) < 15) {
-      if (!world.isRemote && world.getGameRules().getGameRuleBooleanValue("doTileDrops")) {
+      if (!world.isRemote && world.getGameRules().getBoolean("doTileDrops")) {
         EntityEndermite entity = new EntityEndermite(world);
         entity.setLocationAndAngles((double) pos.getX() + 0.5, (double) pos.getY(),
             (double) pos.getZ() + 0.5, 0.0f, 0.0f);

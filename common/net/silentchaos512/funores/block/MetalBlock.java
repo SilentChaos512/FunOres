@@ -13,6 +13,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.oredict.OreDictionary;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.lib.EnumMetal;
 import net.silentchaos512.funores.lib.Names;
@@ -32,6 +33,14 @@ public class MetalBlock extends BlockSG {
     
     setHasSubtypes(true);
     setUnlocalizedName(Names.METAL_BLOCK);
+  }
+
+  @Override
+  public void addOreDict() {
+
+    for (EnumMetal metal : EnumMetal.values()) {
+      OreDictionary.registerOre("block" + metal.getName(), metal.getBlock());
+    }
   }
 
   @Override

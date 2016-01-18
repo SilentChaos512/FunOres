@@ -44,10 +44,10 @@ public class ContainerMetalFurnace extends Container {
   }
 
   @Override
-  public void addCraftingToCrafters(ICrafting listener) {
+  public void onCraftGuiOpened(ICrafting listener) {
 
-    super.addCraftingToCrafters(listener);
-    listener.func_175173_a(this, this.tileFurnace);
+    super.onCraftGuiOpened(listener);
+    listener.updateCraftingInventory(this, this.getInventory());
   }
 
   @Override

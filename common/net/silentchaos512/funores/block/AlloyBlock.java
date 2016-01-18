@@ -11,6 +11,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.lib.EnumAlloy;
 import net.silentchaos512.funores.lib.Names;
@@ -30,6 +31,14 @@ public class AlloyBlock extends BlockSG {
 
     setHasSubtypes(true);
     setUnlocalizedName(Names.ALLOY_BLOCK);
+  }
+
+  @Override
+  public void addOreDict() {
+
+    for (EnumAlloy alloy : EnumAlloy.values()) {
+      OreDictionary.registerOre("block" + alloy.getName(), alloy.getBlock());
+    }
   }
 
   @Override

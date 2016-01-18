@@ -1,0 +1,2 @@
+1.0.4
+Fixed: Metal/alloy blocks not being registered in the ore dictionary.

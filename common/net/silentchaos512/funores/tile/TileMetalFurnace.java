@@ -14,19 +14,17 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IChatComponent;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.oredict.OreDictionary;
 import net.silentchaos512.funores.FunOres;
-import net.silentchaos512.funores.block.MetalFurnace;
-import net.silentchaos512.funores.core.util.LogHelper;
 import net.silentchaos512.funores.inventory.ContainerMetalFurnace;
 
-public class TileMetalFurnace extends TileEntity implements IUpdatePlayerListBox, ISidedInventory {
+public class TileMetalFurnace extends TileEntity implements ITickable, ISidedInventory {
 
   public static final int COOK_TIME_NO_SECONDARY = 133;
   public static final int COOK_TIME_WITH_SECONDARY = 266;
@@ -84,18 +82,6 @@ public class TileMetalFurnace extends TileEntity implements IUpdatePlayerListBox
 
         return stack;
       }
-    } else {
-      return null;
-    }
-  }
-
-  @Override
-  public ItemStack getStackInSlotOnClosing(int index) {
-
-    if (this.stacks[index] != null) {
-      ItemStack stack = this.stacks[index];
-      this.stacks[index] = null;
-      return stack;
     } else {
       return null;
     }
@@ -202,12 +188,6 @@ public class TileMetalFurnace extends TileEntity implements IUpdatePlayerListBox
     for (int i = 0; i < this.stacks.length; ++i) {
       this.stacks[i] = null;
     }
-  }
-
-  @Override
-  public String getName() {
-
-    return "container.funores.metalfurnace.name";
   }
 
   @Override
@@ -493,5 +473,23 @@ public class TileMetalFurnace extends TileEntity implements IUpdatePlayerListBox
   public static boolean isItemFuel(ItemStack stack) {
 
     return getItemBurnTime(stack) > 0;
+  }
+
+  @Override
+  public ItemStack removeStackFromSlot(int index) {
+
+    if (stacks[index] != null) {
+      ItemStack stack = stacks[index];
+      stacks[index] = null;
+      return stack;
+    } else {
+      return null;
+    }
+  }
+
+  @Override
+  public String getName() {
+
+    return "container.funores.metalfurnace.name";
   }
 }
