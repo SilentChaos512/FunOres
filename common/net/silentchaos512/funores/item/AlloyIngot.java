@@ -40,30 +40,6 @@ public class AlloyIngot extends ItemSG {
       // Nuggets <--> Ingots
       RecipeHelper.addCompressionRecipe(alloy.getNugget(), alloy.getIngot(), 9);
     }
-
-    // TODO: Temporary recipes?
-
-    String copper = "ingotCopper";
-    String tin = "ingotTin";
-    String zinc = "ingotZinc";
-    String iron = "ingotIron";
-    ItemStack coal = new ItemStack(Items.coal);
-
-    ItemStack bronzeIngot = EnumAlloy.BRONZE.getIngot();
-    bronzeIngot.stackSize = 4;
-    ItemStack brassIngot = EnumAlloy.BRASS.getIngot();
-    brassIngot.stackSize = 4;
-    ItemStack steelIngot = EnumAlloy.STEEL.getIngot();
-
-    if (Config.enableBronzeRecipe) {
-      GameRegistry.addRecipe(new ShapelessOreRecipe(bronzeIngot, copper, copper, copper, tin));
-    }
-    if (Config.enableBrassRecipe) {
-      GameRegistry.addRecipe(new ShapelessOreRecipe(brassIngot, copper, copper, copper, zinc));
-    }
-    if (Config.enableSteelRecipe) {
-      GameRegistry.addRecipe(new ShapelessOreRecipe(steelIngot, iron, coal, coal, coal));
-    }
   }
 
   @Override

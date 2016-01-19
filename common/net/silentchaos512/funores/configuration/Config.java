@@ -61,10 +61,6 @@ public class Config {
   public static ConfigOptionOreGenReplace quartz = new ConfigOptionOreGenReplace(
       EnumVanillaOre.QUARTZ);
 
-  public static boolean enableBronzeRecipe = true;
-  public static boolean enableBrassRecipe = true;
-  public static boolean enableSteelRecipe = true;
-
   private static Configuration c;
 
   public static final String CATEGORY_METAL_ORE = "MetalOre";
@@ -92,12 +88,7 @@ public class Config {
        * Misc configs
        */
 
-      enableBronzeRecipe = c.getBoolean("BronzeRecipe.Enabled", CATEGORY_RECIPE, enableBronzeRecipe,
-          "Enable the recipe for bronze ingots.");
-      enableBrassRecipe = c.getBoolean("BrassRecipe.Enabled", CATEGORY_RECIPE, enableBrassRecipe,
-          "Enable the recipe for brass ingots.");
-      enableSteelRecipe = c.getBoolean("SteelRecipe.Enabled", CATEGORY_RECIPE, enableSteelRecipe,
-          "Enable the recipe for steel ingots");
+      // Nothing
 
       /*
        * Example Ore
@@ -484,5 +475,10 @@ public class Config {
     if (c.hasChanged()) {
       c.save();
     }
+  }
+
+  public static Configuration getConfiguration() {
+
+    return c;
   }
 }

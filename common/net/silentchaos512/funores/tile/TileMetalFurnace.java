@@ -60,7 +60,7 @@ public class TileMetalFurnace extends TileEntity implements ITickable, ISidedInv
   @Override
   public ItemStack getStackInSlot(int index) {
 
-    return stacks[index];
+    return index >= 0 && index < stacks.length ? stacks[index] : null;
   }
 
   @Override
@@ -393,7 +393,7 @@ public class TileMetalFurnace extends TileEntity implements ITickable, ISidedInv
     } else {
       ItemStack inputStack = this.stacks[SLOT_INPUT];
       ItemStack outputPrimary = FurnaceRecipes.instance().getSmeltingResult(inputStack);
-      ItemStack outputSecondary = this.getSecondaryOutput();
+      ItemStack outputSecondary = this.getSecondaryOutput(); // FIXME: Set to max secondary size?
       ItemStack outputSlot1 = this.stacks[SLOT_OUTPUT_1];
       ItemStack outputSlot2 = this.stacks[SLOT_OUTPUT_2];
 

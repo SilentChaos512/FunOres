@@ -12,6 +12,7 @@ public class ModBlocks {
   public static MetalBlock metalBlock;
   public static AlloyBlock alloyBlock;
   public static MetalFurnace metalFurnace;
+  public static AlloySmelter alloySmelter;
 
   public static void init() {
 
@@ -21,5 +22,6 @@ public class ModBlocks {
     metalBlock = (MetalBlock) SRegistry.registerBlock(MetalBlock.class, Names.METAL_BLOCK);
     alloyBlock = (AlloyBlock) SRegistry.registerBlock(AlloyBlock.class, Names.ALLOY_BLOCK);
     metalFurnace = (MetalFurnace) SRegistry.registerBlock(MetalFurnace.class, Names.METAL_FURNACE);
+    alloySmelter = (AlloySmelter) SRegistry.registerBlock(AlloySmelter.class, Names.ALLOY_SMELTER);
   }
 }

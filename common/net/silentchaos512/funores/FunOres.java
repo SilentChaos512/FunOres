@@ -24,6 +24,7 @@ import net.silentchaos512.funores.core.registry.SRegistry;
 import net.silentchaos512.funores.core.util.LogHelper;
 import net.silentchaos512.funores.gui.GuiHandlerFunOres;
 import net.silentchaos512.funores.item.ModItems;
+import net.silentchaos512.funores.lib.AlloySmelterRecipe;
 import net.silentchaos512.funores.lib.ExtraRecipes;
 import net.silentchaos512.funores.world.FunOresGenerator;
 
@@ -61,6 +62,7 @@ public class FunOres {
   public void load(FMLInitializationEvent event) {
     
     SRegistry.addRecipesAndOreDictEntries();
+    AlloySmelterRecipe.initRecipes();
     ExtraRecipes.init();
     
     Config.save();
