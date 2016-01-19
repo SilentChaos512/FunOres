@@ -13,6 +13,7 @@ public class Names {
   public static final String MOB_ORE = "MobOre";
   
   // Items
+  public static final String ALLOY_DUST = "AlloyDust";
   public static final String ALLOY_INGOT = "AlloyIngot";
   public static final String ALLOY_NUGGET = "AlloyNugget";
   public static final String METAL_DUST = "MetalDust";

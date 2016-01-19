@@ -9,7 +9,10 @@ public enum EnumAlloy implements IStringSerializable {
 
   BRONZE(0, "Bronze"),
   BRASS(1, "Brass"),
-  STEEL(2, "Steel");
+  STEEL(2, "Steel"),
+  INVAR(3, "Invar"),
+  ELECTRUM(4, "Electrum"),
+  ENDERIUM(5, "Enderium");
 
   private final int meta;
   private final String name;
@@ -57,5 +60,10 @@ public enum EnumAlloy implements IStringSerializable {
   public ItemStack getNugget() {
     
     return new ItemStack(ModItems.alloyNugget, 1, meta);
+  }
+
+  public ItemStack getDust() {
+
+    return new ItemStack(ModItems.alloyDust, 1, meta);
   }
 }

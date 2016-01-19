@@ -16,6 +16,7 @@ public class ModItems {
   public static MetalDust metalDust;
   public static AlloyIngot alloyIngot;
   public static AlloyNugget alloyNugget;
+  public static AlloyDust alloyDust;
   public static Shard shard;
 
   public static void init() {
@@ -25,6 +26,7 @@ public class ModItems {
     metalDust = (MetalDust) SRegistry.registerItem(MetalDust.class, Names.METAL_DUST);
     alloyIngot = (AlloyIngot) SRegistry.registerItem(AlloyIngot.class, Names.ALLOY_INGOT);
     alloyNugget = (AlloyNugget) SRegistry.registerItem(AlloyNugget.class, Names.ALLOY_NUGGET);
+    alloyDust = (AlloyDust) SRegistry.registerItem(AlloyDust.class, Names.ALLOY_DUST);
     shard = (Shard) SRegistry.registerItem(Shard.class, Names.SHARD);
     
     SRegistry.registerItem(Sword.class, "SwordBronze", ModMaterials.toolBronze);

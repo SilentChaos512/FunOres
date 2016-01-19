@@ -39,6 +39,12 @@ public class AlloySmelterRecipe {
     ItemStack coal = new ItemStack(Items.coal);
     coal.stackSize = 2;
     addRecipe("Steel", getIngot(EnumAlloy.STEEL, 1), 800, "ingotIron*1", coal);
+    addRecipe("Invar", getIngot(EnumAlloy.INVAR, 3), 400, "ingotIron*2", "ingotNickel*1");
+    addRecipe("Electrum", getIngot(EnumAlloy.ELECTRUM, 2), 400, "ingotGold*1", "ingotSilver*1");
+    ItemStack enderEyes = new ItemStack(Items.ender_eye);
+    enderEyes.stackSize = 4;
+    addRecipe("Enderium", getIngot(EnumAlloy.ENDERIUM, 4), 800, "ingotTin*2", "ingotSilver*1",
+        "ingotPlatinum*1", enderEyes);
   }
 
   public static ItemStack getIngot(EnumMetal metal, int count) {

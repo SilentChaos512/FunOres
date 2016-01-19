@@ -16,7 +16,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.MathHelper;
-import net.silentchaos512.funores.core.util.LogHelper;
 import net.silentchaos512.funores.inventory.ContainerAlloySmelter;
 import net.silentchaos512.funores.lib.AlloySmelterRecipe;
 
@@ -202,7 +201,7 @@ public class TileAlloySmelter extends TileEntity implements ITickable, ISidedInv
       stack.stackSize = this.getInventoryStackLimit();
     }
 
-    if (index == 0 && !flag) {
+    if (index < SLOTS_INPUT.length && !flag) {
       this.totalCookTime = this.getCookTime();
       this.cookTime = 0;
       this.markDirty();
@@ -384,7 +383,6 @@ public class TileAlloySmelter extends TileEntity implements ITickable, ISidedInv
 
         if (isBurning() && canSmelt()) {
           ++cookTime;
-
           if (cookTime == totalCookTime) {
             cookTime = 0;
             totalCookTime = getCookTime();

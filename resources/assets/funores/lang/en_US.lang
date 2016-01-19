@@ -7,6 +7,11 @@ itemGroup.tabFunOres=Fun Ores
 tile.funores:AlloyBlock0.name=Bronze Block
 tile.funores:AlloyBlock1.name=Brass Block
 tile.funores:AlloyBlock2.name=Steel Block
+tile.funores:AlloyBlock3.name=Invar Block
+tile.funores:AlloyBlock4.name=Electrum Block
+tile.funores:AlloyBlock5.name=Enderium Block
+
+tile.funores:AlloySmelter.name=Alloy Smelter
 
 tile.funores:MeatOre0.name=Pig Ore
 tile.funores:MeatOre1.name=Fish Ore
@@ -53,13 +58,26 @@ tile.funores:MobOre11.name=Blaze Ore
 
 # Item localizations
 
+item.funores:AlloyDust0.name=Bronze Dust
+item.funores:AlloyDust1.name=Brass Dust
+item.funores:AlloyDust2.name=Steel Dust
+item.funores:AlloyDust3.name=Invar Dust
+item.funores:AlloyDust4.name=Electrum Dust
+item.funores:AlloyDust5.name=Enderium Dust
+
 item.funores:AlloyIngot0.name=Bronze Ingot
 item.funores:AlloyIngot1.name=Brass Ingot
 item.funores:AlloyIngot2.name=Steel Ingot
+item.funores:AlloyIngot3.name=Invar Ingot
+item.funores:AlloyIngot4.name=Electrum Ingot
+item.funores:AlloyIngot5.name=Enderium Ingot
 
 item.funores:AlloyNugget0.name=Bronze Nugget
 item.funores:AlloyNugget1.name=Brass Nugget
 item.funores:AlloyNugget2.name=Steel Nugget
+item.funores:AlloyNugget3.name=Invar Nugget
+item.funores:AlloyNugget4.name=Electrum Nugget
+item.funores:AlloyNugget5.name=Enderium Nugget
 
 item.funores:MetalDust0.name=Copper Dust
 item.funores:MetalDust1.name=Tin Dust
