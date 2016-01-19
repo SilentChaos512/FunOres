@@ -6,7 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -26,20 +26,21 @@ import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.core.registry.IAddRecipe;
 import net.silentchaos512.funores.core.registry.IHasVariants;
 import net.silentchaos512.funores.lib.EnumAlloy;
+import net.silentchaos512.funores.lib.EnumMachineState;
 import net.silentchaos512.funores.lib.Names;
 import net.silentchaos512.funores.tile.TileMetalFurnace;
 
 public class MetalFurnace extends BlockContainer implements IAddRecipe, IHasVariants {
 
-  public static final PropertyDirection FACING = PropertyDirection.create("facing",
-      EnumFacing.Plane.HORIZONTAL);
+  public static final PropertyEnum FACING = PropertyEnum.create("facing", EnumMachineState.class);
   // private final boolean isBurning;
   private static boolean keepInventory;
 
   public MetalFurnace() {
 
     super(Material.iron);
-    setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
+    setDefaultState(
+        this.blockState.getBaseState().withProperty(FACING, EnumMachineState.NORTH_OFF));
     setCreativeTab(FunOres.tabFunOres);
 
     setHardness(4.0f);
@@ -109,19 +110,24 @@ public class MetalFurnace extends BlockContainer implements IAddRecipe, IHasVari
       Block block1 = worldIn.getBlockState(pos.south()).getBlock();
       Block block2 = worldIn.getBlockState(pos.west()).getBlock();
       Block block3 = worldIn.getBlockState(pos.east()).getBlock();
-      EnumFacing enumfacing = (EnumFacing) state.getValue(FACING);
 
-      if (enumfacing == EnumFacing.NORTH && block.isFullBlock() && !block1.isFullBlock()) {
-        enumfacing = EnumFacing.SOUTH;
-      } else if (enumfacing == EnumFacing.SOUTH && block1.isFullBlock() && !block.isFullBlock()) {
-        enumfacing = EnumFacing.NORTH;
-      } else if (enumfacing == EnumFacing.WEST && block2.isFullBlock() && !block3.isFullBlock()) {
-        enumfacing = EnumFacing.EAST;
-      } else if (enumfacing == EnumFacing.EAST && block3.isFullBlock() && !block2.isFullBlock()) {
-        enumfacing = EnumFacing.WEST;
+      EnumMachineState machineState = (EnumMachineState) state.getValue(FACING);
+
+      if (machineState == EnumMachineState.NORTH_OFF && block.isFullBlock()
+          && !block1.isFullBlock()) {
+        machineState = EnumMachineState.SOUTH_OFF;
+      } else if (machineState == EnumMachineState.SOUTH_OFF && block1.isFullBlock()
+          && !block.isFullBlock()) {
+        machineState = EnumMachineState.NORTH_OFF;
+      } else if (machineState == EnumMachineState.WEST_OFF && block2.isFullBlock()
+          && !block3.isFullBlock()) {
+        machineState = EnumMachineState.EAST_OFF;
+      } else if (machineState == EnumMachineState.EAST_OFF && block3.isFullBlock()
+          && !block2.isFullBlock()) {
+        machineState = EnumMachineState.WEST_OFF;
       }
 
-      worldIn.setBlockState(pos, state.withProperty(FACING, enumfacing), 2);
+      worldIn.setBlockState(pos, state.withProperty(FACING, machineState), 2);
     }
   }
 
@@ -165,8 +171,8 @@ public class MetalFurnace extends BlockContainer implements IAddRecipe, IHasVari
   // }
 
   @Override
-  public boolean onBlockActivated(World world, BlockPos pos, IBlockState state,
-      EntityPlayer player, EnumFacing side, float hitX, float hitY, float hitZ) {
+  public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player,
+      EnumFacing side, float hitX, float hitY, float hitZ) {
 
     if (world.isRemote) {
       return true;
@@ -213,15 +219,18 @@ public class MetalFurnace extends BlockContainer implements IAddRecipe, IHasVari
   public IBlockState onBlockPlaced(World world, BlockPos pos, EnumFacing facing, float hitX,
       float hitY, float hitZ, int meta, EntityLivingBase placer) {
 
-    return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
+    EnumMachineState machineState = EnumMachineState
+        .fromEnumFacing(placer.getHorizontalFacing().getOpposite());
+    return this.getDefaultState().withProperty(FACING, machineState);
   }
 
   @Override
-  public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state,
-      EntityLivingBase placer, ItemStack stack) {
+  public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer,
+      ItemStack stack) {
 
-    world.setBlockState(pos,
-        state.withProperty(FACING, placer.getHorizontalFacing().getOpposite()), 2);
+    EnumMachineState machineState = EnumMachineState
+        .fromEnumFacing(placer.getHorizontalFacing().getOpposite());
+    world.setBlockState(pos, state.withProperty(FACING, machineState), 2);
 
     if (stack.hasDisplayName()) {
       TileEntity tileentity = world.getTileEntity(pos);
@@ -274,24 +283,19 @@ public class MetalFurnace extends BlockContainer implements IAddRecipe, IHasVari
   @Override
   public IBlockState getStateForEntityRender(IBlockState state) {
 
-    return this.getDefaultState().withProperty(FACING, EnumFacing.SOUTH);
+    return this.getDefaultState().withProperty(FACING, EnumMachineState.SOUTH_OFF);
   }
 
   public IBlockState getStateFromMeta(int meta) {
 
-    EnumFacing enumFacing = EnumFacing.getFront(meta);
-
-    if (enumFacing.getAxis() == EnumFacing.Axis.Y) {
-      enumFacing = EnumFacing.NORTH;
-    }
-
-    return this.getDefaultState().withProperty(FACING, enumFacing);
+    EnumMachineState machineState = EnumMachineState.fromMeta(meta);
+    return getDefaultState().withProperty(FACING, machineState);
   }
 
   @Override
   public int getMetaFromState(IBlockState state) {
 
-    return ((EnumFacing) state.getValue(FACING)).getIndex();
+    return ((EnumMachineState) state.getValue(FACING)).meta;
   }
 
   @Override

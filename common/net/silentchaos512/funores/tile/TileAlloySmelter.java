@@ -1,5 +1,6 @@
 package net.silentchaos512.funores.tile;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
@@ -12,12 +13,15 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.MathHelper;
+import net.minecraft.world.World;
 import net.silentchaos512.funores.inventory.ContainerAlloySmelter;
 import net.silentchaos512.funores.lib.AlloySmelterRecipe;
+import net.silentchaos512.funores.lib.EnumMachineState;
 
 public class TileAlloySmelter extends TileEntity implements ITickable, ISidedInventory {
 
@@ -398,13 +402,24 @@ public class TileAlloySmelter extends TileEntity implements ITickable, ISidedInv
 
       if (flag != isBurning()) {
         flag1 = true;
-        // TODO: Change state? See TileMetalFurnace line 286.
+        // Set off/on state.
+        IBlockState state = worldObj.getBlockState(pos);
+        int meta = state.getBlock().getMetaFromState(state);
+        meta = isBurning() ? meta | 8 : meta & 7;
+        worldObj.setBlockState(pos, state.getBlock().getStateFromMeta(meta));
       }
     }
 
     if (flag1) {
       markDirty();
     }
+  }
+
+  @Override
+  public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState,
+      IBlockState newState) {
+
+    return oldState.getBlock() != newState.getBlock();
   }
 
   @Override

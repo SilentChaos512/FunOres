@@ -1,0 +1,12 @@
+{
+  "variants": {
+    "facing=north_off": { "model": "FunOres:AlloySmelter_Off" },
+    "facing=south_off": { "model": "FunOres:AlloySmelter_Off", "y": 180 },
+    "facing=west_off":  { "model": "FunOres:AlloySmelter_Off", "y": 270 },
+    "facing=east_off":  { "model": "FunOres:AlloySmelter_Off", "y": 90 },
+    "facing=north_on": { "model": "FunOres:AlloySmelter_On" },
+    "facing=south_on": { "model": "FunOres:AlloySmelter_On", "y": 180 },
+    "facing=west_on":  { "model": "FunOres:AlloySmelter_On", "y": 270 },
+    "facing=east_on":  { "model": "FunOres:AlloySmelter_On", "y": 90 }
+  }
+}

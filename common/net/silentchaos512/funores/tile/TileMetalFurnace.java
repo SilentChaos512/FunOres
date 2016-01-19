@@ -2,6 +2,7 @@ package net.silentchaos512.funores.tile;
 
 import java.util.List;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
@@ -16,10 +17,12 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.MathHelper;
+import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.inventory.ContainerMetalFurnace;
@@ -114,9 +117,9 @@ public class TileMetalFurnace extends TileEntity implements ITickable, ISidedInv
   @Override
   public boolean isUseableByPlayer(EntityPlayer player) {
 
-    return this.worldObj.getTileEntity(this.pos) != this ? false : player.getDistanceSq(
-        (double) this.pos.getX() + 0.5D, (double) this.pos.getY() + 0.5D,
-        (double) this.pos.getZ() + 0.5D) <= 64.0D;
+    return this.worldObj.getTileEntity(this.pos) != this ? false
+        : player.getDistanceSq((double) this.pos.getX() + 0.5D, (double) this.pos.getY() + 0.5D,
+            (double) this.pos.getZ() + 0.5D) <= 64.0D;
   }
 
   @Override
@@ -205,8 +208,8 @@ public class TileMetalFurnace extends TileEntity implements ITickable, ISidedInv
   @Override
   public int[] getSlotsForFace(EnumFacing side) {
 
-    return side == EnumFacing.DOWN ? SLOTS_BOTTOM : (side == EnumFacing.UP ? SLOTS_TOP
-        : SLOTS_SIDES);
+    return side == EnumFacing.DOWN ? SLOTS_BOTTOM
+        : (side == EnumFacing.UP ? SLOTS_TOP : SLOTS_SIDES);
   }
 
   @Override
@@ -245,7 +248,8 @@ public class TileMetalFurnace extends TileEntity implements ITickable, ISidedInv
     }
 
     if (!this.worldObj.isRemote) {
-      if (!this.isBurning() && (this.stacks[SLOT_FUEL] == null || this.stacks[SLOT_INPUT] == null)) {
+      if (!this.isBurning()
+          && (this.stacks[SLOT_FUEL] == null || this.stacks[SLOT_INPUT] == null)) {
         if (!this.isBurning() && this.cookTime > 0) {
           this.cookTime = MathHelper.clamp_int(this.cookTime - 2, 0, this.totalCookTime);
         }
@@ -260,8 +264,8 @@ public class TileMetalFurnace extends TileEntity implements ITickable, ISidedInv
               --this.stacks[SLOT_FUEL].stackSize;
 
               if (this.stacks[SLOT_FUEL].stackSize == 0) {
-                this.stacks[SLOT_FUEL] = stacks[SLOT_FUEL].getItem().getContainerItem(
-                    stacks[SLOT_FUEL]);
+                this.stacks[SLOT_FUEL] = stacks[SLOT_FUEL].getItem()
+                    .getContainerItem(stacks[SLOT_FUEL]);
               }
             }
           }
@@ -283,14 +287,24 @@ public class TileMetalFurnace extends TileEntity implements ITickable, ISidedInv
 
       if (flag != this.isBurning()) {
         flag1 = true;
-        // TODO: Fixit!
-        // MetalFurnace.setState(this.isBurning(), this.worldObj, this.pos);
+        // Set off/on state.
+        IBlockState state = worldObj.getBlockState(pos);
+        int meta = state.getBlock().getMetaFromState(state);
+        meta = isBurning() ? meta | 8 : meta & 7;
+        worldObj.setBlockState(pos, state.getBlock().getStateFromMeta(meta));
       }
     }
 
     if (flag1) {
       this.markDirty();
     }
+  }
+
+  @Override
+  public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState,
+      IBlockState newState) {
+
+    return oldState.getBlock() != newState.getBlock();
   }
 
   @Override

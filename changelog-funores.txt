@@ -1,2 +1,7 @@
 1.0.4
+Added: The Alloy Smelter. It smelts alloys. All recipes can be disabled in the config, as always.
+Added: New alloys: invar, electrum, and enderium.
+Added: New textures for lit metal furnace. Finally.
+Added: Alloy dust.
+Removed: Alloy ingot recipes (use the alloy smelter)
 Fixed: Metal/alloy blocks not being registered in the ore dictionary.
