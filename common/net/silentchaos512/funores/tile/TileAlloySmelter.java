@@ -19,6 +19,7 @@ import net.minecraft.util.IChatComponent;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.silentchaos512.funores.core.util.LogHelper;
 import net.silentchaos512.funores.inventory.ContainerAlloySmelter;
 import net.silentchaos512.funores.lib.AlloySmelterRecipe;
 import net.silentchaos512.funores.lib.EnumMachineState;
@@ -112,12 +113,12 @@ public class TileAlloySmelter extends TileEntity implements ITickable, ISidedInv
         stacks[SLOT_OUTPUT].stackSize += output.stackSize;
       }
 
-      // Set inputs
+      // Consume ingredients
       AlloySmelterRecipe recipe = AlloySmelterRecipe.getMatchingRecipe(this);
       Object[] inputList = recipe.getInputs();
-      for (int i = 0; i < SLOTS_INPUT.length; ++i) {
-        if (stacks[i] != null) {
-          for (Object recipeInputObject : inputList) {
+      for (Object recipeInputObject : inputList) {
+        for (int i = 0; i < SLOTS_INPUT.length; ++i) {
+          if (stacks[i] != null) {
             if (recipe.itemStackMatchesForInput(stacks[i], recipeInputObject)) {
               stacks[i].stackSize -= recipe.getRecipeObjectStackSize(recipeInputObject);
               if (stacks[i].stackSize <= 0) {
@@ -248,7 +249,7 @@ public class TileAlloySmelter extends TileEntity implements ITickable, ISidedInv
     if (index == SLOT_FUEL) {
       return isItemFuel(stack);
     } else if (index < SLOTS_INPUT.length) {
-      // TODO
+      return AlloySmelterRecipe.isValidIngredient(stack);
     }
 
     return true;

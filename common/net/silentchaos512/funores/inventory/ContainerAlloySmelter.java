@@ -11,6 +11,9 @@ import net.minecraft.inventory.SlotFurnaceOutput;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.tileentity.TileEntityFurnace;
+import net.silentchaos512.funores.block.AlloySmelter;
+import net.silentchaos512.funores.core.util.LogHelper;
+import net.silentchaos512.funores.lib.AlloySmelterRecipe;
 import net.silentchaos512.funores.tile.TileAlloySmelter;
 
 public class ContainerAlloySmelter extends Container {
@@ -88,6 +91,7 @@ public class ContainerAlloySmelter extends Container {
     this.field_178155_i = this.tileAlloySmelter.getField(1);
     this.field_178153_g = this.tileAlloySmelter.getField(3);
   }
+
   @Override
   public void updateProgressBar(int id, int data) {
 
@@ -103,36 +107,45 @@ public class ContainerAlloySmelter extends Container {
   @Override
   public ItemStack transferStackInSlot(EntityPlayer playerIn, int index) {
 
+    LogHelper.debug("index = " + index);
     ItemStack itemstack = null;
     Slot slot = (Slot) this.inventorySlots.get(index);
 
     if (slot != null && slot.getHasStack()) {
+      final int slotFuel = TileAlloySmelter.SLOT_FUEL;                // 4
+      final int inputSlotCount = TileAlloySmelter.SLOTS_INPUT.length; // 4
+      final int slotCount = TileAlloySmelter.NUMBER_OF_SLOTS;         // 6
+
+      final boolean test = true;
+
       ItemStack itemstack1 = slot.getStack();
       itemstack = itemstack1.copy();
 
-      if (index == 2 || index == 3) { // TODO: Does this need to be changed?
-        if (!this.mergeItemStack(itemstack1, 4, 40, true)) {
+      if (index == TileAlloySmelter.SLOT_OUTPUT) {
+        if (!this.mergeItemStack(itemstack1, slotCount, slotCount + 36, true)) {
           return null;
         }
 
         slot.onSlotChange(itemstack1, itemstack);
-      } else if (index != 1 && index != 0) {
-        if (FurnaceRecipes.instance().getSmeltingResult(itemstack1) != null) {
-          if (!this.mergeItemStack(itemstack1, 0, 1, false)) {
+      } else if (index != slotFuel && index >= inputSlotCount) {
+        if (TileEntityFurnace.isItemFuel(itemstack1)) {
+          // Insert fuel?
+          if (!this.mergeItemStack(itemstack1, slotFuel, slotFuel + 1, false)) {
             return null;
           }
-        } else if (TileEntityFurnace.isItemFuel(itemstack1)) {
-          if (!this.mergeItemStack(itemstack1, 1, 2, false)) {
+        } else if (AlloySmelterRecipe.isValidIngredient(itemstack1)) {
+          // Insert ingredients?
+          if (!this.mergeItemStack(itemstack1, 0, inputSlotCount, false)) {
             return null;
           }
-        } else if (index >= 4 && index < 31) {
+        }  else if (index >= 4 && index < 31) {
           if (!this.mergeItemStack(itemstack1, 31, 40, false)) {
             return null;
           }
         } else if (index >= 31 && index < 40 && !this.mergeItemStack(itemstack1, 4, 31, false)) {
           return null;
         }
-      } else if (!this.mergeItemStack(itemstack1, 4, 40, false)) {
+      } else if (!this.mergeItemStack(itemstack1, slotCount, slotCount + 36, false)) {
         return null;
       }
 
