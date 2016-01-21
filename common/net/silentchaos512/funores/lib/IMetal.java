@@ -5,7 +5,7 @@ import net.minecraft.item.ItemStack;
 public interface IMetal {
 
   public int getMeta();
-  public String getName();
+  public String getMetalName();
   public boolean isAlloy();
 
   public ItemStack getBlock();
@@ -14,9 +14,4 @@ public interface IMetal {
   public ItemStack getDust();
   public ItemStack getPlate();
   public ItemStack getGear();
-
-  public static IMetal getByMeta(int meta) {
-
-    return null;
-  }
 }

@@ -45,6 +45,12 @@ public enum EnumMetal implements IStringSerializable,IHasOre,IMetal {
   }
 
   @Override
+  public String getMetalName() {
+
+    return name;
+  }
+
+  @Override
   public String getName() {
 
     return name;

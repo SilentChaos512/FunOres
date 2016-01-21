@@ -36,7 +36,7 @@ public class ItemHammer extends ItemSG {
     CraftingItem item = ModItems.plateBasic;
     for (IMetal metal : item.getMetals()) {
       plate = new ItemStack(item, 1, metal.getMeta());
-      ingot = "ingot" + metal.getName();
+      ingot = "ingot" + metal.getMetalName();
       GameRegistry.addRecipe(new ShapedOreRecipe(plate, "h", "i", "i", 'h', this, 'i', ingot));
     }
 
@@ -44,7 +44,7 @@ public class ItemHammer extends ItemSG {
     item = ModItems.plateAlloy;
     for (IMetal metal : item.getMetals()) {
       plate = new ItemStack(item, 1, metal.getMeta());
-      ingot = "ingot" + metal.getName();
+      ingot = "ingot" + metal.getMetalName();
       GameRegistry.addRecipe(new ShapedOreRecipe(plate, "h", "i", "i", 'h', this, 'i', ingot));
     }
   }

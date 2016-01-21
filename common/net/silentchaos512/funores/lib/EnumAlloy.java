@@ -29,6 +29,12 @@ public enum EnumAlloy implements IStringSerializable, IMetal {
   }
 
   @Override
+  public String getMetalName() {
+
+    return name;
+  }
+
+  @Override
   public String getName() {
 
     return name;

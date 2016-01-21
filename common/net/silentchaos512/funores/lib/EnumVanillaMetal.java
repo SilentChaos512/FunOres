@@ -24,7 +24,7 @@ public enum EnumVanillaMetal implements IMetal {
   }
 
   @Override
-  public String getName() {
+  public String getMetalName() {
 
     return name;
   }

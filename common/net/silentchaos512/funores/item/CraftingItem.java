@@ -1,6 +1,7 @@
 package net.silentchaos512.funores.item;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.google.common.collect.Lists;
@@ -20,7 +21,6 @@ import net.silentchaos512.funores.lib.EnumMetal;
 import net.silentchaos512.funores.lib.EnumVanillaMetal;
 import net.silentchaos512.funores.lib.IMetal;
 import net.silentchaos512.funores.lib.Names;
-import scala.actors.threadpool.Arrays;
 
 public class CraftingItem extends ItemSG {
 
@@ -45,7 +45,7 @@ public class CraftingItem extends ItemSG {
 
     if (isAlloy) {
       // Alloys
-      return Arrays.asList(EnumAlloy.values());
+      return new ArrayList<IMetal>(Arrays.asList(EnumAlloy.values()));
     } else {
       // Basic metals (including vanilla)
       List<IMetal> metals = new ArrayList<IMetal>(Arrays.asList(EnumMetal.values()));
@@ -62,7 +62,7 @@ public class CraftingItem extends ItemSG {
 
       for (IMetal metal : getMetals()) {
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, metal.getMeta()), " m ",
-            "mim", " m ", 'm', "ingot" + metal.getName(), 'i', iron));
+            "mim", " m ", 'm', "ingot" + metal.getMetalName(), 'i', iron));
       }
     } else if (craftingItemName.equals(Names.PLATE)) {
       // TODO
@@ -77,7 +77,7 @@ public class CraftingItem extends ItemSG {
     if (craftingItemName.equals(Names.GEAR)) {
       for (IMetal metal : getMetals()) {
         stack = new ItemStack(this, 1, metal.getMeta());
-        OreDictionary.registerOre("gear" + metal.getName(), stack);
+        OreDictionary.registerOre("gear" + metal.getMetalName(), stack);
         if (metal == EnumMetal.ALUMINIUM) {
           OreDictionary.registerOre("gearAluminum", stack);
         }
@@ -85,7 +85,7 @@ public class CraftingItem extends ItemSG {
     } else if (craftingItemName.equals(Names.PLATE)) {
       for (IMetal metal : getMetals()) {
         stack = new ItemStack(this, 1, metal.getMeta());
-        OreDictionary.registerOre("plate" + metal.getName(), stack);
+        OreDictionary.registerOre("plate" + metal.getMetalName(), stack);
         if (metal == EnumMetal.ALUMINIUM) {
           OreDictionary.registerOre("plateAluminum", stack);
         }
@@ -102,7 +102,7 @@ public class CraftingItem extends ItemSG {
     String[] result = new String[isAlloy ? EnumAlloy.count() : BASE_METALS_COUNT];
 
     for (IMetal metal : getMetals()) {
-      result[metal.getMeta()] = prefix + metal.getName();
+      result[metal.getMeta()] = prefix + metal.getMetalName();
     }
 
     return result;
@@ -123,11 +123,11 @@ public class CraftingItem extends ItemSG {
     int meta = stack.getItemDamage();
     List<IMetal> metals = getMetals();
     if (meta >= 0 && meta < metals.size() && metals.get(meta) != null) {
-      metalName = metals.get(meta).getName();
+      metalName = metals.get(meta).getMetalName();
     } else {
       for (IMetal metal : Lists.reverse(metals)) {
         if (metal.getMeta() == meta) {
-          metalName = metal.getName();
+          metalName = metal.getMetalName();
         }
       }
     }
