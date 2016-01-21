@@ -11,6 +11,7 @@ import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.Item;
@@ -19,6 +20,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.core.registry.IAddRecipe;
 import net.silentchaos512.funores.core.registry.IHasVariants;
@@ -78,7 +81,10 @@ public class AlloySmelter extends BlockContainer implements IAddRecipe, IHasVari
   @Override
   public void addRecipes() {
 
-    // TODO
+    for (String aluminium : new String[] { "plateAluminium", "plateAluminum" }) {
+      GameRegistry.addRecipe(new ShapedOreRecipe(this, "iii", "a a", "bab", 'i', "plateIron", 'a',
+          aluminium, 'b', Blocks.brick_block));
+    }
   }
 
   @Override

@@ -79,6 +79,26 @@ item.funores:AlloyNugget3.name=Invar Nugget
 item.funores:AlloyNugget4.name=Electrum Nugget
 item.funores:AlloyNugget5.name=Enderium Nugget
 
+item.funores:GearCopper.name=Copper Gear
+item.funores:GearTin.name=Tin Gear
+item.funores:GearSilver.name=Silver Gear
+item.funores:GearLead.name=Lead Gear
+item.funores:GearNickel.name=Nickel Gear
+item.funores:GearPlatinum.name=Platinum Gear
+item.funores:GearAluminium.name=Aluminium Gear
+item.funores:GearZinc.name=Zinc Gear
+item.funores:GearTitanium.name=Titanium Gear
+item.funores:GearIron.name=Iron Gear
+item.funores:GearGold.name=Gold Gear
+item.funores:GearBronze.name=Bronze Gear
+item.funores:GearBrass.name=Brass Gear
+item.funores:GearSteel.name=Steel Gear
+item.funores:GearInvar.name=Invar Gear
+item.funores:GearElectrum.name=Electrum Gear
+item.funores:GearEnderium.name=Enderium Gear
+
+item.funores:Hammer.name=Hammer
+
 item.funores:MetalDust0.name=Copper Dust
 item.funores:MetalDust1.name=Tin Dust
 item.funores:MetalDust2.name=Silver Dust
@@ -109,6 +129,24 @@ item.funores:MetalNugget6.name=Aluminium Nugget
 item.funores:MetalNugget7.name=Zinc Nugget
 item.funores:MetalNugget8.name=Titanium Nugget
 item.funores:MetalNugget16.name=Iron Nugget
+
+item.funores:PlateCopper.name=Copper Plate
+item.funores:PlateTin.name=Tin Plate
+item.funores:PlateSilver.name=Silver Plate
+item.funores:PlateLead.name=Lead Plate
+item.funores:PlateNickel.name=Nickel Plate
+item.funores:PlatePlatinum.name=Platinum Plate
+item.funores:PlateAluminium.name=Aluminium Plate
+item.funores:PlateZinc.name=Zinc Plate
+item.funores:PlateTitanium.name=Titanium Plate
+item.funores:PlateIron.name=Iron Plate
+item.funores:PlateGold.name=Gold Plate
+item.funores:PlateBronze.name=Bronze Plate
+item.funores:PlateBrass.name=Brass Plate
+item.funores:PlateSteel.name=Steel Plate
+item.funores:PlateInvar.name=Invar Plate
+item.funores:PlateElectrum.name=Electrum Plate
+item.funores:PlateEnderium.name=Enderium Plate
 
 item.funores:Shard0.name=Ender Shard
 item.funores:Shard1.name=Blaze Shard

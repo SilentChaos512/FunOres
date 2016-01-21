@@ -5,7 +5,7 @@ import net.minecraft.util.IStringSerializable;
 import net.silentchaos512.funores.block.ModBlocks;
 import net.silentchaos512.funores.item.ModItems;
 
-public enum EnumAlloy implements IStringSerializable {
+public enum EnumAlloy implements IStringSerializable, IMetal {
 
   BRONZE(0, "Bronze"),
   BRASS(1, "Brass"),
@@ -65,5 +65,25 @@ public enum EnumAlloy implements IStringSerializable {
   public ItemStack getDust() {
 
     return new ItemStack(ModItems.alloyDust, 1, meta);
+  }
+
+  @Override
+  public boolean isAlloy() {
+
+    return true;
+  }
+
+  @Override
+  public ItemStack getPlate() {
+
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public ItemStack getGear() {
+
+    // TODO Auto-generated method stub
+    return null;
   }
 }

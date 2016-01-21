@@ -10,7 +10,7 @@ import net.silentchaos512.funores.configuration.ConfigOptionOreGen;
 import net.silentchaos512.funores.core.util.LogHelper;
 import net.silentchaos512.funores.item.ModItems;
 
-public enum EnumMetal implements IStringSerializable,IHasOre {
+public enum EnumMetal implements IStringSerializable,IHasOre,IMetal {
 
   COPPER(0, "Copper"),
   TIN(1, "Tin"),
@@ -38,6 +38,7 @@ public enum EnumMetal implements IStringSerializable,IHasOre {
     this.dimension = dimension;
   }
 
+  @Override
   public int getMeta() {
 
     return meta;
@@ -68,24 +69,49 @@ public enum EnumMetal implements IStringSerializable,IHasOre {
     return ModBlocks.metalOre.getDefaultState().withProperty(MetalOre.METAL, this);
   }
 
+  @Override
   public ItemStack getBlock() {
 
     return new ItemStack(ModBlocks.metalBlock, 1, meta);
   }
 
+  @Override
   public ItemStack getIngot() {
 
     return new ItemStack(ModItems.metalIngot, 1, meta);
   }
 
+  @Override
   public ItemStack getNugget() {
 
     return new ItemStack(ModItems.metalNugget, 1, meta);
   }
 
+  @Override
   public ItemStack getDust() {
 
     return new ItemStack(ModItems.metalDust, 1, meta);
+  }
+
+
+  @Override
+  public boolean isAlloy() {
+
+    return false;
+  }
+
+  @Override
+  public ItemStack getPlate() {
+
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public ItemStack getGear() {
+
+    // TODO Auto-generated method stub
+    return null;
   }
   
   public ConfigOptionOreGen getConfig() {

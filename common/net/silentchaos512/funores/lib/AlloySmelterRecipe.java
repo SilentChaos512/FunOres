@@ -53,8 +53,8 @@ public class AlloySmelterRecipe {
         "ingotPlatinum*1", enderEyes);
 
     // Test
-    addRecipe("Test", getIngot(EnumAlloy.STEEL, 5), 300, AlloyIngot.ORE_DICT_COPPER_ALLOY + "*5",
-        "ingotIron*2");
+//    addRecipe("Test", getIngot(EnumAlloy.STEEL, 5), 300, AlloyIngot.ORE_DICT_COPPER_ALLOY + "*5",
+//        "ingotIron*2");
   }
 
   public static ItemStack getIngot(EnumMetal metal, int count) {

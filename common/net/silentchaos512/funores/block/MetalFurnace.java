@@ -84,11 +84,10 @@ public class MetalFurnace extends BlockContainer implements IAddRecipe, IHasVari
   @Override
   public void addRecipes() {
 
-    // TODO: Fix highly temporary recipes!
-    GameRegistry.addRecipe(new ShapedOreRecipe(this, true, "bib", "i i", "rrr", 'i',
-        EnumAlloy.BRONZE.getIngot(), 'b', EnumAlloy.BRONZE.getBlock(), 'r', Blocks.brick_block));
-    GameRegistry.addRecipe(new ShapedOreRecipe(this, true, "bib", "i i", "rrr", 'i',
-        EnumAlloy.BRASS.getIngot(), 'b', EnumAlloy.BRASS.getBlock(), 'r', Blocks.brick_block));
+    for (String alloy : new String[] { "plateBronze", "plateBrass" }) {
+      GameRegistry.addRecipe(new ShapedOreRecipe(this, "aaa", "afa", "bab", 'a', alloy, 'b',
+          Blocks.brick_block, 'f', Blocks.furnace));
+    }
   }
 
   @Override
