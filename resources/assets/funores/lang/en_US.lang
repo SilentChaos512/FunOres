@@ -130,6 +130,14 @@ item.funores:HoeSteel.name=Steel Hoe
 
 
 
+# JEI
+
+jei.funores.recipe.AlloySmelter=Alloy Smelter (Fun Ores)
+jei.funores.desc.MetalFurnace=It's a furnace. It cooks most things faster and with less fuel than a normal furnace. The exception is certain ores. Ores cook more slowly and with more fuel, but will give bonus nuggets in addition to the usual ingot.
+jei.funores.desc.AlloySmelter=It smelts alloys. Put in the required materials, give it fuel (anything that works in a furnace), and wait.
+
+
+
 # Misc Stuff
 
 misc.funores:PressCtrl=<Press Ctrl>

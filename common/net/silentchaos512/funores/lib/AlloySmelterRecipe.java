@@ -13,6 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import net.silentchaos512.funores.configuration.Config;
 import net.silentchaos512.funores.core.util.LogHelper;
+import net.silentchaos512.funores.item.AlloyIngot;
 import net.silentchaos512.funores.tile.TileAlloySmelter;
 
 public class AlloySmelterRecipe {
@@ -50,6 +51,10 @@ public class AlloySmelterRecipe {
     enderEyes.stackSize = 4;
     addRecipe("Enderium", getIngot(EnumAlloy.ENDERIUM, 4), 800, "ingotTin*2", "ingotSilver*1",
         "ingotPlatinum*1", enderEyes);
+
+    // Test
+    addRecipe("Test", getIngot(EnumAlloy.STEEL, 5), 300, AlloyIngot.ORE_DICT_COPPER_ALLOY + "*5",
+        "ingotIron*2");
   }
 
   public static ItemStack getIngot(EnumMetal metal, int count) {
@@ -231,7 +236,7 @@ public class AlloySmelterRecipe {
     return itemMatch && inputStack.stackSize >= requiredSize;
   }
 
-  public int getRecipeObjectStackSize(Object recipeItem) {
+  public static int getRecipeObjectStackSize(Object recipeItem) {
 
     if (recipeItem instanceof String) {
       String str = (String) recipeItem;

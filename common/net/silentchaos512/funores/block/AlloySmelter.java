@@ -78,8 +78,7 @@ public class AlloySmelter extends BlockContainer implements IAddRecipe, IHasVari
   @Override
   public void addRecipes() {
 
-    // TODO Auto-generated method stub
-
+    // TODO
   }
 
   @Override
