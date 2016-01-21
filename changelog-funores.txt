@@ -5,6 +5,7 @@ Added: JEI descriptions for Metal Furnace and Alloy Smelter.
 Added: New alloys: invar, electrum, and enderium.
 Added: Gears and Plates. They are registered in the ore dictionary, of course.
 Added: A hammer. Currently just used to make plates, might have other uses later.
+Added: Machines may be hot! Careful where you step! (configurable)
 Added: New textures for lit metal furnace. Finally.
 Added: Alloy dust. Not sure if it's good for anything, but who knows?
 Removed: Alloy ingot recipes (use the alloy smelter)

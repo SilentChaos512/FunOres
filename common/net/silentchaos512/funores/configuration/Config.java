@@ -12,6 +12,9 @@ import net.silentchaos512.funores.lib.ExtraRecipes;
 
 public class Config {
 
+  // Misc
+  public static boolean machinesCanBurn = true;
+
   // Metal ores
   public static ConfigOptionOreGen copper = new ConfigOptionOreGen(EnumMetal.COPPER);
   public static ConfigOptionOreGen tin = new ConfigOptionOreGen(EnumMetal.TIN);
@@ -68,6 +71,7 @@ public class Config {
   public static final String CATEGORY_MOB_ORE = "MobOre";
   public static final String CATEGORY_VANILLA_ORE = "vanilla_ore";
   public static final String CATEGORY_RECIPE = "Recipe";
+  public static final String CATEGORY_MISC = "Misc";
 
   public static final String COMMENT_EXAMPLE = "An example ore with comments on each individual setting.";
   public static final String COMMENT_METAL_ORE = "The metal ores like copper and titanium.";
@@ -88,7 +92,8 @@ public class Config {
        * Misc configs
        */
 
-      // Nothing
+      machinesCanBurn = c.getBoolean("MachinesCanBurn", CATEGORY_MISC, machinesCanBurn,
+          "If true, active machines can damage entities that step on top of them. Ouch.");
 
       /*
        * Example Ore

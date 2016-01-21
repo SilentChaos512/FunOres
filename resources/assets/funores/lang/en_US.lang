@@ -183,3 +183,5 @@ misc.funores:PressShift=<Press Shift>
 misc.funores:Disabled=Disabled
 misc.funores:PossibleDrops=Possible Drops:
 misc.funores:BeaconBase=Valid beacon base.
+
+death.funores:HotMachine=%s roasted on a hot machine.

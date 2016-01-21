@@ -26,6 +26,7 @@ import net.silentchaos512.funores.gui.GuiHandlerFunOres;
 import net.silentchaos512.funores.item.ModItems;
 import net.silentchaos512.funores.lib.AlloySmelterRecipe;
 import net.silentchaos512.funores.lib.ExtraRecipes;
+import net.silentchaos512.funores.lib.ModDamageSources;
 import net.silentchaos512.funores.world.FunOresGenerator;
 
 @Mod(modid = FunOres.MOD_ID, name = FunOres.MOD_NAME, version = FunOres.VERSION_NUMBER, useMetadata = true)
@@ -52,6 +53,7 @@ public class FunOres {
     
     ModBlocks.init();
     ModItems.init();
+    ModDamageSources.init();
     
     proxy.preInit();
     
