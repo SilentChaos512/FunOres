@@ -1,8 +1,8 @@
 {
   "parent": "block/orientable",
   "textures": {
-    "top": "FunOres:blocks/BlockBronze",
+    "top": "FunOres:blocks/BlockAluminium",
     "front": "FunOres:blocks/AlloySmelter_Front_Lit",
-    "side": "FunOres:blocks/MetalFurnace_Side"
+    "side": "FunOres:blocks/AlloySmelter_Side"
   }
 }
