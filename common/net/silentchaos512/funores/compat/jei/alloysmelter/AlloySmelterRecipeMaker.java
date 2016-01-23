@@ -8,8 +8,8 @@ import javax.annotation.Nonnull;
 import com.google.common.collect.Lists;
 
 import net.minecraft.item.ItemStack;
-import net.silentchaos512.funores.recipe.alloysmelter.AlloySmelterRecipe;
-import net.silentchaos512.funores.recipe.alloysmelter.AlloySmelterRecipeObject;
+import net.silentchaos512.funores.api.recipe.alloysmelter.AlloySmelterRecipe;
+import net.silentchaos512.funores.api.recipe.alloysmelter.AlloySmelterRecipeObject;
 
 public class AlloySmelterRecipeMaker {
 

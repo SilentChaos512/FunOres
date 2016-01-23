@@ -17,10 +17,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.oredict.OreDictionary;
 import net.silentchaos512.funores.FunOres;
+import net.silentchaos512.funores.api.recipe.alloysmelter.AlloySmelterRecipe;
+import net.silentchaos512.funores.api.recipe.alloysmelter.AlloySmelterRecipeObject;
 import net.silentchaos512.funores.compat.jei.FunOresPlugin;
 import net.silentchaos512.funores.core.util.LocalizationHelper;
-import net.silentchaos512.funores.recipe.alloysmelter.AlloySmelterRecipe;
-import net.silentchaos512.funores.recipe.alloysmelter.AlloySmelterRecipeObject;
 import net.silentchaos512.funores.tile.TileAlloySmelter;
 
 public class AlloySmelterRecipeCategory implements IRecipeCategory {

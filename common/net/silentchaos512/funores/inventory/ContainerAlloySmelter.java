@@ -10,8 +10,8 @@ import net.minecraft.inventory.SlotFurnaceFuel;
 import net.minecraft.inventory.SlotFurnaceOutput;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
+import net.silentchaos512.funores.api.recipe.alloysmelter.AlloySmelterRecipe;
 import net.silentchaos512.funores.core.util.LogHelper;
-import net.silentchaos512.funores.recipe.alloysmelter.AlloySmelterRecipe;
 import net.silentchaos512.funores.tile.TileAlloySmelter;
 
 public class ContainerAlloySmelter extends Container {

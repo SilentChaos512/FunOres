@@ -1,8 +1,8 @@
 package net.silentchaos512.funores.api;
 
 import net.minecraft.item.ItemStack;
-import net.silentchaos512.funores.recipe.alloysmelter.AlloySmelterRecipe;
-import net.silentchaos512.funores.recipe.alloysmelter.AlloySmelterRecipeObject;
+import net.silentchaos512.funores.api.recipe.alloysmelter.AlloySmelterRecipe;
+import net.silentchaos512.funores.api.recipe.alloysmelter.AlloySmelterRecipeObject;
 
 /**
  * Here I will try my best to create some methods to make interacting with Fun Ores a bit easier.
@@ -12,7 +12,7 @@ import net.silentchaos512.funores.recipe.alloysmelter.AlloySmelterRecipeObject;
  * @author SilentChaos512
  *
  */
-public class API {
+public class FunOresAPI {
 
   public static void addAlloySmelterRecipe(ItemStack output, int cookTime, float experience,
       String... inputs) {

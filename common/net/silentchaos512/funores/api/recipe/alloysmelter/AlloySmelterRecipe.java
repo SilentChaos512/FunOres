@@ -1,4 +1,4 @@
-package net.silentchaos512.funores.recipe.alloysmelter;
+package net.silentchaos512.funores.api.recipe.alloysmelter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,22 +6,14 @@ import java.util.Set;
 
 import com.google.common.collect.Sets;
 
-import net.minecraft.init.Items;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.silentchaos512.funores.configuration.Config;
-import net.silentchaos512.funores.lib.EnumAlloy;
-import net.silentchaos512.funores.lib.EnumMetal;
-import net.silentchaos512.funores.tile.TileAlloySmelter;
 
 public class AlloySmelterRecipe {
 
   public static final ArrayList<AlloySmelterRecipe> allRecipes = new ArrayList<AlloySmelterRecipe>();
   public static final Set<AlloySmelterRecipeObject> allIngredients = Sets.newHashSet();
 
-  public static final int MAX_INPUTS = TileAlloySmelter.SLOTS_INPUT.length;
-  public static final String CONFIG_CATEGORY = "recipe_alloy_smelter";
-  public static final String CONFIG_CATEGORY_COMMENT = "You can disable alloy smelter recipes here. Set to false to disable the recipe.";
+  public static final int MAX_INPUTS = 4;
 
   private AlloySmelterRecipeObject[] inputs;
   private ItemStack output;
@@ -34,42 +26,6 @@ public class AlloySmelterRecipe {
     this.output = output;
     this.cookTime = cookTime;
     this.experience = experience;
-  }
-
-  public static void initRecipes() {
-
-    Config.getConfiguration().setCategoryComment(CONFIG_CATEGORY, CONFIG_CATEGORY_COMMENT);
-
-    addRecipe("Bronze", getIngot(EnumAlloy.BRONZE, 4), 200, 0.5f, "ingotCopper*3", "ingotTin*1");
-    addRecipe("Brass", getIngot(EnumAlloy.BRASS, 4), 200, 0.5f, "ingotCopper*3", "ingotZinc*1");
-    ItemStack coal = new ItemStack(Items.coal);
-    coal.stackSize = 2;
-    addRecipe("Steel", getIngot(EnumAlloy.STEEL, 1), 800, 0.7f, "ingotIron*1", coal);
-    addRecipe("Invar", getIngot(EnumAlloy.INVAR, 3), 400, 0.7f, "ingotIron*2", "ingotNickel*1");
-    addRecipe("Electrum", getIngot(EnumAlloy.ELECTRUM, 2), 400, 1.0f, "ingotGold*1",
-        "ingotSilver*1");
-    ItemStack enderEyes = new ItemStack(Items.ender_eye);
-    enderEyes.stackSize = 4;
-    addRecipe("Enderium", getIngot(EnumAlloy.ENDERIUM, 4), 800, 2.0f, "ingotTin*2", "ingotSilver*1",
-        "ingotPlatinum*1", enderEyes);
-
-    // Test
-    // addRecipe("Test", getIngot(EnumAlloy.STEEL, 5), 300, AlloyIngot.ORE_DICT_COPPER_ALLOY + "*5",
-    // "ingotIron*2");
-  }
-
-  public static ItemStack getIngot(EnumMetal metal, int count) {
-
-    ItemStack result = metal.getIngot();
-    result.stackSize = count;
-    return result;
-  }
-
-  public static ItemStack getIngot(EnumAlloy metal, int count) {
-
-    ItemStack result = metal.getIngot();
-    result.stackSize = count;
-    return result;
   }
 
   /**
@@ -91,34 +47,16 @@ public class AlloySmelterRecipe {
   }
 
   /**
-   * Creates a new AlloySmelterRecipe and a config to disable it in FunOres.cfg. Adds to allRecipes if enabled.
-   * 
-   * @param recipeName
-   * @param output
-   * @param cookTime
-   * @param experience
-   * @param inputs
-   */
-  private static void addRecipe(String recipeName, ItemStack output, int cookTime, float experience,
-      Object... inputs) {
-
-    boolean enabled = Config.getConfiguration().get(CONFIG_CATEGORY, recipeName, true).getBoolean();
-    if (enabled) {
-      addRecipe(output, cookTime, experience, inputs);
-    }
-  }
-
-  /**
    * Gets the first recipe that matches for the given inventory.
    * 
    * @param inv
    *          The alloy smelter inventory.
    * @return The first matching recipe, or null if none match.
    */
-  public static AlloySmelterRecipe getMatchingRecipe(IInventory inv) {
+  public static AlloySmelterRecipe getMatchingRecipe(List<ItemStack> inputs) {
 
     for (AlloySmelterRecipe recipe : allRecipes) {
-      if (recipe.matches(inv)) {
+      if (recipe.matches(inputs)) {
         return recipe;
       }
     }
@@ -143,12 +81,7 @@ public class AlloySmelterRecipe {
    *          The alloy smelter inventory.
    * @return True if the recipe is a match (ie, will smelt), false otherwise.
    */
-  public boolean matches(IInventory inv) {
-
-    // Wrong inventory?
-    if (!(inv instanceof TileAlloySmelter)) {
-      return false;
-    }
+  public boolean matches(List<ItemStack> inputList) {
 
     // No inputs?
     if (inputs.length == 0) {
@@ -159,10 +92,6 @@ public class AlloySmelterRecipe {
     if (output == null) {
       return false;
     }
-
-    // Get inputs
-    TileAlloySmelter tile = (TileAlloySmelter) inv;
-    List<ItemStack> inputList = tile.getInputStacks();
 
     // Check that inputs match recipe. Order does not matter.
     boolean[] matches = new boolean[MAX_INPUTS];

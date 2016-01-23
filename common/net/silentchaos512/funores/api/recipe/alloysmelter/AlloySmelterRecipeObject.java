@@ -1,10 +1,9 @@
-package net.silentchaos512.funores.recipe.alloysmelter;
+package net.silentchaos512.funores.api.recipe.alloysmelter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
 import net.minecraft.item.ItemStack;

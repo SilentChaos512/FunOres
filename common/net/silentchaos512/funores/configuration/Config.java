@@ -72,6 +72,7 @@ public class Config {
   public static final String CATEGORY_VANILLA_ORE = "vanilla_ore";
   public static final String CATEGORY_RECIPE = "Recipe";
   public static final String CATEGORY_MISC = "Misc";
+  public static final String CATEGORY_RECIPE_ALLOY_SMELTER = "recipe_alloy_smelter";
 
   public static final String COMMENT_EXAMPLE = "An example ore with comments on each individual setting.";
   public static final String COMMENT_METAL_ORE = "The metal ores like copper and titanium.";
@@ -79,6 +80,7 @@ public class Config {
   public static final String COMMENT_MOB_ORE = "The mob (hostile mob) ores.";
   public static final String COMMENT_VANILLA_ORE = "Fun Ores can optionally add to or replace vanilla ores. By default, these are all disabled. Defaults if\n"
       + "enabled are set to add to vanilla generation, rather than replace it.";
+  public static final String COMMENT_RECIPE_ALLOY_SMELTER = "You can disable alloy smelter recipes here. Set to false to disable the recipe.";
 
   public static void init(File file) {
 
