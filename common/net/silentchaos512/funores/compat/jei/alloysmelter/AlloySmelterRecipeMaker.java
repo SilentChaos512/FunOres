@@ -8,10 +8,8 @@ import javax.annotation.Nonnull;
 import com.google.common.collect.Lists;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
-import net.silentchaos512.funores.core.util.LogHelper;
-import net.silentchaos512.funores.lib.AlloySmelterRecipe;
-import net.silentchaos512.funores.lib.EnumMetal;
+import net.silentchaos512.funores.recipe.alloysmelter.AlloySmelterRecipe;
+import net.silentchaos512.funores.recipe.alloysmelter.AlloySmelterRecipeObject;
 
 public class AlloySmelterRecipeMaker {
 
@@ -21,14 +19,10 @@ public class AlloySmelterRecipeMaker {
     ArrayList<AlloySmelterRecipeJei> recipes = new ArrayList<AlloySmelterRecipeJei>();
 
     for (AlloySmelterRecipe smelterRecipe : AlloySmelterRecipe.allRecipes) {
-      List inputs = Lists.newArrayList();
+      List<AlloySmelterRecipeObject> inputs = Lists.newArrayList();
 
-      for (Object obj : smelterRecipe.getInputs()) {
-        inputs.add(obj);
-//        ItemStack stack = convertInputToStack(obj);
-//        if (stack != null) {
-//          inputs.add(stack);
-//        }
+      for (AlloySmelterRecipeObject recipeObject : smelterRecipe.getInputs()) {
+        inputs.add(recipeObject);
       }
 
       ItemStack output = smelterRecipe.getOutput();
@@ -38,27 +32,4 @@ public class AlloySmelterRecipeMaker {
 
     return recipes;
   }
-
-//  private static ItemStack convertInputToStack(Object input) {
-//
-//    if (input instanceof String) {
-//      String str = (String) input;
-//      String[] parts = str.split("\\*");
-//
-//      if (parts.length < 2) {
-//        return null;
-//      }
-//
-//      String oreName = parts[0];
-//      int stackSize = AlloySmelterRecipe.getRecipeObjectStackSize(input);
-//
-//      ItemStack result = OreDictionary.getOres(oreName).get(0).copy(); // FIXME?
-//      result.stackSize = stackSize;
-//      LogHelper.list(result, result.getItem(), result.getItemDamage(), result.stackSize);
-//      return result;
-//    } else if (input instanceof ItemStack) {
-//      return (ItemStack) input;
-//    }
-//    return null;
-//  }
 }

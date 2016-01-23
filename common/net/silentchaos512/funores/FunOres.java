@@ -21,12 +21,11 @@ import net.silentchaos512.funores.configuration.Config;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGenBonus;
 import net.silentchaos512.funores.core.proxy.CommonProxy;
 import net.silentchaos512.funores.core.registry.SRegistry;
-import net.silentchaos512.funores.core.util.LogHelper;
 import net.silentchaos512.funores.gui.GuiHandlerFunOres;
 import net.silentchaos512.funores.item.ModItems;
-import net.silentchaos512.funores.lib.AlloySmelterRecipe;
 import net.silentchaos512.funores.lib.ExtraRecipes;
 import net.silentchaos512.funores.lib.ModDamageSources;
+import net.silentchaos512.funores.recipe.alloysmelter.AlloySmelterRecipe;
 import net.silentchaos512.funores.world.FunOresGenerator;
 
 @Mod(modid = FunOres.MOD_ID, name = FunOres.MOD_NAME, version = FunOres.VERSION_NUMBER, useMetadata = true)

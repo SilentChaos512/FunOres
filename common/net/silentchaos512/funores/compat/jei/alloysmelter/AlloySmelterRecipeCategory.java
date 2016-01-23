@@ -19,7 +19,8 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.compat.jei.FunOresPlugin;
 import net.silentchaos512.funores.core.util.LocalizationHelper;
-import net.silentchaos512.funores.lib.AlloySmelterRecipe;
+import net.silentchaos512.funores.recipe.alloysmelter.AlloySmelterRecipe;
+import net.silentchaos512.funores.recipe.alloysmelter.AlloySmelterRecipeObject;
 import net.silentchaos512.funores.tile.TileAlloySmelter;
 
 public class AlloySmelterRecipeCategory implements IRecipeCategory {
@@ -101,22 +102,8 @@ public class AlloySmelterRecipeCategory implements IRecipeCategory {
       // Set inputs
       for (int i = 0; i < wrapper.getInputs().size(); ++i) {
         Object obj = wrapper.getInputs().get(i);
-        if (obj != null && obj instanceof String) {
-          String[] parts = ((String) obj).split("\\*");
-          if (parts.length >= 2) {
-            String oreName = parts[0];
-            int stackSize = AlloySmelterRecipe.getRecipeObjectStackSize(obj);
-            List<ItemStack> ores = new ArrayList<ItemStack>();
-            for (ItemStack stack : OreDictionary.getOres(oreName)) {
-              ItemStack stackCopy = stack.copy();
-              stackCopy.stackSize = stackSize;
-              ores.add(stackCopy);
-            }
-            recipeLayout.getItemStacks().set(i, ores);
-          }
-        } else if (obj != null && obj instanceof ItemStack) {
-          recipeLayout.getItemStacks().set(i, (ItemStack) obj);
-        }
+        AlloySmelterRecipeObject recipeObject = (AlloySmelterRecipeObject) obj;
+        recipeLayout.getItemStacks().set(i, recipeObject.getPossibleItemStacks());
       }
       // Set output
       recipeLayout.getItemStacks().set(TileAlloySmelter.SLOT_OUTPUT, wrapper.getOutputs());

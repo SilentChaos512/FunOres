@@ -1,5 +1,9 @@
 package net.silentchaos512.funores.tile;
 
+import java.util.List;
+
+import com.google.common.collect.Lists;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -19,10 +23,9 @@ import net.minecraft.util.IChatComponent;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import net.silentchaos512.funores.core.util.LogHelper;
 import net.silentchaos512.funores.inventory.ContainerAlloySmelter;
-import net.silentchaos512.funores.lib.AlloySmelterRecipe;
-import net.silentchaos512.funores.lib.EnumMachineState;
+import net.silentchaos512.funores.recipe.alloysmelter.AlloySmelterRecipe;
+import net.silentchaos512.funores.recipe.alloysmelter.AlloySmelterRecipeObject;
 
 public class TileAlloySmelter extends TileEntity implements ITickable, ISidedInventory {
 
@@ -115,12 +118,12 @@ public class TileAlloySmelter extends TileEntity implements ITickable, ISidedInv
 
       // Consume ingredients
       AlloySmelterRecipe recipe = AlloySmelterRecipe.getMatchingRecipe(this);
-      Object[] inputList = recipe.getInputs();
-      for (Object recipeInputObject : inputList) {
+      AlloySmelterRecipeObject[] inputList = recipe.getInputs();
+      for (AlloySmelterRecipeObject recipeObject : inputList) {
         for (int i = 0; i < SLOTS_INPUT.length; ++i) {
           if (stacks[i] != null) {
-            if (recipe.itemStackMatchesForInput(stacks[i], recipeInputObject)) {
-              stacks[i].stackSize -= recipe.getRecipeObjectStackSize(recipeInputObject);
+            if (recipeObject.matches(stacks[i])) {
+              stacks[i].stackSize -= recipeObject.getMatchingStack(stacks[i]).stackSize;
               if (stacks[i].stackSize <= 0) {
                 // stacks[i] = null;
                 stacks[i] = stacks[i].getItem().getContainerItem(stacks[i]);
@@ -145,6 +148,17 @@ public class TileAlloySmelter extends TileEntity implements ITickable, ISidedInv
     }
 
     return null;
+  }
+
+  public List<ItemStack> getInputStacks() {
+
+    List<ItemStack> result = Lists.newArrayList();
+    for (int i = 0; i < SLOTS_INPUT.length; ++i) {
+      if (stacks[i] != null) {
+        result.add(stacks[i]);
+      }
+    }
+    return result;
   }
 
   @Override
