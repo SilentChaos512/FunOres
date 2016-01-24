@@ -1,5 +1,8 @@
 package net.silentchaos512.funores.gui;
 
+import org.lwjgl.opengl.GL11;
+
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -10,6 +13,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.inventory.ContainerMetalFurnace;
+import net.silentchaos512.funores.tile.TileAlloySmelter;
+import net.silentchaos512.funores.tile.TileMetalFurnace;
 
 @SideOnly(Side.CLIENT)
 public class GuiMetalFurnace extends GuiContainer {
@@ -53,6 +58,8 @@ public class GuiMetalFurnace extends GuiContainer {
 
     i1 = this.func_175381_h(24);
     this.drawTexturedModalRect(k + 79, l + 34, 176, 14, i1 + 1, 16);
+
+    drawDebugInfo();
   }
 
   private int func_175381_h(int p_175381_1_) {
@@ -71,5 +78,28 @@ public class GuiMetalFurnace extends GuiContainer {
     }
 
     return this.tileFurnace.getField(0) * p_175382_1_ / j;
+  }
+
+  private void drawDebugInfo() {
+
+    if (!(tileFurnace instanceof TileMetalFurnace)) {
+      return;
+    }
+
+    TileMetalFurnace tile = (TileMetalFurnace) tileFurnace;
+    FontRenderer fontRender = mc.fontRendererObj;
+    int x = 5;
+    int y = 5;
+    int yIncrement = 10;
+    int color = 0xFFFFFF;
+
+    GL11.glPushMatrix();
+    float scale = 0.75f;
+    GL11.glScalef(scale, scale, 1f);
+    for (String str : tile.getDebugLines()) {
+      fontRender.drawStringWithShadow(str, x, y, color);
+      y += yIncrement;
+    }
+    GL11.glPopMatrix();
   }
 }

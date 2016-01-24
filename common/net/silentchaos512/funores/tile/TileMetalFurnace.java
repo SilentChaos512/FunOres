@@ -2,6 +2,8 @@ package net.silentchaos512.funores.tile;
 
 import java.util.List;
 
+import com.google.common.collect.Lists;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -25,6 +27,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 import net.silentchaos512.funores.FunOres;
+import net.silentchaos512.funores.core.util.LogHelper;
 import net.silentchaos512.funores.inventory.ContainerMetalFurnace;
 
 public class TileMetalFurnace extends TileEntity implements ITickable, ISidedInventory {
@@ -48,6 +51,29 @@ public class TileMetalFurnace extends TileEntity implements ITickable, ISidedInv
   private int currentItemBurnTime;
   private int cookTime;
   private int totalCookTime;
+
+  public List<String> getDebugLines() {
+
+    String sep = "-----------------------";
+    List<String> list = Lists.newArrayList();
+    list.add("DEBUG INFO:");
+    list.add(sep);
+    list.add("furnaceBurnTime = " + furnaceBurnTime);
+    list.add("currentItemBurnTime = " + currentItemBurnTime);
+    list.add("cookTime = " + cookTime);
+    list.add("totalCookTime = " + totalCookTime);
+    ItemStack output1 = getPrimaryOutput();
+    ItemStack output2 = getSecondaryOutput();
+    list.add("output1 = " + (output1 == null ? "null" : output1.getDisplayName()));
+    list.add("output2 = " + (output2 == null ? "null" : output2.getDisplayName()));
+    list.add("canSmelt = " + canSmelt());
+    list.add(sep);
+    list.add("COOK_TIME_NO_SECONDARY = " + COOK_TIME_NO_SECONDARY);
+    list.add("COOK_TIME_WITH_SECONDARY = " + COOK_TIME_WITH_SECONDARY);
+    list.add("BONUS_NUGGETS_MIN = " + BONUS_NUGGETS_MIN);
+    list.add("BONUS_NUGGETS_MAX = " + BONUS_NUGGETS_MAX);
+    return list;
+  }
 
   public int getCookTime() {
 
@@ -360,6 +386,15 @@ public class TileMetalFurnace extends TileEntity implements ITickable, ISidedInv
     return inventory.getField(0) > 0;
   }
 
+  public ItemStack getPrimaryOutput() {
+
+    ItemStack inputStack = stacks[SLOT_INPUT];
+    if (inputStack == null) {
+      return null;
+    }
+    return FurnaceRecipes.instance().getSmeltingResult(inputStack);
+  }
+
   public ItemStack getSecondaryOutput() {
 
     ItemStack inputStack = this.stacks[SLOT_INPUT];
@@ -402,14 +437,17 @@ public class TileMetalFurnace extends TileEntity implements ITickable, ISidedInv
 
   private boolean canSmelt() {
 
-    if (this.stacks[SLOT_INPUT] == null) {
+    if (stacks[SLOT_INPUT] == null) {
       return false;
     } else {
-      ItemStack inputStack = this.stacks[SLOT_INPUT];
-      ItemStack outputPrimary = FurnaceRecipes.instance().getSmeltingResult(inputStack);
-      ItemStack outputSecondary = this.getSecondaryOutput(); // FIXME: Set to max secondary size?
-      ItemStack outputSlot1 = this.stacks[SLOT_OUTPUT_1];
-      ItemStack outputSlot2 = this.stacks[SLOT_OUTPUT_2];
+      ItemStack inputStack = stacks[SLOT_INPUT];
+      ItemStack outputPrimary = getPrimaryOutput();
+      ItemStack outputSecondary = getSecondaryOutput();
+      if (outputSecondary != null) {
+        outputSecondary.stackSize = BONUS_NUGGETS_MAX;
+      }
+      ItemStack outputSlot1 = stacks[SLOT_OUTPUT_1];
+      ItemStack outputSlot2 = stacks[SLOT_OUTPUT_2];
 
       if (outputPrimary == null) {
         return false;
@@ -419,26 +457,29 @@ public class TileMetalFurnace extends TileEntity implements ITickable, ISidedInv
         return true;
       }
 
-      boolean output1ClearOrSame = outputSlot1 != null && outputSlot1.isItemEqual(outputPrimary);
-      boolean output2ClearOrSame = outputSecondary == null
+      boolean output1ClearOrSame = outputSlot1 == null
+          || (outputSlot1 != null && outputSlot1.isItemEqual(outputPrimary));
+      boolean output2ClearOrSame = outputSecondary == null || outputSlot2 == null
           || (outputSlot2 != null && outputSlot2.isItemEqual(outputSecondary));
       if (!output1ClearOrSame || !output2ClearOrSame) {
+        // LogHelper.list(output1ClearOrSame, output2ClearOrSame);
         return false;
       }
 
-      int newSize1 = outputSlot1.stackSize + outputPrimary.stackSize;
+      int newSize1 = outputSlot1 == null ? 0 : outputSlot1.stackSize + outputPrimary.stackSize;
+      int maxSize1 = outputPrimary.getMaxStackSize();
       int newSize2 = 0;
+      int maxSize2 = outputSecondary == null ? 64 : outputSecondary.getMaxStackSize();
       if (outputSecondary != null) {
-        newSize2 = outputSlot2.stackSize + outputSecondary.stackSize;
+        newSize2 = (outputSlot2 == null ? 0 : outputSlot2.stackSize) + outputSecondary.stackSize;
       }
-      boolean flag1 = newSize1 <= getInventoryStackLimit()
-          && newSize1 <= outputSlot1.getMaxStackSize();
-      boolean flag2;
-      if (outputSlot2 == null) {
-        flag2 = true;
-      } else {
-        flag2 = newSize2 <= getInventoryStackLimit() && newSize2 <= outputSlot2.getMaxStackSize();
-      }
+      boolean flag1 = newSize1 <= getInventoryStackLimit() && newSize1 <= maxSize1;
+      boolean flag2 = newSize2 <= getInventoryStackLimit() && newSize2 <= maxSize2;
+      // if (outputSlot2 == null) {
+      // flag2 = true;
+      // } else {
+      // flag2 = newSize2 <= getInventoryStackLimit() && newSize2 <= outputSlot2.getMaxStackSize();
+      // }
       return flag1 && flag2;
     }
   }
@@ -446,8 +487,7 @@ public class TileMetalFurnace extends TileEntity implements ITickable, ISidedInv
   public void smeltItem() {
 
     if (this.canSmelt()) {
-      ItemStack outputPrimary = FurnaceRecipes.instance()
-          .getSmeltingResult(this.stacks[SLOT_INPUT]);
+      ItemStack outputPrimary = getPrimaryOutput();
       ItemStack outputSecondary = getSecondaryOutput();
 
       if (this.stacks[SLOT_OUTPUT_1] == null) {

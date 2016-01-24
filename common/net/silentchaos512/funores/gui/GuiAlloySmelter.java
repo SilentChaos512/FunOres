@@ -1,5 +1,7 @@
 package net.silentchaos512.funores.gui;
 
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -77,9 +79,14 @@ public class GuiAlloySmelter extends GuiContainer {
     int y = 5;
     int yIncrement = 10;
     int color = 0xFFFFFF;
+
+    GL11.glPushMatrix();
+    float scale = 0.75f;
+    GL11.glScalef(scale, scale, 1f);
     for (String str : tile.getDebugLines()) {
       fontRender.drawStringWithShadow(str, x, y, color);
       y += yIncrement;
     }
+    GL11.glPopMatrix();
   }
 }
