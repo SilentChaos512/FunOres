@@ -53,6 +53,7 @@ public class TileAlloySmelter extends TileEntity implements ITickable, ISidedInv
   public List<String> getDebugLines() {
 
     List<String> list = Lists.newArrayList();
+    list.add("DEBUG INFO:");
     list.add("furnaceBurnTime = " + furnaceBurnTime);
     list.add("currentItemBurnTime = " + currentItemBurnTime);
     list.add("cookTime = " + cookTime);
