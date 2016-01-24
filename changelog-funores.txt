@@ -7,6 +7,7 @@ Added: Gears and Plates. They are registered in the ore dictionary, of course. T
 Added: A hammer. Currently just used to make plates, might have other uses later.
 Added: Machines may be hot! Careful where you step! (configurable)
 Added: The mod will now yell at you if your config contains mistakes (malformed item keys) in the ore drop settings.
+Added: Configs to quickly disable all ores from one category (under _quick_tweaks at top of file)
 Added: JEI descriptions for Metal Furnace and Alloy Smelter.
 Added: New textures for lit metal furnace. Finally. Also animated!
 Added: An API. First time doing something like this, feel free to yell (politely) if I'm doing it wrong.

@@ -11,9 +11,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.silentchaos512.funores.block.ModBlocks;
+import net.silentchaos512.funores.configuration.Config;
 import net.silentchaos512.funores.configuration.ConfigItemDrop;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGenBonus;
 import net.silentchaos512.funores.core.util.LocalizationHelper;
+import net.silentchaos512.funores.core.util.LogHelper;
 import net.silentchaos512.funores.lib.EnumMeat;
 import net.silentchaos512.funores.lib.EnumMob;
 
@@ -27,32 +29,32 @@ public class ItemBlockOreDrops extends ItemBlockSG {
   @Override
   public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean advanced) {
 
+    ConfigOptionOreGenBonus config;
+
+    if (this.block == ModBlocks.meatOre) {
+      config = EnumMeat.values()[stack.getItemDamage()].getConfig();
+    } else if (this.block == ModBlocks.mobOre) {
+      config = EnumMob.values()[stack.getItemDamage()].getConfig();
+    } else {
+      list.add("Wrong ItemBlock class?");
+      return;
+    }
+
+    if (!isOreEnabled(config)) {
+      list.add(EnumChatFormatting.DARK_BLUE + LocalizationHelper.getMiscText("Disabled"));
+      return;
+    }
+
     boolean shifted = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)
         || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT);
-
     if (shifted) {
-      ConfigOptionOreGenBonus config;
+      list.add(EnumChatFormatting.DARK_BLUE + LocalizationHelper.getMiscText("PossibleDrops"));
 
-      if (this.block == ModBlocks.meatOre) {
-        config = EnumMeat.values()[stack.getItemDamage()].getConfig();
-      } else if (this.block == ModBlocks.mobOre) {
-        config = EnumMob.values()[stack.getItemDamage()].getConfig();
-      } else {
-        list.add("Wrong ItemBlock class?");
-        return;
-      }
-
-      if (config.enabled) {
-        list.add(EnumChatFormatting.DARK_BLUE + LocalizationHelper.getMiscText("PossibleDrops"));
-
-        for (ConfigItemDrop drop : config.drops) {
-          String str = drop.stack.getUnlocalizedName() + ".name";
-          str = StatCollector.translateToLocal(str);
-          EnumChatFormatting format = this.getRarityColor(drop);
-          list.add(format + str);
-        }
-      } else {
-        list.add(EnumChatFormatting.DARK_BLUE + LocalizationHelper.getMiscText("Disabled"));
+      for (ConfigItemDrop drop : config.drops) {
+        String str = drop.stack.getUnlocalizedName() + ".name";
+        str = StatCollector.translateToLocal(str);
+        EnumChatFormatting format = this.getRarityColor(drop);
+        list.add(format + str);
       }
     } else {
       list.add(EnumChatFormatting.ITALIC + LocalizationHelper.getMiscText("PressShift"));
@@ -70,5 +72,17 @@ public class ItemBlockOreDrops extends ItemBlockSG {
     } else {
       return EnumRarity.COMMON.rarityColor;
     }
+  }
+
+  private boolean isOreEnabled(ConfigOptionOreGenBonus config) {
+
+    if (block == ModBlocks.meatOre && Config.disableMeatOres) {
+      return false;
+    }
+    if (block == ModBlocks.mobOre && Config.disableMobOres) {
+      return false;
+    }
+
+    return config.enabled;
   }
 }

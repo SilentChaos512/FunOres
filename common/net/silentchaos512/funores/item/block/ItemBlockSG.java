@@ -10,6 +10,8 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumChatFormatting;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.block.BlockSG;
+import net.silentchaos512.funores.block.ModBlocks;
+import net.silentchaos512.funores.configuration.Config;
 import net.silentchaos512.funores.core.util.LocalizationHelper;
 
 public class ItemBlockSG extends ItemBlock {
@@ -41,6 +43,11 @@ public class ItemBlockSG extends ItemBlock {
 
   @Override
   public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4) {
+
+    // Disabled metal ore?
+    if (block == ModBlocks.metalOre && Config.disableMetalOres) {
+      list.add(EnumChatFormatting.DARK_BLUE + LocalizationHelper.getMiscText("Disabled"));
+    }
 
     int i = 1;
     String s = LocalizationHelper.getBlockDescription(itemName, i);

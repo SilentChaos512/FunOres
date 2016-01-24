@@ -12,6 +12,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraftforge.fml.common.IWorldGenerator;
+import net.silentchaos512.funores.configuration.Config;
 import net.silentchaos512.funores.configuration.ConfigOption;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGen;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGenReplace;
@@ -31,77 +32,51 @@ public class FunOresGenerator implements IWorldGenerator {
     int dimension = world.provider.getDimensionId();
     int x = 16 * chunkX;
     int z = 16 * chunkZ;
+    generateForDimension(dimension, world, random, x, z);
+  }
 
-    switch (dimension) {
+  private void generateForDimension(final int dim, World world, Random random, int posX, int posZ) {
+
+    Predicate predicate;
+    switch (dim) {
       case -1:
-        generateNether(world, random, x, z);
-        break;
-      case 0:
-        generateSurface(world, random, x, z);
-        break;
+        predicate = BlockHelper.forBlock(Blocks.netherrack);
       case 1:
-        generateEnd(world, random, x, z);
-        break;
+        predicate = BlockHelper.forBlock(Blocks.end_stone);
       default:
-        generateSurface(world, random, x, z);;
+        predicate = BlockHelper.forBlock(Blocks.stone);
     }
-  }
 
-  private void generateSurface(World world, Random random, int posX, int posZ) {
-
-    final int dim = 0;
+    // Vanilla
     for (EnumVanillaOre vanilla : EnumVanillaOre.values()) {
       if (vanilla.dimension == dim) {
         generateOre(vanilla.getConfig(), world, random, posX, posZ);
       }
     }
-    for (EnumMetal metal : EnumMetal.values()) {
-      if (metal.dimension == dim) {
-        generateOre(metal.getConfig(), world, random, posX, posZ);
+    // Metal
+    if (!Config.disableMetalOres) {
+      for (EnumMetal metal : EnumMetal.values()) {
+        if (metal.dimension == dim) {
+          generateOre(metal.getConfig(), world, random, posX, posZ, predicate);
+        }
       }
     }
-    for (EnumMeat meat : EnumMeat.values()) {
-      if (meat.dimension == dim) {
-        generateOre(meat.getConfig(), world, random, posX, posZ);
+    // Meat
+    if (!Config.disableMeatOres) {
+      for (EnumMeat meat : EnumMeat.values()) {
+        if (meat.dimension == dim) {
+          generateOre(meat.getConfig(), world, random, posX, posZ, predicate);
+        }
       }
     }
-    for (EnumMob mob : EnumMob.values()) {
-      if (mob.dimension == dim) {
-        generateOre(mob.getConfig(), world, random, posX, posZ);
+    // Mob
+    if (!Config.disableMobOres) {
+      for (EnumMob mob : EnumMob.values()) {
+        if (mob.dimension == dim) {
+          generateOre(mob.getConfig(), world, random, posX, posZ, predicate);
+        }
       }
     }
-  }
-
-  private void generateNether(World world, Random random, int posX, int posZ) {
-
-    Predicate predicate = BlockHelper.forBlock(Blocks.netherrack);
-
-    final int dim = -1;
-    for (EnumVanillaOre vanilla : EnumVanillaOre.values()) {
-      if (vanilla.dimension == dim) {
-        generateOre(vanilla.getConfig(), world, random, posX, posZ);
-      }
-    }
-    for (EnumMetal metal : EnumMetal.values()) {
-      if (metal.dimension == dim) {
-        generateOre(metal.getConfig(), world, random, posX, posZ, predicate);
-      }
-    }
-    for (EnumMeat meat : EnumMeat.values()) {
-      if (meat.dimension == dim) {
-        generateOre(meat.getConfig(), world, random, posX, posZ, predicate);
-      }
-    }
-    for (EnumMob mob : EnumMob.values()) {
-      if (mob.dimension == dim) {
-        generateOre(mob.getConfig(), world, random, posX, posZ, predicate);
-      }
-    }
-  }
-
-  private void generateEnd(World world, Random random, int posX, int posZ) {
-
-    // Nothing
   }
 
   public void generateOre(ConfigOptionOreGen ore, World world, Random random, int posX, int posZ) {
@@ -111,7 +86,7 @@ public class FunOresGenerator implements IWorldGenerator {
 
   public void generateOre(ConfigOptionOreGen ore, World world, Random random, int posX, int posZ,
       Predicate predicate) {
-    
+
     if (!ore.enabled) {
       return;
     }
@@ -120,7 +95,7 @@ public class FunOresGenerator implements IWorldGenerator {
       LogHelper.debug(ore.oreName + " is not an ore?");
       return;
     }
-    
+
     if (ore instanceof ConfigOptionOreGenReplace) {
       ConfigOptionOreGenReplace oreGenReplace = (ConfigOptionOreGenReplace) ore;
       if (oreGenReplace.replaceExisting) {
@@ -145,13 +120,13 @@ public class FunOresGenerator implements IWorldGenerator {
       }
     }
   }
-  
+
   private void removeExistingOres(ConfigOptionOreGenReplace ore, World world, int posX, int posZ) {
 
     IBlockState state = ((IHasOre) ore.ore).getOre();
     IBlockState stone = Blocks.stone.getDefaultState();
     BlockPos pos;
-    
+
     int maxHeight = 256;
     if (ore.ore instanceof EnumVanillaOre) {
       EnumVanillaOre vanilla = (EnumVanillaOre) ore.ore;
@@ -164,7 +139,7 @@ public class FunOresGenerator implements IWorldGenerator {
           pos = new BlockPos(posX + x, y, posZ + z);
           if (world.getBlockState(pos) == state) {
             world.setBlockState(pos, stone);
-//            LogHelper.debug(pos + ", " + state);
+            // LogHelper.debug(pos + ", " + state);
           }
         }
       }

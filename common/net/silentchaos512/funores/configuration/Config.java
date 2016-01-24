@@ -12,6 +12,11 @@ import net.silentchaos512.funores.lib.ExtraRecipes;
 
 public class Config {
 
+  // Quick tweaks
+  public static boolean disableMetalOres = false;
+  public static boolean disableMeatOres = false;
+  public static boolean disableMobOres = false;
+
   // Misc
   public static boolean machinesCanBurn = true;
 
@@ -74,6 +79,7 @@ public class Config {
   public static final String CATEGORY_RECIPE = "Recipe";
   public static final String CATEGORY_MISC = "Misc";
   public static final String CATEGORY_RECIPE_ALLOY_SMELTER = "recipe_alloy_smelter";
+  public static final String CATEGORY_QUICK_TWEAKS = "_quick_tweaks";
 
   public static final String COMMENT_EXAMPLE = "An example ore with comments on each individual setting.";
   public static final String COMMENT_METAL_ORE = "The metal ores like copper and titanium.";
@@ -82,6 +88,7 @@ public class Config {
   public static final String COMMENT_VANILLA_ORE = "Fun Ores can optionally add to or replace vanilla ores. By default, these are all disabled. Defaults if\n"
       + "enabled are set to add to vanilla generation, rather than replace it.";
   public static final String COMMENT_RECIPE_ALLOY_SMELTER = "You can disable alloy smelter recipes here. Set to false to disable the recipe.";
+  public static final String COMMENT_QUICK_TWEAKS = "Some settings to quickly make large changes to the mod.";
 
   public static void init(File file) {
 
@@ -90,6 +97,19 @@ public class Config {
     try {
       c.load();
       ExtraRecipes.config = c;
+
+      /*
+       * Quick tweaks
+       */
+
+      c.setCategoryComment(CATEGORY_QUICK_TWEAKS, COMMENT_QUICK_TWEAKS);
+
+      disableMetalOres = c.getBoolean("DisableMetalOres", CATEGORY_QUICK_TWEAKS, disableMetalOres,
+          "Disable all metal ores (copper, tin, etc.)");
+      disableMeatOres = c.getBoolean("DisableMeatOres", CATEGORY_QUICK_TWEAKS, disableMeatOres,
+          "Disable all meat (passive mob) ores.");
+      disableMobOres = c.getBoolean("DisableMobOres", CATEGORY_QUICK_TWEAKS, disableMobOres,
+          "Disable all mob (hostile mob) ores.");
 
       /*
        * Misc configs
@@ -371,8 +391,10 @@ public class Config {
       guardian.rarity = mobRarity;
       guardian.addDrop(ConfigItemDrop.getKey("minecraft:prismarine_shard", 1, 0, 1f, 0f, 1.2f));
       guardian.addDrop(ConfigItemDrop.getKey("minecraft:prismarine_shard", 1, 0, 0.25f, 0f, 0.5f));
-      guardian.addDrop(ConfigItemDrop.getKey("minecraft:prismarine_crystals", 1, 0, 0.7f, 0.1f, 0.5f));
-      guardian.addDrop(ConfigItemDrop.getKey("minecraft:prismarine_crystals", 1, 0, 0.1f, 0f, 0.4f));
+      guardian
+          .addDrop(ConfigItemDrop.getKey("minecraft:prismarine_crystals", 1, 0, 0.7f, 0.1f, 0.5f));
+      guardian
+          .addDrop(ConfigItemDrop.getKey("minecraft:prismarine_crystals", 1, 0, 0.1f, 0f, 0.4f));
       guardian.addDrop(ConfigItemDrop.getKey("minecraft:sponge", 1, 0, 0.005f, 0.0005f, 0f));
       guardian.loadValue(c, CATEGORY_MOB_ORE);
 
