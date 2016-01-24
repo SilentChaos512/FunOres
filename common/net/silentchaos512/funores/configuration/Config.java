@@ -48,6 +48,7 @@ public class Config {
   public static ConfigOptionOreGenBonus magmaCube = new ConfigOptionOreGenBonus(EnumMob.MAGMA_CUBE);
   public static ConfigOptionOreGenBonus wither = new ConfigOptionOreGenBonus(EnumMob.WITHER);
   public static ConfigOptionOreGenBonus blaze = new ConfigOptionOreGenBonus(EnumMob.BLAZE);
+  public static ConfigOptionOreGenBonus guardian = new ConfigOptionOreGenBonus(EnumMob.GUARDIAN);
 
   // Vanilla ores
   public static ConfigOptionOreGenReplace iron = new ConfigOptionOreGenReplace(EnumVanillaOre.IRON);
@@ -361,6 +362,19 @@ public class Config {
       witch.addDrop(ConfigItemDrop.getKey("minecraft:sugar", 2, 0, 1.0f, 0.0f, 1.0f));
       witch.pick = 2;
       witch.loadValue(c, CATEGORY_MOB_ORE);
+
+      guardian.enabled = true;
+      guardian.clusterCount = mobClusterCount;
+      guardian.clusterSize = mobClusterSize;
+      guardian.minY = mobMinY;
+      guardian.maxY = mobMaxY;
+      guardian.rarity = mobRarity;
+      guardian.addDrop(ConfigItemDrop.getKey("minecraft:prismarine_shard", 1, 0, 1f, 0f, 1.2f));
+      guardian.addDrop(ConfigItemDrop.getKey("minecraft:prismarine_shard", 1, 0, 0.25f, 0f, 0.5f));
+      guardian.addDrop(ConfigItemDrop.getKey("minecraft:prismarine_crystals", 1, 0, 0.7f, 0.1f, 0.5f));
+      guardian.addDrop(ConfigItemDrop.getKey("minecraft:prismarine_crystals", 1, 0, 0.1f, 0f, 0.4f));
+      guardian.addDrop(ConfigItemDrop.getKey("minecraft:sponge", 1, 0, 0.005f, 0.0005f, 0f));
+      guardian.loadValue(c, CATEGORY_MOB_ORE);
 
       // Nether
 

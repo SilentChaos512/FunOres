@@ -55,6 +55,7 @@ tile.funores:MobOre8.name=Ghast Ore
 tile.funores:MobOre9.name=Magma Cube Ore
 tile.funores:MobOre10.name=Wither Ore
 tile.funores:MobOre11.name=Blaze Ore
+tile.funores:MobOre12.name=Guardian Ore
 
 # Item localizations
 

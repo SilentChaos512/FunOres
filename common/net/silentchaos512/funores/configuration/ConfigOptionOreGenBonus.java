@@ -144,27 +144,34 @@ public class ConfigOptionOreGenBonus extends ConfigOptionOreGen {
 
     // Check for correctly formed key.
     if (values.length != 6) {
-      LogHelper.warning("Malformed item key (must be a 6-tuple): " + original);
+      String error = "Item key must have 6 elements (has %d): %s";
+      error = String.format(error, values.length, input);
+      ConfigItemDrop.errorList.add(error);
       return null;
     }
 
     // Get item
     Item item = Item.getByNameOrId(values[0]);
     if (item == null) {
-      LogHelper.warning("Malformed item key: item " + values[0] + " could not be found!");
+      String error = "Item \"%s\" not found: %s";
+      error = String.format(error, values[0], input);
+      ConfigItemDrop.errorList.add(error);
       return null;
     }
     // Get stack size and meta
     int count = -1;
     int meta = -1;
+    int currentIndex = 0;
     String s = "";
     try {
-      s = values[1].trim();
+      s = values[currentIndex = 1].trim();
       count = Integer.parseInt(s);
-      s = values[2].trim();
+      s = values[currentIndex = 2].trim();
       meta = Integer.parseInt(s);
     } catch (NumberFormatException ex) {
-      LogHelper.warning("Malformed item key: could not parse " + s + " as an integer!");
+      String error = "Could not parse \"%s\" as integer: %s";
+      error = String.format(error, values[currentIndex], input);
+      ConfigItemDrop.errorList.add(error);
       return null;
     }
 
@@ -174,14 +181,16 @@ public class ConfigOptionOreGenBonus extends ConfigOptionOreGen {
     float chanceBonus;
     s = "";
     try {
-      s = values[3].trim();
+      s = values[currentIndex = 3].trim();
       chance = Float.parseFloat(s);
-      s = values[4].trim();
+      s = values[currentIndex = 4].trim();
       chanceBonus = Float.parseFloat(s);
-      s = values[5].trim();
+      s = values[currentIndex = 5].trim();
       countBonus = Float.parseFloat(s);
     } catch (NumberFormatException ex) {
-      LogHelper.warning("Malformed item key: could not parse " + s + " as a float!");
+      String error = "Could not parse \"%s\" as float: %s";
+      error = String.format(error, values[currentIndex], input);
+      ConfigItemDrop.errorList.add(error);
       return null;
     }
 

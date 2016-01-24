@@ -11,6 +11,7 @@
     "mob=ghast": { "model": "FunOres:OreGhast" },
     "mob=magmacube": { "model": "FunOres:OreMagmaCube" },
     "mob=wither": { "model": "FunOres:OreWither" },
-    "mob=blaze": { "model": "FunOres:OreBlaze" }
+    "mob=blaze": { "model": "FunOres:OreBlaze" },
+    "mob=guardian": { "model": "FunOres:OreGuardian" }
   }
 }

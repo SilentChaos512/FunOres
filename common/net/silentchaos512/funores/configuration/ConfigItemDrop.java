@@ -1,12 +1,21 @@
 package net.silentchaos512.funores.configuration;
 
+import java.util.List;
 import java.util.Random;
 
+import com.google.common.collect.Lists;
+
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumChatFormatting;
+import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.core.util.LogHelper;
 
 public class ConfigItemDrop {
+
+  public static List<String> errorList = Lists.newArrayList();
 
   public final ItemStack stack;
   public final float fortuneCountBonus;
@@ -43,9 +52,39 @@ public class ConfigItemDrop {
 
   public static String getKey(String itemName, int count, int meta, float baseChance,
       float fortuneChanceBonus, float fortuneCountBonus) {
-    
-//    LogHelper.debug(Item.getByNameOrId(itemName).getUnlocalizedName());
+
+    // LogHelper.debug(Item.getByNameOrId(itemName).getUnlocalizedName());
     return String.format("%s, %d, %d, %.3f, %.3f, %.3f", itemName, count, meta, baseChance,
         fortuneChanceBonus, fortuneCountBonus);
+  }
+
+  public static final String ERROR_WARNING_MESSAGE = "You have %d malformed item drop keys in your config file! They will not work unless fixed!";
+
+  public static void listErrorsInLog() {
+
+    if (errorList.isEmpty()) {
+      return;
+    }
+
+    LogHelper.warning(String.format(ERROR_WARNING_MESSAGE, errorList.size()));
+
+    for (String error : errorList) {
+      LogHelper.warning(error);
+    }
+  }
+
+  public static void listErrorsInChat(EntityPlayer player) {
+
+    if (errorList.isEmpty()) {
+      return;
+    }
+
+    String prefix = String.format("[%s] ", FunOres.MOD_ID);
+    String str = String.format(ERROR_WARNING_MESSAGE, errorList.size());
+    player.addChatMessage(new ChatComponentText(EnumChatFormatting.DARK_RED + prefix + str));
+
+    for (String error : errorList) {
+      player.addChatMessage(new ChatComponentText(prefix + error));
+    }
   }
 }

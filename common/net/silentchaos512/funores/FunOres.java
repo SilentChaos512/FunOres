@@ -6,9 +6,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ChatComponentText;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -16,12 +19,14 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.silentchaos512.funores.api.FunOresAPI;
-import net.silentchaos512.funores.api.recipe.alloysmelter.AlloySmelterRecipe;
 import net.silentchaos512.funores.block.ModBlocks;
 import net.silentchaos512.funores.configuration.Config;
+import net.silentchaos512.funores.configuration.ConfigItemDrop;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGenBonus;
 import net.silentchaos512.funores.core.proxy.CommonProxy;
 import net.silentchaos512.funores.core.registry.SRegistry;
@@ -62,6 +67,7 @@ public class FunOres {
     proxy.preInit();
 
     NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandlerFunOres());
+    FMLCommonHandler.instance().bus().register(this);
   }
 
   @EventHandler
@@ -84,6 +90,16 @@ public class FunOres {
     proxy.postInit();
 
     ConfigOptionOreGenBonus.initItemKeys();
+    ConfigItemDrop.listErrorsInLog();
+  }
+
+  @SubscribeEvent
+  public void onPlayerLoggedIn(PlayerLoggedInEvent event) {
+
+    EntityPlayer player = event.player;
+    if (player != null) {
+      ConfigItemDrop.listErrorsInChat(player);
+    }
   }
 
   /*
