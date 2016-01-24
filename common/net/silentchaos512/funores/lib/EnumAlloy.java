@@ -12,7 +12,8 @@ public enum EnumAlloy implements IStringSerializable, IMetal {
   STEEL(2, "Steel"),
   INVAR(3, "Invar"),
   ELECTRUM(4, "Electrum"),
-  ENDERIUM(5, "Enderium");
+  ENDERIUM(5, "Enderium"),
+  PRISMARIINIUM(6, "Prismarinium");
 
   private final int meta;
   private final String name;
@@ -82,14 +83,12 @@ public enum EnumAlloy implements IStringSerializable, IMetal {
   @Override
   public ItemStack getPlate() {
 
-    // TODO Auto-generated method stub
-    return null;
+    return new ItemStack(ModItems.plateAlloy, 1, meta);
   }
 
   @Override
   public ItemStack getGear() {
 
-    // TODO Auto-generated method stub
-    return null;
+    return new ItemStack(ModItems.gearAlloy, 1, meta);
   }
 }

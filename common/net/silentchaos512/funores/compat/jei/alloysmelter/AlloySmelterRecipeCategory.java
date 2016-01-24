@@ -89,7 +89,6 @@ public class AlloySmelterRecipeCategory implements IRecipeCategory {
   @Override
   public void setRecipe(IRecipeLayout recipeLayout, IRecipeWrapper recipeWrapper) {
 
-    // TODO Auto-generated method stub
     recipeLayout.getItemStacks().init(0, true, 25, 0);
     recipeLayout.getItemStacks().init(1, true, 43, 0);
     recipeLayout.getItemStacks().init(2, true, 25, 18);

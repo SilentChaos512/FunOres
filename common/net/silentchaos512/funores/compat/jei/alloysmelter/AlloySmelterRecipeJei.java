@@ -33,7 +33,6 @@ public class AlloySmelterRecipeJei extends BlankRecipeWrapper {
   @Override
   public List getInputs() {
 
-    // Test
     List<ItemStack> list = Lists.newArrayList();
     for (AlloySmelterRecipeObject recipeObject : inputs) {
       list.addAll(recipeObject.getPossibleItemStacks());

@@ -10,7 +10,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -24,6 +23,7 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.silentchaos512.funores.api.FunOresAPI;
+import net.silentchaos512.funores.api.recipe.alloysmelter.AlloySmelterRecipeObject;
 import net.silentchaos512.funores.block.ModBlocks;
 import net.silentchaos512.funores.configuration.Config;
 import net.silentchaos512.funores.configuration.ConfigItemDrop;
@@ -34,7 +34,6 @@ import net.silentchaos512.funores.gui.GuiHandlerFunOres;
 import net.silentchaos512.funores.item.ModItems;
 import net.silentchaos512.funores.lib.EnumAlloy;
 import net.silentchaos512.funores.lib.ExtraRecipes;
-import net.silentchaos512.funores.lib.IMetal;
 import net.silentchaos512.funores.lib.ModDamageSources;
 import net.silentchaos512.funores.world.FunOresGenerator;
 
@@ -74,7 +73,6 @@ public class FunOres {
   public void load(FMLInitializationEvent event) {
 
     SRegistry.addRecipesAndOreDictEntries();
-    initAlloySmelterRecipes();
     ExtraRecipes.init();
 
     Config.save();
@@ -88,6 +86,7 @@ public class FunOres {
   public void postInit(FMLPostInitializationEvent event) {
 
     proxy.postInit();
+    initAlloySmelterRecipes();
 
     ConfigOptionOreGenBonus.initItemKeys();
     ConfigItemDrop.listErrorsInLog();
@@ -111,50 +110,56 @@ public class FunOres {
     //@formatter:off
 
     addAlloySmelterRecipe(
-        "Bronze", getIngot(EnumAlloy.BRONZE, 4), 200, 0.5f,
+        EnumAlloy.BRONZE.getName(), EnumAlloy.BRONZE.getIngot(), 4,
+        200, 0.5f,
         "ingotCopper*3", "ingotTin*1");
 
     addAlloySmelterRecipe(
-        "Brass", getIngot(EnumAlloy.BRASS, 4), 200, 0.5f,
+        EnumAlloy.BRASS.getName(), EnumAlloy.BRASS.getIngot(), 4,
+        200, 0.5f,
         "ingotCopper*3", "ingotZinc*1");
 
-    ItemStack coal = new ItemStack(Items.coal);
-    coal.stackSize = 2;
+    ItemStack coal = new ItemStack(Items.coal, 2);
     addAlloySmelterRecipe(
-        "Steel", getIngot(EnumAlloy.STEEL, 1), 800, 0.7f,
+        EnumAlloy.STEEL.getName(), EnumAlloy.STEEL.getIngot(), 1,
+        800, 0.7f,
         "ingotIron*1", coal);
 
     addAlloySmelterRecipe(
-        "Invar", getIngot(EnumAlloy.INVAR, 3), 400, 0.7f,
+        EnumAlloy.INVAR.getName(), EnumAlloy.INVAR.getIngot(), 3,
+        400, 0.7f,
         "ingotIron*2", "ingotNickel*1");
 
     addAlloySmelterRecipe(
-        "Electrum", getIngot(EnumAlloy.ELECTRUM, 2), 400, 1.0f,
+        EnumAlloy.ELECTRUM.getName(), EnumAlloy.ELECTRUM.getIngot(), 2,
+        400, 1.0f,
         "ingotGold*1", "ingotSilver*1");
 
     ItemStack enderEyes = new ItemStack(Items.ender_eye);
     enderEyes.stackSize = 4;
     addAlloySmelterRecipe(
-        "Enderium", getIngot(EnumAlloy.ENDERIUM, 4), 800, 2.0f,
+        EnumAlloy.ENDERIUM.getName(), EnumAlloy.ENDERIUM.getIngot(), 4,
+        800, 2.0f,
         "ingotTin*2", "ingotSilver*1", "ingotPlatinum*1", enderEyes);
+
+    ItemStack prismarineCrystals = new ItemStack(Items.prismarine_crystals, 12);
+    AlloySmelterRecipeObject gemsForPrismarine =
+        new AlloySmelterRecipeObject("gemSapphire*2", "gemDiamond*1");
+    addAlloySmelterRecipe(
+        EnumAlloy.PRISMARIINIUM.getName(), EnumAlloy.PRISMARIINIUM.getIngot(), 4,
+        800, 2.0f,
+        "ingotSilver*2", gemsForPrismarine, "ingotTitanium*1", prismarineCrystals);
 
     //@formatter:on
   }
 
-  private ItemStack getIngot(IMetal metal, int count) {
-
-    ItemStack stack = metal.getIngot();
-    stack.stackSize = count;
-    return stack;
-  }
-
-  private void addAlloySmelterRecipe(String recipeName, ItemStack output, int cookTime,
-      float experience, Object... inputs) {
+  private void addAlloySmelterRecipe(String recipeName, ItemStack output, int outputCount,
+      int cookTime, float experience, Object... inputs) {
 
     boolean enabled = Config.getConfiguration()
         .get(Config.CATEGORY_RECIPE_ALLOY_SMELTER, recipeName, true).getBoolean();
     if (enabled) {
-      FunOresAPI.addAlloySmelterRecipe(output, cookTime, experience, inputs);
+      FunOresAPI.addAlloySmelterRecipe(output, outputCount, cookTime, experience, inputs);
     }
   }
 
