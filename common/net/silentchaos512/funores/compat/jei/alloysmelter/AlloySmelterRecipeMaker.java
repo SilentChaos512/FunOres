@@ -19,15 +19,7 @@ public class AlloySmelterRecipeMaker {
     ArrayList<AlloySmelterRecipeJei> recipes = new ArrayList<AlloySmelterRecipeJei>();
 
     for (AlloySmelterRecipe smelterRecipe : AlloySmelterRecipe.allRecipes) {
-      List<AlloySmelterRecipeObject> inputs = Lists.newArrayList();
-
-      for (AlloySmelterRecipeObject recipeObject : smelterRecipe.getInputs()) {
-        inputs.add(recipeObject);
-      }
-
-      ItemStack output = smelterRecipe.getOutput();
-      AlloySmelterRecipeJei jeiRecipe = new AlloySmelterRecipeJei(inputs, output);
-      recipes.add(jeiRecipe);
+      recipes.add(new AlloySmelterRecipeJei(smelterRecipe));
     }
 
     return recipes;
