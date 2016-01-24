@@ -1,6 +1,7 @@
 package net.silentchaos512.funores.compat.jei.alloysmelter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -14,7 +15,6 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.item.ItemStack;
 import net.silentchaos512.funores.api.recipe.alloysmelter.AlloySmelterRecipe;
 import net.silentchaos512.funores.api.recipe.alloysmelter.AlloySmelterRecipeObject;
-import scala.actors.threadpool.Arrays;
 
 public class AlloySmelterRecipeJei extends BlankRecipeWrapper {
 
