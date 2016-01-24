@@ -50,6 +50,18 @@ public class TileAlloySmelter extends TileEntity implements ITickable, ISidedInv
   private int cookTime;
   private int totalCookTime;
 
+  public List<String> getDebugLines() {
+
+    List<String> list = Lists.newArrayList();
+    list.add("furnaceBurnTime = " + furnaceBurnTime);
+    list.add("currentItemBurnTime = " + currentItemBurnTime);
+    list.add("cookTime = " + cookTime);
+    list.add("totalCookTime = " + totalCookTime);
+    ItemStack result = getSmeltingResult();
+    list.add("result = " + (result == null ? "null" : result.getDisplayName()));
+    return list;
+  }
+
   public int getCookTime() {
 
     AlloySmelterRecipe recipe = AlloySmelterRecipe.getMatchingRecipe(getInputStacks());

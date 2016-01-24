@@ -1,5 +1,6 @@
 package net.silentchaos512.funores.gui;
 
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -8,6 +9,7 @@ import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.ResourceLocation;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.inventory.ContainerAlloySmelter;
+import net.silentchaos512.funores.tile.TileAlloySmelter;
 
 public class GuiAlloySmelter extends GuiContainer {
 
@@ -40,6 +42,9 @@ public class GuiAlloySmelter extends GuiContainer {
 
     i1 = this.func_175381_h(24);
     this.drawTexturedModalRect(k + 79, l + 34, 176, 14, i1 + 1, 16);
+
+    // TODO: Remove later?
+    drawDebugInfo();
   }
 
   private int func_175381_h(int p_175381_1_) {
@@ -58,5 +63,23 @@ public class GuiAlloySmelter extends GuiContainer {
     }
 
     return this.tileAlloySmelter.getField(0) * p_175382_1_ / j;
+  }
+
+  private void drawDebugInfo() {
+
+    if (!(tileAlloySmelter instanceof TileAlloySmelter)) {
+      return;
+    }
+
+    TileAlloySmelter tile = (TileAlloySmelter) tileAlloySmelter;
+    FontRenderer fontRender = mc.fontRendererObj;
+    int x = 5;
+    int y = 5;
+    int yIncrement = 10;
+    int color = 0xFFFFFF;
+    for (String str : tile.getDebugLines()) {
+      fontRender.drawStringWithShadow(str, x, y, color);
+      y += yIncrement;
+    }
   }
 }
