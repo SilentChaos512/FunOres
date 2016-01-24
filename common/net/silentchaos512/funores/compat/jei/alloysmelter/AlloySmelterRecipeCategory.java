@@ -100,8 +100,8 @@ public class AlloySmelterRecipeCategory implements IRecipeCategory {
     if (recipeWrapper instanceof AlloySmelterRecipeJei) {
       AlloySmelterRecipeJei wrapper = (AlloySmelterRecipeJei) recipeWrapper;
       // Set inputs
-      for (int i = 0; i < wrapper.getInputs().size(); ++i) {
-        Object obj = wrapper.getInputs().get(i);
+      for (int i = 0; i < wrapper.getInputObjects().size(); ++i) {
+        Object obj = wrapper.getInputObjects().get(i);
         AlloySmelterRecipeObject recipeObject = (AlloySmelterRecipeObject) obj;
         recipeLayout.getItemStacks().set(i, recipeObject.getPossibleItemStacks());
       }

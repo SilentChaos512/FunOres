@@ -28,7 +28,7 @@ public class AlloySmelterRecipeHandler implements IRecipeHandler<AlloySmelterRec
   @Override
   public boolean isRecipeValid(AlloySmelterRecipeJei recipe) {
 
-    return recipe.getInputs().size() > 0 && recipe.getOutputs().size() > 0;
+    return recipe.getInputObjects().size() > 0 && recipe.getOutputs().size() > 0;
   }
 
 }
