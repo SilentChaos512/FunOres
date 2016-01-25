@@ -41,8 +41,10 @@ public class FunOresGenerator implements IWorldGenerator {
     switch (dim) {
       case -1:
         predicate = BlockHelper.forBlock(Blocks.netherrack);
+        break;
       case 1:
         predicate = BlockHelper.forBlock(Blocks.end_stone);
+        break;
       default:
         predicate = BlockHelper.forBlock(Blocks.stone);
     }
