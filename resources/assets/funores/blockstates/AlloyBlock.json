@@ -5,6 +5,7 @@
     "alloy=steel": { "model": "FunOres:BlockSteel" },
     "alloy=invar": { "model": "FunOres:BlockInvar" },
     "alloy=electrum": { "model": "FunOres:BlockElectrum" },
-    "alloy=enderium": { "model": "FunOres:BlockEnderium" }
+    "alloy=enderium": { "model": "FunOres:BlockEnderium" },
+    "alloy=prismarinium": { "model": "FunOres:BlockPrismarinium" }
   }
 }
