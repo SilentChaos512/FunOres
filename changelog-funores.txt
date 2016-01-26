@@ -1,3 +1,9 @@
+1.1.0-beta3
+Added: Ores can now be blacklisted or whitelisted for certain biomes or biome types.
+Added: Missing textures and models for prismarinium.
+Added: Update checker.
+Changed: Improved gear textures.
+
 1.1.0-beta2
 Fixed: Nether ores not spawning.
 

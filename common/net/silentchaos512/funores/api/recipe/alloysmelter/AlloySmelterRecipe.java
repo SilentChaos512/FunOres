@@ -53,10 +53,21 @@ public class AlloySmelterRecipe {
    *          The alloy smelter inventory.
    * @return The first matching recipe, or null if none match.
    */
-  public static AlloySmelterRecipe getMatchingRecipe(List<ItemStack> inputs) {
+  public static AlloySmelterRecipe getMatchingRecipe(List<ItemStack> inputList) {
 
     for (AlloySmelterRecipe recipe : allRecipes) {
-      if (recipe.matches(inputs)) {
+      if (recipe.matches(inputList)) {
+        return recipe;
+      }
+    }
+
+    return null;
+  }
+
+  public static AlloySmelterRecipe getRecipeByOutput(ItemStack stack) {
+
+    for (AlloySmelterRecipe recipe : allRecipes) {
+      if (recipe.getOutput().isItemEqual(stack)) {
         return recipe;
       }
     }

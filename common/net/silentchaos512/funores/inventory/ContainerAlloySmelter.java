@@ -7,11 +7,11 @@ import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotFurnaceFuel;
-import net.minecraft.inventory.SlotFurnaceOutput;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.silentchaos512.funores.api.recipe.alloysmelter.AlloySmelterRecipe;
 import net.silentchaos512.funores.core.util.LogHelper;
+import net.silentchaos512.funores.inventory.slot.SlotAlloySmelterOutput;
 import net.silentchaos512.funores.tile.TileAlloySmelter;
 
 public class ContainerAlloySmelter extends Container {
@@ -36,7 +36,7 @@ public class ContainerAlloySmelter extends Container {
     addSlotToContainer(new SlotFurnaceFuel(smelterInventory, TileAlloySmelter.SLOT_FUEL, 19, 44));
 
     // Output slot
-    addSlotToContainer(new SlotFurnaceOutput(playerInventory.player, smelterInventory,
+    addSlotToContainer(new SlotAlloySmelterOutput(playerInventory.player, smelterInventory,
         TileAlloySmelter.SLOT_OUTPUT, 116, 35));
 
     // Player inventory
@@ -136,7 +136,7 @@ public class ContainerAlloySmelter extends Container {
           if (!this.mergeItemStack(itemstack1, 0, inputSlotCount, false)) {
             return null;
           }
-        }  else if (index >= 4 && index < 31) {
+        } else if (index >= 4 && index < 31) {
           if (!this.mergeItemStack(itemstack1, 31, 40, false)) {
             return null;
           }
