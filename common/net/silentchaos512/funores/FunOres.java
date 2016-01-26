@@ -37,7 +37,12 @@ import net.silentchaos512.funores.lib.ExtraRecipes;
 import net.silentchaos512.funores.lib.ModDamageSources;
 import net.silentchaos512.funores.world.FunOresGenerator;
 
-@Mod(modid = FunOres.MOD_ID, name = FunOres.MOD_NAME, version = FunOres.VERSION_NUMBER, useMetadata = true)
+//@formatter:off
+@Mod(modid = FunOres.MOD_ID,
+    name = FunOres.MOD_NAME,
+    version = FunOres.VERSION_NUMBER,
+    updateJSON = "https://raw.githubusercontent.com/SilentChaos512/FunOres/master/update.json")
+//@formatter:on
 public class FunOres {
 
   public static final String MOD_ID = "FunOres";
