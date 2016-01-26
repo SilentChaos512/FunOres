@@ -9,6 +9,7 @@ import net.minecraft.block.state.pattern.BlockHelper;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraftforge.fml.common.IWorldGenerator;
@@ -114,10 +115,14 @@ public class FunOresGenerator implements IWorldGenerator {
         BlockPos pos = new BlockPos(x, y, z);
         IBlockState state = ((IHasOre) ore.ore).getOre();
 
-        if (predicate == null) {
-          new WorldGenMinable(state, ore.clusterSize).generate(world, random, pos);
-        } else {
-          new WorldGenMinable(state, ore.clusterSize, predicate).generate(world, random, pos);
+        // Check biome?
+        BiomeGenBase biome = world.getBiomeGenForCoords(pos);
+        if (ore.canSpawnInBiome(biome)) {
+          if (predicate == null) {
+            new WorldGenMinable(state, ore.clusterSize).generate(world, random, pos);
+          } else {
+            new WorldGenMinable(state, ore.clusterSize, predicate).generate(world, random, pos);
+          }
         }
       }
     }
