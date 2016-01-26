@@ -116,35 +116,35 @@ public class FunOres {
 
     addAlloySmelterRecipe(
         EnumAlloy.BRONZE.getName(), EnumAlloy.BRONZE.getIngot(), 4,
-        200, 0.5f,
+        200, 1.2f,
         "ingotCopper*3", "ingotTin*1");
 
     addAlloySmelterRecipe(
         EnumAlloy.BRASS.getName(), EnumAlloy.BRASS.getIngot(), 4,
-        200, 0.5f,
+        200, 1.0f,
         "ingotCopper*3", "ingotZinc*1");
 
     ItemStack coal = new ItemStack(Items.coal, 2);
     addAlloySmelterRecipe(
         EnumAlloy.STEEL.getName(), EnumAlloy.STEEL.getIngot(), 1,
-        800, 0.7f,
+        800, 2.5f,
         "ingotIron*1", coal);
 
     addAlloySmelterRecipe(
         EnumAlloy.INVAR.getName(), EnumAlloy.INVAR.getIngot(), 3,
-        400, 0.7f,
+        400, 2.0f,
         "ingotIron*2", "ingotNickel*1");
 
     addAlloySmelterRecipe(
         EnumAlloy.ELECTRUM.getName(), EnumAlloy.ELECTRUM.getIngot(), 2,
-        400, 1.0f,
+        400, 2.0f,
         "ingotGold*1", "ingotSilver*1");
 
     ItemStack enderEyes = new ItemStack(Items.ender_eye);
     enderEyes.stackSize = 4;
     addAlloySmelterRecipe(
         EnumAlloy.ENDERIUM.getName(), EnumAlloy.ENDERIUM.getIngot(), 4,
-        800, 2.0f,
+        800, 4.0f,
         "ingotTin*2", "ingotSilver*1", "ingotPlatinum*1", enderEyes);
 
     ItemStack prismarineCrystals = new ItemStack(Items.prismarine_crystals, 12);
@@ -152,7 +152,7 @@ public class FunOres {
         new AlloySmelterRecipeObject("gemSapphire*2", "gemDiamond*1");
     addAlloySmelterRecipe(
         EnumAlloy.PRISMARIINIUM.getName(), EnumAlloy.PRISMARIINIUM.getIngot(), 4,
-        800, 2.0f,
+        800, 5.0f,
         "ingotSilver*2", gemsForPrismarine, "ingotTitanium*1", prismarineCrystals);
 
     //@formatter:on
