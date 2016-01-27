@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import com.google.common.collect.Lists;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -11,6 +13,7 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -18,15 +21,20 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.configuration.ConfigItemDrop;
+import net.silentchaos512.funores.configuration.ConfigOptionOreGen;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGenBonus;
 import net.silentchaos512.funores.lib.EnumMeat;
+import net.silentchaos512.funores.lib.EnumMetal;
 import net.silentchaos512.funores.lib.Names;
+import net.silentchaos512.funores.world.FunOresGenerator;
+import net.silentchaos512.wit.api.IWitHudInfo;
 
-public class MeatOre extends BlockSG {
+public class MeatOre extends BlockSG implements IWitHudInfo {
 
   public static final PropertyEnum MEAT = PropertyEnum.create("meat", EnumMeat.class);
 
@@ -49,6 +57,26 @@ public class MeatOre extends BlockSG {
     for (EnumMeat meat : EnumMeat.values()) {
       OreDictionary.registerOre("ore" + meat.getName(), new ItemStack(this, 1, meat.getMeta()));
     }
+  }
+
+  @Override
+  public List<String> getWitLines(IBlockState state, BlockPos pos, EntityPlayer player,
+      boolean advanced) {
+
+    if (!player.isSneaking()) {
+      return null;
+    }
+
+    List<String> list = Lists.newArrayList();
+
+    EnumMeat meat = EnumMeat.byMetadata(state.getBlock().getMetaFromState(state));
+    ConfigOptionOreGen config = meat.getConfig();
+    BiomeGenBase biome = FunOresGenerator.getBiomeForPos(player.worldObj, pos);
+
+    float veinsPerChunk = (float) config.getClusterCountForBiome(biome) / config.rarity;
+    list.add(String.format("%.2f veins per chunk (%s)", veinsPerChunk, biome.biomeName));
+
+    return list;
   }
 
   @Override
