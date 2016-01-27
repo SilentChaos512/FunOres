@@ -162,15 +162,13 @@ public class ConfigOptionOreGen extends ConfigOption {
     int count;
     switch (biomeListType) {
       case AVOIDS:
-        count = isInList ? (int) (clusterCount / multi)
-            : (int) (clusterCount * multi);
+        count = isInList ? (int) (clusterCount / multi) : (int) (clusterCount * multi);
         break;
       case BLACKLIST:
         count = isInList ? 0 : clusterCount;
         break;
       case FAVORS:
-        count = isInList ? (int) (clusterCount * multi)
-            : (int) (clusterCount / multi);
+        count = isInList ? (int) (clusterCount * multi) : (int) (clusterCount / multi);
         break;
       case WHITELIST:
         count = isInList ? clusterCount : 0;
@@ -219,13 +217,16 @@ public class ConfigOptionOreGen extends ConfigOption {
 
   public int getClusterCountForBiome(BiomeGenBase biome) {
 
+    // LogHelper.debug(clusterCountByBiomeType);
+    int count = 0;
     for (BiomeDictionary.Type type : BiomeDictionary.getTypesForBiome(biome)) {
-      Integer count = clusterCountByBiomeType.get(type);
-      if (count != null) {
-        return count;
+      Integer forBiome = clusterCountByBiomeType.get(type);
+      if (forBiome != null) {
+        count = Math.max(count, clusterCountByBiomeType.get(type));
       }
     }
-    return clusterCount;
+    return count == 0 ? clusterCount : count;
+
     // for (BiomeDictionary.Type type1 : biomes) {
     // for (BiomeDictionary.Type type2 : BiomeDictionary.getTypesForBiome(biome)) {
     // if (type1 == type2) {

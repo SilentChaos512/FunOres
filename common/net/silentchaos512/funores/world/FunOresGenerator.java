@@ -47,7 +47,7 @@ public class FunOresGenerator implements IWorldGenerator {
     debugTotalTime += timeTaken;
     ++debugChunkGenCount;
     double avgTime = debugTotalTime / debugChunkGenCount;
-    LogHelper.debug(String.format(DEBUG_LINE, chunkX, chunkZ, timeTaken, debugMinTime, debugMaxTime, avgTime));
+    LogHelper.info(String.format(DEBUG_LINE, chunkX, chunkZ, timeTaken, debugMinTime, debugMaxTime, avgTime));
   }
 
   private void generateForDimension(final int dim, World world, Random random, int posX, int posZ) {
@@ -120,7 +120,7 @@ public class FunOresGenerator implements IWorldGenerator {
       }
     }
 
-    BiomeGenBase biome = world.getBiomeGenForCoords(new BlockPos(posX + 8, 64, posZ + 8));
+    BiomeGenBase biome = getBiomeForPos(world, new BlockPos(posX, 64, posZ));
     if (ore.canSpawnInBiome(biome)) {
       // Debug
 //      if (ore == EnumMetal.COPPER.getConfig()) {
@@ -166,5 +166,15 @@ public class FunOresGenerator implements IWorldGenerator {
         }
       }
     }
+  }
+
+  public static BiomeGenBase getBiomeForPos(World world, BlockPos pos) {
+
+    // Get biome at center of chunk
+    int posX = (pos.getX() & 0xFFFFFFF0) + 8;
+    int posZ = (pos.getZ() & 0xFFFFFFF0) + 8;
+    BlockPos center = new BlockPos(posX, 64, posZ);
+//    LogHelper.debug(pos + " -> " + center);
+    return world.getBiomeGenForCoords(center);
   }
 }
