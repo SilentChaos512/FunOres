@@ -158,6 +158,7 @@ public class BlockMachine extends BlockContainer implements IAddRecipe, IHasVari
   public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer,
       ItemStack stack) {
 
+    super.onBlockPlacedBy(world, pos, state, placer, stack);
     EnumMachineState machineState = EnumMachineState
         .fromEnumFacing(placer.getHorizontalFacing().getOpposite());
     world.setBlockState(pos, state.withProperty(FACING, machineState), 2);

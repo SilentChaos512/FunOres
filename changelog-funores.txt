@@ -3,6 +3,10 @@ Added: Ores can now be blacklisted or whitelisted for certain biomes or biome ty
 Added: Missing textures and models for prismarinium.
 Added: Update checker.
 Changed: Improved gear textures.
+Changed: Alloy smelter XP awards.
+Fixed: Hoppers not working on alloy smelters, shift-clicking not working in some cases.
+Fixed: Incorrect XP from alloy smelter.
+API version 2
 
 1.1.0-beta2
 Fixed: Nether ores not spawning.

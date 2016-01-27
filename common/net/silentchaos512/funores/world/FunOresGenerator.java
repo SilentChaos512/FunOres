@@ -14,7 +14,6 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraftforge.fml.common.IWorldGenerator;
 import net.silentchaos512.funores.configuration.Config;
-import net.silentchaos512.funores.configuration.ConfigOption;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGen;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGenReplace;
 import net.silentchaos512.funores.core.util.LogHelper;
@@ -26,6 +25,12 @@ import net.silentchaos512.funores.lib.IHasOre;
 
 public class FunOresGenerator implements IWorldGenerator {
 
+  private double debugMinTime = 1000000d;
+  private double debugMaxTime = 0d;
+  private double debugTotalTime = 0d;
+  private int debugChunkGenCount = 0;
+  private final String DEBUG_LINE = "Chunk (%d, %d) took %f ms to generate (min = %f, max = %f, avg = %f)";
+
   @Override
   public void generate(Random random, int chunkX, int chunkZ, World world,
       IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
@@ -33,7 +38,16 @@ public class FunOresGenerator implements IWorldGenerator {
     int dimension = world.provider.getDimensionId();
     int x = 16 * chunkX;
     int z = 16 * chunkZ;
+
+    long timeStart = System.nanoTime();
     generateForDimension(dimension, world, random, x, z);
+    double timeTaken = (double) (System.nanoTime() - timeStart) / 1000000;
+    debugMinTime = timeTaken < debugMinTime ? timeTaken : debugMinTime;
+    debugMaxTime = timeTaken > debugMaxTime ? timeTaken : debugMaxTime;
+    debugTotalTime += timeTaken;
+    ++debugChunkGenCount;
+    double avgTime = debugTotalTime / debugChunkGenCount;
+    LogHelper.debug(String.format(DEBUG_LINE, chunkX, chunkZ, timeTaken, debugMinTime, debugMaxTime, avgTime));
   }
 
   private void generateForDimension(final int dim, World world, Random random, int posX, int posZ) {
@@ -106,23 +120,24 @@ public class FunOresGenerator implements IWorldGenerator {
       }
     }
 
-    for (int i = 0; i < ore.clusterCount; ++i) {
-      if (random.nextInt(ore.rarity) == 0) {
-        int x = posX + random.nextInt(16);
-        int y = ore.minY + random.nextInt(ore.maxY - ore.minY + 1);
-        int z = posZ + random.nextInt(16);
+    BiomeGenBase biome = world.getBiomeGenForCoords(new BlockPos(posX + 8, 64, posZ + 8));
+    if (ore.canSpawnInBiome(biome)) {
+      // Debug
+//      if (ore == EnumMetal.COPPER.getConfig()) {
+//        LogHelper.list(biome.biomeName, ore.oreName, ore.getClusterCountForBiome(biome));
+//      }
+      int clusterCount = ore.getClusterCountForBiome(biome);
+      int x, y, z;
+      for (int i = 0; i < clusterCount; ++i) {
+        if (random.nextInt(ore.rarity) == 0) {
+          x = posX + random.nextInt(16);
+          y = ore.minY + random.nextInt(ore.maxY - ore.minY + 1);
+          z = posZ + random.nextInt(16);
 
-        BlockPos pos = new BlockPos(x, y, z);
-        IBlockState state = ((IHasOre) ore.ore).getOre();
+          BlockPos pos = new BlockPos(x, y, z);
+          IBlockState state = ((IHasOre) ore.ore).getOre();
 
-        // Check biome?
-        BiomeGenBase biome = world.getBiomeGenForCoords(pos);
-        if (ore.canSpawnInBiome(biome)) {
-          if (predicate == null) {
-            new WorldGenMinable(state, ore.clusterSize).generate(world, random, pos);
-          } else {
-            new WorldGenMinable(state, ore.clusterSize, predicate).generate(world, random, pos);
-          }
+          new WorldGenMinable(state, ore.clusterSize, predicate).generate(world, random, pos);
         }
       }
     }

@@ -19,6 +19,7 @@ public class Config {
 
   // Misc
   public static boolean machinesCanBurn = true;
+  public static float oreGenBiomeFavorsMultiplier = 1.5f;
 
   // Metal ores
   public static ConfigOptionOreGen copper = new ConfigOptionOreGen(EnumMetal.COPPER);
@@ -89,6 +90,7 @@ public class Config {
       + "enabled are set to add to vanilla generation, rather than replace it.";
   public static final String COMMENT_RECIPE_ALLOY_SMELTER = "You can disable alloy smelter recipes here. Set to false to disable the recipe.";
   public static final String COMMENT_QUICK_TWEAKS = "Some settings to quickly make large changes to the mod.";
+  public static final String COMMENT_MISC = "Random settings that don't fit anywhere else!";
 
   public static void init(File file) {
 
@@ -115,8 +117,13 @@ public class Config {
        * Misc configs
        */
 
+      c.setCategoryComment(CATEGORY_MISC, COMMENT_MISC);
+
       machinesCanBurn = c.getBoolean("MachinesCanBurn", CATEGORY_MISC, machinesCanBurn,
           "If true, active machines can damage entities that step on top of them. Ouch.");
+      oreGenBiomeFavorsMultiplier = c.getFloat("OreGenFavorsBiomeMultiplier", CATEGORY_MISC,
+          oreGenBiomeFavorsMultiplier, 0.01f, 100f,
+          "When ores favor certain biomes the number of clusters (veins) is multiplied by this, or divided by this if it avoids the biome.");
 
       /*
        * Example Ore
