@@ -67,7 +67,7 @@ public class FunOresGenerator implements IWorldGenerator {
     // Vanilla
     for (EnumVanillaOre vanilla : EnumVanillaOre.values()) {
       if (vanilla.dimension == dim) {
-        generateOre(vanilla.getConfig(), world, random, posX, posZ);
+        generateOre(vanilla.getConfig(), world, random, posX, posZ, predicate);
       }
     }
     // Metal
@@ -94,11 +94,6 @@ public class FunOresGenerator implements IWorldGenerator {
         }
       }
     }
-  }
-
-  public void generateOre(ConfigOptionOreGen ore, World world, Random random, int posX, int posZ) {
-
-    generateOre(ore, world, random, posX, posZ, null);
   }
 
   public void generateOre(ConfigOptionOreGen ore, World world, Random random, int posX, int posZ,

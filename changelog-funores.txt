@@ -1,10 +1,14 @@
+1.1.0-beta4
+Fixed: World generator crash
+
 1.1.0-beta3
 Added: Ores can now be blacklisted/whitelisted for certain biome types, or set to favor/avoid them.
+Added: WIT info for ores. Shows an estimated veins/chunk for the biome the ore is in.
 Added: Missing textures and models for prismarinium.
 Added: Update checker.
-Changed: Improved gear textures.
-Changed: Alloy smelter XP awards.
-Fixed: Hoppers not working on alloy smelters, shift-clicking not working in some cases.
+Changed: Improved(?) gear textures.
+Changed: Alloy smelter XP given for all recipes.
+Fixed: Hoppers often not working on alloy smelters, shift-clicking not working in some cases.
 Fixed: Incorrect XP from alloy smelter.
 API version 2
 
