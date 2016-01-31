@@ -41,13 +41,16 @@ public class FunOresGenerator implements IWorldGenerator {
 
     long timeStart = System.nanoTime();
     generateForDimension(dimension, world, random, x, z);
-    double timeTaken = (double) (System.nanoTime() - timeStart) / 1000000;
-    debugMinTime = timeTaken < debugMinTime ? timeTaken : debugMinTime;
-    debugMaxTime = timeTaken > debugMaxTime ? timeTaken : debugMaxTime;
-    debugTotalTime += timeTaken;
-    ++debugChunkGenCount;
-    double avgTime = debugTotalTime / debugChunkGenCount;
-    LogHelper.info(String.format(DEBUG_LINE, chunkX, chunkZ, timeTaken, debugMinTime, debugMaxTime, avgTime));
+    if (Config.printWorldGenTime) {
+      double timeTaken = (double) (System.nanoTime() - timeStart) / 1000000;
+      debugMinTime = timeTaken < debugMinTime ? timeTaken : debugMinTime;
+      debugMaxTime = timeTaken > debugMaxTime ? timeTaken : debugMaxTime;
+      debugTotalTime += timeTaken;
+      ++debugChunkGenCount;
+      double avgTime = debugTotalTime / debugChunkGenCount;
+      LogHelper.info(String.format(DEBUG_LINE, chunkX, chunkZ, timeTaken, debugMinTime,
+          debugMaxTime, avgTime));
+    }
   }
 
   private void generateForDimension(final int dim, World world, Random random, int posX, int posZ) {
@@ -118,9 +121,9 @@ public class FunOresGenerator implements IWorldGenerator {
     BiomeGenBase biome = getBiomeForPos(world, new BlockPos(posX, 64, posZ));
     if (ore.canSpawnInBiome(biome)) {
       // Debug
-//      if (ore == EnumMetal.COPPER.getConfig()) {
-//        LogHelper.list(biome.biomeName, ore.oreName, ore.getClusterCountForBiome(biome));
-//      }
+      // if (ore == EnumMetal.COPPER.getConfig()) {
+      // LogHelper.list(biome.biomeName, ore.oreName, ore.getClusterCountForBiome(biome));
+      // }
       int clusterCount = ore.getClusterCountForBiome(biome);
       int x, y, z;
       for (int i = 0; i < clusterCount; ++i) {
@@ -169,7 +172,7 @@ public class FunOresGenerator implements IWorldGenerator {
     int posX = (pos.getX() & 0xFFFFFFF0) + 8;
     int posZ = (pos.getZ() & 0xFFFFFFF0) + 8;
     BlockPos center = new BlockPos(posX, 64, posZ);
-//    LogHelper.debug(pos + " -> " + center);
+    // LogHelper.debug(pos + " -> " + center);
     return world.getBiomeGenForCoords(center);
   }
 }

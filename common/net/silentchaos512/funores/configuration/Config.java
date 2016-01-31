@@ -20,6 +20,8 @@ public class Config {
   // Misc
   public static boolean machinesCanBurn = true;
   public static float oreGenBiomeFavorsMultiplier = 1.5f;
+  // Debug
+  public static boolean printWorldGenTime = false;
 
   // Metal ores
   public static ConfigOptionOreGen copper = new ConfigOptionOreGen(EnumMetal.COPPER);
@@ -79,6 +81,7 @@ public class Config {
   public static final String CATEGORY_VANILLA_ORE = "vanilla_ore";
   public static final String CATEGORY_RECIPE = "Recipe";
   public static final String CATEGORY_MISC = "Misc";
+  public static final String CATEGORY_DEBUG = CATEGORY_MISC + c.CATEGORY_SPLITTER + "Debug";
   public static final String CATEGORY_RECIPE_ALLOY_SMELTER = "recipe_alloy_smelter";
   public static final String CATEGORY_QUICK_TWEAKS = "_quick_tweaks";
 
@@ -124,6 +127,10 @@ public class Config {
       oreGenBiomeFavorsMultiplier = c.getFloat("OreGenFavorsBiomeMultiplier", CATEGORY_MISC,
           oreGenBiomeFavorsMultiplier, 0.01f, 100f,
           "When ores favor certain biomes the number of clusters (veins) is multiplied by this, or divided by this if it avoids the biome.");
+
+      // Debug
+      printWorldGenTime = c.getBoolean("PrintWorldGenTime", CATEGORY_DEBUG, printWorldGenTime,
+          "Logs the time the Fun Ores world generator takes to do its generation in each chunk. Also tracks min, max, and average times.");
 
       /*
        * Example Ore
