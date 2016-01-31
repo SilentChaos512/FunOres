@@ -1,6 +1,11 @@
 package net.silentchaos512.funores.configuration;
 
+import java.text.NumberFormat;
+import java.text.ParsePosition;
 import java.util.ArrayList;
+import java.util.Locale;
+
+import org.apache.http.ParseException;
 
 import net.minecraft.item.Item;
 import net.minecraft.util.IStringSerializable;
@@ -12,6 +17,7 @@ public class ConfigOptionOreGenBonus extends ConfigOptionOreGen {
 
   private static final ArrayList<ConfigOptionOreGenBonus> LOADED_CONFIGS = new ArrayList<ConfigOptionOreGenBonus>();
 
+  public static final String SPLITTER = "\\s+";
   public static final String COMMENT_DROP = "The items drop by this ore. The parameters are "
       + "itemName, count, meta, baseChance, fortuneChanceBonus, fortuneCountBonus.";
   public static final String COMMENT_PICK = "If greater than 0, try this many drops from the "
@@ -140,7 +146,10 @@ public class ConfigOptionOreGenBonus extends ConfigOptionOreGen {
 
     String original = input;
     input = input.trim();
-    String[] values = input.split(",");
+    String[] values = input.split(SPLITTER);
+    for (int i = 0; i < values.length; ++i) {
+      values[i] = values[i].replaceAll(",$", "");
+    }
 
     // Check for correctly formed key.
     if (values.length != 6) {
@@ -158,16 +167,16 @@ public class ConfigOptionOreGenBonus extends ConfigOptionOreGen {
       ConfigItemDrop.errorList.add(error);
       return null;
     }
+
+    NumberFormat format = NumberFormat.getInstance();
+
     // Get stack size and meta
     int count = -1;
     int meta = -1;
     int currentIndex = 0;
-    String s = "";
     try {
-      s = values[currentIndex = 1].trim();
-      count = Integer.parseInt(s);
-      s = values[currentIndex = 2].trim();
-      meta = Integer.parseInt(s);
+      count = parseInt(values[currentIndex = 1].trim());
+      meta =  parseInt(values[currentIndex = 2].trim());
     } catch (NumberFormatException ex) {
       String error = "Could not parse \"%s\" as integer: %s";
       error = String.format(error, values[currentIndex], input);
@@ -179,14 +188,10 @@ public class ConfigOptionOreGenBonus extends ConfigOptionOreGen {
     float countBonus;
     float chance;
     float chanceBonus;
-    s = "";
     try {
-      s = values[currentIndex = 3].trim();
-      chance = Float.parseFloat(s);
-      s = values[currentIndex = 4].trim();
-      chanceBonus = Float.parseFloat(s);
-      s = values[currentIndex = 5].trim();
-      countBonus = Float.parseFloat(s);
+      chance = parseFloat(values[currentIndex = 3].trim());
+      chanceBonus = parseFloat(values[currentIndex = 4].trim());
+      countBonus = parseFloat(values[currentIndex = 5].trim());
     } catch (NumberFormatException ex) {
       String error = "Could not parse \"%s\" as float: %s";
       error = String.format(error, values[currentIndex], input);
@@ -196,5 +201,33 @@ public class ConfigOptionOreGenBonus extends ConfigOptionOreGen {
 
     // Finally, create ConfigItemDrop
     return new ConfigItemDrop(item, count, meta, chance, chanceBonus, countBonus);
+  }
+
+  public int parseInt(String input) {
+
+    NumberFormat numberFormat = NumberFormat.getNumberInstance();
+    ParsePosition parsePosition = new ParsePosition(0);
+    Number number = numberFormat.parse(input, parsePosition);
+
+    if (parsePosition.getIndex() != input.length()) {
+      throw new NumberFormatException();
+    }
+
+    LogHelper.debug(input + " -> " + number.intValue());
+    return number.intValue();
+  }
+
+  public float parseFloat(String input) {
+
+    NumberFormat numberFormat = NumberFormat.getNumberInstance();
+    ParsePosition parsePosition = new ParsePosition(0);
+    Number number = numberFormat.parse(input, parsePosition);
+
+    if (parsePosition.getIndex() != input.length()) {
+      throw new NumberFormatException();
+    }
+
+    LogHelper.debug(input + " -> " + number.floatValue());
+    return number.floatValue();
   }
 }

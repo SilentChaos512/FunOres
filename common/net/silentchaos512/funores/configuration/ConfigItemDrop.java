@@ -54,7 +54,7 @@ public class ConfigItemDrop {
       float fortuneChanceBonus, float fortuneCountBonus) {
 
     // LogHelper.debug(Item.getByNameOrId(itemName).getUnlocalizedName());
-    return String.format("%s, %d, %d, %.3f, %.3f, %.3f", itemName, count, meta, baseChance,
+    return String.format("%s %d %d %.3f %.3f %.3f", itemName, count, meta, baseChance,
         fortuneChanceBonus, fortuneCountBonus);
   }
 
