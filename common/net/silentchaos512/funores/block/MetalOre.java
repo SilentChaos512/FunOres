@@ -81,16 +81,9 @@ public class MetalOre extends BlockSG implements IWitHudInfo {
       return null;
     }
 
-    List<String> list = Lists.newArrayList();
-
     EnumMetal metal = EnumMetal.byMetadata(state.getBlock().getMetaFromState(state));
     ConfigOptionOreGen config = metal.getConfig();
-    BiomeGenBase biome = FunOresGenerator.getBiomeForPos(player.worldObj, pos);
-
-    float veinsPerChunk = (float) config.getClusterCountForBiome(biome) / config.rarity;
-    list.add(String.format("%.1f veins per chunk (%s)", veinsPerChunk, biome.biomeName));
-
-    return list;
+    return ModBlocks.getWitInfoForOre(config, state, pos, player);
   }
 
   @Override

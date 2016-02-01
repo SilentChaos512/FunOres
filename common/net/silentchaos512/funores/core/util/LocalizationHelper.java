@@ -1,13 +1,15 @@
 package net.silentchaos512.funores.core.util;
 
+import java.text.DecimalFormatSymbols;
+
 import net.minecraft.util.StatCollector;
 
 public class LocalizationHelper {
 
-    public final static String BLOCKS_PREFIX = "tile.funores:";
-    public final static String MISC_PREFIX = "misc.funores:";
-    public final static String ITEM_PREFIX = "item.funores:";
-    public final static String TOOL_PREFIX = "tool.funores:";
+    public static final String BLOCKS_PREFIX = "tile.funores:";
+    public static final String MISC_PREFIX = "misc.funores:";
+    public static final String ITEM_PREFIX = "item.funores:";
+    public static final String TOOL_PREFIX = "tool.funores:";
     
     public static String getBlockDescription(String blockName, int index) {
         

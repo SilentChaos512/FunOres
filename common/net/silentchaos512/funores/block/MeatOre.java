@@ -67,16 +67,9 @@ public class MeatOre extends BlockSG implements IWitHudInfo {
       return null;
     }
 
-    List<String> list = Lists.newArrayList();
-
     EnumMeat meat = EnumMeat.byMetadata(state.getBlock().getMetaFromState(state));
     ConfigOptionOreGen config = meat.getConfig();
-    BiomeGenBase biome = FunOresGenerator.getBiomeForPos(player.worldObj, pos);
-
-    float veinsPerChunk = (float) config.getClusterCountForBiome(biome) / config.rarity;
-    list.add(String.format("%.2f veins per chunk (%s)", veinsPerChunk, biome.biomeName));
-
-    return list;
+    return ModBlocks.getWitInfoForOre(config, state, pos, player);
   }
 
   @Override

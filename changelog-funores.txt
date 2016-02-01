@@ -1,5 +1,6 @@
 1.1.0-beta5
-Fixed: Item drop keys being internationally ignorant. You should not need to change your config file, but try deleting it if you have trouble. Also, if any particular locales are broken, let me know!
+Added: Config to print world gen time for each chunk. This was in the previous version, but there was no config. Disabled by default.
+Fixed: Item drop keys being internationally ignorant. You should not need to change your config file, but try deleting it if you have trouble.
 
 1.1.0-beta4
 Fixed: World generator crash
