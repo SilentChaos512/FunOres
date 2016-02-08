@@ -6,6 +6,7 @@ public class Names {
   // Blocks
   public static final String ALLOY_BLOCK = "AlloyBlock";
   public static final String ALLOY_SMELTER = "AlloySmelter";
+  public static final String DRYING_RACK = "DryingRack";
   public static final String MEAT_ORE = "MeatOre";
   public static final String METAL_BLOCK = "MetalBlock";
   public static final String METAL_FURNACE = "MetalFurnace";
@@ -17,6 +18,7 @@ public class Names {
   public static final String ALLOY_INGOT = "AlloyIngot";
   public static final String ALLOY_NUGGET = "AlloyNugget";
   public static final String CRAFTING_ITEM = "CraftingItem";
+  public static final String DRIED_ITEM = "DriedItem";
   public static final String HAMMER = "Hammer";
   public static final String METAL_DUST = "MetalDust";
   public static final String METAL_INGOT = "MetalIngot";

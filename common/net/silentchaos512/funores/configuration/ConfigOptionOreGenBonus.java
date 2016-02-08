@@ -213,7 +213,7 @@ public class ConfigOptionOreGenBonus extends ConfigOptionOreGen {
       throw new NumberFormatException();
     }
 
-    LogHelper.debug(input + " -> " + number.intValue());
+//    LogHelper.debug(input + " -> " + number.intValue());
     return number.intValue();
   }
 
@@ -227,7 +227,7 @@ public class ConfigOptionOreGenBonus extends ConfigOptionOreGen {
       throw new NumberFormatException();
     }
 
-    LogHelper.debug(input + " -> " + number.floatValue());
+//    LogHelper.debug(input + " -> " + number.floatValue());
     return number.floatValue();
   }
 }

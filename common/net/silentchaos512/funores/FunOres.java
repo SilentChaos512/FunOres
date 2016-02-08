@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -24,15 +25,19 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.silentchaos512.funores.api.FunOresAPI;
 import net.silentchaos512.funores.api.recipe.alloysmelter.AlloySmelterRecipeObject;
+import net.silentchaos512.funores.api.recipe.dryingrack.DryingRackRecipe;
+import net.silentchaos512.funores.api.recipe.dryingrack.DryingRackRecipeObject;
 import net.silentchaos512.funores.block.ModBlocks;
 import net.silentchaos512.funores.configuration.Config;
 import net.silentchaos512.funores.configuration.ConfigItemDrop;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGenBonus;
 import net.silentchaos512.funores.core.proxy.CommonProxy;
 import net.silentchaos512.funores.core.registry.SRegistry;
+import net.silentchaos512.funores.core.util.LogHelper;
 import net.silentchaos512.funores.gui.GuiHandlerFunOres;
 import net.silentchaos512.funores.item.ModItems;
 import net.silentchaos512.funores.lib.EnumAlloy;
+import net.silentchaos512.funores.lib.EnumDriedItem;
 import net.silentchaos512.funores.lib.ExtraRecipes;
 import net.silentchaos512.funores.lib.ModDamageSources;
 import net.silentchaos512.funores.world.FunOresGenerator;
@@ -92,6 +97,7 @@ public class FunOres {
 
     proxy.postInit();
     initAlloySmelterRecipes();
+    initDryingRackRecipes();
 
     ConfigOptionOreGenBonus.initItemKeys();
     ConfigItemDrop.listErrorsInLog();
@@ -165,6 +171,46 @@ public class FunOres {
         .get(Config.CATEGORY_RECIPE_ALLOY_SMELTER, recipeName, true).getBoolean();
     if (enabled) {
       FunOresAPI.addAlloySmelterRecipe(output, outputCount, cookTime, experience, inputs);
+    }
+  }
+
+  private void initDryingRackRecipes() {
+
+    int jerkyDryTime = 6000;
+    float jerkyXp = 0.4f;
+    addDryingRackRecipe("Dried Flesh", EnumDriedItem.DRIED_FLESH.getItem(),
+        new ItemStack(Items.rotten_flesh), jerkyDryTime, jerkyXp);
+    addDryingRackRecipe("Beef Jerky", EnumDriedItem.BEEF_JERKY.getItem(), new ItemStack(Items.beef),
+        jerkyDryTime, jerkyXp);
+    addDryingRackRecipe("Chicken Jerky", EnumDriedItem.CHICKEN_JERKY.getItem(),
+        new ItemStack(Items.chicken), jerkyDryTime, jerkyXp);
+    addDryingRackRecipe("Pork Jerky", EnumDriedItem.PORK_JERKY.getItem(),
+        new ItemStack(Items.porkchop), jerkyDryTime, jerkyXp);
+    addDryingRackRecipe("Mutton Jerky", EnumDriedItem.MUTTON_JERKY.getItem(),
+        new ItemStack(Items.mutton), jerkyDryTime, jerkyXp);
+    addDryingRackRecipe("Rabbit Jerky", EnumDriedItem.RABBIT_JERKY.getItem(),
+        new ItemStack(Items.rabbit), jerkyDryTime, jerkyXp);
+    addDryingRackRecipe("Cod Jerky", EnumDriedItem.COD_JERKY.getItem(), new ItemStack(Items.fish),
+        jerkyDryTime, jerkyXp);
+    addDryingRackRecipe("Salmon Jerky", EnumDriedItem.SALMON_JERKY.getItem(),
+        new ItemStack(Items.fish, 1, 1), jerkyDryTime, jerkyXp);
+
+    addDryingRackRecipe("Sponge Drying", new ItemStack(Blocks.sponge),
+        new ItemStack(Blocks.sponge, 1, 1), 1000, 0.2f);
+  }
+
+  private void addDryingRackRecipe(String recipeName, ItemStack output, Object input, int dryTime,
+      float experience) {
+
+    if (input instanceof String) {
+      DryingRackRecipeObject recipeObject = new DryingRackRecipeObject((String) input);
+      DryingRackRecipe.addRecipe(output, recipeObject, dryTime, experience);
+    } else if (input instanceof ItemStack) {
+      DryingRackRecipeObject recipeObject = new DryingRackRecipeObject((ItemStack) input);
+      DryingRackRecipe.addRecipe(output, recipeObject, dryTime, experience);
+    } else {
+      LogHelper.warning("FunOres.addDryingRackRecipe: Don't know how to handle object of type "
+          + input.getClass());
     }
   }
 

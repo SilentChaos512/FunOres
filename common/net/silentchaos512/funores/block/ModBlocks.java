@@ -26,6 +26,7 @@ public class ModBlocks {
   public static AlloyBlock alloyBlock;
   public static MetalFurnace metalFurnace;
   public static AlloySmelter alloySmelter;
+  public static BlockDryingRack dryingRack;
 
   public static void init() {
 
@@ -37,6 +38,7 @@ public class ModBlocks {
     alloyBlock = (AlloyBlock) SRegistry.registerBlock(AlloyBlock.class, Names.ALLOY_BLOCK);
     metalFurnace = (MetalFurnace) SRegistry.registerBlock(MetalFurnace.class, Names.METAL_FURNACE);
     alloySmelter = (AlloySmelter) SRegistry.registerBlock(AlloySmelter.class, Names.ALLOY_SMELTER);
+    dryingRack = (BlockDryingRack) SRegistry.registerBlock(BlockDryingRack.class, Names.DRYING_RACK);
   }
 
   public static List<String> getWitInfoForOre(ConfigOptionOreGen config, IBlockState state, BlockPos pos,

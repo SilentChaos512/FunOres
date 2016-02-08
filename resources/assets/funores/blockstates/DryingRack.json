@@ -1,0 +1,12 @@
+{
+  "variants": {
+    "facing=north_off": { "model": "FunOres:DryingRack" },
+    "facing=south_off": { "model": "FunOres:DryingRack", "y": 180 },
+    "facing=west_off":  { "model": "FunOres:DryingRack", "y": 270 },
+    "facing=east_off":  { "model": "FunOres:DryingRack", "y": 90 },
+    "facing=north_on": { "model": "FunOres:DryingRack" },
+    "facing=south_on": { "model": "FunOres:DryingRack", "y": 180 },
+    "facing=west_on":  { "model": "FunOres:DryingRack", "y": 270 },
+    "facing=east_on":  { "model": "FunOres:DryingRack", "y": 90 }
+  }
+}

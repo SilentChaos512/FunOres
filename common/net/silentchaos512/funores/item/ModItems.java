@@ -22,6 +22,8 @@ public class ModItems {
   public static CraftingItem gearBasic;
   public static CraftingItem gearAlloy;
   public static Shard shard;
+  public static ItemDried driedItem;
+  public static ItemHammer hammer;
 
   public static void init() {
 
@@ -40,8 +42,8 @@ public class ModItems {
     gearAlloy = (CraftingItem) SRegistry.registerItem(CraftingItem.class, "Alloy" + Names.GEAR,
         Names.GEAR, true);
     shard = (Shard) SRegistry.registerItem(Shard.class, Names.SHARD);
-
-    SRegistry.registerItem(ItemHammer.class, Names.HAMMER);
+    driedItem = (ItemDried) SRegistry.registerItem(ItemDried.class, Names.DRIED_ITEM);
+    hammer = (ItemHammer) SRegistry.registerItem(ItemHammer.class, Names.HAMMER);
 
     SRegistry.registerItem(Sword.class, "SwordBronze", ModMaterials.toolBronze);
     SRegistry.registerItem(Pickaxe.class, "PickaxeBronze", ModMaterials.toolBronze);

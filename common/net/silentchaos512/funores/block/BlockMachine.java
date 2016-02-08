@@ -1,6 +1,9 @@
 package net.silentchaos512.funores.block;
 
+import java.util.List;
 import java.util.Random;
+
+import com.google.common.collect.Lists;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -11,6 +14,7 @@ import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryHelper;
@@ -29,8 +33,9 @@ import net.silentchaos512.funores.core.registry.IHasVariants;
 import net.silentchaos512.funores.core.util.LogHelper;
 import net.silentchaos512.funores.lib.EnumMachineState;
 import net.silentchaos512.funores.lib.ModDamageSources;
+import net.silentchaos512.wit.api.IWitHudInfo;
 
-public class BlockMachine extends BlockContainer implements IAddRecipe, IHasVariants {
+public class BlockMachine extends BlockContainer implements IAddRecipe, IHasVariants, IWitHudInfo {
 
   public static final PropertyEnum FACING = PropertyEnum.create("facing", EnumMachineState.class);
   protected static boolean keepInventory;
@@ -49,6 +54,15 @@ public class BlockMachine extends BlockContainer implements IAddRecipe, IHasVari
     setHarvestLevel("pickaxe", 1);
 
     setUnlocalizedName(name);
+  }
+
+  @Override
+  public List<String> getWitLines(IBlockState state, BlockPos pos, EntityPlayer player, boolean advanced) {
+
+    if (!advanced) {
+      return Lists.newArrayList();
+    }
+    return Lists.newArrayList("State: " + ((EnumMachineState) state.getValue(FACING)));
   }
 
   public EnumMachineState getMachineState(IBlockAccess world, BlockPos pos) {

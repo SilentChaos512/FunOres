@@ -36,6 +36,7 @@ public class FunOresPlugin implements IModPlugin {
     String descPrefix = "jei.funores.desc.";
     reg.addDescription(new ItemStack(ModBlocks.metalFurnace), descPrefix + Names.METAL_FURNACE);
     reg.addDescription(new ItemStack(ModBlocks.alloySmelter), descPrefix + Names.ALLOY_SMELTER);
+    reg.addDescription(new ItemStack(ModBlocks.dryingRack),  descPrefix + Names.DRYING_RACK);
   }
 
   @Override

@@ -55,6 +55,6 @@ public enum EnumMachineState implements IStringSerializable {
         return state;
       }
     }
-    return null;
+    return SOUTH_OFF;
   }
 }

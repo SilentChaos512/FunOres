@@ -14,6 +14,8 @@ tile.funores:AlloyBlock6.name=Prismarinium Block
 
 tile.funores:AlloySmelter.name=Alloy Smelter
 
+tile.funores:DryingRack.name=Drying Rack
+
 tile.funores:MeatOre0.name=Pig Ore
 tile.funores:MeatOre1.name=Fish Ore
 tile.funores:MeatOre2.name=Cow Ore
@@ -159,6 +161,23 @@ item.funores:Shard0.name=Ender Shard
 item.funores:Shard1.name=Blaze Shard
 item.funores:Shard2.name=Ghast Shard
 
+item.funores:DriedFlesh.name=Dried Flesh
+item.funores:DriedFlesh.desc=Still doesn't taste good, maybe it has another use?
+item.funores:BeefJerky.name=Beef Jerky
+item.funores:BeefJerky.desc=The classic.
+item.funores:ChickenJerky.name=Chicken Jerky
+item.funores:ChickenJerky.desc=Poultry genocide not included.
+item.funores:PorkJerky.name=Pork Jerky
+item.funores:PorkJerky.desc=All it wanted was a carrot.
+item.funores:MuttonJerky.name=Mutton Jerky
+item.funores:MuttonJerky.desc=I hope this isn't Larry.
+item.funores:RabbitJerky.name=Rabbit Jerky
+item.funores:RabbitJerky.desc=Not the bunnies!
+item.funores:CodJerky.name=Cod Jerky
+item.funores:CodJerky.desc=Thankfully not the game.
+item.funores:SalmonJerky.name=Salmon Jerky
+item.funores:SalmonJerky.desc=Was almost Slamon.
+
 # Tool localizations
 
 item.funores:SwordBronze.name=Bronze Sword
@@ -180,6 +199,7 @@ item.funores:HoeSteel.name=Steel Hoe
 jei.funores.recipe.AlloySmelter=Alloy Smelter (Fun Ores)
 jei.funores.desc.MetalFurnace=It's a furnace. It cooks most things faster and with less fuel than a normal furnace. The exception is certain ores. Ores cook more slowly and with more fuel, but will give bonus nuggets in addition to the usual ingot.
 jei.funores.desc.AlloySmelter=It smelts alloys. Put in the required materials, give it fuel (anything that works in a furnace), and wait.
+jei.funores.desc.DryingRack=Dries wet things into not-as-wet things. Like raw meat into jerky. You can also dry sponges, because why not?
 
 
 

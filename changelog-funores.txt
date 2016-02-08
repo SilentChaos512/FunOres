@@ -1,3 +1,9 @@
+1.1.0-beta6
+Added: The Drying Rack. It dries things. Like meat and sponges. JEI recipe handler not implemented yet.
+Fixed: Machines duplicating when broken in some cases. How I fixed it, I am not sure.
+Known Issues:
+- Drying racks don't sync up properly with other players.
+
 1.1.0-beta5
 Added: Config to print world gen time for each chunk. This was in the previous version, but there was no config. Disabled by default.
 Fixed: Item drop keys being internationally ignorant. You should not need to change your config file, but try deleting it if you have trouble.
