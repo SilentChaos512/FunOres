@@ -36,4 +36,9 @@ public class DryingRackRecipeObject {
     }
     return false;
   }
+
+  public List<ItemStack> getStacks() {
+
+    return stacks;
+  }
 }

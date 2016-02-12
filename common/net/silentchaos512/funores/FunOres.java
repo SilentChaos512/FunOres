@@ -176,8 +176,8 @@ public class FunOres {
 
   private void initDryingRackRecipes() {
 
-    int jerkyDryTime = 6000;
-    float jerkyXp = 0.4f;
+    int jerkyDryTime = 9000;
+    float jerkyXp = 0.8f;
     addDryingRackRecipe("Dried Flesh", EnumDriedItem.DRIED_FLESH.getItem(),
         new ItemStack(Items.rotten_flesh), jerkyDryTime, jerkyXp);
     addDryingRackRecipe("Beef Jerky", EnumDriedItem.BEEF_JERKY.getItem(), new ItemStack(Items.beef),
@@ -196,7 +196,7 @@ public class FunOres {
         new ItemStack(Items.fish, 1, 1), jerkyDryTime, jerkyXp);
 
     addDryingRackRecipe("Sponge Drying", new ItemStack(Blocks.sponge),
-        new ItemStack(Blocks.sponge, 1, 1), 1000, 0.2f);
+        new ItemStack(Blocks.sponge, 1, 1), 2400, 0.4f);
   }
 
   private void addDryingRackRecipe(String recipeName, ItemStack output, Object input, int dryTime,
