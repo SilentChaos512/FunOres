@@ -164,6 +164,10 @@ public class TileDryingRack extends TileEntity implements ITickable, IInventory 
     if (tags.hasKey("ItemStack")) {
       stack = ItemStack.loadItemStackFromNBT(tags.getCompoundTag("ItemStack"));
     }
+
+    if (getWorld().isRemote) {
+      getWorld().markBlockForUpdate(getPos());
+    }
   }
 
   @Override
