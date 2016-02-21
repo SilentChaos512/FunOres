@@ -24,21 +24,23 @@ public class ModBlocks {
   public static MobOre mobOre;
   public static MetalBlock metalBlock;
   public static AlloyBlock alloyBlock;
+//  public static BlockSpikes spikes;
   public static MetalFurnace metalFurnace;
   public static AlloySmelter alloySmelter;
   public static BlockDryingRack dryingRack;
 
   public static void init() {
 
-    metalOre = (MetalOre) SRegistry.registerBlock(MetalOre.class, Names.METAL_ORE);
-    meatOre = (MeatOre) SRegistry.registerBlock(MeatOre.class, Names.MEAT_ORE,
+    metalOre = (MetalOre) SRegistry.registerBlock(new MetalOre(), Names.METAL_ORE);
+    meatOre = (MeatOre) SRegistry.registerBlock(new MeatOre(), Names.MEAT_ORE,
         ItemBlockOreDrops.class);
-    mobOre = (MobOre) SRegistry.registerBlock(MobOre.class, Names.MOB_ORE, ItemBlockOreDrops.class);
-    metalBlock = (MetalBlock) SRegistry.registerBlock(MetalBlock.class, Names.METAL_BLOCK);
-    alloyBlock = (AlloyBlock) SRegistry.registerBlock(AlloyBlock.class, Names.ALLOY_BLOCK);
-    metalFurnace = (MetalFurnace) SRegistry.registerBlock(MetalFurnace.class, Names.METAL_FURNACE);
-    alloySmelter = (AlloySmelter) SRegistry.registerBlock(AlloySmelter.class, Names.ALLOY_SMELTER);
-    dryingRack = (BlockDryingRack) SRegistry.registerBlock(BlockDryingRack.class, Names.DRYING_RACK);
+    mobOre = (MobOre) SRegistry.registerBlock(new MobOre(), Names.MOB_ORE, ItemBlockOreDrops.class);
+    metalBlock = (MetalBlock) SRegistry.registerBlock(new MetalBlock(), Names.METAL_BLOCK);
+    alloyBlock = (AlloyBlock) SRegistry.registerBlock(new AlloyBlock(), Names.ALLOY_BLOCK);
+//    spikes = (BlockSpikes) SRegistry.registerBlock(new BlockSpikes(), "Spikes");
+    metalFurnace = (MetalFurnace) SRegistry.registerBlock(new MetalFurnace(), Names.METAL_FURNACE);
+    alloySmelter = (AlloySmelter) SRegistry.registerBlock(new AlloySmelter(), Names.ALLOY_SMELTER);
+    dryingRack = (BlockDryingRack) SRegistry.registerBlock(new BlockDryingRack(), Names.DRYING_RACK);
   }
 
   public static List<String> getWitInfoForOre(ConfigOptionOreGen config, IBlockState state, BlockPos pos,

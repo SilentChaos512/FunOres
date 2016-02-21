@@ -80,6 +80,7 @@ public class TileDryingRack extends TileEntity implements ITickable, IInventory 
       dryTime = 0;
       totalDryTime = getTotalDryTime();
       markDirty();
+      worldObj.markBlockForUpdate(pos);
     } else if (stack != null) {
       // Remove from rack.
       if (!player.worldObj.isRemote) {
@@ -98,6 +99,7 @@ public class TileDryingRack extends TileEntity implements ITickable, IInventory 
       totalDryTime = getTotalDryTime();
       // TODO: Give XP?
       markDirty();
+      worldObj.markBlockForUpdate(pos);
     }
 
     return true;

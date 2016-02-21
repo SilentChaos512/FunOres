@@ -1,3 +1,11 @@
+1.1.1
+Added: Drying Rack recipe handler for JEI
+Added (API): Drying Rack recipe adding method
+Added (API): Plate recipe adding method
+Changed: Plate textures
+Maybe fixed Drying Rack desync on servers?
+API version 3
+
 1.1.0-beta6
 Added: The Drying Rack. It dries things. Like meat and sponges. JEI recipe handler not implemented yet.
 Fixed: Machines duplicating when broken in some cases. How I fixed it, I am not sure.

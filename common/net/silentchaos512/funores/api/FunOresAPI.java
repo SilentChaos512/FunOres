@@ -1,8 +1,12 @@
 package net.silentchaos512.funores.api;
 
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.silentchaos512.funores.api.recipe.alloysmelter.AlloySmelterRecipe;
-import net.silentchaos512.funores.api.recipe.alloysmelter.AlloySmelterRecipeObject;
+import net.silentchaos512.funores.api.recipe.dryingrack.DryingRackRecipe;
+import net.silentchaos512.funores.api.recipe.dryingrack.DryingRackRecipeObject;
 
 /**
  * Here I will try my best to create some methods to make interacting with Fun Ores a bit easier.
@@ -56,5 +60,48 @@ public class FunOresAPI {
     ItemStack newOutput = output.copy();
     newOutput.stackSize = outputCount;
     addAlloySmelterRecipe(newOutput, cookTime, experience, inputs);
+  }
+
+  /**
+   * Adds a drying rack recipe.
+   * 
+   * @param output
+   *          The result of drying the input.
+   * @param dryTime
+   *          The base drying time.
+   * @param experience
+   *          The experience resulting from the recipe.
+   * @param input
+   *          Can be an ItemStack or a String (ore dictionary name).
+   */
+  public static void addDryingRackRecipe(ItemStack output, int dryTime, float experience,
+      Object input) {
+
+    DryingRackRecipeObject recipeObject = null;
+    if (input instanceof ItemStack) {
+      recipeObject = new DryingRackRecipeObject((ItemStack) input);
+    } else if (input instanceof String) {
+      recipeObject = new DryingRackRecipeObject((String) input);
+    }
+
+    if (recipeObject != null) {
+      DryingRackRecipe.addRecipe(output, recipeObject, dryTime, experience);
+    }
+  }
+
+  // TODO: Maybe the hammer should be in the ore dictionary? Or maybe an interface for hammers?
+  private static final ItemStack HAMMER = new ItemStack(Item.getByNameOrId("FunOres:Hammer"));
+
+  /**
+   * Adds a plate recipe. Just so you don't need to grab the hammer item yourself.
+   * 
+   * @param plate
+   *          The resulting item.
+   * @param ingot
+   *          The ore dictionary name of the ingot.
+   */
+  public static void addPlateRecipe(ItemStack plate, String ingot) {
+
+    GameRegistry.addRecipe(new ShapedOreRecipe(plate, "h", "i", "i", 'h', HAMMER, 'i', ingot));
   }
 }

@@ -2,6 +2,8 @@ import sys
 import re
 import os
 
+MOD_ID = 'FunOres'
+
 def createDirIfNeeded(name):
   if not os.path.exists(name):
     os.makedirs(name)
@@ -18,23 +20,23 @@ def writeBlockJSONs(name):
   f = open('output/blockstates/' + name + '.json', 'w')
   f.write('{\n')
   f.write('  "variants": {\n')
-  f.write('    "normal": { "model": "FunOres:' + name + '" }\n')
+  f.write('    "normal": { "model": "%s:%s" }\n' % (MOD_ID, name))
   f.write('  }\n')
   f.write('}\n')
   f.close()
   #block model
-  f = open('output/models/block/' + name + '.json', 'w')
+  f = open('output/models/block/%s.json' % name, 'w')
   f.write('{\n')
   f.write('  "parent": "block/cube_all",\n')
   f.write('  "textures": {\n')
-  f.write('    "all": "FunOres:blocks/' + name + '"\n')
+  f.write('    "all": "%s:blocks/%s\n' % name)
   f.write('  }\n')
   f.write('}\n')
   f.close()
   #item model
-  f = open('output/models/item/' + name + '.json', 'w')
+  f = open('output/models/item/%s.json' % name, 'w')
   f.write('{\n')
-  f.write('  "parent": "FunOres:block/' + name + '",\n')
+  f.write('  "parent": "%s:block/%s",\n' % (MOD_ID, name))
   f.write('  "display": {\n')
   f.write('    "thirdperson": {\n')
   f.write('      "rotation": [ 10, -45, 170 ],\n')
@@ -50,7 +52,7 @@ def writeItemJSON(name):
   f.write('{\n')
   f.write('  "parent": "builtin/generated",\n')
   f.write('  "textures": {\n')
-  f.write('    "layer0": "FunOres:items/' + name + '"\n')
+  f.write('    "layer0": "%s:items/%s"\n' % (MOD_ID, name))
   f.write('  },\n')
   f.write('  "display": {\n')
   f.write('    "thirdperson": {\n')

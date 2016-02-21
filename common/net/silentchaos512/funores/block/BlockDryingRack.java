@@ -57,9 +57,9 @@ public class BlockDryingRack extends BlockMachine {
       }
 
       // Debug info
-      if (advanced) {
-        list.addAll(rack.getDebugLines());
-      }
+//      if (advanced) {
+//        list.addAll(rack.getDebugLines());
+//      }
 
       list.addAll(super.getWitLines(state, pos, player, advanced));
       return list;

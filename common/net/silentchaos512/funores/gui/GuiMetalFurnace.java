@@ -59,7 +59,7 @@ public class GuiMetalFurnace extends GuiContainer {
     i1 = this.func_175381_h(24);
     this.drawTexturedModalRect(k + 79, l + 34, 176, 14, i1 + 1, 16);
 
-    drawDebugInfo();
+    //drawDebugInfo();
   }
 
   private int func_175381_h(int p_175381_1_) {
