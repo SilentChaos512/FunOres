@@ -65,7 +65,7 @@ public class MobOre extends BlockSG implements IWitHudInfo {
   public List<String> getWitLines(IBlockState state, BlockPos pos, EntityPlayer player,
       boolean advanced) {
 
-    if (!player.isSneaking()) {
+    if (!player.isSneaking() && !advanced) {
       return null;
     }
 

@@ -62,7 +62,7 @@ public class ConfigOptionOreGen extends ConfigOption {
   // public boolean isBiomeBlacklist = true;
   public BiomeListType biomeListType = BiomeListType.BLACKLIST;
   // public List<BiomeDictionary.Type> biomes = Lists.newArrayList();
-  private Dictionary<BiomeDictionary.Type, Integer> clusterCountByBiomeType = new Hashtable<BiomeDictionary.Type, Integer>();
+  private Dictionary<BiomeDictionary.Type, Float> clusterCountByBiomeType = new Hashtable<BiomeDictionary.Type, Float>();
   public final String oreName;
   public IStringSerializable ore;
   protected boolean isExample = false;
@@ -159,16 +159,16 @@ public class ConfigOptionOreGen extends ConfigOption {
   private void setClusterCountForBiomeType(BiomeDictionary.Type type, boolean isInList) {
 
     final float multi = Config.oreGenBiomeFavorsMultiplier;
-    int count;
+    float count;
     switch (biomeListType) {
       case AVOIDS:
-        count = isInList ? (int) (clusterCount / multi) : (int) (clusterCount * multi);
+        count = isInList ? clusterCount / multi : clusterCount * multi;
         break;
       case BLACKLIST:
         count = isInList ? 0 : clusterCount;
         break;
       case FAVORS:
-        count = isInList ? (int) (clusterCount * multi) : (int) (clusterCount / multi);
+        count = isInList ? clusterCount * multi : clusterCount / multi;
         break;
       case WHITELIST:
         count = isInList ? clusterCount : 0;
@@ -197,7 +197,7 @@ public class ConfigOptionOreGen extends ConfigOption {
   public boolean canSpawnInBiome(BiomeGenBase biome) {
 
     for (BiomeDictionary.Type type : BiomeDictionary.getTypesForBiome(biome)) {
-      Integer count = clusterCountByBiomeType.get(type);
+      Float count = clusterCountByBiomeType.get(type);
       if (count != null) {
         return count > 0;
       }
@@ -215,12 +215,12 @@ public class ConfigOptionOreGen extends ConfigOption {
     // return biomeListType != BiomeListType.WHITELIST;
   }
 
-  public int getClusterCountForBiome(BiomeGenBase biome) {
+  public float getClusterCountForBiome(BiomeGenBase biome) {
 
     // LogHelper.debug(clusterCountByBiomeType);
-    int count = 0;
+    float count = 0;
     for (BiomeDictionary.Type type : BiomeDictionary.getTypesForBiome(biome)) {
-      Integer forBiome = clusterCountByBiomeType.get(type);
+      Float forBiome = clusterCountByBiomeType.get(type);
       if (forBiome != null) {
         count = Math.max(count, clusterCountByBiomeType.get(type));
       }
