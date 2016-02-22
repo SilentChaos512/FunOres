@@ -124,7 +124,13 @@ public class FunOresGenerator implements IWorldGenerator {
       // if (ore == EnumMetal.COPPER.getConfig()) {
       // LogHelper.list(biome.biomeName, ore.oreName, ore.getClusterCountForBiome(biome));
       // }
-      int clusterCount = ore.getClusterCountForBiome(biome);
+      float trueClusterCount = ore.getClusterCountForBiome(biome);
+      int clusterCount = (int) trueClusterCount;
+      float bonusClusterChance = trueClusterCount - clusterCount;
+      if (random.nextFloat() < bonusClusterChance) {
+        ++clusterCount;
+      }
+
       int x, y, z;
       for (int i = 0; i < clusterCount; ++i) {
         if (random.nextInt(ore.rarity) == 0) {
