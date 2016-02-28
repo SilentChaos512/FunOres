@@ -1,3 +1,6 @@
+1.1.1b
+Maybe fixed an issue with high-rarity ores not being affecting by favors/avoids biome settings.
+
 1.1.1
 Added: Drying Rack recipe handler for JEI
 Added (API): Drying Rack recipe adding method

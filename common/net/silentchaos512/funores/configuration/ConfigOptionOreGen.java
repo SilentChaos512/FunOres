@@ -1,7 +1,8 @@
 package net.silentchaos512.funores.configuration;
 
-import java.util.Dictionary;
-import java.util.Hashtable;
+import java.util.List;
+
+import com.google.common.collect.Lists;
 
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.MathHelper;
@@ -9,7 +10,6 @@ import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.config.Configuration;
 import net.silentchaos512.funores.core.util.LogHelper;
-import net.silentchaos512.funores.lib.EnumMetal;
 
 public class ConfigOptionOreGen extends ConfigOption {
 
@@ -61,8 +61,8 @@ public class ConfigOptionOreGen extends ConfigOption {
   public int rarity = 1;
   // public boolean isBiomeBlacklist = true;
   public BiomeListType biomeListType = BiomeListType.BLACKLIST;
-  // public List<BiomeDictionary.Type> biomes = Lists.newArrayList();
-  private Dictionary<BiomeDictionary.Type, Float> clusterCountByBiomeType = new Hashtable<BiomeDictionary.Type, Float>();
+  public List<BiomeDictionary.Type> biomes = Lists.newArrayList();
+//  private Dictionary<BiomeDictionary.Type, Float> clusterCountByBiomeType = new Hashtable<BiomeDictionary.Type, Float>();
   public final String oreName;
   public IStringSerializable ore;
   protected boolean isExample = false;
@@ -120,7 +120,10 @@ public class ConfigOptionOreGen extends ConfigOption {
         for (BiomeDictionary.Type type : BiomeDictionary.Type.values()) {
           boolean isInList = type.name().toUpperCase().equals(str.toUpperCase());
           foundMatch = isInList ? true : foundMatch;
-          setClusterCountForBiomeType(type, isInList);
+          if (isInList) {
+            biomes.add(type);
+          }
+//          setClusterCountForBiomeType(type, isInList);
         }
         if (!foundMatch) {
           LogHelper.warning("Unknown biome type: " + str);
@@ -156,31 +159,31 @@ public class ConfigOptionOreGen extends ConfigOption {
     return this;
   }
 
-  private void setClusterCountForBiomeType(BiomeDictionary.Type type, boolean isInList) {
-
-    final float multi = Config.oreGenBiomeFavorsMultiplier;
-    float count;
-    switch (biomeListType) {
-      case AVOIDS:
-        count = isInList ? clusterCount / multi : clusterCount * multi;
-        break;
-      case BLACKLIST:
-        count = isInList ? 0 : clusterCount;
-        break;
-      case FAVORS:
-        count = isInList ? clusterCount * multi : clusterCount / multi;
-        break;
-      case WHITELIST:
-        count = isInList ? clusterCount : 0;
-        break;
-      default:
-        count = clusterCount;
-        LogHelper.warning(
-            "ConfigOptionOreGen.setClusterCountForBiomeType - unknown list type: " + biomeListType);
-        break;
-    }
-    clusterCountByBiomeType.put(type, count);
-  }
+//  private void setClusterCountForBiomeType(BiomeDictionary.Type type, boolean isInList) {
+//
+//    final float multi = Config.oreGenBiomeFavorsMultiplier;
+//    float count;
+//    switch (biomeListType) {
+//      case AVOIDS:
+//        count = isInList ? clusterCount / multi : clusterCount * multi;
+//        break;
+//      case BLACKLIST:
+//        count = isInList ? 0 : clusterCount;
+//        break;
+//      case FAVORS:
+//        count = isInList ? clusterCount * multi : clusterCount / multi;
+//        break;
+//      case WHITELIST:
+//        count = isInList ? clusterCount : 0;
+//        break;
+//      default:
+//        count = clusterCount;
+//        LogHelper.warning(
+//            "ConfigOptionOreGen.setClusterCountForBiomeType - unknown list type: " + biomeListType);
+//        break;
+//    }
+//    clusterCountByBiomeType.put(type, count);
+//  }
 
   @Override
   public ConfigOption validate() {
@@ -197,34 +200,65 @@ public class ConfigOptionOreGen extends ConfigOption {
   public boolean canSpawnInBiome(BiomeGenBase biome) {
 
     for (BiomeDictionary.Type type : BiomeDictionary.getTypesForBiome(biome)) {
-      Float count = clusterCountByBiomeType.get(type);
-      if (count != null) {
-        return count > 0;
+      for (BiomeDictionary.Type typeInList : biomes) {
+        if (type == typeInList) {
+          return biomeListType != BiomeListType.BLACKLIST;
+        }
       }
     }
-    return true;
-    // for (BiomeDictionary.Type type1 : biomes) {
-    // for (BiomeDictionary.Type type2 : BiomeDictionary.getTypesForBiome(biome)) {
-    // if (type1 == type2) {
-    // // Biome is in list
-    // return biomeListType != BiomeListType.BLACKLIST;
-    // }
-    // }
-    // }
-    // // Empty biome list or biome is not in list.
-    // return biomeListType != BiomeListType.WHITELIST;
+    return biomeListType != BiomeListType.WHITELIST;
   }
 
   public float getClusterCountForBiome(BiomeGenBase biome) {
 
     // LogHelper.debug(clusterCountByBiomeType);
-    float count = 0;
+    float count = 0f;
+    float countForBiome;
+
+    boolean foundMatch = false;
     for (BiomeDictionary.Type type : BiomeDictionary.getTypesForBiome(biome)) {
-      Float forBiome = clusterCountByBiomeType.get(type);
-      if (forBiome != null) {
-        count = Math.max(count, clusterCountByBiomeType.get(type));
+      for (BiomeDictionary.Type typeInList : biomes) {
+        if (type == typeInList) {
+          foundMatch = true;
+          switch (biomeListType) {
+            case AVOIDS:
+              countForBiome = clusterCount / Config.oreGenBiomeFavorsMultiplier;
+              break;
+            case BLACKLIST:
+              countForBiome = 0f;
+              break;
+            case FAVORS:
+              countForBiome = clusterCount * Config.oreGenBiomeFavorsMultiplier;
+              break;
+            case WHITELIST:
+              countForBiome = clusterCount;
+              break;
+            default:
+              countForBiome = 0f;
+          }
+          count = Math.max(count, countForBiome);
+        }
       }
     }
+
+    if (!foundMatch) {
+      switch (biomeListType) {
+        // Favoring a non-avoided biome?
+        case AVOIDS:
+          count = clusterCount * Config.oreGenBiomeFavorsMultiplier;
+          break;
+        // Avoiding a non-favored biome?
+        case FAVORS:
+          count = clusterCount / Config.oreGenBiomeFavorsMultiplier;
+          break;
+        // Empty whitelist?
+        case WHITELIST:
+          count = 0;
+        default:
+          break;
+      }
+    }
+
     return count == 0 ? clusterCount : count;
 
     // for (BiomeDictionary.Type type1 : biomes) {

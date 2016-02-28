@@ -22,6 +22,7 @@ public class Config {
   public static float oreGenBiomeFavorsMultiplier = 1.5f;
   // Debug
   public static boolean printWorldGenTime = false;
+  public static boolean logOrePlacement = false;
 
   // Metal ores
   public static ConfigOptionOreGen copper = new ConfigOptionOreGen(EnumMetal.COPPER);
@@ -131,6 +132,8 @@ public class Config {
       // Debug
       printWorldGenTime = c.getBoolean("PrintWorldGenTime", CATEGORY_DEBUG, printWorldGenTime,
           "Logs the time the Fun Ores world generator takes to do its generation in each chunk. Also tracks min, max, and average times.");
+      logOrePlacement = c.getBoolean("LogOrePlacement", CATEGORY_DEBUG, logOrePlacement,
+          "Logs where ores are spawning. This will probably slow down your game!");
 
       /*
        * Example Ore

@@ -19,6 +19,10 @@ public class ExtraRecipes {
     String comment;
     ItemStack result;
 
+    // Chests
+    comment = "Eight logs to four chests.";
+    result = new ItemStack(Blocks.chest, 4);
+    add("ChestsFromLogs", comment, result, "lll", "l l", "lll", 'l', "logWood");
     // Pistons
     comment = "Extra piston recipe using an ingot other than iron.";
     result = new ItemStack(Blocks.piston);

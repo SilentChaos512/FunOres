@@ -125,11 +125,13 @@ public class FunOresGenerator implements IWorldGenerator {
       // LogHelper.list(biome.biomeName, ore.oreName, ore.getClusterCountForBiome(biome));
       // }
       float trueClusterCount = ore.getClusterCountForBiome(biome);
-      int clusterCount = (int) trueClusterCount;
+      int clusterCount = trueClusterCount > 0 && trueClusterCount < 1 ? 1 :(int) trueClusterCount;
       float bonusClusterChance = trueClusterCount - clusterCount;
       if (random.nextFloat() < bonusClusterChance) {
         ++clusterCount;
       }
+
+      int numSpawned = 0;
 
       int x, y, z;
       for (int i = 0; i < clusterCount; ++i) {
@@ -140,8 +142,23 @@ public class FunOresGenerator implements IWorldGenerator {
 
           BlockPos pos = new BlockPos(x, y, z);
           IBlockState state = ((IHasOre) ore.ore).getOre();
+          IBlockState targetState = world.getBlockState(pos);
 
           new WorldGenMinable(state, ore.clusterSize, predicate).generate(world, random, pos);
+
+          // Log placement?
+          if (Config.logOrePlacement && predicate.apply(targetState)) {
+            if (numSpawned == 0) {
+              String str = "Trying to spawn %d veins of %s Ore in chunk (%d, %d)";
+              str = String.format(str, clusterCount, ore.oreName, posX / 16, posZ / 16);
+              LogHelper.info(str);
+            }
+            String str = "%s %d %d %d";
+            str = String.format(str, ore.oreName, pos.getX(), pos.getY(), pos.getZ());
+            LogHelper.info(str);
+          }
+
+          ++numSpawned;
         }
       }
     }
