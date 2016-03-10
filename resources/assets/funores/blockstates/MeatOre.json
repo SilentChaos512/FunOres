@@ -6,6 +6,7 @@
     "meat=chicken": { "model": "FunOres:OreChicken" },
     "meat=rabbit": { "model": "FunOres:OreRabbit" },
     "meat=sheep": { "model": "FunOres:OreSheep" },
-    "meat=squid": { "model": "FunOres:OreSquid" }
+    "meat=squid": { "model": "FunOres:OreSquid" },
+    "meat=bat": { "model": "FunOres:OreBat" }
   }
 }

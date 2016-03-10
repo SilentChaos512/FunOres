@@ -26,6 +26,7 @@ import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.silentchaos512.funores.FunOres;
+import net.silentchaos512.funores.configuration.Config;
 import net.silentchaos512.funores.configuration.ConfigItemDrop;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGen;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGenBonus;
@@ -136,7 +137,7 @@ public class MobOre extends BlockSG implements IWitHudInfo {
 
     // Spawn Endermites?
     if ((EnumMob) state.getValue(MOB) == EnumMob.ENDERMAN
-        && FunOres.instance.random.nextInt(100) < 15) {
+        && FunOres.instance.random.nextFloat() < Config.spawnEndermiteChance) {
       if (!world.isRemote && world.getGameRules().getBoolean("doTileDrops")) {
         EntityEndermite entity = new EntityEndermite(world);
         entity.setLocationAndAngles((double) pos.getX() + 0.5, (double) pos.getY(),

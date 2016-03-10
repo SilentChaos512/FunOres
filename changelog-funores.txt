@@ -1,3 +1,7 @@
+1.1.2
+Added: Bat ore. It often spawns bats when mined.
+Fixed: Drying rack desync on item removal. Probably.
+
 1.1.1b
 Maybe fixed an issue with high-rarity ores not being affecting by favors/avoids biome settings.
 

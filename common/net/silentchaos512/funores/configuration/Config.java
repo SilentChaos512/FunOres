@@ -2,6 +2,7 @@ package net.silentchaos512.funores.configuration;
 
 import java.io.File;
 
+import net.minecraft.item.EnumDyeColor;
 import net.minecraftforge.common.config.Configuration;
 import net.silentchaos512.funores.core.util.LogHelper;
 import net.silentchaos512.funores.lib.EnumMeat;
@@ -20,6 +21,8 @@ public class Config {
   // Misc
   public static boolean machinesCanBurn = true;
   public static float oreGenBiomeFavorsMultiplier = 1.5f;
+  public static float spawnEndermiteChance = 0.15f;
+  public static float spawnBatChance = 0.4f;
   // Debug
   public static boolean printWorldGenTime = false;
   public static boolean logOrePlacement = false;
@@ -43,6 +46,7 @@ public class Config {
   public static ConfigOptionOreGenBonus rabbit = new ConfigOptionOreGenBonus(EnumMeat.RABBIT);
   public static ConfigOptionOreGenBonus sheep = new ConfigOptionOreGenBonus(EnumMeat.SHEEP);
   public static ConfigOptionOreGenBonus squid = new ConfigOptionOreGenBonus(EnumMeat.SQUID);
+  public static ConfigOptionOreGenBonus bat = new ConfigOptionOreGenBonus(EnumMeat.BAT);
 
   // Mob ores
   public static ConfigOptionOreGenBonus zombie = new ConfigOptionOreGenBonus(EnumMob.ZOMBIE);
@@ -128,6 +132,14 @@ public class Config {
       oreGenBiomeFavorsMultiplier = c.getFloat("OreGenFavorsBiomeMultiplier", CATEGORY_MISC,
           oreGenBiomeFavorsMultiplier, 0.01f, 100f,
           "When ores favor certain biomes the number of clusters (veins) is multiplied by this, or divided by this if it avoids the biome.");
+
+      // Spawn chances
+      spawnEndermiteChance = c.getFloat("EndermiteSpawnChance",
+          CATEGORY_MOB_ORE + Configuration.CATEGORY_SPLITTER + "enderman", spawnEndermiteChance, 0f,
+          1f, "The chance that enderman ore will spawn an endermite when mined.");
+      spawnBatChance = c.getFloat("BatSpawnChance",
+          CATEGORY_MEAT_ORE + Configuration.CATEGORY_SPLITTER + "bat", spawnBatChance, 0f, 1f,
+          "The chance that bat ore will spawn a bat when mined.");
 
       // Debug
       printWorldGenTime = c.getBoolean("PrintWorldGenTime", CATEGORY_DEBUG, printWorldGenTime,
@@ -305,6 +317,16 @@ public class Config {
       squid.rarity = meatRarity;
       squid.addDrop(ConfigItemDrop.getKey("minecraft:dye", 1, 0, 1.0f, 0.0f, 1.0f));
       squid.loadValue(c, CATEGORY_MEAT_ORE);
+
+      bat.enabled = true;
+      bat.clusterCount = meatClusterCount;
+      bat.clusterSize = meatClusterSize;
+      bat.minY = meatMinY;
+      bat.maxY = meatMaxY;
+      bat.rarity = meatRarity;
+      bat.addDrop(ConfigItemDrop.getKey("minecraft:wool", 1, EnumDyeColor.BROWN.getMetadata(), 1f,
+          0f, 0.5f));
+      bat.loadValue(c, CATEGORY_MEAT_ORE);
 
       /*
        * Mob Ores

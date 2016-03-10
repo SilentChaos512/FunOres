@@ -23,6 +23,7 @@ tile.funores:MeatOre3.name=Chicken Ore
 tile.funores:MeatOre4.name=Rabbit Ore
 tile.funores:MeatOre5.name=Sheep Ore
 tile.funores:MeatOre6.name=Squid Ore
+tile.funores:MeatOre7.name=Bat Ore
 
 tile.funores:MetalBlock0.name=Copper Block
 tile.funores:MetalBlock1.name=Tin Block

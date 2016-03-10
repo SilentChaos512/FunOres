@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import com.google.common.collect.Lists;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -13,6 +11,7 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.passive.EntityBat;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -21,17 +20,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.silentchaos512.funores.FunOres;
+import net.silentchaos512.funores.configuration.Config;
 import net.silentchaos512.funores.configuration.ConfigItemDrop;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGen;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGenBonus;
 import net.silentchaos512.funores.lib.EnumMeat;
-import net.silentchaos512.funores.lib.EnumMetal;
 import net.silentchaos512.funores.lib.Names;
-import net.silentchaos512.funores.world.FunOresGenerator;
 import net.silentchaos512.wit.api.IWitHudInfo;
 
 public class MeatOre extends BlockSG implements IWitHudInfo {
@@ -127,7 +123,27 @@ public class MeatOre extends BlockSG implements IWitHudInfo {
   }
 
   @Override
-  public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
+  public void dropBlockAsItemWithChance(World world, BlockPos pos, IBlockState state, float chance,
+      int fortune) {
+
+    super.dropBlockAsItemWithChance(world, pos, state, chance, fortune);
+
+    // Spawn bats?
+    if ((EnumMeat) state.getValue(MEAT) == EnumMeat.BAT
+        && FunOres.instance.random.nextFloat() < Config.spawnBatChance) {
+      if (!world.isRemote && world.getGameRules().getBoolean("doTileDrops")) {
+        EntityBat entity = new EntityBat(world);
+        entity.setLocationAndAngles((double) pos.getX() + 0.5, (double) pos.getY(),
+            (double) pos.getZ() + 0.5, 0.0f, 0.0f);
+        world.spawnEntityInWorld(entity);
+        entity.spawnExplosionParticle();
+      }
+    }
+  }
+
+  @Override
+  public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state,
+      int fortune) {
 
     List<ItemStack> ret = new ArrayList<ItemStack>();
 

@@ -16,7 +16,8 @@ public enum EnumMeat implements IStringSerializable,IHasOre {
   CHICKEN(3, "Chicken"),
   RABBIT(4, "Rabbit"),
   SHEEP(5, "Sheep"),
-  SQUID(6, "Squid");
+  SQUID(6, "Squid"),
+  BAT(7, "Bat");
 
   public final int meta;
   public final String name;
@@ -62,6 +63,7 @@ public enum EnumMeat implements IStringSerializable,IHasOre {
       case 4: return Config.rabbit;
       case 5: return Config.sheep;
       case 6: return Config.squid;
+      case 7: return Config.bat;
       //@formatter:on
       default:
         LogHelper.severe("Don't know config for ore " + name + "!");
