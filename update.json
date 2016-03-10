@@ -1,10 +1,10 @@
 {
   "homepage": "http://minecraft.curseforge.com/projects/fun-ores/files",
   "promos": {
-    "1.8.9-latest": "1.1.1",
-    "1.8.9-recommended": "1.1.1"
+    "1.8.9-latest": "1.1.2",
+    "1.8.9-recommended": "1.1.2"
   },
   "1.8.9": {
-    "1.1.1": "See: https://github.com/SilentChaos512/FunOres/blob/master/changelog-funores.txt"
+    "1.1.2": "See: https://github.com/SilentChaos512/FunOres/blob/master/changelog-funores.txt"
   }
 }
