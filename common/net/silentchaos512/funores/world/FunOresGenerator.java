@@ -69,14 +69,14 @@ public class FunOresGenerator implements IWorldGenerator {
 
     // Vanilla
     for (EnumVanillaOre vanilla : EnumVanillaOre.values()) {
-      if (vanilla.dimension == dim) {
+      if (vanilla.dimension == dim || vanilla.dimension == 0) {
         generateOre(vanilla.getConfig(), world, random, posX, posZ, predicate);
       }
     }
     // Metal
     if (!Config.disableMetalOres) {
       for (EnumMetal metal : EnumMetal.values()) {
-        if (metal.dimension == dim) {
+        if (metal.dimension == dim || metal.dimension == 0) {
           generateOre(metal.getConfig(), world, random, posX, posZ, predicate);
         }
       }
@@ -84,7 +84,7 @@ public class FunOresGenerator implements IWorldGenerator {
     // Meat
     if (!Config.disableMeatOres) {
       for (EnumMeat meat : EnumMeat.values()) {
-        if (meat.dimension == dim) {
+        if (meat.dimension == dim || meat.dimension == 0) {
           generateOre(meat.getConfig(), world, random, posX, posZ, predicate);
         }
       }
@@ -92,7 +92,7 @@ public class FunOresGenerator implements IWorldGenerator {
     // Mob
     if (!Config.disableMobOres) {
       for (EnumMob mob : EnumMob.values()) {
-        if (mob.dimension == dim) {
+        if (mob.dimension == dim || mob.dimension == 0) {
           generateOre(mob.getConfig(), world, random, posX, posZ, predicate);
         }
       }
