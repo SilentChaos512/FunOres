@@ -158,9 +158,9 @@ item.funores:PlateElectrum.name=Electrum Plate
 item.funores:PlateEnderium.name=Enderium Plate
 item.funores:PlatePrismarinium.name=Prismarinium Plate
 
-item.funores:Shard0.name=Ender Shard
-item.funores:Shard1.name=Blaze Shard
-item.funores:Shard2.name=Ghast Shard
+item.funores:ShardEnder.name=Ender Shard
+item.funores:ShardBlaze.name=Blaze Shard
+item.funores:ShardGhast.name=Ghast Shard
 
 item.funores:DriedFlesh.name=Dried Flesh
 item.funores:DriedFlesh.desc=Still doesn't taste good, maybe it has another use?
