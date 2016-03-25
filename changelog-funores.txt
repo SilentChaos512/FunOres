@@ -1,3 +1,10 @@
+1.2.1
+Added: Disabled tooltip for metal ores.
+Fixed: Shard localizations.
+
+1.2.0
+Ported to 1.9
+
 1.1.3
 Fixed: Ores not spawning in mod dimensions.
 

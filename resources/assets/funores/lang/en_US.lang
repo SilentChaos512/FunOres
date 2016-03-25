@@ -209,8 +209,8 @@ jei.funores.desc.DryingRack=Dries wet things into not-as-wet things. Like raw me
 
 misc.funores:PressCtrl=<Press Ctrl>
 misc.funores:PressShift=<Press Shift>
-misc.funores:Disabled=Disabled
-misc.funores:PossibleDrops=Possible Drops:
+misc.funores:Disabled=&1Disabled
+misc.funores:PossibleDrops=&1Possible Drops:
 misc.funores:BeaconBase=Valid beacon base.
 
 death.funores:HotMachine=%s roasted on a hot machine.

@@ -11,6 +11,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGen;
+import net.silentchaos512.funores.item.block.ItemBlockOre;
 import net.silentchaos512.funores.item.block.ItemBlockOreDrops;
 import net.silentchaos512.funores.lib.Names;
 import net.silentchaos512.funores.world.FunOresGenerator;
@@ -30,7 +31,7 @@ public class ModBlocks {
   public static void init() {
 
     SRegistry reg = FunOres.instance.registry;
-    metalOre = (MetalOre) reg.registerBlock(new MetalOre());
+    metalOre = (MetalOre) reg.registerBlock(new MetalOre(), Names.METAL_ORE, ItemBlockOre.class);
     meatOre = (MeatOre) reg.registerBlock(new MeatOre(), Names.MEAT_ORE, ItemBlockOreDrops.class);
     mobOre = (MobOre) reg.registerBlock(new MobOre(), Names.MOB_ORE, ItemBlockOreDrops.class);
     metalBlock = (MetalBlock) reg.registerBlock(new MetalBlock());

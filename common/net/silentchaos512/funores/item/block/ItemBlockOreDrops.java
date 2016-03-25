@@ -11,15 +11,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.silentchaos512.funores.FunOres;
-import net.silentchaos512.funores.block.ModBlocks;
-import net.silentchaos512.funores.configuration.Config;
 import net.silentchaos512.funores.configuration.ConfigItemDrop;
+import net.silentchaos512.funores.configuration.ConfigOptionOreGen;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGenBonus;
-import net.silentchaos512.funores.lib.EnumMeat;
-import net.silentchaos512.funores.lib.EnumMob;
-import net.silentchaos512.lib.item.ItemBlockSL;
 
-public class ItemBlockOreDrops extends ItemBlockSL {
+public class ItemBlockOreDrops extends ItemBlockOre {
 
   public ItemBlockOreDrops(Block block) {
 
@@ -29,28 +25,18 @@ public class ItemBlockOreDrops extends ItemBlockSL {
   @Override
   public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean advanced) {
 
-    ConfigOptionOreGenBonus config;
+    super.addInformation(stack, player, list, advanced);
 
-    if (this.block == ModBlocks.meatOre) {
-      config = EnumMeat.values()[stack.getItemDamage()].getConfig();
-    } else if (this.block == ModBlocks.mobOre) {
-      config = EnumMob.values()[stack.getItemDamage()].getConfig();
-    } else {
-      list.add("Wrong ItemBlock class?");
+    ConfigOptionOreGen config1 = getOreConfig(stack);
+    if (config1 == null || !(config1 instanceof ConfigOptionOreGenBonus)) {
       return;
     }
-
-    if (!isOreEnabled(config)) {
-      list.add(
-          TextFormatting.DARK_BLUE + FunOres.instance.localizationHelper.getMiscText("Disabled"));
-      return;
-    }
+    ConfigOptionOreGenBonus config = (ConfigOptionOreGenBonus) config1;
 
     boolean shifted = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)
         || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT);
     if (shifted) {
-      list.add(TextFormatting.DARK_BLUE
-          + FunOres.instance.localizationHelper.getMiscText("PossibleDrops"));
+      list.add(FunOres.instance.localizationHelper.getMiscText("PossibleDrops"));
 
       for (ConfigItemDrop drop : config.drops) {
         String str = drop.stack.getUnlocalizedName() + ".name";
@@ -59,8 +45,8 @@ public class ItemBlockOreDrops extends ItemBlockSL {
         list.add(format + str);
       }
     } else {
-      list.add(
-          TextFormatting.ITALIC + FunOres.instance.localizationHelper.getMiscText("PressShift"));
+      String str = FunOres.instance.localizationHelper.getMiscText("PressShift");
+      list.add(TextFormatting.ITALIC + str);
     }
   }
 
@@ -75,17 +61,5 @@ public class ItemBlockOreDrops extends ItemBlockSL {
     } else {
       return EnumRarity.COMMON.rarityColor;
     }
-  }
-
-  private boolean isOreEnabled(ConfigOptionOreGenBonus config) {
-
-    if (block == ModBlocks.meatOre && Config.disableMeatOres) {
-      return false;
-    }
-    if (block == ModBlocks.mobOre && Config.disableMobOres) {
-      return false;
-    }
-
-    return config.enabled;
   }
 }
