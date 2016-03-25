@@ -2,32 +2,24 @@ package net.silentchaos512.funores.item;
 
 import java.util.List;
 
+import com.google.common.collect.Lists;
+
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
 import net.silentchaos512.funores.FunOres;
-import net.silentchaos512.funores.configuration.Config;
-import net.silentchaos512.funores.core.util.RecipeHelper;
 import net.silentchaos512.funores.lib.EnumAlloy;
-import net.silentchaos512.funores.lib.EnumMetal;
 import net.silentchaos512.funores.lib.Names;
+import net.silentchaos512.lib.item.ItemSL;
+import net.silentchaos512.lib.util.RecipeHelper;
 
-public class AlloyIngot extends ItemSG {
-  
-  public static final String ORE_DICT_COPPER_ALLOY = "ingotCopperAlloy";
+public class AlloyIngot extends ItemSL {
 
   public AlloyIngot() {
 
-    super(EnumAlloy.count());
-
-    setMaxStackSize(64);
-    setHasSubtypes(true);
-    setMaxDamage(0);
-    setUnlocalizedName(Names.ALLOY_INGOT);
+    super(EnumAlloy.count(), FunOres.MOD_ID, Names.ALLOY_INGOT);
   }
 
   @Override
@@ -46,32 +38,27 @@ public class AlloyIngot extends ItemSG {
   public void addOreDict() {
 
     for (EnumAlloy alloy : EnumAlloy.values()) {
-      String name = "ingot" + alloy.getName();
+      String name = "ingot" + alloy.getMetalName();
       int meta = alloy.getMeta();
       OreDictionary.registerOre(name, new ItemStack(this, 1, meta));
     }
-    
-    OreDictionary.registerOre(ORE_DICT_COPPER_ALLOY, EnumAlloy.BRONZE.getIngot());
-    OreDictionary.registerOre(ORE_DICT_COPPER_ALLOY, EnumAlloy.BRASS.getIngot());
   }
 
   @Override
-  public String[] getVariantNames() {
+  public List<ModelResourceLocation> getVariants() {
 
-    String[] result = new String[EnumAlloy.count()];
-
-    for (int i = 0; i < EnumAlloy.count(); ++i) {
-      result[i] = FunOres.MOD_ID + ":Ingot" + EnumAlloy.values()[i].getName();
+    List<ModelResourceLocation> models = Lists.newArrayList();
+    for (EnumAlloy metal : EnumAlloy.values()) {
+      models.add(new ModelResourceLocation(FunOres.MOD_ID + ":Ingot" + metal.getMetalName(), "inventory"));
     }
-
-    return result;
+    return models;
   }
 
   @Override
   public void getSubItems(Item item, CreativeTabs tab, List list) {
 
-    for (int i = 0; i < EnumAlloy.count(); ++i) {
-      list.add(new ItemStack(this, 1, i));
+    for (EnumAlloy metal : EnumAlloy.values()) {
+      list.add(new ItemStack(item, 1, metal.getMeta()));
     }
   }
 }

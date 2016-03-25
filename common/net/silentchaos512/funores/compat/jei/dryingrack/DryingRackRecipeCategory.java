@@ -13,7 +13,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.compat.jei.FunOresPlugin;
-import net.silentchaos512.funores.core.util.LocalizationHelper;
 
 public class DryingRackRecipeCategory implements IRecipeCategory {
 
@@ -24,7 +23,7 @@ public class DryingRackRecipeCategory implements IRecipeCategory {
   @Nonnull
   protected final IDrawableAnimated arrow;
   @Nonnull
-  private final String localizedName = LocalizationHelper
+  private final String localizedName = FunOres.instance.localizationHelper
       .getLocalizedString(("jei.funores.recipe.DryingRack"));
 
   public DryingRackRecipeCategory(IGuiHelper guiHelper) {

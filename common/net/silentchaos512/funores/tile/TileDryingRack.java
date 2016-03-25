@@ -6,20 +6,21 @@ import com.google.common.collect.Lists;
 
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.ITickable;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.text.ITextComponent;
 import net.silentchaos512.funores.api.recipe.dryingrack.DryingRackRecipe;
 import net.silentchaos512.funores.block.BlockMachine;
-import net.silentchaos512.funores.block.ModBlocks;
-import net.silentchaos512.funores.core.util.LogHelper;
 import net.silentchaos512.funores.lib.EnumMachineState;
 
 public class TileDryingRack extends TileEntity implements ITickable, IInventory {
@@ -66,9 +67,8 @@ public class TileDryingRack extends TileEntity implements ITickable, IInventory 
     }
   }
 
-  public boolean interact(EntityPlayer player) {
+  public boolean interact(EntityPlayer player, EnumHand hand, ItemStack heldItem) {
 
-    ItemStack heldItem = player.getHeldItem();
     if (stack == null && heldItem != null) {
       // Add to rack.
       stack = heldItem.copy();
@@ -80,26 +80,27 @@ public class TileDryingRack extends TileEntity implements ITickable, IInventory 
       dryTime = 0;
       totalDryTime = getTotalDryTime();
       markDirty();
-      worldObj.markBlockForUpdate(pos);
+      // FIXME
+      // worldObj.markBlockForUpdate(pos);
     } else if (stack != null) {
       // Remove from rack.
       if (!player.worldObj.isRemote) {
-        Vec3 v = new Vec3(player.posX, player.posY + 1.1, player.posZ);
-        Vec3 lookVec = player.getLookVec();
+        Vec3d v = new Vec3d(player.posX, player.posY + 1.1, player.posZ);
+        Vec3d lookVec = player.getLookVec();
         v = v.add(lookVec);
         stack.stackSize = 1; // Not sure why this is necessary...
-        EntityItem entityItem = new EntityItem(player.worldObj, v.xCoord, v.yCoord,
-            v.zCoord, stack);
-//        LogHelper.list(entityItem, entityItem.getEntityItem().stackSize);
+        EntityItem entityItem = new EntityItem(player.worldObj, v.xCoord, v.yCoord, v.zCoord,
+            stack);
+        // LogHelper.list(entityItem, entityItem.getEntityItem().stackSize);
         player.worldObj.spawnEntityInWorld(entityItem);
       }
       givePlayerXp(player);
       stack = null;
       dryTime = 0;
       totalDryTime = getTotalDryTime();
-      // TODO: Give XP?
       markDirty();
-      worldObj.markBlockForUpdate(pos);
+      // FIXME
+      // worldObj.markBlockForUpdate(pos);
     }
 
     return true;
@@ -120,8 +121,9 @@ public class TileDryingRack extends TileEntity implements ITickable, IInventory 
 
     if (amount > 0) {
       player.addExperience(amount);
-      player.worldObj.playSoundAtEntity(player, "random.orb", 0.1F, 0.5F
-          * ((player.worldObj.rand.nextFloat() - player.worldObj.rand.nextFloat()) * 0.7F + 1.8F));
+      worldObj.playSound(null, player.posX, player.posY, player.posZ,
+          SoundEvents.entity_experience_orb_touch, SoundCategory.PLAYERS, 0.1F,
+          0.5F * ((worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.7F + 1.8F));
     }
 
     xp = 0;
@@ -153,11 +155,11 @@ public class TileDryingRack extends TileEntity implements ITickable, IInventory 
     if (stack != null) {
       tags.setTag("ItemStack", stack.writeToNBT(new NBTTagCompound()));
     }
-    return new S35PacketUpdateTileEntity(pos, 1, tags);
+    return new SPacketUpdateTileEntity(pos, 1, tags);
   }
 
   @Override
-  public void onDataPacket(NetworkManager network, S35PacketUpdateTileEntity packet) {
+  public void onDataPacket(NetworkManager network, SPacketUpdateTileEntity packet) {
 
     NBTTagCompound tags = packet.getNbtCompound();
     dryTime = tags.getInteger("DryTime");
@@ -170,7 +172,8 @@ public class TileDryingRack extends TileEntity implements ITickable, IInventory 
     }
 
     if (getWorld().isRemote) {
-      getWorld().markBlockForUpdate(getPos());
+      // FIXME
+//      getWorld().markBlockForUpdate(getPos());
     }
   }
 
@@ -241,7 +244,7 @@ public class TileDryingRack extends TileEntity implements ITickable, IInventory 
   }
 
   @Override
-  public IChatComponent getDisplayName() {
+  public ITextComponent getDisplayName() {
 
     return null;
   }

@@ -1,23 +1,24 @@
 package net.silentchaos512.funores.item;
 
+import java.util.List;
+
+import com.google.common.collect.Lists;
+
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.lib.Names;
+import net.silentchaos512.lib.item.ItemNamedSubtypes;
 
-public class Shard extends ItemSG {
+public class Shard extends ItemNamedSubtypes {
   
-  public static final String[] NAMES = { "Ender", "Blaze", "Ghast" };
+  public static final String[] NAMES = { "ShardEnder", "ShardBlaze", "ShardGhast" };
 
   public Shard() {
 
-    super(NAMES.length);
-    
-    setMaxStackSize(64);
-    setHasSubtypes(true);
-    setMaxDamage(0);
-    setUnlocalizedName(Names.SHARD);
+    super(NAMES, FunOres.MOD_ID, Names.SHARD);
   }
 
   @Override
@@ -34,17 +35,5 @@ public class Shard extends ItemSG {
     ItemStack ghastShard = new ItemStack(this, 1, 2);
     ItemStack ghastTear = new ItemStack(Items.ghast_tear);
     GameRegistry.addShapedRecipe(ghastTear, "ss", "ss", 's', ghastShard);
-  }
-  
-  @Override
-  public String[] getVariantNames() {
-    
-    String[] result = new String[NAMES.length];
-    
-    for (int i = 0; i < NAMES.length; ++i) {
-      result[i] = FunOres.MOD_ID + ":" + NAMES[i] + "Shard";
-    }
-    
-    return result;
   }
 }

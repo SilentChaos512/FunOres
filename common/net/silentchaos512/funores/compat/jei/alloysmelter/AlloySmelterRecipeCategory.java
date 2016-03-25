@@ -1,8 +1,5 @@
 package net.silentchaos512.funores.compat.jei.alloysmelter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.annotation.Nonnull;
 
 import mezz.jei.api.IGuiHelper;
@@ -13,14 +10,10 @@ import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.recipe.IRecipeCategory;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.oredict.OreDictionary;
 import net.silentchaos512.funores.FunOres;
-import net.silentchaos512.funores.api.recipe.alloysmelter.AlloySmelterRecipe;
 import net.silentchaos512.funores.api.recipe.alloysmelter.AlloySmelterRecipeObject;
 import net.silentchaos512.funores.compat.jei.FunOresPlugin;
-import net.silentchaos512.funores.core.util.LocalizationHelper;
 import net.silentchaos512.funores.tile.TileAlloySmelter;
 
 public class AlloySmelterRecipeCategory implements IRecipeCategory {
@@ -34,7 +27,7 @@ public class AlloySmelterRecipeCategory implements IRecipeCategory {
   @Nonnull
   protected final IDrawableAnimated arrow;
   @Nonnull
-  private final String localizedName = LocalizationHelper
+  private final String localizedName = FunOres.instance.localizationHelper
       .getLocalizedString(("jei.funores.recipe.AlloySmelter"));
 
   public AlloySmelterRecipeCategory(IGuiHelper guiHelper) {

@@ -2,14 +2,11 @@ package net.silentchaos512.funores.inventory.slot;
 
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.SlotFurnaceOutput;
 import net.minecraft.item.ItemStack;
-import net.minecraft.stats.AchievementList;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.silentchaos512.funores.api.recipe.alloysmelter.AlloySmelterRecipe;
-import net.silentchaos512.funores.tile.TileAlloySmelter;
 
 public class SlotAlloySmelterOutput extends SlotFurnaceOutput {
 

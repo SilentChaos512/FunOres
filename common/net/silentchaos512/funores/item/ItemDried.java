@@ -4,22 +4,23 @@ import java.util.List;
 
 import org.lwjgl.input.Keyboard;
 
+import com.google.common.collect.Lists;
+
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.silentchaos512.funores.FunOres;
-import net.silentchaos512.funores.core.registry.IAddRecipe;
-import net.silentchaos512.funores.core.registry.IHasVariants;
-import net.silentchaos512.funores.core.util.LocalizationHelper;
 import net.silentchaos512.funores.lib.EnumDriedItem;
 import net.silentchaos512.funores.lib.Names;
+import net.silentchaos512.lib.registry.IRegistryObject;
 
-public class ItemDried extends ItemFood implements IAddRecipe, IHasVariants {
+public class ItemDried extends ItemFood implements IRegistryObject {
 
   public ItemDried() {
 
@@ -36,8 +37,10 @@ public class ItemDried extends ItemFood implements IAddRecipe, IHasVariants {
     boolean shifted = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)
         || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT);
     if (shifted) {
-      list.add(EnumChatFormatting.ITALIC
-          + LocalizationHelper.getItemDescription(getEnum(stack).name, 0));
+      for (String line : FunOres.instance.localizationHelper
+          .getItemDescriptionLines(getEnum(stack).name)) {
+        list.add(TextFormatting.ITALIC + line);
+      }
     }
   }
 
@@ -100,22 +103,7 @@ public class ItemDried extends ItemFood implements IAddRecipe, IHasVariants {
   public String getUnlocalizedName(ItemStack stack) {
 
     EnumDriedItem e = getEnum(stack);
-    return LocalizationHelper.ITEM_PREFIX + (e == null ? Names.DRIED_ITEM : e.name);
-  }
-
-  @Override
-  public String[] getVariantNames() {
-
-    String[] result = new String[EnumDriedItem.values().length];
-    for (int i = 0; i < result.length; ++i) {
-      if (i >= EnumDriedItem.values().length) {
-        result[i] = FunOres.MOD_ID + ":JerkyTemp";
-      } else {
-        result[i] = FunOres.MOD_ID + ":" + EnumDriedItem.values()[i].textureName;
-      }
-      // result[i] = FunOres.MOD_ID + ":JerkyTemp";
-    }
-    return result;
+    return "item.funores:" + (e == null ? Names.DRIED_ITEM : e.name);
   }
 
   @Override
@@ -128,5 +116,27 @@ public class ItemDried extends ItemFood implements IAddRecipe, IHasVariants {
   public String getFullName() {
 
     return FunOres.MOD_ID + ":" + getName();
+  }
+
+  @Override
+  public String getModId() {
+
+    return FunOres.MOD_ID;
+  }
+
+  @Override
+  public List<ModelResourceLocation> getVariants() {
+
+    List<ModelResourceLocation> models = Lists.newArrayList();
+    for (EnumDriedItem item : EnumDriedItem.values()) {
+      models.add(new ModelResourceLocation(FunOres.MOD_ID + ":" + item.textureName, "inventory"));
+    }
+    return models;
+  }
+
+  @Override
+  public boolean registerModels() {
+
+    return false;
   }
 }

@@ -3,11 +3,11 @@ package net.silentchaos512.funores.lib;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
+import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.block.MetalOre;
 import net.silentchaos512.funores.block.ModBlocks;
 import net.silentchaos512.funores.configuration.Config;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGen;
-import net.silentchaos512.funores.core.util.LogHelper;
 import net.silentchaos512.funores.item.ModItems;
 
 public enum EnumMetal implements IStringSerializable,IHasOre,IMetal {
@@ -53,7 +53,7 @@ public enum EnumMetal implements IStringSerializable,IHasOre,IMetal {
   @Override
   public String getName() {
 
-    return name;
+    return name.toLowerCase();
   }
 
   public static EnumMetal byMetadata(int meta) {
@@ -99,7 +99,6 @@ public enum EnumMetal implements IStringSerializable,IHasOre,IMetal {
     return new ItemStack(ModItems.metalDust, 1, meta);
   }
 
-
   @Override
   public boolean isAlloy() {
 
@@ -119,7 +118,7 @@ public enum EnumMetal implements IStringSerializable,IHasOre,IMetal {
     // TODO Auto-generated method stub
     return null;
   }
-  
+
   public ConfigOptionOreGen getConfig() {
 
     switch (meta) {
@@ -142,7 +141,7 @@ public enum EnumMetal implements IStringSerializable,IHasOre,IMetal {
       case 8:
         return Config.titanium;
       default:
-        LogHelper.debug("EnumMetal: Don't know config for ore with meta " + meta);
+        FunOres.instance.logHelper.debug("EnumMetal: Don't know config for ore with meta " + meta);
         return null;
     }
   }

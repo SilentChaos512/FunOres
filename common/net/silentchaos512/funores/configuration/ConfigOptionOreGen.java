@@ -5,11 +5,11 @@ import java.util.List;
 import com.google.common.collect.Lists;
 
 import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.config.Configuration;
-import net.silentchaos512.funores.core.util.LogHelper;
+import net.silentchaos512.funores.FunOres;
 
 public class ConfigOptionOreGen extends ConfigOption {
 
@@ -126,7 +126,7 @@ public class ConfigOptionOreGen extends ConfigOption {
 //          setClusterCountForBiomeType(type, isInList);
         }
         if (!foundMatch) {
-          LogHelper.warning("Unknown biome type: " + str);
+          FunOres.instance.logHelper.warning("Unknown biome type: " + str);
         }
       }
     }

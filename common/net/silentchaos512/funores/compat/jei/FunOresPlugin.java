@@ -1,8 +1,11 @@
 package net.silentchaos512.funores.compat.jei;
 
+import mezz.jei.JeiHelpers;
+import mezz.jei.JeiRuntime;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IItemRegistry;
 import mezz.jei.api.IJeiHelpers;
+import mezz.jei.api.IJeiRuntime;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.IRecipeRegistry;
@@ -26,6 +29,7 @@ public class FunOresPlugin implements IModPlugin {
   @Override
   public void register(IModRegistry reg) {
 
+    jeiHelper = reg.getJeiHelpers();
     IGuiHelper guiHelper = jeiHelper.getGuiHelper();
 
     reg.addRecipeCategories(new AlloySmelterRecipeCategory(guiHelper));
@@ -46,19 +50,25 @@ public class FunOresPlugin implements IModPlugin {
     reg.addDescription(new ItemStack(ModBlocks.dryingRack), descPrefix + Names.DRYING_RACK);
   }
 
+//  @Override
+//  public void onJeiHelpersAvailable(IJeiHelpers arg0) {
+//
+//    jeiHelper = arg0;
+//  }
+//
+//  @Override
+//  public void onItemRegistryAvailable(IItemRegistry arg0) {
+//
+//  }
+//
+//  @Override
+//  public void onRecipeRegistryAvailable(IRecipeRegistry arg0) {
+//
+//  }
+
   @Override
-  public void onJeiHelpersAvailable(IJeiHelpers arg0) {
+  public void onRuntimeAvailable(IJeiRuntime runtime) {
 
-    jeiHelper = arg0;
-  }
-
-  @Override
-  public void onItemRegistryAvailable(IItemRegistry arg0) {
-
-  }
-
-  @Override
-  public void onRecipeRegistryAvailable(IRecipeRegistry arg0) {
-
+    // TODO Auto-generated method stub
   }
 }

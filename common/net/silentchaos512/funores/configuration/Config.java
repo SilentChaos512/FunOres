@@ -4,7 +4,7 @@ import java.io.File;
 
 import net.minecraft.item.EnumDyeColor;
 import net.minecraftforge.common.config.Configuration;
-import net.silentchaos512.funores.core.util.LogHelper;
+import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.lib.EnumMeat;
 import net.silentchaos512.funores.lib.EnumMetal;
 import net.silentchaos512.funores.lib.EnumMob;
@@ -547,8 +547,8 @@ public class Config {
       quartz.loadValue(c, CATEGORY_VANILLA_ORE);
 
     } catch (Exception e) {
-      LogHelper.severe("Oh noes!!! Couldn't load configuration file properly!");
-      LogHelper.severe(e);
+      FunOres.instance.logHelper.severe("Oh noes!!! Couldn't load configuration file properly!");
+      FunOres.instance.logHelper.severe(e);
     }
   }
 

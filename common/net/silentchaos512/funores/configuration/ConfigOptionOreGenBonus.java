@@ -3,15 +3,12 @@ package net.silentchaos512.funores.configuration;
 import java.text.NumberFormat;
 import java.text.ParsePosition;
 import java.util.ArrayList;
-import java.util.Locale;
-
-import org.apache.http.ParseException;
 
 import net.minecraft.item.Item;
 import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.config.Configuration;
-import net.silentchaos512.funores.core.util.LogHelper;
+import net.silentchaos512.funores.FunOres;
 
 public class ConfigOptionOreGenBonus extends ConfigOptionOreGen {
 
@@ -88,7 +85,7 @@ public class ConfigOptionOreGenBonus extends ConfigOptionOreGen {
 
     // Did I forget to add default drops?
     if (dropKeys.isEmpty()) {
-      LogHelper.warning(
+      FunOres.instance.logHelper.warning(
           "The ore " + oreName + " has no drops assigned! You will get poisonous potatoes!");
       dropKeys.add("minecraft:poisonous_potato, 1, 0, 1.0, 0.0, 0.0");
     }

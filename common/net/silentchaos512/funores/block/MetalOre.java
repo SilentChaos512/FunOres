@@ -4,41 +4,39 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 
-import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
-import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraftforge.common.BiomeDictionary;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGen;
-import net.silentchaos512.funores.core.util.LogHelper;
 import net.silentchaos512.funores.item.ModItems;
 import net.silentchaos512.funores.lib.EnumMetal;
 import net.silentchaos512.funores.lib.Names;
-import net.silentchaos512.funores.world.FunOresGenerator;
+import net.silentchaos512.lib.block.BlockSL;
 import net.silentchaos512.wit.api.IWitHudInfo;
 
-public class MetalOre extends BlockSG implements IWitHudInfo {
+public class MetalOre extends BlockSL implements IWitHudInfo {
 
   public static final PropertyEnum METAL = PropertyEnum.create("metal", EnumMetal.class);
 
   public MetalOre() {
 
-    super(EnumMetal.count(), Material.rock);
+    super(EnumMetal.count(), FunOres.MOD_ID, Names.METAL_ORE, Material.rock);
 
     setHardness(3.0f);
     setResistance(15.0f);
-    setStepSound(Block.soundTypeStone);
+    setStepSound(SoundType.STONE);
 
     for (EnumMetal metal : EnumMetal.values()) {
       if (metal == EnumMetal.COPPER || metal == EnumMetal.TIN || metal == EnumMetal.ALUMINIUM
@@ -67,7 +65,7 @@ public class MetalOre extends BlockSG implements IWitHudInfo {
   public void addOreDict() {
 
     for (EnumMetal metal : EnumMetal.values()) {
-      String name = "ore" + metal.getName();
+      String name = "ore" + metal.getMetalName();
       int meta = metal.getMeta();
       OreDictionary.registerOre(name, new ItemStack(this, 1, meta));
     }
@@ -87,15 +85,13 @@ public class MetalOre extends BlockSG implements IWitHudInfo {
   }
 
   @Override
-  public String[] getVariantNames() {
+  public List<ModelResourceLocation> getVariants() {
 
-    String[] result = new String[EnumMetal.count()];
-
-    for (int i = 0; i < EnumMetal.count(); ++i) {
-      result[i] = FunOres.MOD_ID + ":Ore" + EnumMetal.values()[i].getName();
+    List<ModelResourceLocation> models = Lists.newArrayList();
+    for (EnumMetal metal : EnumMetal.values()) {
+      models.add(new ModelResourceLocation(FunOres.MOD_ID + ":Ore" + metal.getMetalName(), "inventory"));
     }
-
-    return result;
+    return models;
   }
 
   @Override
@@ -125,8 +121,8 @@ public class MetalOre extends BlockSG implements IWitHudInfo {
   }
 
   @Override
-  protected BlockState createBlockState() {
+  protected BlockStateContainer createBlockState() {
 
-    return new BlockState(this, new IProperty[] { METAL });
+    return new BlockStateContainer(this, new IProperty[] { METAL });
   }
 }

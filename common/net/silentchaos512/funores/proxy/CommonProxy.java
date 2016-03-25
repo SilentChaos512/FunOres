@@ -1,4 +1,4 @@
-package net.silentchaos512.funores.core.proxy;
+package net.silentchaos512.funores.proxy;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -6,25 +6,16 @@ import net.silentchaos512.funores.lib.Names;
 import net.silentchaos512.funores.tile.TileAlloySmelter;
 import net.silentchaos512.funores.tile.TileDryingRack;
 import net.silentchaos512.funores.tile.TileMetalFurnace;
+import net.silentchaos512.lib.registry.SRegistry;
 
-public class CommonProxy {
+public class CommonProxy extends net.silentchaos512.lib.proxy.CommonProxy {
 
-  public CommonProxy() {
+  @Override
+  public void init(SRegistry reg) {
 
-  }
-
-  public void preInit() {
-
-  }
-
-  public void init() {
-
+    super.init(reg);
     registerTileEntities();
     registerRenderers();
-  }
-
-  public void postInit() {
-
   }
 
   public void registerTileEntities() {

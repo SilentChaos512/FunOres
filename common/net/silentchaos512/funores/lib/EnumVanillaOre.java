@@ -3,13 +3,12 @@ package net.silentchaos512.funores.lib;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.IStringSerializable;
+import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.configuration.Config;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGenReplace;
-import net.silentchaos512.funores.core.util.LogHelper;
 
+public enum EnumVanillaOre implements IStringSerializable,IHasOre {
 
-public enum EnumVanillaOre implements IStringSerializable, IHasOre {
-  
   IRON(0, "Iron", Blocks.iron_ore.getDefaultState()),
   GOLD(1, "Gold", Blocks.gold_ore.getDefaultState()),
   DIAMOND(2, "Diamond", Blocks.diamond_ore.getDefaultState()),
@@ -18,19 +17,19 @@ public enum EnumVanillaOre implements IStringSerializable, IHasOre {
   REDSTONE(5, "Redstone", Blocks.redstone_ore.getDefaultState()),
   LAPIS(6, "Lapis", Blocks.lapis_ore.getDefaultState()),
   QUARTZ(7, "Quartz", Blocks.quartz_ore.getDefaultState(), -1);
-  
+
   public final int meta;
   public final String name;
   public final IBlockState blockState;
   public final int dimension;
-  
+
   private EnumVanillaOre(int meta, String name, IBlockState blockState) {
-    
+
     this(meta, name, blockState, 0);
   }
-  
+
   private EnumVanillaOre(int meta, String name, IBlockState blockState, int dimension) {
-    
+
     this.meta = meta;
     this.name = name;
     this.blockState = blockState;
@@ -48,9 +47,9 @@ public enum EnumVanillaOre implements IStringSerializable, IHasOre {
 
     return blockState;
   }
-  
+
   public ConfigOptionOreGenReplace getConfig() {
-    
+
     switch (this) {
       case COAL:
         return Config.coal;
@@ -69,7 +68,7 @@ public enum EnumVanillaOre implements IStringSerializable, IHasOre {
       case REDSTONE:
         return Config.redstone;
       default:
-        LogHelper.warning("Don't know config for vanilla ore: " + name);
+        FunOres.instance.logHelper.warning("Don't know config for vanilla ore: " + name);
         return null;
     }
   }

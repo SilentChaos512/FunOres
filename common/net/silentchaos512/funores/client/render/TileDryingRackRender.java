@@ -1,21 +1,15 @@
 package net.silentchaos512.funores.client.render;
 
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
-import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.silentchaos512.funores.block.BlockMachine;
-import net.silentchaos512.funores.core.util.LogHelper;
-import net.silentchaos512.funores.lib.EnumMachineState;
 import net.silentchaos512.funores.tile.TileDryingRack;
 
 public class TileDryingRackRender extends TileEntitySpecialRenderer<TileDryingRack> {
@@ -51,7 +45,7 @@ public class TileDryingRackRender extends TileEntitySpecialRenderer<TileDryingRa
 
       // float rotation = (float) (720.0 * (System.currentTimeMillis() & 0x3FFFL) / 0x3FFFL);
       // GlStateManager.rotate(rotation, 0.0F, 1.0F, 0);
-      Vec3 vec = getItemPosition();
+      Vec3d vec = getItemPosition();
       GlStateManager.translate(vec.xCoord, vec.yCoord, vec.zCoord);
       GlStateManager.rotate(getItemRotation(), 0f, 1f, 0f);
 
@@ -68,7 +62,7 @@ public class TileDryingRackRender extends TileEntitySpecialRenderer<TileDryingRa
     }
   }
 
-  private Vec3 getItemPosition() {
+  private Vec3d getItemPosition() {
 
     final double x = 0.5;
     final double y = 0.5;
@@ -76,18 +70,18 @@ public class TileDryingRackRender extends TileEntitySpecialRenderer<TileDryingRa
     switch (tileDryingRack.getMachineState()) {
       case EAST_OFF:
       case EAST_ON:
-        return new Vec3(z, y, x);
+        return new Vec3d(z, y, x);
       case NORTH_OFF:
       case NORTH_ON:
-        return new Vec3(x, y, 1D - z);
+        return new Vec3d(x, y, 1D - z);
       case SOUTH_OFF:
       case SOUTH_ON:
-        return new Vec3(x, y, z);
+        return new Vec3d(x, y, z);
       case WEST_OFF:
       case WEST_ON:
-        return new Vec3(1D - z, y, x);
+        return new Vec3d(1D - z, y, x);
       default:
-        return new Vec3(0, 0, 0);
+        return new Vec3d(0, 0, 0);
     }
   }
 

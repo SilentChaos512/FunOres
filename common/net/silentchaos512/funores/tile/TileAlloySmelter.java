@@ -17,11 +17,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.IChatComponent;
 import net.minecraft.util.ITickable;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 import net.silentchaos512.funores.api.recipe.alloysmelter.AlloySmelterRecipe;
 import net.silentchaos512.funores.api.recipe.alloysmelter.AlloySmelterRecipeObject;
@@ -349,7 +349,7 @@ public class TileAlloySmelter extends TileEntity implements ITickable, ISidedInv
   }
 
   @Override
-  public IChatComponent getDisplayName() {
+  public ITextComponent getDisplayName() {
 
     return null;
   }

@@ -38,7 +38,7 @@ public enum EnumAlloy implements IStringSerializable, IMetal {
   @Override
   public String getName() {
 
-    return name;
+    return name.toLowerCase();
   }
 
   public static EnumAlloy byMetadata(int meta) {

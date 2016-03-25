@@ -5,18 +5,19 @@ import java.util.Random;
 import com.google.common.base.Predicate;
 
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.block.state.pattern.BlockHelper;
+import net.minecraft.block.state.pattern.BlockMatcher;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraftforge.fml.common.IWorldGenerator;
+import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.configuration.Config;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGen;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGenReplace;
-import net.silentchaos512.funores.core.util.LogHelper;
 import net.silentchaos512.funores.lib.EnumMeat;
 import net.silentchaos512.funores.lib.EnumMetal;
 import net.silentchaos512.funores.lib.EnumMob;
@@ -33,9 +34,9 @@ public class FunOresGenerator implements IWorldGenerator {
 
   @Override
   public void generate(Random random, int chunkX, int chunkZ, World world,
-      IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
+      IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
 
-    int dimension = world.provider.getDimensionId();
+    int dimension = world.provider.getDimension();
     int x = 16 * chunkX;
     int z = 16 * chunkZ;
 
@@ -48,8 +49,8 @@ public class FunOresGenerator implements IWorldGenerator {
       debugTotalTime += timeTaken;
       ++debugChunkGenCount;
       double avgTime = debugTotalTime / debugChunkGenCount;
-      LogHelper.info(String.format(DEBUG_LINE, chunkX, chunkZ, timeTaken, debugMinTime,
-          debugMaxTime, avgTime));
+      FunOres.instance.logHelper.info(String.format(DEBUG_LINE, chunkX, chunkZ, timeTaken,
+          debugMinTime, debugMaxTime, avgTime));
     }
   }
 
@@ -58,13 +59,13 @@ public class FunOresGenerator implements IWorldGenerator {
     Predicate predicate;
     switch (dim) {
       case -1:
-        predicate = BlockHelper.forBlock(Blocks.netherrack);
+        predicate = BlockMatcher.forBlock(Blocks.netherrack);
         break;
       case 1:
-        predicate = BlockHelper.forBlock(Blocks.end_stone);
+        predicate = BlockMatcher.forBlock(Blocks.end_stone);
         break;
       default:
-        predicate = BlockHelper.forBlock(Blocks.stone);
+        predicate = BlockMatcher.forBlock(Blocks.stone);
     }
 
     // Vanilla
@@ -107,7 +108,7 @@ public class FunOresGenerator implements IWorldGenerator {
     }
 
     if (!(ore.ore instanceof IHasOre)) {
-      LogHelper.debug(ore.oreName + " is not an ore?");
+      FunOres.instance.logHelper.debug(ore.oreName + " is not an ore?");
       return;
     }
 
@@ -125,7 +126,7 @@ public class FunOresGenerator implements IWorldGenerator {
       // LogHelper.list(biome.biomeName, ore.oreName, ore.getClusterCountForBiome(biome));
       // }
       float trueClusterCount = ore.getClusterCountForBiome(biome);
-      int clusterCount = trueClusterCount > 0 && trueClusterCount < 1 ? 1 :(int) trueClusterCount;
+      int clusterCount = trueClusterCount > 0 && trueClusterCount < 1 ? 1 : (int) trueClusterCount;
       float bonusClusterChance = trueClusterCount - clusterCount;
       if (random.nextFloat() < bonusClusterChance) {
         ++clusterCount;
@@ -151,11 +152,11 @@ public class FunOresGenerator implements IWorldGenerator {
             if (numSpawned == 0) {
               String str = "Trying to spawn %d veins of %s Ore in chunk (%d, %d)";
               str = String.format(str, clusterCount, ore.oreName, posX / 16, posZ / 16);
-              LogHelper.info(str);
+              FunOres.instance.logHelper.info(str);
             }
             String str = "%s %d %d %d";
             str = String.format(str, ore.oreName, pos.getX(), pos.getY(), pos.getZ());
-            LogHelper.info(str);
+            FunOres.instance.logHelper.info(str);
           }
 
           ++numSpawned;

@@ -7,47 +7,44 @@ import java.util.Random;
 import com.google.common.collect.Lists;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.monster.EntityEndermite;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.configuration.Config;
 import net.silentchaos512.funores.configuration.ConfigItemDrop;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGen;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGenBonus;
-import net.silentchaos512.funores.item.ModItems;
-import net.silentchaos512.funores.lib.EnumMetal;
+import net.silentchaos512.funores.lib.EnumMeat;
 import net.silentchaos512.funores.lib.EnumMob;
 import net.silentchaos512.funores.lib.Names;
-import net.silentchaos512.funores.world.FunOresGenerator;
+import net.silentchaos512.lib.block.BlockSL;
 import net.silentchaos512.wit.api.IWitHudInfo;
 
-public class MobOre extends BlockSG implements IWitHudInfo {
+public class MobOre extends BlockSL implements IWitHudInfo {
 
   public static final PropertyEnum MOB = PropertyEnum.create("mob", EnumMob.class);
 
   public MobOre() {
 
-    super(EnumMob.count(), Material.rock);
+    super(EnumMob.count(), FunOres.MOD_ID, Names.MOB_ORE, Material.rock);
 
     setHardness(1.5f);
     setResistance(10.0f);
-    setStepSound(Block.soundTypeStone);
+    setStepSound(SoundType.STONE);
     setHarvestLevel("pickaxe", 0);
 
     setHasSubtypes(true);
@@ -76,15 +73,13 @@ public class MobOre extends BlockSG implements IWitHudInfo {
   }
 
   @Override
-  public String[] getVariantNames() {
+  public List<ModelResourceLocation> getVariants() {
 
-    String[] result = new String[EnumMob.count()];
-
-    for (int i = 0; i < EnumMob.count(); ++i) {
-      result[i] = FunOres.MOD_ID + ":Ore" + EnumMob.values()[i].getName();
+    List<ModelResourceLocation> models = Lists.newArrayList();
+    for (EnumMob mob : EnumMob.values()) {
+      models.add(new ModelResourceLocation(FunOres.MOD_ID + ":Ore" + mob.getName(), "inventory"));
     }
-
-    return result;
+    return models;
   }
 
   @Override
@@ -114,13 +109,13 @@ public class MobOre extends BlockSG implements IWitHudInfo {
   }
 
   @Override
-  protected BlockState createBlockState() {
+  protected BlockStateContainer createBlockState() {
 
-    return new BlockState(this, new IProperty[] { MOB });
+    return new BlockStateContainer(this, new IProperty[] { MOB });
   }
 
   @Override
-  public int getExpDrop(IBlockAccess world, BlockPos pos, int fortune) {
+  public int getExpDrop(IBlockState state, IBlockAccess world, BlockPos pos, int fortune) {
 
     Item drop = this.getItemDropped(world.getBlockState(pos), RANDOM, fortune);
     if (drop != Item.getItemFromBlock(this)) {

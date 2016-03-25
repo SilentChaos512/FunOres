@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.block.Block;
+import com.google.common.collect.Lists;
+
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.passive.EntityBat;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,7 +20,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
@@ -28,19 +31,20 @@ import net.silentchaos512.funores.configuration.ConfigOptionOreGen;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGenBonus;
 import net.silentchaos512.funores.lib.EnumMeat;
 import net.silentchaos512.funores.lib.Names;
+import net.silentchaos512.lib.block.BlockSL;
 import net.silentchaos512.wit.api.IWitHudInfo;
 
-public class MeatOre extends BlockSG implements IWitHudInfo {
+public class MeatOre extends BlockSL implements IWitHudInfo {
 
   public static final PropertyEnum MEAT = PropertyEnum.create("meat", EnumMeat.class);
 
   public MeatOre() {
 
-    super(EnumMeat.count(), Material.rock);
+    super(EnumMeat.count(), FunOres.MOD_ID, Names.MEAT_ORE, Material.rock);
 
     setHardness(1.5f);
     setResistance(10.0f);
-    setStepSound(Block.soundTypeStone);
+    setStepSound(SoundType.STONE);
     setHarvestLevel("pickaxe", 0);
 
     setHasSubtypes(true);
@@ -69,15 +73,13 @@ public class MeatOre extends BlockSG implements IWitHudInfo {
   }
 
   @Override
-  public String[] getVariantNames() {
+  public List<ModelResourceLocation> getVariants() {
 
-    String[] result = new String[EnumMeat.count()];
-
-    for (int i = 0; i < EnumMeat.count(); ++i) {
-      result[i] = FunOres.MOD_ID + ":Ore" + EnumMeat.values()[i].getName();
+    List<ModelResourceLocation> models = Lists.newArrayList();
+    for (EnumMeat meat : EnumMeat.values()) {
+      models.add(new ModelResourceLocation(FunOres.MOD_ID + ":Ore" + meat.getName(), "inventory"));
     }
-
-    return result;
+    return models;
   }
 
   @Override
@@ -107,13 +109,13 @@ public class MeatOre extends BlockSG implements IWitHudInfo {
   }
 
   @Override
-  protected BlockState createBlockState() {
+  protected BlockStateContainer createBlockState() {
 
-    return new BlockState(this, new IProperty[] { MEAT });
+    return new BlockStateContainer(this, new IProperty[] { MEAT });
   }
 
   @Override
-  public int getExpDrop(IBlockAccess world, BlockPos pos, int fortune) {
+  public int getExpDrop(IBlockState state, IBlockAccess world, BlockPos pos, int fortune) {
 
     Item drop = this.getItemDropped(world.getBlockState(pos), RANDOM, fortune);
     if (drop != Item.getItemFromBlock(this)) {

@@ -19,15 +19,14 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.IChatComponent;
 import net.minecraft.util.ITickable;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 import net.silentchaos512.funores.FunOres;
-import net.silentchaos512.funores.core.util.LogHelper;
 import net.silentchaos512.funores.inventory.ContainerMetalFurnace;
 
 public class TileMetalFurnace extends TileEntity implements ITickable, ISidedInventory {
@@ -226,7 +225,7 @@ public class TileMetalFurnace extends TileEntity implements ITickable, ISidedInv
   }
 
   @Override
-  public IChatComponent getDisplayName() {
+  public ITextComponent getDisplayName() {
 
     return null;
   }

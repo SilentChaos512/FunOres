@@ -8,10 +8,9 @@ import com.google.common.collect.Lists;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
 import net.silentchaos512.funores.FunOres;
-import net.silentchaos512.funores.core.util.LogHelper;
 
 public class ConfigItemDrop {
 
@@ -66,10 +65,10 @@ public class ConfigItemDrop {
       return;
     }
 
-    LogHelper.warning(String.format(ERROR_WARNING_MESSAGE, errorList.size()));
+    FunOres.instance.logHelper.warning(String.format(ERROR_WARNING_MESSAGE, errorList.size()));
 
     for (String error : errorList) {
-      LogHelper.warning(error);
+      FunOres.instance.logHelper.warning(error);
     }
   }
 
@@ -81,10 +80,10 @@ public class ConfigItemDrop {
 
     String prefix = String.format("[%s] ", FunOres.MOD_ID);
     String str = String.format(ERROR_WARNING_MESSAGE, errorList.size());
-    player.addChatMessage(new ChatComponentText(EnumChatFormatting.DARK_RED + prefix + str));
+    player.addChatMessage(new TextComponentString(TextFormatting.DARK_RED + prefix + str));
 
     for (String error : errorList) {
-      player.addChatMessage(new ChatComponentText(prefix + error));
+      player.addChatMessage(new TextComponentString(prefix + error));
     }
   }
 }

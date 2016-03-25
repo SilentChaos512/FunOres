@@ -9,8 +9,8 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotFurnaceFuel;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
+import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.api.recipe.alloysmelter.AlloySmelterRecipe;
-import net.silentchaos512.funores.core.util.LogHelper;
 import net.silentchaos512.funores.inventory.slot.SlotAlloySmelterOutput;
 import net.silentchaos512.funores.tile.TileAlloySmelter;
 
@@ -105,7 +105,7 @@ public class ContainerAlloySmelter extends Container {
   @Override
   public ItemStack transferStackInSlot(EntityPlayer playerIn, int index) {
 
-    LogHelper.debug("index = " + index);
+    FunOres.instance.logHelper.debug("index = " + index);
     ItemStack itemstack = null;
     Slot slot = (Slot) this.inventorySlots.get(index);
 

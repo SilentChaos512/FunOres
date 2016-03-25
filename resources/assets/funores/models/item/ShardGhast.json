@@ -1,7 +1,7 @@
 {
   "parent": "builtin/generated",
   "textures": {
-    "layer0": "FunOres:items/BlazeShard"
+    "layer0": "FunOres:items/ShardGhast"
   },
   "display": {
     "thirdperson": {

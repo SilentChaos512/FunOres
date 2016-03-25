@@ -2,6 +2,9 @@ package net.silentchaos512.funores.item;
 
 import java.util.List;
 
+import com.google.common.collect.Lists;
+
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -9,20 +12,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.block.ModBlocks;
-import net.silentchaos512.funores.core.util.RecipeHelper;
 import net.silentchaos512.funores.lib.EnumMetal;
 import net.silentchaos512.funores.lib.Names;
+import net.silentchaos512.lib.item.ItemSL;
+import net.silentchaos512.lib.util.RecipeHelper;
 
-public class MetalIngot extends ItemSG {
+public class MetalIngot extends ItemSL {
 
   public MetalIngot() {
 
-    super(EnumMetal.count());
-
-    setMaxStackSize(64);
-    setHasSubtypes(true);
-    setMaxDamage(0);
-    setUnlocalizedName(Names.METAL_INGOT);
+    super(EnumMetal.count(), FunOres.MOD_ID, Names.METAL_INGOT);
   }
 
   @Override
@@ -48,22 +47,20 @@ public class MetalIngot extends ItemSG {
   public void addOreDict() {
 
     for (EnumMetal metal : EnumMetal.values()) {
-      String name = "ingot" + metal.getName();
+      String name = "ingot" + metal.getMetalName();
       int meta = metal.getMeta();
       OreDictionary.registerOre(name, new ItemStack(this, 1, meta));
     }
   }
   
   @Override
-  public String[] getVariantNames() {
+  public List<ModelResourceLocation> getVariants() {
     
-    String[] result = new String[EnumMetal.count()];
-    
-    for (int i = 0; i < EnumMetal.count(); ++i) {
-      result[i] = FunOres.MOD_ID + ":Ingot" + EnumMetal.values()[i].getName();
+    List<ModelResourceLocation> models = Lists.newArrayList();
+    for (EnumMetal metal : EnumMetal.values()) {
+      models.add(new ModelResourceLocation(FunOres.MOD_ID + ":Ingot" + metal.getMetalName(), "inventory"));
     }
-    
-    return result;
+    return models;
   }
   
   @Override

@@ -1,7 +1,7 @@
 {
   "parent": "builtin/generated",
   "textures": {
-    "layer0": "FunOres:items/EnderShard"
+    "layer0": "FunOres:items/ShardEnder"
   },
   "display": {
     "thirdperson": {

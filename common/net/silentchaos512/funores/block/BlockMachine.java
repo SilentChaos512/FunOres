@@ -7,11 +7,13 @@ import com.google.common.collect.Lists;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,21 +23,18 @@ import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.configuration.Config;
-import net.silentchaos512.funores.core.registry.IAddRecipe;
-import net.silentchaos512.funores.core.registry.IHasVariants;
-import net.silentchaos512.funores.core.util.LogHelper;
 import net.silentchaos512.funores.lib.EnumMachineState;
 import net.silentchaos512.funores.lib.ModDamageSources;
+import net.silentchaos512.lib.registry.IRegistryObject;
 import net.silentchaos512.wit.api.IWitHudInfo;
 
-public class BlockMachine extends BlockContainer implements IAddRecipe, IHasVariants, IWitHudInfo {
+public class BlockMachine extends BlockContainer implements IRegistryObject, IWitHudInfo {
 
   public static final PropertyEnum FACING = PropertyEnum.create("facing", EnumMachineState.class);
   protected static boolean keepInventory;
@@ -50,14 +49,15 @@ public class BlockMachine extends BlockContainer implements IAddRecipe, IHasVari
 
     setHardness(4.0f);
     setResistance(6000.0f);
-    setStepSound(Block.soundTypeMetal);
+    setStepSound(SoundType.METAL);
     setHarvestLevel("pickaxe", 1);
 
     setUnlocalizedName(name);
   }
 
   @Override
-  public List<String> getWitLines(IBlockState state, BlockPos pos, EntityPlayer player, boolean advanced) {
+  public List<String> getWitLines(IBlockState state, BlockPos pos, EntityPlayer player,
+      boolean advanced) {
 
     if (!advanced) {
       return Lists.newArrayList();
@@ -65,9 +65,14 @@ public class BlockMachine extends BlockContainer implements IAddRecipe, IHasVari
     return Lists.newArrayList("State: " + ((EnumMachineState) state.getValue(FACING)));
   }
 
-  public EnumMachineState getMachineState(IBlockAccess world, BlockPos pos) {
+  public EnumMachineState getMachineState(World world, BlockPos pos) {
 
-    return (EnumMachineState) (world.getBlockState(pos).getValue(FACING));
+    return getMachineState(world.getBlockState(pos));
+  }
+
+  public EnumMachineState getMachineState(IBlockState state) {
+
+    return (EnumMachineState) state.getValue(FACING);
   }
 
   @Override
@@ -77,9 +82,9 @@ public class BlockMachine extends BlockContainer implements IAddRecipe, IHasVari
   }
 
   @Override
-  public String[] getVariantNames() {
+  public List<ModelResourceLocation> getVariants() {
 
-    return new String[] { getFullName() };
+    return Lists.newArrayList(new ModelResourceLocation(getFullName()));
   }
 
   @Override
@@ -91,7 +96,19 @@ public class BlockMachine extends BlockContainer implements IAddRecipe, IHasVari
   @Override
   public String getFullName() {
 
-    return FunOres.MOD_ID + ":" + getName();
+    return getModId() + ":" + getName();
+  }
+
+  @Override
+  public String getModId() {
+
+    return FunOres.MOD_ID.toLowerCase();
+  }
+
+  @Override
+  public boolean registerModels() {
+
+    return false;
   }
 
   @Override
@@ -105,9 +122,9 @@ public class BlockMachine extends BlockContainer implements IAddRecipe, IHasVari
   }
 
   @Override
-  public int getLightValue(IBlockAccess world, BlockPos pos) {
+  public int getLightValue(IBlockState state) {
 
-    return getMachineState(world, pos).isOn ? 15 : 0;
+    return getMachineState(state).isOn ? 15 : 0;
   }
 
   @Override
@@ -141,17 +158,17 @@ public class BlockMachine extends BlockContainer implements IAddRecipe, IHasVari
 
       EnumMachineState machineState = (EnumMachineState) state.getValue(FACING);
 
-      if (machineState == EnumMachineState.NORTH_OFF && block.isFullBlock()
-          && !block1.isFullBlock()) {
+      if (machineState == EnumMachineState.NORTH_OFF && block.isFullBlock(state)
+          && !block1.isFullBlock(state)) {
         machineState = EnumMachineState.SOUTH_OFF;
-      } else if (machineState == EnumMachineState.SOUTH_OFF && block1.isFullBlock()
-          && !block.isFullBlock()) {
+      } else if (machineState == EnumMachineState.SOUTH_OFF && block1.isFullBlock(state)
+          && !block.isFullBlock(state)) {
         machineState = EnumMachineState.NORTH_OFF;
-      } else if (machineState == EnumMachineState.WEST_OFF && block2.isFullBlock()
-          && !block3.isFullBlock()) {
+      } else if (machineState == EnumMachineState.WEST_OFF && block2.isFullBlock(state)
+          && !block3.isFullBlock(state)) {
         machineState = EnumMachineState.EAST_OFF;
-      } else if (machineState == EnumMachineState.EAST_OFF && block3.isFullBlock()
-          && !block2.isFullBlock()) {
+      } else if (machineState == EnumMachineState.EAST_OFF && block3.isFullBlock(state)
+          && !block2.isFullBlock(state)) {
         machineState = EnumMachineState.WEST_OFF;
       }
 
@@ -194,34 +211,35 @@ public class BlockMachine extends BlockContainer implements IAddRecipe, IHasVari
   }
 
   @Override
-  public boolean hasComparatorInputOverride() {
+  public boolean hasComparatorInputOverride(IBlockState state) {
 
     return true;
   }
 
   @Override
-  public int getComparatorInputOverride(World world, BlockPos pos) {
+  public int getComparatorInputOverride(IBlockState state, World world, BlockPos pos) {
 
     return Container.calcRedstone(world.getTileEntity(pos));
   }
 
   @Override
-  public Item getItem(World world, BlockPos pos) {
+  public ItemStack getItem(World world, BlockPos pos, IBlockState state) {
 
-    return Item.getItemFromBlock(this);
+    return new ItemStack(Item.getItemFromBlock(this));
   }
 
   @Override
-  public int getRenderType() {
+  public EnumBlockRenderType getRenderType(IBlockState state) {
 
-    return 3;
+    return EnumBlockRenderType.MODEL;
   }
 
-  @Override
-  public IBlockState getStateForEntityRender(IBlockState state) {
-
-    return this.getDefaultState().withProperty(FACING, EnumMachineState.SOUTH_OFF);
-  }
+  // TODO: What's this?
+//  @Override
+//  public IBlockState getStateForEntityRender(IBlockState state) {
+//
+//    return this.getDefaultState().withProperty(FACING, EnumMachineState.SOUTH_OFF);
+//  }
 
   public IBlockState getStateFromMeta(int meta) {
 
@@ -236,8 +254,8 @@ public class BlockMachine extends BlockContainer implements IAddRecipe, IHasVari
   }
 
   @Override
-  protected BlockState createBlockState() {
+  protected BlockStateContainer createBlockState() {
 
-    return new BlockState(this, new IProperty[] { FACING });
+    return new BlockStateContainer(this, new IProperty[] { FACING });
   }
 }

@@ -2,14 +2,15 @@ package net.silentchaos512.funores.gui;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
-import net.silentchaos512.funores.core.util.LogHelper;
+import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.inventory.ContainerAlloySmelter;
 import net.silentchaos512.funores.inventory.ContainerMetalFurnace;
 import net.silentchaos512.funores.tile.TileAlloySmelter;
 import net.silentchaos512.funores.tile.TileMetalFurnace;
+import net.silentchaos512.lib.util.LogHelper;
 
 
 public class GuiHandlerFunOres implements IGuiHandler {
@@ -37,7 +38,7 @@ public class GuiHandlerFunOres implements IGuiHandler {
         }
         return null;
       default:
-        LogHelper.warning("No GUI with ID " + ID + "!");
+        FunOres.instance.logHelper.warning("No GUI with ID " + ID + "!");
         return null;
     }
   }
@@ -62,7 +63,7 @@ public class GuiHandlerFunOres implements IGuiHandler {
         }
         return null;
       default:
-        LogHelper.warning("No GUI with ID " + ID + "!");
+        FunOres.instance.logHelper.warning("No GUI with ID " + ID + "!");
         return null;
     }
   }

@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -14,15 +15,17 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.silentchaos512.funores.FunOres;
-import net.silentchaos512.funores.core.util.LocalizationHelper;
-import net.silentchaos512.funores.core.util.LogHelper;
 import net.silentchaos512.funores.lib.EnumAlloy;
 import net.silentchaos512.funores.lib.EnumMetal;
 import net.silentchaos512.funores.lib.EnumVanillaMetal;
 import net.silentchaos512.funores.lib.IMetal;
 import net.silentchaos512.funores.lib.Names;
+import net.silentchaos512.lib.item.ItemSL;
+import net.silentchaos512.lib.util.LocalizationHelper;
+import net.silentchaos512.lib.util.LogHelper;
+import scala.reflect.internal.Mode;
 
-public class CraftingItem extends ItemSG {
+public class CraftingItem extends ItemSL {
 
   public static final int BASE_METALS_COUNT = 18;
 
@@ -31,14 +34,12 @@ public class CraftingItem extends ItemSG {
 
   public CraftingItem(String name, boolean isAlloy) {
 
-    super(1); // I don't think the value matters?
+    super(
+        isAlloy ? EnumAlloy.values().length
+            : EnumMetal.values().length + EnumVanillaMetal.values().length,
+        FunOres.MOD_ID, Names.CRAFTING_ITEM);
     this.craftingItemName = name;
     this.isAlloy = isAlloy;
-
-    setMaxStackSize(64);
-    setHasSubtypes(true);
-    setMaxDamage(0);
-    setUnlocalizedName(Names.CRAFTING_ITEM);
   }
 
   public List<IMetal> getMetals() {
@@ -64,8 +65,6 @@ public class CraftingItem extends ItemSG {
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, metal.getMeta()), " m ",
             "mim", " m ", 'm', "ingot" + metal.getMetalName(), 'i', iron));
       }
-    } else if (craftingItemName.equals(Names.PLATE)) {
-      // TODO
     }
   }
 
@@ -91,21 +90,19 @@ public class CraftingItem extends ItemSG {
         }
       }
     } else {
-      LogHelper.warning("CraftingItem.addOreDict - Unknown item type: " + craftingItemName);
+      FunOres.instance.logHelper.warning("CraftingItem.addOreDict - Unknown item type: " + craftingItemName);
     }
   }
 
   @Override
-  public String[] getVariantNames() {
+  public List<ModelResourceLocation> getVariants() {
 
     String prefix = FunOres.MOD_ID + ":" + craftingItemName;
-    String[] result = new String[isAlloy ? EnumAlloy.count() : BASE_METALS_COUNT];
-
+    ModelResourceLocation[] models = new ModelResourceLocation[32];
     for (IMetal metal : getMetals()) {
-      result[metal.getMeta()] = prefix + metal.getMetalName();
+      models[metal.getMeta()] = new ModelResourceLocation(prefix + metal.getMetalName());
     }
-
-    return result;
+    return Arrays.asList(models);
   }
 
   @Override
@@ -117,7 +114,7 @@ public class CraftingItem extends ItemSG {
   }
 
   @Override
-  public String getUnlocalizedName(ItemStack stack) {
+  public String getNameForStack(ItemStack stack) {
 
     String metalName = null;
     int meta = stack.getItemDamage();
@@ -131,7 +128,7 @@ public class CraftingItem extends ItemSG {
         }
       }
     }
-    return LocalizationHelper.ITEM_PREFIX + craftingItemName + metalName;
+    return craftingItemName + metalName;
   }
 
   @Override

@@ -2,14 +2,13 @@ package net.silentchaos512.funores;
 
 import java.util.Random;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
+import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
@@ -31,21 +30,24 @@ import net.silentchaos512.funores.block.ModBlocks;
 import net.silentchaos512.funores.configuration.Config;
 import net.silentchaos512.funores.configuration.ConfigItemDrop;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGenBonus;
-import net.silentchaos512.funores.core.proxy.CommonProxy;
-import net.silentchaos512.funores.core.registry.SRegistry;
-import net.silentchaos512.funores.core.util.LogHelper;
 import net.silentchaos512.funores.gui.GuiHandlerFunOres;
 import net.silentchaos512.funores.item.ModItems;
 import net.silentchaos512.funores.lib.EnumAlloy;
 import net.silentchaos512.funores.lib.EnumDriedItem;
 import net.silentchaos512.funores.lib.ExtraRecipes;
 import net.silentchaos512.funores.lib.ModDamageSources;
+import net.silentchaos512.funores.proxy.CommonProxy;
 import net.silentchaos512.funores.world.FunOresGenerator;
+import net.silentchaos512.lib.SilentLib;
+import net.silentchaos512.lib.registry.SRegistry;
+import net.silentchaos512.lib.util.LocalizationHelper;
+import net.silentchaos512.lib.util.LogHelper;
 
 //@formatter:off
 @Mod(modid = FunOres.MOD_ID,
     name = FunOres.MOD_NAME,
     version = FunOres.VERSION_NUMBER,
+    dependencies = "required-after:SilentLib",
     updateJSON = "https://raw.githubusercontent.com/SilentChaos512/FunOres/master/update.json")
 //@formatter:on
 public class FunOres {
@@ -56,16 +58,37 @@ public class FunOres {
   public static final String RESOURCE_PREFIX = MOD_ID.toLowerCase() + ":";
 
   public Random random = new Random();
-  public static Logger logger = LogManager.getLogger(MOD_NAME);
+  public LogHelper logHelper = new LogHelper(MOD_NAME);
+  public LocalizationHelper localizationHelper;
+
+  public SRegistry registry = new SRegistry(MOD_ID) {
+
+    @Override
+    public Block registerBlock(Block block, String key, Class<? extends ItemBlock> itemClass) {
+
+      block.setCreativeTab(tabFunOres);
+      return super.registerBlock(block, key, itemClass);
+    }
+
+    @Override
+    public Item registerItem(Item item, String key) {
+
+      item.setCreativeTab(tabFunOres);
+      return super.registerItem(item, key);
+    }
+  };
 
   @Instance(MOD_ID)
   public static FunOres instance;
 
-  @SidedProxy(clientSide = "net.silentchaos512.funores.core.proxy.ClientProxy", serverSide = "net.silentchaos512.funores.core.proxy.CommonProxy")
+  @SidedProxy(clientSide = "net.silentchaos512.funores.proxy.ClientProxy", serverSide = "net.silentchaos512.funores.proxy.CommonProxy")
   public static CommonProxy proxy;
 
   @EventHandler
   public void preInit(FMLPreInitializationEvent event) {
+
+    localizationHelper = new LocalizationHelper(MOD_ID).setReplaceAmpersand(true);
+    SilentLib.instance.registerLocalizationHelperForMod(MOD_ID, localizationHelper);
 
     Config.init(event.getSuggestedConfigurationFile());
 
@@ -73,34 +96,34 @@ public class FunOres {
     ModItems.init();
     ModDamageSources.init();
 
-    proxy.preInit();
-
     NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandlerFunOres());
     FMLCommonHandler.instance().bus().register(this);
+
+    proxy.preInit(registry);
   }
 
   @EventHandler
   public void load(FMLInitializationEvent event) {
 
-    SRegistry.addRecipesAndOreDictEntries();
     ExtraRecipes.init();
 
     Config.save();
 
-    proxy.init();
-
     GameRegistry.registerWorldGenerator(new FunOresGenerator(), 0);
+
+    proxy.init(registry);
   }
 
   @EventHandler
   public void postInit(FMLPostInitializationEvent event) {
 
-    proxy.postInit();
     initAlloySmelterRecipes();
     initDryingRackRecipes();
 
     ConfigOptionOreGenBonus.initItemKeys();
     ConfigItemDrop.listErrorsInLog();
+
+    proxy.postInit(registry);
   }
 
   @SubscribeEvent
@@ -121,35 +144,35 @@ public class FunOres {
     //@formatter:off
 
     addAlloySmelterRecipe(
-        EnumAlloy.BRONZE.getName(), EnumAlloy.BRONZE.getIngot(), 4,
+        EnumAlloy.BRONZE.getMetalName(), EnumAlloy.BRONZE.getIngot(), 4,
         200, 1.2f,
         "ingotCopper*3", "ingotTin*1");
 
     addAlloySmelterRecipe(
-        EnumAlloy.BRASS.getName(), EnumAlloy.BRASS.getIngot(), 4,
+        EnumAlloy.BRASS.getMetalName(), EnumAlloy.BRASS.getIngot(), 4,
         200, 1.0f,
         "ingotCopper*3", "ingotZinc*1");
 
     ItemStack coal = new ItemStack(Items.coal, 2);
     addAlloySmelterRecipe(
-        EnumAlloy.STEEL.getName(), EnumAlloy.STEEL.getIngot(), 1,
+        EnumAlloy.STEEL.getMetalName(), EnumAlloy.STEEL.getIngot(), 1,
         800, 2.5f,
         "ingotIron*1", coal);
 
     addAlloySmelterRecipe(
-        EnumAlloy.INVAR.getName(), EnumAlloy.INVAR.getIngot(), 3,
+        EnumAlloy.INVAR.getMetalName(), EnumAlloy.INVAR.getIngot(), 3,
         400, 2.0f,
         "ingotIron*2", "ingotNickel*1");
 
     addAlloySmelterRecipe(
-        EnumAlloy.ELECTRUM.getName(), EnumAlloy.ELECTRUM.getIngot(), 2,
+        EnumAlloy.ELECTRUM.getMetalName(), EnumAlloy.ELECTRUM.getIngot(), 2,
         400, 2.0f,
         "ingotGold*1", "ingotSilver*1");
 
     ItemStack enderEyes = new ItemStack(Items.ender_eye);
     enderEyes.stackSize = 4;
     addAlloySmelterRecipe(
-        EnumAlloy.ENDERIUM.getName(), EnumAlloy.ENDERIUM.getIngot(), 4,
+        EnumAlloy.ENDERIUM.getMetalName(), EnumAlloy.ENDERIUM.getIngot(), 4,
         800, 4.0f,
         "ingotTin*2", "ingotSilver*1", "ingotPlatinum*1", enderEyes);
 
@@ -157,7 +180,7 @@ public class FunOres {
     AlloySmelterRecipeObject gemsForPrismarine =
         new AlloySmelterRecipeObject("gemSapphire*2", "gemDiamond*1");
     addAlloySmelterRecipe(
-        EnumAlloy.PRISMARIINIUM.getName(), EnumAlloy.PRISMARIINIUM.getIngot(), 4,
+        EnumAlloy.PRISMARIINIUM.getMetalName(), EnumAlloy.PRISMARIINIUM.getIngot(), 4,
         800, 5.0f,
         "ingotSilver*2", gemsForPrismarine, "ingotTitanium*1", prismarineCrystals);
 
@@ -209,7 +232,7 @@ public class FunOres {
       DryingRackRecipeObject recipeObject = new DryingRackRecipeObject((ItemStack) input);
       DryingRackRecipe.addRecipe(output, recipeObject, dryTime, experience);
     } else {
-      LogHelper.warning("FunOres.addDryingRackRecipe: Don't know how to handle object of type "
+      logHelper.warning("FunOres.addDryingRackRecipe: Don't know how to handle object of type "
           + input.getClass());
     }
   }

@@ -8,18 +8,18 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.translation.I18n;
+import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.block.ModBlocks;
 import net.silentchaos512.funores.configuration.Config;
 import net.silentchaos512.funores.configuration.ConfigItemDrop;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGenBonus;
-import net.silentchaos512.funores.core.util.LocalizationHelper;
-import net.silentchaos512.funores.core.util.LogHelper;
 import net.silentchaos512.funores.lib.EnumMeat;
 import net.silentchaos512.funores.lib.EnumMob;
+import net.silentchaos512.lib.item.ItemBlockSL;
 
-public class ItemBlockOreDrops extends ItemBlockSG {
+public class ItemBlockOreDrops extends ItemBlockSL {
 
   public ItemBlockOreDrops(Block block) {
 
@@ -41,27 +41,30 @@ public class ItemBlockOreDrops extends ItemBlockSG {
     }
 
     if (!isOreEnabled(config)) {
-      list.add(EnumChatFormatting.DARK_BLUE + LocalizationHelper.getMiscText("Disabled"));
+      list.add(
+          TextFormatting.DARK_BLUE + FunOres.instance.localizationHelper.getMiscText("Disabled"));
       return;
     }
 
     boolean shifted = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)
         || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT);
     if (shifted) {
-      list.add(EnumChatFormatting.DARK_BLUE + LocalizationHelper.getMiscText("PossibleDrops"));
+      list.add(TextFormatting.DARK_BLUE
+          + FunOres.instance.localizationHelper.getMiscText("PossibleDrops"));
 
       for (ConfigItemDrop drop : config.drops) {
         String str = drop.stack.getUnlocalizedName() + ".name";
-        str = StatCollector.translateToLocal(str);
-        EnumChatFormatting format = this.getRarityColor(drop);
+        str = I18n.translateToLocal(str);
+        TextFormatting format = this.getRarityColor(drop);
         list.add(format + str);
       }
     } else {
-      list.add(EnumChatFormatting.ITALIC + LocalizationHelper.getMiscText("PressShift"));
+      list.add(
+          TextFormatting.ITALIC + FunOres.instance.localizationHelper.getMiscText("PressShift"));
     }
   }
 
-  private EnumChatFormatting getRarityColor(ConfigItemDrop drop) {
+  private TextFormatting getRarityColor(ConfigItemDrop drop) {
 
     if (drop.baseChance <= 0.01) {
       return EnumRarity.EPIC.rarityColor;

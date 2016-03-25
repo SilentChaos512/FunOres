@@ -2,6 +2,9 @@ package net.silentchaos512.funores.item;
 
 import java.util.List;
 
+import com.google.common.collect.Lists;
+
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -10,18 +13,14 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.lib.EnumAlloy;
-import net.silentchaos512.funores.lib.EnumMetal;
 import net.silentchaos512.funores.lib.Names;
+import net.silentchaos512.lib.item.ItemSL;
 
-public class AlloyDust extends ItemSG {
+public class AlloyDust extends ItemSL {
 
   public AlloyDust() {
 
-    super(EnumAlloy.count());
-    setMaxStackSize(64);
-    setHasSubtypes(true);
-    setMaxDamage(0);
-    setUnlocalizedName(Names.ALLOY_DUST);
+    super(EnumAlloy.count(), FunOres.MOD_ID, Names.ALLOY_DUST);
   }
 
   @Override
@@ -62,22 +61,20 @@ public class AlloyDust extends ItemSG {
   public void addOreDict() {
 
     for (EnumAlloy metal : EnumAlloy.values()) {
-      String name = "dust" + metal.getName();
+      String name = "dust" + metal.getMetalName();
       int meta = metal.getMeta();
       OreDictionary.registerOre(name, new ItemStack(this, 1, meta));
     }
   }
 
   @Override
-  public String[] getVariantNames() {
+  public List<ModelResourceLocation> getVariants() {
 
-    String[] result = new String[EnumAlloy.count()];
-
+    List<ModelResourceLocation> models = Lists.newArrayList();
     for (EnumAlloy metal : EnumAlloy.values()) {
-      result[metal.getMeta()] = FunOres.MOD_ID + ":Dust" + metal.getName();
+      models.add(new ModelResourceLocation(FunOres.MOD_ID + ":Dust" + metal.getMetalName(), "inventory"));
     }
-
-    return result;
+    return models;
   }
 
   @Override

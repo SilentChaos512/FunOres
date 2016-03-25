@@ -2,11 +2,12 @@ package net.silentchaos512.funores.lib;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.IStringSerializable;
+import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.block.MobOre;
 import net.silentchaos512.funores.block.ModBlocks;
 import net.silentchaos512.funores.configuration.Config;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGenBonus;
-import net.silentchaos512.funores.core.util.LogHelper;
+import net.silentchaos512.lib.util.LogHelper;
 
 public enum EnumMob implements IStringSerializable,IHasOre {
 
@@ -48,7 +49,7 @@ public enum EnumMob implements IStringSerializable,IHasOre {
   @Override
   public String getName() {
 
-    return name;
+    return name.toLowerCase();
   }
 
   @Override
@@ -76,7 +77,7 @@ public enum EnumMob implements IStringSerializable,IHasOre {
       case 12: return Config.guardian;
       //@formatter:on
       default:
-        LogHelper.severe("Don't know config for ore " + name + "!");
+        FunOres.instance.logHelper.severe("Don't know config for ore " + name + "!");
         return null;
     }
   }

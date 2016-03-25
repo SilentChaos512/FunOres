@@ -1,32 +1,32 @@
-package net.silentchaos512.funores.core.proxy;
+package net.silentchaos512.funores.proxy;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.silentchaos512.funores.client.render.TileDryingRackRender;
-import net.silentchaos512.funores.core.registry.SRegistry;
 import net.silentchaos512.funores.tile.TileDryingRack;
+import net.silentchaos512.lib.registry.SRegistry;
 
 public class ClientProxy extends CommonProxy {
 
   @Override
-  public void preInit() {
+  public void preInit(SRegistry reg) {
 
-    super.preInit();
-    SRegistry.clientPreInit();
+    super.preInit(reg);
+    reg.clientPreInit();
   }
 
   @Override
-  public void init() {
+  public void init(SRegistry reg) {
 
-    super.init();
-    SRegistry.clientInit();
+    super.init(reg);
+    reg.clientInit();
   }
 
   @Override
-  public void postInit() {
+  public void postInit(SRegistry reg) {
 
-    super.postInit();
+    super.postInit(reg);
   }
 
   @Override
