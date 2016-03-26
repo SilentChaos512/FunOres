@@ -58,6 +58,12 @@ public enum EnumMob implements IStringSerializable,IHasOre {
     return ModBlocks.mobOre.getDefaultState().withProperty(MobOre.MOB, this);
   }
 
+  @Override
+  public int getDimension() {
+
+    return dimension;
+  }
+
   public ConfigOptionOreGenBonus getConfig() {
 
     switch (meta) {

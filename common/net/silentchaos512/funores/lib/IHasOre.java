@@ -6,4 +6,6 @@ import net.silentchaos512.funores.configuration.ConfigOptionOreGen;
 public interface IHasOre {
 
   public IBlockState getOre();
+
+  public int getDimension();
 }

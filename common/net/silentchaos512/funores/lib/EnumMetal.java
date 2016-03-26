@@ -76,6 +76,12 @@ public enum EnumMetal implements IStringSerializable,IHasOre,IMetal {
   }
 
   @Override
+  public int getDimension() {
+
+    return dimension;
+  }
+
+  @Override
   public ItemStack getBlock() {
 
     return new ItemStack(ModBlocks.metalBlock, 1, meta);

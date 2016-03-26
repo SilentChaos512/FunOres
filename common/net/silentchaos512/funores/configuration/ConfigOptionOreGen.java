@@ -2,14 +2,18 @@ package net.silentchaos512.funores.configuration;
 
 import java.util.List;
 
+import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
 
+import net.minecraft.block.state.pattern.BlockMatcher;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.config.Configuration;
 import net.silentchaos512.funores.FunOres;
+import net.silentchaos512.funores.lib.IHasOre;
 
 public class ConfigOptionOreGen extends ConfigOption {
 
@@ -41,6 +45,10 @@ public class ConfigOptionOreGen extends ConfigOption {
       + "AVOIDS: Spawns less often in the biome types in the list. Spawns in all other biomes more often.\n"
       + "See: https://github.com/MinecraftForge/MinecraftForge/blob/master/src/main/java/net/minecraftforge/common/BiomeDictionary.java";
 
+  public static final Predicate PREDICATE_STONE = BlockMatcher.forBlock(Blocks.stone);
+  public static final Predicate PREDICATE_NETHERRACK = BlockMatcher.forBlock(Blocks.netherrack);
+  public static final Predicate PREDICATE_END_STONE = BlockMatcher.forBlock(Blocks.end_stone);
+
   // Cluster count multiplied/divide by this for favored/avoided biomes.
   public static final int CLUSTER_COUNT_MIN = 0;
   public static final int CLUSTER_COUNT_MAX = 1000;
@@ -65,12 +73,25 @@ public class ConfigOptionOreGen extends ConfigOption {
 //  private Dictionary<BiomeDictionary.Type, Float> clusterCountByBiomeType = new Hashtable<BiomeDictionary.Type, Float>();
   public final String oreName;
   public IStringSerializable ore;
+  public final Predicate predicate;
   protected boolean isExample = false;
 
   public ConfigOptionOreGen(IStringSerializable ore) {
 
     this.ore = ore;
     this.oreName = ore.getName();
+
+    if (ore instanceof IHasOre) {
+      IHasOre hasOre = (IHasOre) ore;
+      if (hasOre.getDimension() == -1)
+        predicate = PREDICATE_NETHERRACK;
+      else if (hasOre.getDimension() == 1)
+        predicate = PREDICATE_END_STONE;
+      else
+        predicate = PREDICATE_STONE;
+    } else {
+      predicate = PREDICATE_STONE;
+    }
   }
 
   public ConfigOptionOreGen(boolean example) {
@@ -78,6 +99,7 @@ public class ConfigOptionOreGen extends ConfigOption {
     this.ore = null;
     this.oreName = "example";
     this.isExample = example;
+    predicate = PREDICATE_STONE;
   }
 
   @Override

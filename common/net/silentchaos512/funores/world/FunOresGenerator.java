@@ -56,29 +56,17 @@ public class FunOresGenerator implements IWorldGenerator {
 
   private void generateForDimension(final int dim, World world, Random random, int posX, int posZ) {
 
-    Predicate predicate;
-    switch (dim) {
-      case -1:
-        predicate = BlockMatcher.forBlock(Blocks.netherrack);
-        break;
-      case 1:
-        predicate = BlockMatcher.forBlock(Blocks.end_stone);
-        break;
-      default:
-        predicate = BlockMatcher.forBlock(Blocks.stone);
-    }
-
     // Vanilla
     for (EnumVanillaOre vanilla : EnumVanillaOre.values()) {
       if (vanilla.dimension == dim || vanilla.dimension == 0) {
-        generateOre(vanilla.getConfig(), world, random, posX, posZ, predicate);
+        generateOre(vanilla.getConfig(), world, random, posX, posZ);
       }
     }
     // Metal
     if (!Config.disableMetalOres) {
       for (EnumMetal metal : EnumMetal.values()) {
         if (metal.dimension == dim || metal.dimension == 0) {
-          generateOre(metal.getConfig(), world, random, posX, posZ, predicate);
+          generateOre(metal.getConfig(), world, random, posX, posZ);
         }
       }
     }
@@ -86,7 +74,7 @@ public class FunOresGenerator implements IWorldGenerator {
     if (!Config.disableMeatOres) {
       for (EnumMeat meat : EnumMeat.values()) {
         if (meat.dimension == dim || meat.dimension == 0) {
-          generateOre(meat.getConfig(), world, random, posX, posZ, predicate);
+          generateOre(meat.getConfig(), world, random, posX, posZ);
         }
       }
     }
@@ -94,14 +82,13 @@ public class FunOresGenerator implements IWorldGenerator {
     if (!Config.disableMobOres) {
       for (EnumMob mob : EnumMob.values()) {
         if (mob.dimension == dim || mob.dimension == 0) {
-          generateOre(mob.getConfig(), world, random, posX, posZ, predicate);
+          generateOre(mob.getConfig(), world, random, posX, posZ);
         }
       }
     }
   }
 
-  public void generateOre(ConfigOptionOreGen ore, World world, Random random, int posX, int posZ,
-      Predicate predicate) {
+  public void generateOre(ConfigOptionOreGen ore, World world, Random random, int posX, int posZ) {
 
     if (!ore.enabled) {
       return;
@@ -145,10 +132,10 @@ public class FunOresGenerator implements IWorldGenerator {
           IBlockState state = ((IHasOre) ore.ore).getOre();
           IBlockState targetState = world.getBlockState(pos);
 
-          new WorldGenMinable(state, ore.clusterSize, predicate).generate(world, random, pos);
+          new WorldGenMinable(state, ore.clusterSize, ore.predicate).generate(world, random, pos);
 
           // Log placement?
-          if (Config.logOrePlacement && predicate.apply(targetState)) {
+          if (Config.logOrePlacement && ore.predicate.apply(targetState)) {
             if (numSpawned == 0) {
               String str = "Trying to spawn %d veins of %s Ore in chunk (%d, %d)";
               str = String.format(str, clusterCount, ore.oreName, posX / 16, posZ / 16);
@@ -188,6 +175,10 @@ public class FunOresGenerator implements IWorldGenerator {
         }
       }
     }
+  }
+
+  private void canOreSpawnInDimension(int dim, int oreDim) {
+
   }
 
   public static BiomeGenBase getBiomeForPos(World world, BlockPos pos) {

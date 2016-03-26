@@ -1,4 +1,5 @@
 1.2.1
+Updated for Forge 1805+.
 Added: Disabled tooltip for metal ores.
 Fixed: Shard localizations.
 

@@ -52,6 +52,12 @@ public enum EnumMeat implements IStringSerializable,IHasOre {
     return ModBlocks.meatOre.getDefaultState().withProperty(MeatOre.MEAT, this);
   }
 
+  @Override
+  public int getDimension() {
+
+    return dimension;
+  }
+
   public ConfigOptionOreGenBonus getConfig() {
 
     switch (meta) {

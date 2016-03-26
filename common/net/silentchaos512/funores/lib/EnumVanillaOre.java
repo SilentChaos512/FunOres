@@ -48,6 +48,12 @@ public enum EnumVanillaOre implements IStringSerializable,IHasOre {
     return blockState;
   }
 
+  @Override
+  public int getDimension() {
+
+    return dimension;
+  }
+
   public ConfigOptionOreGenReplace getConfig() {
 
     switch (this) {
