@@ -47,7 +47,7 @@ public class MeatOre extends BlockSL implements IWitHudInfo {
     setStepSound(SoundType.STONE);
     setHarvestLevel("pickaxe", 0);
 
-    setHasSubtypes(true);
+//    setHasSubtypes(true);
     setUnlocalizedName(Names.MEAT_ORE);
   }
 

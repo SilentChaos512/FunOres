@@ -37,7 +37,7 @@ public class MetalBlock extends BlockSL {
     setStepSound(SoundType.METAL);
     setHarvestLevel("pickaxe", 1);
     
-    setHasSubtypes(true);
+//    setHasSubtypes(true);
     setUnlocalizedName(Names.METAL_BLOCK);
   }
 

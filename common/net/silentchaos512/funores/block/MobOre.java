@@ -47,7 +47,7 @@ public class MobOre extends BlockSL implements IWitHudInfo {
     setStepSound(SoundType.STONE);
     setHarvestLevel("pickaxe", 0);
 
-    setHasSubtypes(true);
+//    setHasSubtypes(true);
     setUnlocalizedName(Names.MOB_ORE);
   }
 

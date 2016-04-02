@@ -47,7 +47,7 @@ public class MetalOre extends BlockSL implements IWitHudInfo {
       }
     }
 
-    setHasSubtypes(true);
+//    setHasSubtypes(true);
     setUnlocalizedName(Names.METAL_ORE);
   }
 
