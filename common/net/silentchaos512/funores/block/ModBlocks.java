@@ -31,9 +31,12 @@ public class ModBlocks {
   public static void init() {
 
     SRegistry reg = FunOres.instance.registry;
-    metalOre = (MetalOre) reg.registerBlock(new MetalOre(), Names.METAL_ORE, ItemBlockOre.class);
-    meatOre = (MeatOre) reg.registerBlock(new MeatOre(), Names.MEAT_ORE, ItemBlockOreDrops.class);
-    mobOre = (MobOre) reg.registerBlock(new MobOre(), Names.MOB_ORE, ItemBlockOreDrops.class);
+    metalOre = new MetalOre();
+    metalOre = (MetalOre) reg.registerBlock(metalOre, new ItemBlockOre(metalOre));
+    meatOre = new MeatOre();
+    meatOre = (MeatOre) reg.registerBlock(meatOre, new ItemBlockOreDrops(meatOre));
+    mobOre = new MobOre();
+    mobOre = (MobOre) reg.registerBlock(mobOre, new ItemBlockOreDrops(mobOre));
     metalBlock = (MetalBlock) reg.registerBlock(new MetalBlock());
     alloyBlock = (AlloyBlock) reg.registerBlock(new AlloyBlock());
     metalFurnace = (MetalFurnace) reg.registerBlock(new MetalFurnace(), Names.METAL_FURNACE);

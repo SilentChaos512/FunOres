@@ -47,7 +47,7 @@ import net.silentchaos512.lib.util.LogHelper;
 @Mod(modid = FunOres.MOD_ID,
     name = FunOres.MOD_NAME,
     version = FunOres.VERSION_NUMBER,
-    dependencies = "required-after:SilentLib",
+    dependencies = FunOres.DEPENDENCIES,
     updateJSON = "https://raw.githubusercontent.com/SilentChaos512/FunOres/master/update.json")
 //@formatter:on
 public class FunOres {
@@ -55,6 +55,7 @@ public class FunOres {
   public static final String MOD_ID = "FunOres";
   public static final String MOD_NAME = "Fun Ores";
   public static final String VERSION_NUMBER = "@VERSION@";
+  public static final String DEPENDENCIES = "required-after:Forge@[12.16.0.1826,);required-after:SilentLib;";
   public static final String RESOURCE_PREFIX = MOD_ID.toLowerCase() + ":";
 
   public Random random = new Random();
@@ -64,10 +65,10 @@ public class FunOres {
   public SRegistry registry = new SRegistry(MOD_ID) {
 
     @Override
-    public Block registerBlock(Block block, String key, Class<? extends ItemBlock> itemClass) {
+    public Block registerBlock(Block block, String key, ItemBlock itemBlock) {
 
       block.setCreativeTab(tabFunOres);
-      return super.registerBlock(block, key, itemClass);
+      return super.registerBlock(block, key, itemBlock);
     }
 
     @Override
