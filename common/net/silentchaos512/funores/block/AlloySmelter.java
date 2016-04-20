@@ -20,7 +20,7 @@ public class AlloySmelter extends BlockMachine {
 
   public AlloySmelter() {
 
-    super(Material.iron, Names.ALLOY_SMELTER);
+    super(Material.IRON, Names.ALLOY_SMELTER);
   }
 
   @Override
@@ -34,7 +34,7 @@ public class AlloySmelter extends BlockMachine {
 
     for (String aluminium : new String[] { "plateAluminium", "plateAluminum" }) {
       GameRegistry.addRecipe(new ShapedOreRecipe(this, "iii", "a a", "bab", 'i', "plateIron", 'a',
-          aluminium, 'b', Blocks.brick_block));
+          aluminium, 'b', Blocks.BRICK_BLOCK));
     }
   }
 

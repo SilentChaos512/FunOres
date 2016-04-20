@@ -5,6 +5,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotFurnaceFuel;
 import net.minecraft.item.ItemStack;
@@ -17,10 +18,10 @@ import net.silentchaos512.funores.tile.TileAlloySmelter;
 public class ContainerAlloySmelter extends Container {
 
   private final IInventory tileAlloySmelter;
-  private int field_178152_f;
-  private int field_178153_g;
-  private int field_178154_h;
-  private int field_178155_i;
+  private int cookTime;
+  private int totalCookTime;
+  private int furnaceBurnTime;
+  private int currentItemBurnTime;
 
   public ContainerAlloySmelter(InventoryPlayer playerInventory, IInventory smelterInventory) {
 
@@ -64,33 +65,33 @@ public class ContainerAlloySmelter extends Container {
 
     super.detectAndSendChanges();
 
-    for (int i = 0; i < this.crafters.size(); ++i) {
-      ICrafting icrafting = (ICrafting) this.crafters.get(i);
+    for (int i = 0; i < this.listeners.size(); ++i) {
+      ICrafting icrafting = (ICrafting) this.listeners.get(i);
 
-      if (this.field_178152_f != this.tileAlloySmelter.getField(2)) {
+      if (this.cookTime != this.tileAlloySmelter.getField(2)) {
         icrafting.sendProgressBarUpdate(this, 2, this.tileAlloySmelter.getField(2));
       }
 
-      if (this.field_178154_h != this.tileAlloySmelter.getField(0)) {
+      if (this.furnaceBurnTime != this.tileAlloySmelter.getField(0)) {
         icrafting.sendProgressBarUpdate(this, 0, this.tileAlloySmelter.getField(0));
       }
 
-      if (this.field_178155_i != this.tileAlloySmelter.getField(1)) {
+      if (this.currentItemBurnTime != this.tileAlloySmelter.getField(1)) {
         icrafting.sendProgressBarUpdate(this, 1, this.tileAlloySmelter.getField(1));
       }
 
-      if (this.field_178153_g != this.tileAlloySmelter.getField(3)) {
+      if (this.totalCookTime != this.tileAlloySmelter.getField(3)) {
         icrafting.sendProgressBarUpdate(this, 3, this.tileAlloySmelter.getField(3));
       }
     }
 
-    this.field_178152_f = this.tileAlloySmelter.getField(2);
-    this.field_178154_h = this.tileAlloySmelter.getField(0);
-    this.field_178155_i = this.tileAlloySmelter.getField(1);
-    this.field_178153_g = this.tileAlloySmelter.getField(3);
+    this.cookTime = this.tileAlloySmelter.getField(2);
+    this.furnaceBurnTime = this.tileAlloySmelter.getField(0);
+    this.currentItemBurnTime = this.tileAlloySmelter.getField(1);
+    this.totalCookTime = this.tileAlloySmelter.getField(3);
   }
 
-  @Override
+//  @Override
   public void updateProgressBar(int id, int data) {
 
     this.tileAlloySmelter.setField(id, data);

@@ -45,9 +45,9 @@ public class ConfigOptionOreGen extends ConfigOption {
       + "AVOIDS: Spawns less often in the biome types in the list. Spawns in all other biomes more often.\n"
       + "See: https://github.com/MinecraftForge/MinecraftForge/blob/master/src/main/java/net/minecraftforge/common/BiomeDictionary.java";
 
-  public static final Predicate PREDICATE_STONE = BlockMatcher.forBlock(Blocks.stone);
-  public static final Predicate PREDICATE_NETHERRACK = BlockMatcher.forBlock(Blocks.netherrack);
-  public static final Predicate PREDICATE_END_STONE = BlockMatcher.forBlock(Blocks.end_stone);
+  public static final Predicate PREDICATE_STONE = BlockMatcher.forBlock(Blocks.STONE);
+  public static final Predicate PREDICATE_NETHERRACK = BlockMatcher.forBlock(Blocks.NETHERRACK);
+  public static final Predicate PREDICATE_END_STONE = BlockMatcher.forBlock(Blocks.END_STONE);
 
   // Cluster count multiplied/divide by this for favored/avoided biomes.
   public static final int CLUSTER_COUNT_MIN = 0;

@@ -52,24 +52,24 @@ public class GuiMetalFurnace extends GuiContainer {
     int i1;
 
     if (TileEntityFurnace.isBurning(this.tileFurnace)) {
-      i1 = this.func_175382_i(13);
+      i1 = this.getBurnLeftScaled(13);
       this.drawTexturedModalRect(k + 56, l + 36 + 12 - i1, 176, 12 - i1, 14, i1 + 1);
     }
 
-    i1 = this.func_175381_h(24);
+    i1 = this.getCookProgressScaled(24);
     this.drawTexturedModalRect(k + 79, l + 34, 176, 14, i1 + 1, 16);
 
     //drawDebugInfo();
   }
 
-  private int func_175381_h(int p_175381_1_) {
+  private int getCookProgressScaled(int pixels) {
 
     int j = this.tileFurnace.getField(2);
     int k = this.tileFurnace.getField(3);
-    return k != 0 && j != 0 ? j * p_175381_1_ / k : 0;
+    return k != 0 && j != 0 ? j * pixels / k : 0;
   }
 
-  private int func_175382_i(int p_175382_1_) {
+  private int getBurnLeftScaled(int pixels) {
 
     int j = this.tileFurnace.getField(1);
 
@@ -77,7 +77,7 @@ public class GuiMetalFurnace extends GuiContainer {
       j = 200;
     }
 
-    return this.tileFurnace.getField(0) * p_175382_1_ / j;
+    return this.tileFurnace.getField(0) * pixels / j;
   }
 
   private void drawDebugInfo() {

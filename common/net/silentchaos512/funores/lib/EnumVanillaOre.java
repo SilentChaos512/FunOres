@@ -9,14 +9,14 @@ import net.silentchaos512.funores.configuration.ConfigOptionOreGenReplace;
 
 public enum EnumVanillaOre implements IStringSerializable,IHasOre {
 
-  IRON(0, "Iron", Blocks.iron_ore.getDefaultState()),
-  GOLD(1, "Gold", Blocks.gold_ore.getDefaultState()),
-  DIAMOND(2, "Diamond", Blocks.diamond_ore.getDefaultState()),
-  EMERALD(3, "Emerald", Blocks.emerald_ore.getDefaultState()),
-  COAL(4, "Coal", Blocks.coal_ore.getDefaultState()),
-  REDSTONE(5, "Redstone", Blocks.redstone_ore.getDefaultState()),
-  LAPIS(6, "Lapis", Blocks.lapis_ore.getDefaultState()),
-  QUARTZ(7, "Quartz", Blocks.quartz_ore.getDefaultState(), -1);
+  IRON(0, "Iron", Blocks.IRON_ORE.getDefaultState()),
+  GOLD(1, "Gold", Blocks.GOLD_ORE.getDefaultState()),
+  DIAMOND(2, "Diamond", Blocks.DIAMOND_ORE.getDefaultState()),
+  EMERALD(3, "Emerald", Blocks.EMERALD_ORE.getDefaultState()),
+  COAL(4, "Coal", Blocks.COAL_ORE.getDefaultState()),
+  REDSTONE(5, "Redstone", Blocks.REDSTONE_ORE.getDefaultState()),
+  LAPIS(6, "Lapis", Blocks.LAPIS_ORE.getDefaultState()),
+  QUARTZ(7, "Quartz", Blocks.QUARTZ_ORE.getDefaultState(), -1);
 
   public final int meta;
   public final String name;

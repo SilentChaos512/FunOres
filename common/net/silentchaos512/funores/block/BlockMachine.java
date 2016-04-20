@@ -49,7 +49,7 @@ public class BlockMachine extends BlockContainer implements IRegistryObject, IWi
 
     setHardness(4.0f);
     setResistance(6000.0f);
-    setStepSound(SoundType.METAL);
+    setSoundType(SoundType.METAL);
     setHarvestLevel("pickaxe", 1);
 
     setUnlocalizedName(name);
@@ -128,12 +128,12 @@ public class BlockMachine extends BlockContainer implements IRegistryObject, IWi
   }
 
   @Override
-  public void onEntityCollidedWithBlock(World world, BlockPos pos, Entity entity) {
+  public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
 
     if (Config.machinesCanBurn && getMachineState(world, pos).isOn) {
       entity.attackEntityFrom(ModDamageSources.hotMachine, 0.5f);
     }
-    super.onEntityCollidedWithBlock(world, pos, entity);
+    super.onEntityCollidedWithBlock(world, pos, state, entity);
   }
 
   @Override

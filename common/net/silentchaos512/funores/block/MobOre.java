@@ -40,11 +40,11 @@ public class MobOre extends BlockSL implements IWitHudInfo {
 
   public MobOre() {
 
-    super(EnumMob.count(), FunOres.MOD_ID, Names.MOB_ORE, Material.rock);
+    super(EnumMob.count(), FunOres.MOD_ID, Names.MOB_ORE, Material.ROCK);
 
     setHardness(1.5f);
     setResistance(10.0f);
-    setStepSound(SoundType.STONE);
+    setSoundType(SoundType.STONE);
     setHarvestLevel("pickaxe", 0);
 
 //    setHasSubtypes(true);

@@ -47,7 +47,7 @@ public class ItemDried extends ItemFood implements IRegistryObject {
   @Override
   public void addRecipes() {
 
-    GameRegistry.addShapedRecipe(new ItemStack(Items.leather), "ff", "ff", 'f',
+    GameRegistry.addShapedRecipe(new ItemStack(Items.LEATHER), "ff", "ff", 'f',
         getStack(EnumDriedItem.DRIED_FLESH));
   }
 

@@ -25,15 +25,15 @@ public class Shard extends ItemNamedSubtypes {
   public void addRecipes() {
     
     ItemStack enderShard = new ItemStack(this, 1, 0);
-    ItemStack enderPearl = new ItemStack(Items.ender_pearl);
+    ItemStack enderPearl = new ItemStack(Items.ENDER_PEARL);
     GameRegistry.addShapedRecipe(enderPearl, "ss", "ss", 's', enderShard);
     
     ItemStack blazeShard = new ItemStack(this, 1, 1);
-    ItemStack blazeRod = new ItemStack(Items.blaze_rod);
+    ItemStack blazeRod = new ItemStack(Items.BLAZE_ROD);
     GameRegistry.addShapedRecipe(blazeRod, "ss", "ss", 's', blazeShard);
     
     ItemStack ghastShard = new ItemStack(this, 1, 2);
-    ItemStack ghastTear = new ItemStack(Items.ghast_tear);
+    ItemStack ghastTear = new ItemStack(Items.GHAST_TEAR);
     GameRegistry.addShapedRecipe(ghastTear, "ss", "ss", 's', ghastShard);
   }
 }

@@ -12,22 +12,23 @@ buildscript {
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
 
-//plugins {
-//    id "net.minecraftforge.gradle.forge" version "2.0.2"
-//}
-
+/*
+plugins {
+    id "net.minecraftforge.gradle.forge" version "2.0.2"
+}
+*/
 version = "1.2.2"
 group= "net.silentchaos512.funores" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "FunOres-1.9"
 
 minecraft {
-    version = "1.9-12.16.0.1833-1.9"
-    runDir = "eclipse"
+    version = "1.9-12.16.0.1865-1.9"
+    runDir = "run"
 
     replace "@VERSION@", project.version
     replaceIn "FunOres.java"
     
-    mappings = "snapshot_20160312"
+    mappings = "snapshot_20160419"
     useDepAts = true
 }
 
@@ -40,7 +41,7 @@ repositories {
     }
 }
 dependencies {
-  deobfCompile "mezz.jei:jei_1.9:3.0.0.161"
+  deobfCompile "mezz.jei:jei_1.9:3.2.7.181"
 }
 
 processResources

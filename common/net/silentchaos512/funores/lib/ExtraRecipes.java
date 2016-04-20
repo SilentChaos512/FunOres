@@ -21,11 +21,11 @@ public class ExtraRecipes {
 
     // Chests
     comment = "Eight logs to four chests.";
-    result = new ItemStack(Blocks.chest, 4);
+    result = new ItemStack(Blocks.CHEST, 4);
     add("ChestsFromLogs", comment, result, "lll", "l l", "lll", 'l', "logWood");
     // Pistons
     comment = "Extra piston recipe using an ingot other than iron.";
-    result = new ItemStack(Blocks.piston);
+    result = new ItemStack(Blocks.PISTON);
     add("Piston.Aluminium", comment, result, "ppp", "cic", "crc", 'p', "plankWood", 'c',
         "cobblestone", 'i', "ingotAluminium", 'r', "dustRedstone");
     add("Piston.Aluminum", comment, result, "ppp", "cic", "crc", 'p', "plankWood", 'c',
@@ -34,14 +34,14 @@ public class ExtraRecipes {
         'i', "ingotBronze", 'r', "dustRedstone");
     // Hoppers
     comment = "Hopper recipe using an ingot other than iron.";
-    result = new ItemStack(Blocks.hopper);
+    result = new ItemStack(Blocks.HOPPER);
     add("Hopper.Aluminium", comment, result, "a a", "aca", " a ", 'a', "ingotAluminium", 'c',
-        Blocks.chest);
+        Blocks.CHEST);
     add("Hopper.Aluminum", comment, result, "a a", "aca", " a ", 'a', "ingotAluminum", 'c',
-        Blocks.chest);
+        Blocks.CHEST);
     // Shears
     comment = "Shears recipe using an ingot other than iron.";
-    result = new ItemStack(Items.shears);
+    result = new ItemStack(Items.SHEARS);
     add("Shears.Aluminium", comment, result, " a", "a ", 'a', "ingotAluminium");
     add("Shears.Aluminum", comment, result, " a", "a ", 'a', "ingotAluminum");
   }

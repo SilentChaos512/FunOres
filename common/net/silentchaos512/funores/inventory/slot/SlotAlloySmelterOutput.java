@@ -11,7 +11,7 @@ import net.silentchaos512.funores.api.recipe.alloysmelter.AlloySmelterRecipe;
 public class SlotAlloySmelterOutput extends SlotFurnaceOutput {
 
   private EntityPlayer thePlayer;
-  private int field_75228_b;
+  private int removeCount;
 
   public SlotAlloySmelterOutput(EntityPlayer player, IInventory inventoryIn, int slotIndex,
       int xPosition, int yPosition) {
@@ -23,7 +23,7 @@ public class SlotAlloySmelterOutput extends SlotFurnaceOutput {
   public ItemStack decrStackSize(int amount) {
 
     if (this.getHasStack()) {
-      this.field_75228_b += Math.min(amount, this.getStack().stackSize);
+      this.removeCount += Math.min(amount, this.getStack().stackSize);
     }
 
     return super.decrStackSize(amount);
@@ -41,17 +41,17 @@ public class SlotAlloySmelterOutput extends SlotFurnaceOutput {
    */
   protected void onCrafting(ItemStack stack, int amount) {
 
-    this.field_75228_b += amount;
+    this.removeCount += amount;
     this.onCrafting(stack);
   }
 
   @Override
   protected void onCrafting(ItemStack stack) {
 
-    stack.onCrafting(this.thePlayer.worldObj, this.thePlayer, this.field_75228_b);
+    stack.onCrafting(this.thePlayer.worldObj, this.thePlayer, this.removeCount);
 
     if (!this.thePlayer.worldObj.isRemote) {
-      int i = this.field_75228_b;
+      int i = this.removeCount;
 
       AlloySmelterRecipe recipe = AlloySmelterRecipe.getRecipeByOutput(stack);
       float f = recipe == null ? 0 : recipe.getExperience();
@@ -77,6 +77,6 @@ public class SlotAlloySmelterOutput extends SlotFurnaceOutput {
       }
     }
 
-    this.field_75228_b = 0;
+    this.removeCount = 0;
   }
 }
