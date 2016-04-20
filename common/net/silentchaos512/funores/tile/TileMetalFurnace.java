@@ -1,6 +1,7 @@
 package net.silentchaos512.funores.tile;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 import com.google.common.collect.Lists;
 
@@ -40,6 +41,8 @@ public class TileMetalFurnace extends TileEntity implements ITickable, ISidedInv
   public static final int SLOT_FUEL = 1;
   public static final int SLOT_OUTPUT_1 = 2;
   public static final int SLOT_OUTPUT_2 = 3;
+
+  public static final Pattern REGEX_ITEM_MATCH = Pattern.compile("^(ingot|gem)");
 
   private static final int[] SLOTS_TOP = new int[] { SLOT_INPUT };
   private static final int[] SLOTS_BOTTOM = new int[] { SLOT_FUEL, SLOT_OUTPUT_1, SLOT_OUTPUT_2 };
@@ -412,9 +415,9 @@ public class TileMetalFurnace extends TileEntity implements ITickable, ISidedInv
       for (int outputId : OreDictionary.getOreIDs(outputPrimary)) {
         outputName = OreDictionary.getOreName(outputId);
         // Input must be registered as oreSomething and output as ingotSomething
-        if (inputName.startsWith("ore") && outputName.startsWith("ingot")) {
+        if (inputName.startsWith("ore") && REGEX_ITEM_MATCH.matcher(outputName).find()) {
           inputName = inputName.replaceFirst("ore", "");
-          outputName = outputName.replaceFirst("ingot", "");
+          outputName = outputName.replaceFirst(REGEX_ITEM_MATCH.pattern(), "");
           if (inputName.equals(outputName)) {
             // Same ore, can we find a nugget?
             List<ItemStack> nuggets = OreDictionary.getOres("nugget" + inputName);
