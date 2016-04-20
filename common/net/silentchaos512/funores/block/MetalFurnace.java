@@ -20,7 +20,7 @@ public class MetalFurnace extends BlockMachine {
 
   public MetalFurnace() {
 
-    super(Material.iron, Names.METAL_FURNACE);
+    super(Material.IRON, Names.METAL_FURNACE);
   }
 
   @Override
@@ -34,7 +34,7 @@ public class MetalFurnace extends BlockMachine {
 
     for (String alloy : new String[] { "plateBronze", "plateBrass" }) {
       GameRegistry.addRecipe(new ShapedOreRecipe(this, "aaa", "afa", "bab", 'a', alloy, 'b',
-          Blocks.brick_block, 'f', Blocks.furnace));
+          Blocks.BRICK_BLOCK, 'f', Blocks.FURNACE));
     }
   }
 

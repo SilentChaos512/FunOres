@@ -38,24 +38,24 @@ public class GuiAlloySmelter extends GuiContainer {
     int i1;
 
     if (TileEntityFurnace.isBurning(this.tileAlloySmelter)) {
-      i1 = this.func_175382_i(13);
+      i1 = this.getBurnLeftScaled(13);
       this.drawTexturedModalRect(k + 20, l + 27 + 12 - i1, 176, 12 - i1, 14, i1 + 1);
     }
 
-    i1 = this.func_175381_h(24);
+    i1 = this.getCookProgressScaled(24);
     this.drawTexturedModalRect(k + 79, l + 34, 176, 14, i1 + 1, 16);
 
     //drawDebugInfo();
   }
 
-  private int func_175381_h(int p_175381_1_) {
+  private int getCookProgressScaled(int pixels) {
 
     int j = this.tileAlloySmelter.getField(2);
     int k = this.tileAlloySmelter.getField(3);
-    return k != 0 && j != 0 ? j * p_175381_1_ / k : 0;
+    return k != 0 && j != 0 ? j * pixels / k : 0;
   }
 
-  private int func_175382_i(int p_175382_1_) {
+  private int getBurnLeftScaled(int pixels) {
 
     int j = this.tileAlloySmelter.getField(1);
 
@@ -63,7 +63,7 @@ public class GuiAlloySmelter extends GuiContainer {
       j = 200;
     }
 
-    return this.tileAlloySmelter.getField(0) * p_175382_1_ / j;
+    return this.tileAlloySmelter.getField(0) * pixels / j;
   }
 
   private void drawDebugInfo() {

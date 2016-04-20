@@ -122,7 +122,7 @@ public class TileDryingRack extends TileEntity implements ITickable, IInventory 
     if (amount > 0) {
       player.addExperience(amount);
       worldObj.playSound(null, player.posX, player.posY, player.posZ,
-          SoundEvents.entity_experience_orb_touch, SoundCategory.PLAYERS, 0.1F,
+          SoundEvents.ENTITY_EXPERIENCE_ORB_TOUCH, SoundCategory.PLAYERS, 0.1F,
           0.5F * ((worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.7F + 1.8F));
     }
 

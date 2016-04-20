@@ -373,7 +373,7 @@ public class TileAlloySmelter extends TileEntity implements ITickable, ISidedInv
     if (direction == EnumFacing.DOWN && index == SLOT_FUEL) {
       Item item = stack.getItem();
 
-      if (item != Items.water_bucket && item != Items.bucket) {
+      if (item != Items.WATER_BUCKET && item != Items.BUCKET) {
         return false;
       }
     }

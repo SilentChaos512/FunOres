@@ -155,7 +155,7 @@ public class FunOresGenerator implements IWorldGenerator {
   private void removeExistingOres(ConfigOptionOreGenReplace ore, World world, int posX, int posZ) {
 
     IBlockState state = ((IHasOre) ore.ore).getOre();
-    IBlockState stone = Blocks.stone.getDefaultState();
+    IBlockState stone = Blocks.STONE.getDefaultState();
     BlockPos pos;
 
     int maxHeight = 256;

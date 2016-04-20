@@ -32,11 +32,11 @@ public class MetalOre extends BlockSL implements IWitHudInfo {
 
   public MetalOre() {
 
-    super(EnumMetal.count(), FunOres.MOD_ID, Names.METAL_ORE, Material.rock);
+    super(EnumMetal.count(), FunOres.MOD_ID, Names.METAL_ORE, Material.ROCK);
 
     setHardness(3.0f);
     setResistance(15.0f);
-    setStepSound(SoundType.STONE);
+    setSoundType(SoundType.STONE);
 
     for (EnumMetal metal : EnumMetal.values()) {
       if (metal == EnumMetal.COPPER || metal == EnumMetal.TIN || metal == EnumMetal.ALUMINIUM

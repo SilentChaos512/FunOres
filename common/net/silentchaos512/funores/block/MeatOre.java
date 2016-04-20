@@ -40,11 +40,11 @@ public class MeatOre extends BlockSL implements IWitHudInfo {
 
   public MeatOre() {
 
-    super(EnumMeat.count(), FunOres.MOD_ID, Names.MEAT_ORE, Material.rock);
+    super(EnumMeat.count(), FunOres.MOD_ID, Names.MEAT_ORE, Material.ROCK);
 
     setHardness(1.5f);
     setResistance(10.0f);
-    setStepSound(SoundType.STONE);
+    setSoundType(SoundType.STONE);
     setHarvestLevel("pickaxe", 0);
 
 //    setHasSubtypes(true);
@@ -189,7 +189,7 @@ public class MeatOre extends BlockSL implements IWitHudInfo {
     switch ((EnumMeat) state.getValue(MEAT)) {
       case PIG:
         if (rand.nextInt(100) < 2 + 1 * fortune) {
-          return new ItemStack(Items.saddle);
+          return new ItemStack(Items.SADDLE);
         } else {
           return null;
         }
@@ -204,36 +204,36 @@ public class MeatOre extends BlockSL implements IWitHudInfo {
           meta = 3;
         }
         if (meta > 0) {
-          return new ItemStack(Items.fish, 1 + rand.nextInt(fortune + 1), meta);
+          return new ItemStack(Items.FISH, 1 + rand.nextInt(fortune + 1), meta);
         } else {
           return null;
         }
       case COW:
         if (rand.nextInt(100) < 50 + 7 * fortune) {
-          return new ItemStack(Items.leather, 1 + rand.nextInt(fortune + 1));
+          return new ItemStack(Items.LEATHER, 1 + rand.nextInt(fortune + 1));
         } else {
           return null;
         }
       case CHICKEN:
         if (rand.nextInt(100) < 15) {
-          return new ItemStack(Items.egg, 2 + rand.nextInt(fortune + 1));
+          return new ItemStack(Items.EGG, 2 + rand.nextInt(fortune + 1));
         } else if (rand.nextInt(100) < 50 + 8 * fortune) {
-          return new ItemStack(Items.feather, 2 + rand.nextInt(fortune + 1));
+          return new ItemStack(Items.FEATHER, 2 + rand.nextInt(fortune + 1));
         } else {
           return null;
         }
       case RABBIT:
         r = rand.nextInt(100);
         if (r < 60 + 5 * fortune) {
-          return new ItemStack(Items.rabbit_hide, 1 + rand.nextInt(fortune + 1));
+          return new ItemStack(Items.RABBIT_HIDE, 1 + rand.nextInt(fortune + 1));
         } else if (r < 65 + 5 * fortune) {
-          return new ItemStack(Items.rabbit_foot, 1 + rand.nextInt(fortune / 2 + 1));
+          return new ItemStack(Items.RABBIT_FOOT, 1 + rand.nextInt(fortune / 2 + 1));
         } else {
           return null;
         }
       case SHEEP:
         if (rand.nextInt(100) < 45 + 6 * fortune) {
-          return new ItemStack(Blocks.wool, 1 + rand.nextInt(fortune + 1));
+          return new ItemStack(Blocks.WOOL, 1 + rand.nextInt(fortune + 1));
         } else {
           return null;
         }

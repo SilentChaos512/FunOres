@@ -25,11 +25,11 @@ public class BlockDryingRack extends BlockMachine {
 
   public BlockDryingRack() {
 
-    super(Material.wood, Names.DRYING_RACK);
+    super(Material.WOOD, Names.DRYING_RACK);
     fullBlock = false;
     setHardness(1.5f);
     setResistance(3.0f);
-    setStepSound(SoundType.WOOD);
+    setSoundType(SoundType.WOOD);
     setUnlocalizedName(Names.DRYING_RACK);
   }
 

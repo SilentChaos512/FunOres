@@ -30,11 +30,11 @@ public class MetalBlock extends BlockSL {
 
   public MetalBlock() {
 
-    super(EnumMetal.count(), FunOres.MOD_ID, Names.METAL_BLOCK, Material.iron);
+    super(EnumMetal.count(), FunOres.MOD_ID, Names.METAL_BLOCK, Material.IRON);
 
     setHardness(3.0f);
     setResistance(30.0f);
-    setStepSound(SoundType.METAL);
+    setSoundType(SoundType.METAL);
     setHarvestLevel("pickaxe", 1);
     
 //    setHasSubtypes(true);

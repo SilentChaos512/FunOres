@@ -249,7 +249,7 @@ public class TileMetalFurnace extends TileEntity implements ITickable, ISidedInv
     if (direction == EnumFacing.DOWN && index == 1) {
       Item item = stack.getItem();
 
-      if (item != Items.water_bucket && item != Items.bucket) {
+      if (item != Items.WATER_BUCKET && item != Items.BUCKET) {
         return false;
       }
     }
@@ -504,10 +504,10 @@ public class TileMetalFurnace extends TileEntity implements ITickable, ISidedInv
         }
       }
 
-      if (this.stacks[SLOT_INPUT].getItem() == Item.getItemFromBlock(Blocks.sponge)
+      if (this.stacks[SLOT_INPUT].getItem() == Item.getItemFromBlock(Blocks.SPONGE)
           && this.stacks[SLOT_INPUT].getMetadata() == 1 && this.stacks[SLOT_FUEL] != null
-          && this.stacks[SLOT_FUEL].getItem() == Items.bucket) {
-        this.stacks[SLOT_FUEL] = new ItemStack(Items.water_bucket);
+          && this.stacks[SLOT_FUEL].getItem() == Items.BUCKET) {
+        this.stacks[SLOT_FUEL] = new ItemStack(Items.WATER_BUCKET);
       }
 
       --this.stacks[SLOT_INPUT].stackSize;

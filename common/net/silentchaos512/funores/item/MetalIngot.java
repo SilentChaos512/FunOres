@@ -39,7 +39,7 @@ public class MetalIngot extends ItemSL {
     
     // Iron
     ItemStack nugget = new ItemStack(ModItems.metalNugget, 1, MetalNugget.META_IRON);
-    ItemStack ingot = new ItemStack(Items.iron_ingot);
+    ItemStack ingot = new ItemStack(Items.IRON_INGOT);
     RecipeHelper.addCompressionRecipe(nugget, ingot, 9);
   }
 

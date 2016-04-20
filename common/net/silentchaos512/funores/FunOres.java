@@ -154,7 +154,7 @@ public class FunOres {
         200, 1.0f,
         "ingotCopper*3", "ingotZinc*1");
 
-    ItemStack coal = new ItemStack(Items.coal, 2);
+    ItemStack coal = new ItemStack(Items.COAL, 2);
     addAlloySmelterRecipe(
         EnumAlloy.STEEL.getMetalName(), EnumAlloy.STEEL.getIngot(), 1,
         800, 2.5f,
@@ -170,14 +170,14 @@ public class FunOres {
         400, 2.0f,
         "ingotGold*1", "ingotSilver*1");
 
-    ItemStack enderEyes = new ItemStack(Items.ender_eye);
+    ItemStack enderEyes = new ItemStack(Items.ENDER_EYE);
     enderEyes.stackSize = 4;
     addAlloySmelterRecipe(
         EnumAlloy.ENDERIUM.getMetalName(), EnumAlloy.ENDERIUM.getIngot(), 4,
         800, 4.0f,
         "ingotTin*2", "ingotSilver*1", "ingotPlatinum*1", enderEyes);
 
-    ItemStack prismarineCrystals = new ItemStack(Items.prismarine_crystals, 12);
+    ItemStack prismarineCrystals = new ItemStack(Items.PRISMARINE_CRYSTALS, 12);
     AlloySmelterRecipeObject gemsForPrismarine =
         new AlloySmelterRecipeObject("gemSapphire*2", "gemDiamond*1");
     addAlloySmelterRecipe(
@@ -203,24 +203,24 @@ public class FunOres {
     int jerkyDryTime = 9000;
     float jerkyXp = 0.8f;
     addDryingRackRecipe("Dried Flesh", EnumDriedItem.DRIED_FLESH.getItem(),
-        new ItemStack(Items.rotten_flesh), jerkyDryTime, jerkyXp);
-    addDryingRackRecipe("Beef Jerky", EnumDriedItem.BEEF_JERKY.getItem(), new ItemStack(Items.beef),
+        new ItemStack(Items.ROTTEN_FLESH), jerkyDryTime, jerkyXp);
+    addDryingRackRecipe("Beef Jerky", EnumDriedItem.BEEF_JERKY.getItem(), new ItemStack(Items.BEEF),
         jerkyDryTime, jerkyXp);
     addDryingRackRecipe("Chicken Jerky", EnumDriedItem.CHICKEN_JERKY.getItem(),
-        new ItemStack(Items.chicken), jerkyDryTime, jerkyXp);
+        new ItemStack(Items.CHICKEN), jerkyDryTime, jerkyXp);
     addDryingRackRecipe("Pork Jerky", EnumDriedItem.PORK_JERKY.getItem(),
-        new ItemStack(Items.porkchop), jerkyDryTime, jerkyXp);
+        new ItemStack(Items.PORKCHOP), jerkyDryTime, jerkyXp);
     addDryingRackRecipe("Mutton Jerky", EnumDriedItem.MUTTON_JERKY.getItem(),
-        new ItemStack(Items.mutton), jerkyDryTime, jerkyXp);
+        new ItemStack(Items.MUTTON), jerkyDryTime, jerkyXp);
     addDryingRackRecipe("Rabbit Jerky", EnumDriedItem.RABBIT_JERKY.getItem(),
-        new ItemStack(Items.rabbit), jerkyDryTime, jerkyXp);
-    addDryingRackRecipe("Cod Jerky", EnumDriedItem.COD_JERKY.getItem(), new ItemStack(Items.fish),
+        new ItemStack(Items.RABBIT), jerkyDryTime, jerkyXp);
+    addDryingRackRecipe("Cod Jerky", EnumDriedItem.COD_JERKY.getItem(), new ItemStack(Items.FISH),
         jerkyDryTime, jerkyXp);
     addDryingRackRecipe("Salmon Jerky", EnumDriedItem.SALMON_JERKY.getItem(),
-        new ItemStack(Items.fish, 1, 1), jerkyDryTime, jerkyXp);
+        new ItemStack(Items.FISH, 1, 1), jerkyDryTime, jerkyXp);
 
-    addDryingRackRecipe("Sponge Drying", new ItemStack(Blocks.sponge),
-        new ItemStack(Blocks.sponge, 1, 1), 2400, 0.4f);
+    addDryingRackRecipe("Sponge Drying", new ItemStack(Blocks.SPONGE),
+        new ItemStack(Blocks.SPONGE, 1, 1), 2400, 0.4f);
   }
 
   private void addDryingRackRecipe(String recipeName, ItemStack output, Object input, int dryTime,
