@@ -1,3 +1,9 @@
+1.2.3
+Changed: Metal Furnace now gives a bonus for ores that smelt into gems (example: Chaos Ore from Silent's Gems)
+
+1.2.2
+?
+
 1.2.1
 Updated for Forge 1805+.
 Added: Disabled tooltip for metal ores.
