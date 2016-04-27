@@ -77,7 +77,7 @@ public class MobOre extends BlockSL implements IWitHudInfo {
 
     List<ModelResourceLocation> models = Lists.newArrayList();
     for (EnumMob mob : EnumMob.values()) {
-      models.add(new ModelResourceLocation(FunOres.MOD_ID + ":Ore" + mob.getName(), "inventory"));
+      models.add(new ModelResourceLocation(FunOres.MOD_ID + ":Ore" + mob.getUnmodifiedName(), "inventory"));
     }
     return models;
   }

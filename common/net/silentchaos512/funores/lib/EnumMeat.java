@@ -46,6 +46,11 @@ public enum EnumMeat implements IStringSerializable,IHasOre {
     return name.toLowerCase();
   }
 
+  public String getUnmodifiedName() {
+
+    return name;
+  }
+
   @Override
   public IBlockState getOre() {
 
