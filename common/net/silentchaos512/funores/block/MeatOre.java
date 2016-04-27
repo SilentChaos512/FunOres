@@ -77,7 +77,7 @@ public class MeatOre extends BlockSL implements IWitHudInfo {
 
     List<ModelResourceLocation> models = Lists.newArrayList();
     for (EnumMeat meat : EnumMeat.values()) {
-      models.add(new ModelResourceLocation(FunOres.MOD_ID + ":Ore" + meat.getName(), "inventory"));
+      models.add(new ModelResourceLocation(FunOres.MOD_ID + ":Ore" + meat.getUnmodifiedName(), "inventory"));
     }
     return models;
   }
