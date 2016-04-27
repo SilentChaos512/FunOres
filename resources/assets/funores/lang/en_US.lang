@@ -117,6 +117,8 @@ item.funores:MetalDust5.name=Platinum Dust
 item.funores:MetalDust6.name=Aluminium Dust
 item.funores:MetalDust7.name=Zinc Dust
 item.funores:MetalDust8.name=Titanium Dust
+item.funores:MetalDust16.name=Iron Dust
+item.funores:MetalDust17.name=Gold Dust
 
 item.funores:MetalIngot0.name=Copper Ingot
 item.funores:MetalIngot1.name=Tin Ingot

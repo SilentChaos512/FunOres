@@ -1,5 +1,6 @@
 1.2.3
 Changed: Metal Furnace now gives a bonus for ores that smelt into gems (example: Chaos Ore from Silent's Gems)
+Fixed: Meat and Mob ores not rendering correctly in inventories/JEI for some players (jriwanek)
 
 1.2.2
 ?

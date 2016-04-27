@@ -1,5 +1,9 @@
 package net.silentchaos512.funores.lib;
 
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.silentchaos512.funores.item.ModItems;
 
@@ -38,15 +42,15 @@ public enum EnumVanillaMetal implements IMetal {
   @Override
   public ItemStack getBlock() {
 
-    // TODO Auto-generated method stub
-    return null;
+    Block block = this == IRON ? Blocks.IRON_BLOCK : Blocks.GOLD_BLOCK;
+    return new ItemStack(block);
   }
 
   @Override
   public ItemStack getIngot() {
 
-    // TODO Auto-generated method stub
-    return null;
+    Item item = this == IRON ? Items.IRON_INGOT : Items.GOLD_INGOT;
+    return new ItemStack(item);
   }
 
   @Override
@@ -58,8 +62,7 @@ public enum EnumVanillaMetal implements IMetal {
   @Override
   public ItemStack getDust() {
 
-    // TODO Auto-generated method stub
-    return null;
+    return new ItemStack(ModItems.metalDust, 1, meta);
   }
 
   @Override
