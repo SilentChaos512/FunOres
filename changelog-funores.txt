@@ -1,9 +1,11 @@
 1.2.3
+Added: Iron and gold dust. Fixes some warnings from JEI in some cases.
 Changed: Metal Furnace now gives a bonus for ores that smelt into gems (example: Chaos Ore from Silent's Gems)
 Fixed: Meat and Mob ores not rendering correctly in inventories/JEI for some players (jriwanek)
+Fixed: Most item models.
 
 1.2.2
-?
+Updated for Forge 1833.
 
 1.2.1
 Updated for Forge 1805+.

@@ -60,11 +60,17 @@ public class MetalDust extends ItemSL {
     String prefix = FunOres.MOD_ID + ":Dust";
 
     int i;
+    // Mod metals
     for (i = 0; i < EnumMetal.values().length; ++i) {
       String metalName = EnumMetal.values()[i].getMetalName();
       models.add(new ModelResourceLocation(prefix + metalName, "inventory"));
     }
     final int metaIron = EnumVanillaMetal.IRON.meta;
+    // Fill empty space
+    for (; i < metaIron; ++i) {
+      models.add(null);
+    }
+    // Vanilla metals
     for (i = 0; i < EnumVanillaMetal.values().length; ++i) {
       String metalName = EnumVanillaMetal.values()[i].getMetalName();
       models.add(new ModelResourceLocation(prefix + metalName, "inventory"));

@@ -1,0 +1,6 @@
+{
+  "parent": "FunOres:block/OreInvar",
+  "textures": {
+    "layer0": "FunOres:blocks/OreInvar"
+  }
+}

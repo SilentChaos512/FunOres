@@ -1,0 +1,6 @@
+{
+  "parent": "FunOres:block/OreBronze",
+  "textures": {
+    "layer0": "FunOres:blocks/OreBronze"
+  }
+}

@@ -2,7 +2,7 @@ import sys
 import re
 import os
 
-MOD_ID = 'SilentGems'
+MOD_ID = 'FunOres'
 
 def createDirIfNeeded(name):
     if not os.path.exists(name):

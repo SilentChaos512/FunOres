@@ -4,9 +4,9 @@ import os
 
 METALS = ['Copper', 'Tin', 'Silver', 'Lead', 'Nickel', 'Platinum', \
             'Aluminium', 'Zinc', 'Titanium', 'Bronze', 'Brass', 'Steel', \
-            'Invar', 'Electrum', 'Enderium']
+            'Invar', 'Electrum', 'Enderium', 'Prismarinium', 'Iron', 'Gold']
 
-MOD_ID = 'SilentGems'
+MOD_ID = 'FunOres'
 
 def createDirIfNeeded(name):
     if not os.path.exists(name):
