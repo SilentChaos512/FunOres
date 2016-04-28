@@ -1,6 +1,7 @@
 package net.silentchaos512.funores.item;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.google.common.collect.Lists;
@@ -17,7 +18,6 @@ import net.silentchaos512.funores.lib.EnumVanillaMetal;
 import net.silentchaos512.funores.lib.IMetal;
 import net.silentchaos512.funores.lib.Names;
 import net.silentchaos512.lib.item.ItemSL;
-import scala.actors.threadpool.Arrays;
 
 public class MetalDust extends ItemSL {
 
