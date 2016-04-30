@@ -44,27 +44,16 @@ public class FunOresPlugin implements IModPlugin {
     reg.addRecipeClickArea(GuiAlloySmelter.class, 80, 34, 25, 16,
         AlloySmelterRecipeCategory.CATEGORY);
 
+    reg.addRecipeCategoryCraftingItem(new ItemStack(ModBlocks.alloySmelter),
+        AlloySmelterRecipeCategory.CATEGORY);
+    reg.addRecipeCategoryCraftingItem(new ItemStack(ModBlocks.dryingRack),
+        DryingRackRecipeCategory.CATEGORY);
+
     String descPrefix = "jei.funores.desc.";
     reg.addDescription(new ItemStack(ModBlocks.metalFurnace), descPrefix + Names.METAL_FURNACE);
     reg.addDescription(new ItemStack(ModBlocks.alloySmelter), descPrefix + Names.ALLOY_SMELTER);
     reg.addDescription(new ItemStack(ModBlocks.dryingRack), descPrefix + Names.DRYING_RACK);
   }
-
-//  @Override
-//  public void onJeiHelpersAvailable(IJeiHelpers arg0) {
-//
-//    jeiHelper = arg0;
-//  }
-//
-//  @Override
-//  public void onItemRegistryAvailable(IItemRegistry arg0) {
-//
-//  }
-//
-//  @Override
-//  public void onRecipeRegistryAvailable(IRecipeRegistry arg0) {
-//
-//  }
 
   @Override
   public void onRuntimeAvailable(IJeiRuntime runtime) {
