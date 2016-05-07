@@ -51,6 +51,9 @@ public class MetalIngot extends ItemSL {
       int meta = metal.getMeta();
       OreDictionary.registerOre(name, new ItemStack(this, 1, meta));
     }
+
+    // Alternative spelling of aluminium
+    OreDictionary.registerOre("ingotAluminum", new ItemStack(this, 1, EnumMetal.ALUMINIUM.meta));
   }
   
   @Override
