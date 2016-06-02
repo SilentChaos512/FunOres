@@ -146,7 +146,7 @@ public class TileDryingRack extends TileEntity implements ITickable, IInventory 
   }
 
   @Override
-  public Packet getDescriptionPacket() {
+  public SPacketUpdateTileEntity getUpdatePacket() {
 
     NBTTagCompound tags = new NBTTagCompound();
     tags.setInteger("DryTime", dryTime);
@@ -187,7 +187,7 @@ public class TileDryingRack extends TileEntity implements ITickable, IInventory 
   }
 
   @Override
-  public void writeToNBT(NBTTagCompound compound) {
+  public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 
     super.writeToNBT(compound);
     compound.setShort("DryTime", (short) dryTime);
@@ -196,6 +196,7 @@ public class TileDryingRack extends TileEntity implements ITickable, IInventory 
       stack.writeToNBT(tagCompound);
     }
     compound.setTag("ItemStack", tagCompound);
+    return compound;
   }
 
   public ItemStack getOutput() {

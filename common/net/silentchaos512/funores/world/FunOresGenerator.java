@@ -2,14 +2,11 @@ package net.silentchaos512.funores.world;
 
 import java.util.Random;
 
-import com.google.common.base.Predicate;
-
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.block.state.pattern.BlockMatcher;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.feature.WorldGenMinable;
@@ -106,7 +103,7 @@ public class FunOresGenerator implements IWorldGenerator {
       }
     }
 
-    BiomeGenBase biome = getBiomeForPos(world, new BlockPos(posX, 64, posZ));
+    Biome biome = getBiomeForPos(world, new BlockPos(posX, 64, posZ));
     if (ore.canSpawnInBiome(biome)) {
       // Debug
       // if (ore == EnumMetal.COPPER.getConfig()) {
@@ -181,7 +178,7 @@ public class FunOresGenerator implements IWorldGenerator {
 
   }
 
-  public static BiomeGenBase getBiomeForPos(World world, BlockPos pos) {
+  public static Biome getBiomeForPos(World world, BlockPos pos) {
 
     // Get biome at center of chunk
     int posX = (pos.getX() & 0xFFFFFFF0) + 8;

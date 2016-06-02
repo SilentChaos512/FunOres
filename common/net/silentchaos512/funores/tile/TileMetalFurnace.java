@@ -358,7 +358,7 @@ public class TileMetalFurnace extends TileEntity implements ITickable, ISidedInv
   }
 
   @Override
-  public void writeToNBT(NBTTagCompound compound) {
+  public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 
     super.writeToNBT(compound);
     compound.setShort("BurnTime", (short) this.furnaceBurnTime);
@@ -376,6 +376,7 @@ public class TileMetalFurnace extends TileEntity implements ITickable, ISidedInv
     }
 
     compound.setTag("Items", tagList);
+    return compound;
   }
 
   public boolean isBurning() {

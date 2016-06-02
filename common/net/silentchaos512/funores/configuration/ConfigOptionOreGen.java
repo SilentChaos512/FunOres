@@ -9,7 +9,7 @@ import net.minecraft.block.state.pattern.BlockMatcher;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.config.Configuration;
 import net.silentchaos512.funores.FunOres;
@@ -219,7 +219,7 @@ public class ConfigOptionOreGen extends ConfigOption {
     return this;
   }
 
-  public boolean canSpawnInBiome(BiomeGenBase biome) {
+  public boolean canSpawnInBiome(Biome biome) {
 
     for (BiomeDictionary.Type type : BiomeDictionary.getTypesForBiome(biome)) {
       for (BiomeDictionary.Type typeInList : biomes) {
@@ -231,7 +231,7 @@ public class ConfigOptionOreGen extends ConfigOption {
     return biomeListType != BiomeListType.WHITELIST;
   }
 
-  public float getClusterCountForBiome(BiomeGenBase biome) {
+  public float getClusterCountForBiome(Biome biome) {
 
     // LogHelper.debug(clusterCountByBiomeType);
     float count = 0f;

@@ -1,3 +1,7 @@
+1.2.6
+Updated for Silent Lib 1.0.9
+Added: Sag Mill recipes (Ender IO) for metal ores.
+
 1.2.3
 Added: Iron and gold dust. Fixes some warnings from JEI in some cases.
 Changed: Metal Furnace now gives a bonus for ores that smelt into gems (example: Chaos Ore from Silent's Gems)

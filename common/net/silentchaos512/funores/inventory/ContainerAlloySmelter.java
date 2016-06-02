@@ -3,9 +3,8 @@ package net.silentchaos512.funores.inventory;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ICrafting;
+import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotFurnaceFuel;
 import net.minecraft.item.ItemStack;
@@ -54,9 +53,9 @@ public class ContainerAlloySmelter extends Container {
   }
 
   @Override
-  public void onCraftGuiOpened(ICrafting listener) {
+  public void addListener(IContainerListener listener) {
 
-    super.onCraftGuiOpened(listener);
+    super.addListener(listener);
     listener.updateCraftingInventory(this, this.getInventory());
   }
 
@@ -66,7 +65,7 @@ public class ContainerAlloySmelter extends Container {
     super.detectAndSendChanges();
 
     for (int i = 0; i < this.listeners.size(); ++i) {
-      ICrafting icrafting = (ICrafting) this.listeners.get(i);
+      IContainerListener icrafting = (IContainerListener) this.listeners.get(i);
 
       if (this.cookTime != this.tileAlloySmelter.getField(2)) {
         icrafting.sendProgressBarUpdate(this, 2, this.tileAlloySmelter.getField(2));

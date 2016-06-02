@@ -8,7 +8,7 @@ import com.google.common.collect.Lists;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGen;
 import net.silentchaos512.funores.item.block.ItemBlockOre;
@@ -52,7 +52,7 @@ public class ModBlocks {
     }
 
     // Show average veins per chunk (cluster count divided by rarity)
-    BiomeGenBase biome = FunOresGenerator.getBiomeForPos(player.worldObj, pos);
+    Biome biome = FunOresGenerator.getBiomeForPos(player.worldObj, pos);
     float veinsPerChunk = (float) config.getClusterCountForBiome(biome) / config.rarity;
     String veinCountString = String.format("%.3f", veinsPerChunk);
 

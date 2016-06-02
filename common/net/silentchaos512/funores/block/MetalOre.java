@@ -23,6 +23,7 @@ import net.silentchaos512.funores.configuration.ConfigOptionOreGen;
 import net.silentchaos512.funores.item.ModItems;
 import net.silentchaos512.funores.lib.EnumMetal;
 import net.silentchaos512.funores.lib.Names;
+import net.silentchaos512.funores.util.ModRecipeHelper;
 import net.silentchaos512.lib.block.BlockSL;
 import net.silentchaos512.wit.api.IWitHudInfo;
 
@@ -54,10 +55,14 @@ public class MetalOre extends BlockSL implements IWitHudInfo {
   @Override
   public void addRecipes() {
 
-    for (int i = 0; i < EnumMetal.count(); ++i) {
-      ItemStack ore = new ItemStack(this, 1, i);
-      ItemStack ingot = new ItemStack(ModItems.metalIngot, 1, i);
+    for (EnumMetal metal : EnumMetal.values()) {
+      ItemStack ore = new ItemStack(this, 1, metal.meta);
+      ItemStack ingot = metal.getIngot();
       GameRegistry.addSmelting(ore, ingot, 0.5f);
+
+      ItemStack dust = metal.getDust();
+      ItemStack bonus = metal.getBonus();
+      ModRecipeHelper.addSagMillRecipe(metal.getMetalName(), ore, dust, bonus, "cobblestone", 3000);
     }
   }
 
