@@ -148,14 +148,19 @@ public class TileDryingRack extends TileEntity implements ITickable, IInventory 
   @Override
   public SPacketUpdateTileEntity getUpdatePacket() {
 
-    NBTTagCompound tags = new NBTTagCompound();
+    return new SPacketUpdateTileEntity(pos, 1, getUpdateTag());
+  }
+
+  @Override
+  public NBTTagCompound getUpdateTag() {
+
+    NBTTagCompound tags = super.getUpdateTag();
     tags.setInteger("DryTime", dryTime);
     tags.setInteger("TotalDryTime", totalDryTime);
     tags.setFloat("XP", xp);
-    if (stack != null) {
+    if (stack != null)
       tags.setTag("ItemStack", stack.writeToNBT(new NBTTagCompound()));
-    }
-    return new SPacketUpdateTileEntity(pos, 1, tags);
+    return tags;
   }
 
   @Override

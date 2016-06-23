@@ -2,11 +2,14 @@ package net.silentchaos512.funores.block;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import com.google.common.collect.Lists;
 
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -87,10 +90,18 @@ public class BlockDryingRack extends BlockMachine {
   }
 
   @Override
-  public AxisAlignedBB getCollisionBoundingBox(IBlockState worldIn, World pos, BlockPos state) {
+  public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos,
+      AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn) {
 
-    return worldIn.getSelectedBoundingBox(pos, state);
+    state = state.getActualState(worldIn, pos);
+    addCollisionBoxToList(pos, entityBox, collidingBoxes, getBoundingBox(state, worldIn, pos));
   }
+
+//  @Override
+//  public AxisAlignedBB getCollisionBoundingBox(IBlockState worldIn, World pos, BlockPos state) {
+//
+//    return worldIn.getSelectedBoundingBox(pos, state);
+//  }
 
   @Override
   public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
