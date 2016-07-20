@@ -10,7 +10,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -31,6 +31,7 @@ import net.silentchaos512.funores.configuration.Config;
 import net.silentchaos512.funores.configuration.ConfigItemDrop;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGenBonus;
 import net.silentchaos512.funores.gui.GuiHandlerFunOres;
+import net.silentchaos512.funores.init.ModFluids;
 import net.silentchaos512.funores.item.ModItems;
 import net.silentchaos512.funores.lib.EnumAlloy;
 import net.silentchaos512.funores.lib.EnumDriedItem;
@@ -58,11 +59,11 @@ public class FunOres {
   public static final String DEPENDENCIES = "required-after:Forge@[12.16.0.1826,);required-after:SilentLib;";
   public static final String RESOURCE_PREFIX = MOD_ID.toLowerCase() + ":";
 
-  public Random random = new Random();
-  public LogHelper logHelper = new LogHelper(MOD_NAME);
-  public LocalizationHelper localizationHelper;
+  public static Random random = new Random();
+  public static LogHelper logHelper = new LogHelper(MOD_NAME);
+  public static LocalizationHelper localizationHelper;
 
-  public SRegistry registry = new SRegistry(MOD_ID) {
+  public static SRegistry registry = new SRegistry(MOD_ID) {
 
     @Override
     public Block registerBlock(Block block, String key, ItemBlock itemBlock) {
@@ -93,12 +94,13 @@ public class FunOres {
 
     Config.init(event.getSuggestedConfigurationFile());
 
+    ModFluids.init();
     ModBlocks.init();
     ModItems.init();
     ModDamageSources.init();
 
     NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandlerFunOres());
-    FMLCommonHandler.instance().bus().register(this);
+    MinecraftForge.EVENT_BUS.register(this);
 
     proxy.preInit(registry);
   }

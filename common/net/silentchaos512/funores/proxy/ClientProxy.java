@@ -3,7 +3,9 @@ package net.silentchaos512.funores.proxy;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.client.render.TileDryingRackRender;
+import net.silentchaos512.funores.init.ModFluids;
 import net.silentchaos512.funores.tile.TileDryingRack;
 import net.silentchaos512.lib.registry.SRegistry;
 
@@ -14,6 +16,7 @@ public class ClientProxy extends CommonProxy {
 
     super.preInit(reg);
     reg.clientPreInit();
+    ModFluids.bakeModels();
   }
 
   @Override

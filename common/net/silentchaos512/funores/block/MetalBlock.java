@@ -25,7 +25,7 @@ import net.silentchaos512.funores.lib.Names;
 import net.silentchaos512.lib.block.BlockSL;
 
 public class MetalBlock extends BlockSL {
-  
+
   public static final PropertyEnum METAL = PropertyEnum.create("metal", EnumMetal.class);
 
   public MetalBlock() {
@@ -36,8 +36,8 @@ public class MetalBlock extends BlockSL {
     setResistance(30.0f);
     setSoundType(SoundType.METAL);
     setHarvestLevel("pickaxe", 1);
-    
-//    setHasSubtypes(true);
+
+    // setHasSubtypes(true);
     setUnlocalizedName(Names.METAL_BLOCK);
   }
 
@@ -47,6 +47,9 @@ public class MetalBlock extends BlockSL {
     for (EnumMetal metal : EnumMetal.values()) {
       OreDictionary.registerOre("block" + metal.getMetalName(), metal.getBlock());
     }
+
+    // Alternative spelling of aluminium
+    OreDictionary.registerOre("blockAluminum", EnumMetal.ALUMINIUM.getBlock());
   }
 
   @Override
@@ -54,46 +57,47 @@ public class MetalBlock extends BlockSL {
 
     List<ModelResourceLocation> models = Lists.newArrayList();
     for (EnumMetal metal : EnumMetal.values()) {
-      models.add(new ModelResourceLocation(FunOres.MOD_ID + ":Block" + metal.getMetalName(), "inventory"));
+      models.add(
+          new ModelResourceLocation(FunOres.MOD_ID + ":Block" + metal.getMetalName(), "inventory"));
     }
     return models;
   }
-  
+
   @Override
   public int damageDropped(IBlockState state) {
-    
+
     return ((EnumMetal) state.getValue(METAL)).getMeta();
   }
-  
+
   @Override
   public void getSubBlocks(Item item, CreativeTabs tab, List list) {
-    
+
     for (int i = 0; i < EnumMetal.count(); ++i) {
       list.add(new ItemStack(item, 1, EnumMetal.values()[i].getMeta()));
     }
   }
-  
+
   @Override
   public IBlockState getStateFromMeta(int meta) {
-    
+
     return this.getDefaultState().withProperty(METAL, EnumMetal.byMetadata(meta));
   }
-  
+
   @Override
   public int getMetaFromState(IBlockState state) {
-    
+
     return ((EnumMetal) state.getValue(METAL)).getMeta();
   }
-  
+
   @Override
   protected BlockStateContainer createBlockState() {
-    
+
     return new BlockStateContainer(this, new IProperty[] { METAL });
   }
-  
+
   @Override
   public boolean isBeaconBase(IBlockAccess worldObj, BlockPos pos, BlockPos beacon) {
-    
+
     return true;
   }
 }

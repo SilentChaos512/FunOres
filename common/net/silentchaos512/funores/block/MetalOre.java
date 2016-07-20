@@ -48,7 +48,7 @@ public class MetalOre extends BlockSL implements IWitHudInfo {
       }
     }
 
-//    setHasSubtypes(true);
+    // setHasSubtypes(true);
     setUnlocalizedName(Names.METAL_ORE);
   }
 
@@ -70,10 +70,12 @@ public class MetalOre extends BlockSL implements IWitHudInfo {
   public void addOreDict() {
 
     for (EnumMetal metal : EnumMetal.values()) {
-      String name = "ore" + metal.getMetalName();
-      int meta = metal.getMeta();
-      OreDictionary.registerOre(name, new ItemStack(this, 1, meta));
+      ItemStack stack = new ItemStack(this, 1, metal.getMeta());
+      OreDictionary.registerOre("ore" + metal.getMetalName(), stack);
     }
+
+    // Alternative spelling of aluminium
+    OreDictionary.registerOre("oreAluminum", new ItemStack(this, 1, EnumMetal.ALUMINIUM.meta));
   }
 
   @Override
@@ -94,7 +96,8 @@ public class MetalOre extends BlockSL implements IWitHudInfo {
 
     List<ModelResourceLocation> models = Lists.newArrayList();
     for (EnumMetal metal : EnumMetal.values()) {
-      models.add(new ModelResourceLocation(FunOres.MOD_ID + ":Ore" + metal.getMetalName(), "inventory"));
+      models.add(
+          new ModelResourceLocation(FunOres.MOD_ID + ":Ore" + metal.getMetalName(), "inventory"));
     }
     return models;
   }
