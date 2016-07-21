@@ -2,8 +2,8 @@ package net.silentchaos512.funores.lib;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
-import net.silentchaos512.funores.block.ModBlocks;
-import net.silentchaos512.funores.item.ModItems;
+import net.silentchaos512.funores.init.ModBlocks;
+import net.silentchaos512.funores.init.ModItems;
 
 public enum EnumAlloy implements IStringSerializable, IMetal {
 

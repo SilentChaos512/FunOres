@@ -17,10 +17,11 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.lib.EnumDriedItem;
+import net.silentchaos512.funores.lib.IDisableable;
 import net.silentchaos512.funores.lib.Names;
 import net.silentchaos512.lib.registry.IRegistryObject;
 
-public class ItemDried extends ItemFood implements IRegistryObject {
+public class ItemDried extends ItemFood implements IRegistryObject, IDisableable {
 
   public ItemDried() {
 
@@ -37,8 +38,7 @@ public class ItemDried extends ItemFood implements IRegistryObject {
     boolean shifted = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)
         || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT);
     if (shifted) {
-      for (String line : FunOres.instance.localizationHelper
-          .getItemDescriptionLines(getEnum(stack).name)) {
+      for (String line : FunOres.localizationHelper.getItemDescriptionLines(getEnum(stack).name)) {
         list.add(TextFormatting.ITALIC + line);
       }
     }
@@ -47,8 +47,9 @@ public class ItemDried extends ItemFood implements IRegistryObject {
   @Override
   public void addRecipes() {
 
-    GameRegistry.addShapedRecipe(new ItemStack(Items.LEATHER), "ff", "ff", 'f',
-        getStack(EnumDriedItem.DRIED_FLESH));
+    if (!FunOres.registry.isItemDisabled(getStack(EnumDriedItem.DRIED_FLESH)))
+      GameRegistry.addShapedRecipe(new ItemStack(Items.LEATHER), "ff", "ff", 'f',
+          getStack(EnumDriedItem.DRIED_FLESH));
   }
 
   @Override

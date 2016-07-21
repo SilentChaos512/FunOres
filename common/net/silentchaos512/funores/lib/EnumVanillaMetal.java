@@ -5,7 +5,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.silentchaos512.funores.item.ModItems;
+import net.silentchaos512.funores.init.ModItems;
 
 public enum EnumVanillaMetal implements IMetal {
 

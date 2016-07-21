@@ -11,13 +11,16 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import net.silentchaos512.funores.FunOres;
-import net.silentchaos512.funores.block.ModBlocks;
+import net.silentchaos512.funores.init.ModBlocks;
+import net.silentchaos512.funores.init.ModItems;
 import net.silentchaos512.funores.lib.EnumMetal;
+import net.silentchaos512.funores.lib.EnumVanillaMetal;
+import net.silentchaos512.funores.lib.IDisableable;
 import net.silentchaos512.funores.lib.Names;
 import net.silentchaos512.lib.item.ItemSL;
 import net.silentchaos512.lib.util.RecipeHelper;
 
-public class MetalIngot extends ItemSL {
+public class MetalIngot extends ItemSL implements IDisableable {
 
   public MetalIngot() {
 
@@ -27,56 +30,65 @@ public class MetalIngot extends ItemSL {
   @Override
   public void addRecipes() {
 
-    for (int i = 0; i < EnumMetal.count(); ++i) {
-      ItemStack nugget = new ItemStack(ModItems.metalNugget, 1, i);
-      ItemStack ingot = new ItemStack(this, 1, i);
-      ItemStack block = new ItemStack(ModBlocks.metalBlock, 1, i);
+    for (EnumMetal metal : EnumMetal.values()) {
+      boolean disabledNugget = FunOres.registry.isItemDisabled(metal.getNugget());
+      boolean disabledIngot = FunOres.registry.isItemDisabled(metal.getIngot());
+      boolean disabledBlock = FunOres.registry.isItemDisabled(metal.getBlock());
+
       // Ingots <--> Blocks
-      RecipeHelper.addCompressionRecipe(ingot, block, 9);
+      if (!disabledIngot && !disabledBlock)
+        RecipeHelper.addCompressionRecipe(metal.getIngot(), metal.getBlock(), 9);
       // Nuggets <--> Ingots
+      if (!disabledNugget && !disabledIngot)
+        RecipeHelper.addCompressionRecipe(metal.getNugget(), metal.getIngot(), 9);
+    }
+
+    // Iron
+    if (!FunOres.registry.isItemDisabled(EnumVanillaMetal.IRON.getNugget())) {
+      ItemStack nugget = EnumVanillaMetal.IRON.getNugget();
+      ItemStack ingot = EnumVanillaMetal.IRON.getIngot();
       RecipeHelper.addCompressionRecipe(nugget, ingot, 9);
     }
-    
-    // Iron
-    ItemStack nugget = new ItemStack(ModItems.metalNugget, 1, MetalNugget.META_IRON);
-    ItemStack ingot = new ItemStack(Items.IRON_INGOT);
-    RecipeHelper.addCompressionRecipe(nugget, ingot, 9);
   }
 
   @Override
   public void addOreDict() {
 
     for (EnumMetal metal : EnumMetal.values()) {
-      String name = "ingot" + metal.getMetalName();
-      int meta = metal.getMeta();
-      OreDictionary.registerOre(name, new ItemStack(this, 1, meta));
+      ItemStack ingot = metal.getIngot();
+      if (!FunOres.registry.isItemDisabled(ingot)) {
+        String name = "ingot" + metal.getMetalName();
+        OreDictionary.registerOre(name, ingot);
+      }
     }
 
     // Alternative spelling of aluminium
-    OreDictionary.registerOre("ingotAluminum", new ItemStack(this, 1, EnumMetal.ALUMINIUM.meta));
+    if (!FunOres.registry.isItemDisabled(EnumMetal.ALUMINIUM.getIngot()))
+      OreDictionary.registerOre("ingotAluminum", EnumMetal.ALUMINIUM.getIngot());
   }
-  
+
   @Override
   public List<ModelResourceLocation> getVariants() {
-    
+
     List<ModelResourceLocation> models = Lists.newArrayList();
     for (EnumMetal metal : EnumMetal.values()) {
-      models.add(new ModelResourceLocation(FunOres.MOD_ID + ":Ingot" + metal.getMetalName(), "inventory"));
+      models.add(
+          new ModelResourceLocation(FunOres.MOD_ID + ":Ingot" + metal.getMetalName(), "inventory"));
     }
     return models;
   }
-  
+
   @Override
   public void getSubItems(Item item, CreativeTabs tab, List list) {
-    
+
     for (int i = 0; i < EnumMetal.count(); ++i) {
       list.add(new ItemStack(this, 1, i));
     }
   }
-  
+
   @Override
   public boolean isBeaconPayment(ItemStack stack) {
-    
+
     return true;
   }
 }

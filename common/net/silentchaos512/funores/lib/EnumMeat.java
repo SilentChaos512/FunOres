@@ -4,9 +4,9 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.IStringSerializable;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.block.MeatOre;
-import net.silentchaos512.funores.block.ModBlocks;
 import net.silentchaos512.funores.configuration.Config;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGenBonus;
+import net.silentchaos512.funores.init.ModBlocks;
 
 public enum EnumMeat implements IStringSerializable,IHasOre {
 

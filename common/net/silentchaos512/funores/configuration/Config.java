@@ -2,9 +2,16 @@ package net.silentchaos512.funores.configuration;
 
 import java.io.File;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.item.EnumDyeColor;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
 import net.silentchaos512.funores.FunOres;
+import net.silentchaos512.funores.init.ModBlocks;
+import net.silentchaos512.funores.init.ModItems;
 import net.silentchaos512.funores.lib.EnumMeat;
 import net.silentchaos512.funores.lib.EnumMetal;
 import net.silentchaos512.funores.lib.EnumMob;
@@ -17,6 +24,14 @@ public class Config {
   public static boolean disableMetalOres = false;
   public static boolean disableMeatOres = false;
   public static boolean disableMobOres = false;
+  public static boolean disableMetalBlocks = false;
+  public static boolean disableMetalIngots = false;
+  public static boolean disableMetalNuggets = false;
+  public static boolean disableMetalDusts = false;
+  public static boolean disableMetalPlates = false;
+  public static boolean disableMetalGears = false;
+  public static boolean disableFoods = false;
+  public static boolean disableShards = false;
 
   // Misc
   public static boolean machinesCanBurn = true;
@@ -85,6 +100,7 @@ public class Config {
   public static final String CATEGORY_MOB_ORE = "MobOre";
   public static final String CATEGORY_VANILLA_ORE = "vanilla_ore";
   public static final String CATEGORY_RECIPE = "Recipe";
+  public static final String CATEGORY_ITEM_DISABLE = "item_disable";
   public static final String CATEGORY_MISC = "Misc";
   public static final String CATEGORY_DEBUG = CATEGORY_MISC + c.CATEGORY_SPLITTER + "Debug";
   public static final String CATEGORY_RECIPE_ALLOY_SMELTER = "recipe_alloy_smelter";
@@ -96,6 +112,8 @@ public class Config {
   public static final String COMMENT_MOB_ORE = "The mob (hostile mob) ores.";
   public static final String COMMENT_VANILLA_ORE = "Fun Ores can optionally add to or replace vanilla ores. By default, these are all disabled. Defaults if\n"
       + "enabled are set to add to vanilla generation, rather than replace it.";
+  public static final String COMMENT_ITEM_DISABLE = "\"Disables\" specific items. Disabled items have their crafting recipes and ore dictionary entries removed\n"
+      + "and are hidden from JEI and creative tabs, but the item still exists.";
   public static final String COMMENT_RECIPE_ALLOY_SMELTER = "You can disable alloy smelter recipes here. Set to false to disable the recipe.";
   public static final String COMMENT_QUICK_TWEAKS = "Some settings to quickly make large changes to the mod.";
   public static final String COMMENT_MISC = "Random settings that don't fit anywhere else!";
@@ -120,6 +138,24 @@ public class Config {
           "Disable all meat (passive mob) ores.");
       disableMobOres = c.getBoolean("DisableMobOres", CATEGORY_QUICK_TWEAKS, disableMobOres,
           "Disable all mob (hostile mob) ores.");
+      disableMetalBlocks = c.getBoolean("Disable Metal Blocks", CATEGORY_QUICK_TWEAKS,
+          disableMetalBlocks, "Disables all metal and alloy blocks.");
+      disableMetalIngots = c.getBoolean("Disable Metal Ingots", CATEGORY_QUICK_TWEAKS,
+          disableMetalIngots, "Disables all metal and alloy ingots.");
+      disableMetalNuggets = c.getBoolean("Disable Metal Nuggets", CATEGORY_QUICK_TWEAKS,
+          disableMetalNuggets, "Disable all metal and alloy nuggets.");
+      disableMetalDusts = c.getBoolean("Disable Metal Dusts", CATEGORY_QUICK_TWEAKS,
+          disableMetalDusts, "Disable all metal and alloy dusts.");
+      disableMetalPlates = c.getBoolean("Disable Metal Plates", CATEGORY_QUICK_TWEAKS,
+          disableMetalPlates, "Disable all metal and alloy plates.");
+      disableMetalGears = c.getBoolean("Disable Metal Gears", CATEGORY_QUICK_TWEAKS,
+          disableMetalGears, "Disable all metal and alloy gears.");
+      disableFoods = c.getBoolean("Disable Foods", CATEGORY_QUICK_TWEAKS, disableFoods,
+          "Disable all foods.");
+      disableShards = c.getBoolean("Disable Shards", CATEGORY_QUICK_TWEAKS, disableShards,
+          "Disable all shards.");
+
+      ;
 
       /*
        * Misc configs
@@ -546,10 +582,54 @@ public class Config {
       quartz.clusterSize = 13;
       quartz.loadValue(c, CATEGORY_VANILLA_ORE);
 
+      c.setCategoryComment(CATEGORY_ITEM_DISABLE, COMMENT_ITEM_DISABLE);
+
     } catch (Exception e) {
       FunOres.instance.logHelper.severe("Oh noes!!! Couldn't load configuration file properly!");
       FunOres.instance.logHelper.severe(e);
     }
+  }
+
+  public static boolean isItemDisabled(ItemStack stack) {
+
+    // Should translate as en_US on servers...
+    String name = FunOres.localizationHelper
+        .getLocalizedString(stack.getUnlocalizedName() + ".name");
+
+    // Check for quick tweaks disabled items...
+    Item item = stack.getItem(); //@formatter:off
+    if (checkItemQuickDisable(item, disableMetalBlocks, ModBlocks.metalBlock, ModBlocks.alloyBlock)
+        || checkItemQuickDisable(item, disableMetalIngots, ModItems.metalIngot,ModItems.alloyIngot)
+        || checkItemQuickDisable(item, disableMetalNuggets, ModItems.metalNugget, ModItems.alloyNugget)
+        || checkItemQuickDisable(item, disableMetalDusts, ModItems.metalDust, ModItems.alloyDust)
+        || checkItemQuickDisable(item, disableMetalGears, ModItems.gearBasic, ModItems.gearAlloy)
+        || checkItemQuickDisable(item, disableMetalPlates, ModItems.plateBasic, ModItems.plateAlloy)
+        || checkItemQuickDisable(item, disableFoods, ModItems.driedItem)
+        || checkItemQuickDisable(item, disableShards, ModItems.shard))
+      return true; //@formatter:on
+
+    // Use item-specific config.
+    return c.get(CATEGORY_ITEM_DISABLE, "Disable " + name, false).getBoolean();
+  }
+
+  private static boolean checkItemQuickDisable(@Nonnull Item item, boolean config,
+      Object... objects) {
+
+    if (!config)
+      return false;
+
+    Object compare;
+    if (item instanceof ItemBlock)
+      compare = ((ItemBlock) item).getBlock();
+    else
+      compare = item;
+
+    for (Object obj : objects) {
+      if (obj != null && obj.equals(compare))
+        return true;
+    }
+
+    return false;
   }
 
   public static void save() {

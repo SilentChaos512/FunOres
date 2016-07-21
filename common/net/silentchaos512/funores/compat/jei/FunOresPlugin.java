@@ -1,17 +1,16 @@
 package net.silentchaos512.funores.compat.jei;
 
-import mezz.jei.JeiHelpers;
-import mezz.jei.JeiRuntime;
+import java.util.List;
+
+import com.google.common.collect.Lists;
+
 import mezz.jei.api.IGuiHelper;
-import mezz.jei.api.IItemRegistry;
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.IJeiRuntime;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.IModRegistry;
-import mezz.jei.api.IRecipeRegistry;
 import mezz.jei.api.JEIPlugin;
 import net.minecraft.item.ItemStack;
-import net.silentchaos512.funores.block.ModBlocks;
 import net.silentchaos512.funores.compat.jei.alloysmelter.AlloySmelterRecipeCategory;
 import net.silentchaos512.funores.compat.jei.alloysmelter.AlloySmelterRecipeHandler;
 import net.silentchaos512.funores.compat.jei.alloysmelter.AlloySmelterRecipeMaker;
@@ -19,18 +18,23 @@ import net.silentchaos512.funores.compat.jei.dryingrack.DryingRackRecipeCategory
 import net.silentchaos512.funores.compat.jei.dryingrack.DryingRackRecipeHandler;
 import net.silentchaos512.funores.compat.jei.dryingrack.DryingRackRecipeMaker;
 import net.silentchaos512.funores.gui.GuiAlloySmelter;
+import net.silentchaos512.funores.init.ModBlocks;
 import net.silentchaos512.funores.lib.Names;
 
 @JEIPlugin
 public class FunOresPlugin implements IModPlugin {
 
   public static IJeiHelpers jeiHelper;
+  public static List<ItemStack> disabledItems = Lists.newArrayList();
 
   @Override
   public void register(IModRegistry reg) {
 
     jeiHelper = reg.getJeiHelpers();
     IGuiHelper guiHelper = jeiHelper.getGuiHelper();
+
+    for (ItemStack stack : disabledItems)
+      jeiHelper.getItemBlacklist().addItemToBlacklist(stack);
 
     reg.addRecipeCategories(new AlloySmelterRecipeCategory(guiHelper));
     reg.addRecipeCategories(new DryingRackRecipeCategory(guiHelper));

@@ -11,10 +11,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.lib.EnumAlloy;
+import net.silentchaos512.funores.lib.IDisableable;
 import net.silentchaos512.funores.lib.Names;
 import net.silentchaos512.lib.item.ItemSL;
 
-public class AlloyNugget extends ItemSL {
+public class AlloyNugget extends ItemSL implements IDisableable {
 
   public AlloyNugget() {
 
@@ -24,10 +25,12 @@ public class AlloyNugget extends ItemSL {
   @Override
   public void addOreDict() {
 
-    for (EnumAlloy alloy : EnumAlloy.values()) {
-      String name = "nugget" + alloy.getMetalName();
-      int meta = alloy.getMeta();
-      OreDictionary.registerOre(name, new ItemStack(this, 1, meta));
+    for (EnumAlloy metal : EnumAlloy.values()) {
+      ItemStack nugget = metal.getNugget();
+      if (!FunOres.registry.isItemDisabled(nugget)) {
+        String name = "nugget" + metal.getMetalName();
+        OreDictionary.registerOre(name, nugget);
+      }
     }
   }
 
@@ -36,7 +39,8 @@ public class AlloyNugget extends ItemSL {
 
     List<ModelResourceLocation> models = Lists.newArrayList();
     for (EnumAlloy metal : EnumAlloy.values()) {
-      models.add(new ModelResourceLocation(FunOres.MOD_ID + ":Nugget" + metal.getMetalName(), "inventory"));
+      models.add(new ModelResourceLocation(FunOres.MOD_ID + ":Nugget" + metal.getMetalName(),
+          "inventory"));
     }
     return models;
   }

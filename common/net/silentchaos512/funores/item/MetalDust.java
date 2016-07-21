@@ -15,11 +15,12 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.lib.EnumMetal;
 import net.silentchaos512.funores.lib.EnumVanillaMetal;
+import net.silentchaos512.funores.lib.IDisableable;
 import net.silentchaos512.funores.lib.IMetal;
 import net.silentchaos512.funores.lib.Names;
 import net.silentchaos512.lib.item.ItemSL;
 
-public class MetalDust extends ItemSL {
+public class MetalDust extends ItemSL implements IDisableable {
 
   public MetalDust() {
 
@@ -39,7 +40,8 @@ public class MetalDust extends ItemSL {
     for (IMetal metal : getMetals()) {
       ItemStack dust = metal.getDust();
       ItemStack ingot = metal.getIngot();
-      GameRegistry.addSmelting(dust, ingot, 0.6f);
+      if (!FunOres.registry.isItemDisabled(dust) && !FunOres.registry.isItemDisabled(ingot))
+        GameRegistry.addSmelting(dust, ingot, 0.6f);
     }
   }
 
@@ -47,9 +49,11 @@ public class MetalDust extends ItemSL {
   public void addOreDict() {
 
     for (IMetal metal : getMetals()) {
-      String name = "dust" + metal.getMetalName();
-      int meta = metal.getMeta();
-      OreDictionary.registerOre(name, new ItemStack(this, 1, meta));
+      ItemStack dust = metal.getDust();
+      if (!FunOres.registry.isItemDisabled(dust)) {
+        String name = "dust" + metal.getMetalName();
+        OreDictionary.registerOre(name, dust);
+      }
     }
   }
 

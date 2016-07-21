@@ -21,10 +21,11 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.lib.EnumMeat;
 import net.silentchaos512.funores.lib.EnumMetal;
+import net.silentchaos512.funores.lib.IDisableable;
 import net.silentchaos512.funores.lib.Names;
 import net.silentchaos512.lib.block.BlockSL;
 
-public class MetalBlock extends BlockSL {
+public class MetalBlock extends BlockSL implements IDisableable {
 
   public static final PropertyEnum METAL = PropertyEnum.create("metal", EnumMetal.class);
 
@@ -44,12 +45,13 @@ public class MetalBlock extends BlockSL {
   @Override
   public void addOreDict() {
 
-    for (EnumMetal metal : EnumMetal.values()) {
-      OreDictionary.registerOre("block" + metal.getMetalName(), metal.getBlock());
-    }
+    for (EnumMetal metal : EnumMetal.values())
+      if (!FunOres.registry.isItemDisabled(metal.getBlock()))
+        OreDictionary.registerOre("block" + metal.getMetalName(), metal.getBlock());
 
     // Alternative spelling of aluminium
-    OreDictionary.registerOre("blockAluminum", EnumMetal.ALUMINIUM.getBlock());
+    if (!FunOres.registry.isItemDisabled(EnumMetal.ALUMINIUM.getBlock()))
+      OreDictionary.registerOre("blockAluminum", EnumMetal.ALUMINIUM.getBlock());
   }
 
   @Override

@@ -11,10 +11,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.lib.EnumMetal;
+import net.silentchaos512.funores.lib.EnumVanillaMetal;
+import net.silentchaos512.funores.lib.IDisableable;
 import net.silentchaos512.funores.lib.Names;
 import net.silentchaos512.lib.item.ItemSL;
 
-public class MetalNugget extends ItemSL {
+public class MetalNugget extends ItemSL implements IDisableable {
 
   public static final int META_IRON = 16;
 
@@ -27,12 +29,15 @@ public class MetalNugget extends ItemSL {
   public void addOreDict() {
 
     for (EnumMetal metal : EnumMetal.values()) {
-      String name = "nugget" + metal.getMetalName();
-      int meta = metal.getMeta();
-      OreDictionary.registerOre(name, new ItemStack(this, 1, meta));
+      ItemStack nugget = metal.getNugget();
+      if (!FunOres.registry.isItemDisabled(nugget)) {
+        String name = "nugget" + metal.getMetalName();
+        OreDictionary.registerOre(name, nugget);
+      }
     }
 
-    OreDictionary.registerOre("nuggetIron", new ItemStack(this, 1, META_IRON));
+    if (!FunOres.registry.isItemDisabled(EnumVanillaMetal.IRON.getNugget()))
+      OreDictionary.registerOre("nuggetIron", new ItemStack(this, 1, META_IRON));
   }
 
   @Override

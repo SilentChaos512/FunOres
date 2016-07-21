@@ -1,5 +1,6 @@
 package net.silentchaos512.funores.item;
 
+import java.rmi.registry.Registry;
 import java.util.List;
 
 import com.google.common.collect.Lists;
@@ -13,10 +14,12 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.lib.EnumAlloy;
+import net.silentchaos512.funores.lib.IDisableable;
 import net.silentchaos512.funores.lib.Names;
+import net.silentchaos512.funores.registry.FunOresRegistry;
 import net.silentchaos512.lib.item.ItemSL;
 
-public class AlloyDust extends ItemSL {
+public class AlloyDust extends ItemSL implements IDisableable {
 
   public AlloyDust() {
 
@@ -42,18 +45,25 @@ public class AlloyDust extends ItemSL {
     ItemStack invar = EnumAlloy.INVAR.getDust();
     ItemStack electrum = EnumAlloy.ELECTRUM.getDust();
 
-    GameRegistry.addRecipe(new ShapelessOreRecipe(bronze, copper, copper, copper, tin));
-    GameRegistry.addRecipe(new ShapelessOreRecipe(brass, copper, copper, copper, zinc));
-    GameRegistry.addRecipe(new ShapelessOreRecipe(steel, iron, coal, coal, coal));
-    GameRegistry.addRecipe(new ShapelessOreRecipe(invar, iron, iron, nickel));
-    GameRegistry.addRecipe(new ShapelessOreRecipe(electrum, gold, silver));
-    
+    FunOresRegistry reg = FunOres.registry;
+
+    if (!reg.isItemDisabled(bronze))
+      GameRegistry.addRecipe(new ShapelessOreRecipe(bronze, copper, copper, copper, tin));
+    if (!reg.isItemDisabled(brass))
+      GameRegistry.addRecipe(new ShapelessOreRecipe(brass, copper, copper, copper, zinc));
+    if (!reg.isItemDisabled(steel))
+      GameRegistry.addRecipe(new ShapelessOreRecipe(steel, iron, coal, coal, coal));
+    if (!reg.isItemDisabled(invar))
+      GameRegistry.addRecipe(new ShapelessOreRecipe(invar, iron, iron, nickel));
+    if (!reg.isItemDisabled(electrum))
+      GameRegistry.addRecipe(new ShapelessOreRecipe(electrum, gold, silver));
 
     // Smelting dust to ingots
     for (EnumAlloy metal : EnumAlloy.values()) {
       ItemStack dust = metal.getDust();
       ItemStack ingot = metal.getIngot();
-      GameRegistry.addSmelting(dust, ingot, 0.6f);
+      if (!reg.isItemDisabled(dust) && !reg.isItemDisabled(ingot))
+        GameRegistry.addSmelting(dust, ingot, 0.6f);
     }
   }
 
@@ -61,9 +71,11 @@ public class AlloyDust extends ItemSL {
   public void addOreDict() {
 
     for (EnumAlloy metal : EnumAlloy.values()) {
-      String name = "dust" + metal.getMetalName();
-      int meta = metal.getMeta();
-      OreDictionary.registerOre(name, new ItemStack(this, 1, meta));
+      ItemStack dust = metal.getDust();
+      if (!FunOres.registry.isItemDisabled(dust)) {
+        String name = "dust" + metal.getMetalName();
+        OreDictionary.registerOre(name, dust);
+      }
     }
   }
 
@@ -72,7 +84,8 @@ public class AlloyDust extends ItemSL {
 
     List<ModelResourceLocation> models = Lists.newArrayList();
     for (EnumAlloy metal : EnumAlloy.values()) {
-      models.add(new ModelResourceLocation(FunOres.MOD_ID + ":Dust" + metal.getMetalName(), "inventory"));
+      models.add(
+          new ModelResourceLocation(FunOres.MOD_ID + ":Dust" + metal.getMetalName(), "inventory"));
     }
     return models;
   }

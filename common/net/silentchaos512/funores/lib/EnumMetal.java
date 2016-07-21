@@ -5,10 +5,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.block.MetalOre;
-import net.silentchaos512.funores.block.ModBlocks;
 import net.silentchaos512.funores.configuration.Config;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGen;
-import net.silentchaos512.funores.item.ModItems;
+import net.silentchaos512.funores.init.ModBlocks;
+import net.silentchaos512.funores.init.ModItems;
 
 public enum EnumMetal implements IStringSerializable, IHasOre, IMetal {
 
@@ -114,15 +114,13 @@ public enum EnumMetal implements IStringSerializable, IHasOre, IMetal {
   @Override
   public ItemStack getPlate() {
 
-    // TODO Auto-generated method stub
-    return null;
+    return new ItemStack(ModItems.plateBasic, 1, meta);
   }
 
   @Override
   public ItemStack getGear() {
 
-    // TODO Auto-generated method stub
-    return null;
+    return new ItemStack(ModItems.gearBasic, 1, meta);
   }
 
   public ConfigOptionOreGen getConfig() {

@@ -17,10 +17,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.lib.EnumAlloy;
+import net.silentchaos512.funores.lib.IDisableable;
 import net.silentchaos512.funores.lib.Names;
 import net.silentchaos512.lib.block.BlockSL;
 
-public class AlloyBlock extends BlockSL {
+public class AlloyBlock extends BlockSL implements IDisableable {
   
   public static final PropertyEnum ALLOY = PropertyEnum.create("alloy", EnumAlloy.class);
 
@@ -40,9 +41,9 @@ public class AlloyBlock extends BlockSL {
   @Override
   public void addOreDict() {
 
-    for (EnumAlloy alloy : EnumAlloy.values()) {
-      OreDictionary.registerOre("block" + alloy.getMetalName(), alloy.getBlock());
-    }
+    for (EnumAlloy alloy : EnumAlloy.values())
+      if (!FunOres.registry.isItemDisabled(alloy.getBlock()))
+        OreDictionary.registerOre("block" + alloy.getMetalName(), alloy.getBlock());
   }
 
   @Override

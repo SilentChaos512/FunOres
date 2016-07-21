@@ -1,7 +1,7 @@
 package net.silentchaos512.funores.lib;
 
 import net.minecraft.item.ItemStack;
-import net.silentchaos512.funores.item.ModItems;
+import net.silentchaos512.funores.init.ModItems;
 
 public enum EnumDriedItem {
 

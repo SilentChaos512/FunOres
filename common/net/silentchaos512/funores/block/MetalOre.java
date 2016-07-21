@@ -20,7 +20,8 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGen;
-import net.silentchaos512.funores.item.ModItems;
+import net.silentchaos512.funores.init.ModBlocks;
+import net.silentchaos512.funores.init.ModItems;
 import net.silentchaos512.funores.lib.EnumMetal;
 import net.silentchaos512.funores.lib.Names;
 import net.silentchaos512.funores.util.ModRecipeHelper;
@@ -58,11 +59,14 @@ public class MetalOre extends BlockSL implements IWitHudInfo {
     for (EnumMetal metal : EnumMetal.values()) {
       ItemStack ore = new ItemStack(this, 1, metal.meta);
       ItemStack ingot = metal.getIngot();
-      GameRegistry.addSmelting(ore, ingot, 0.5f);
+
+      if (!FunOres.registry.isItemDisabled(ingot))
+        GameRegistry.addSmelting(ore, ingot, 0.5f);
 
       ItemStack dust = metal.getDust();
       ItemStack bonus = metal.getBonus();
-      ModRecipeHelper.addSagMillRecipe(metal.getMetalName(), ore, dust, bonus, "cobblestone", 3000);
+      if (!FunOres.registry.isItemDisabled(dust) && !FunOres.registry.isItemDisabled(bonus))
+        ModRecipeHelper.addSagMillRecipe(metal.getMetalName(), ore, dust, bonus, "cobblestone", 3000);
     }
   }
 

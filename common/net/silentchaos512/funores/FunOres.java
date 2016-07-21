@@ -1,6 +1,11 @@
 package net.silentchaos512.funores;
 
+import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
+import java.util.Set;
+
+import com.google.common.collect.Lists;
 
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
@@ -26,18 +31,20 @@ import net.silentchaos512.funores.api.FunOresAPI;
 import net.silentchaos512.funores.api.recipe.alloysmelter.AlloySmelterRecipeObject;
 import net.silentchaos512.funores.api.recipe.dryingrack.DryingRackRecipe;
 import net.silentchaos512.funores.api.recipe.dryingrack.DryingRackRecipeObject;
-import net.silentchaos512.funores.block.ModBlocks;
 import net.silentchaos512.funores.configuration.Config;
 import net.silentchaos512.funores.configuration.ConfigItemDrop;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGenBonus;
 import net.silentchaos512.funores.gui.GuiHandlerFunOres;
+import net.silentchaos512.funores.init.ModBlocks;
 import net.silentchaos512.funores.init.ModFluids;
-import net.silentchaos512.funores.item.ModItems;
+import net.silentchaos512.funores.init.ModItems;
 import net.silentchaos512.funores.lib.EnumAlloy;
 import net.silentchaos512.funores.lib.EnumDriedItem;
 import net.silentchaos512.funores.lib.ExtraRecipes;
+import net.silentchaos512.funores.lib.IDisableable;
 import net.silentchaos512.funores.lib.ModDamageSources;
 import net.silentchaos512.funores.proxy.CommonProxy;
+import net.silentchaos512.funores.registry.FunOresRegistry;
 import net.silentchaos512.funores.world.FunOresGenerator;
 import net.silentchaos512.lib.SilentLib;
 import net.silentchaos512.lib.registry.SRegistry;
@@ -63,22 +70,7 @@ public class FunOres {
   public static LogHelper logHelper = new LogHelper(MOD_NAME);
   public static LocalizationHelper localizationHelper;
 
-  public static SRegistry registry = new SRegistry(MOD_ID) {
-
-    @Override
-    public Block registerBlock(Block block, String key, ItemBlock itemBlock) {
-
-      block.setCreativeTab(tabFunOres);
-      return super.registerBlock(block, key, itemBlock);
-    }
-
-    @Override
-    public Item registerItem(Item item, String key) {
-
-      item.setCreativeTab(tabFunOres);
-      return super.registerItem(item, key);
-    }
-  };
+  public static FunOresRegistry registry = new FunOresRegistry(MOD_ID);
 
   @Instance(MOD_ID)
   public static FunOres instance;
@@ -193,6 +185,10 @@ public class FunOres {
   private void addAlloySmelterRecipe(String recipeName, ItemStack output, int outputCount,
       int cookTime, float experience, Object... inputs) {
 
+    // Make sure the output is not disabled...
+    if (FunOres.registry.isItemDisabled(output))
+      return;
+
     boolean enabled = Config.getConfiguration()
         .get(Config.CATEGORY_RECIPE_ALLOY_SMELTER, recipeName, true).getBoolean();
     if (enabled) {
@@ -227,6 +223,10 @@ public class FunOres {
 
   private void addDryingRackRecipe(String recipeName, ItemStack output, Object input, int dryTime,
       float experience) {
+
+    // Make sure the output is not disabled...
+    if (FunOres.registry.isItemDisabled(output))
+      return;
 
     if (input instanceof String) {
       DryingRackRecipeObject recipeObject = new DryingRackRecipeObject((String) input);

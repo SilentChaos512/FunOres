@@ -4,11 +4,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.silentchaos512.funores.FunOres;
+import net.silentchaos512.funores.init.ModItems;
+import net.silentchaos512.funores.lib.IDisableable;
 import net.silentchaos512.funores.lib.IMetal;
 import net.silentchaos512.funores.lib.Names;
 import net.silentchaos512.lib.item.ItemSL;
 
-public class ItemHammer extends ItemSL {
+public class ItemHammer extends ItemSL implements IDisableable {
 
   public ItemHammer() {
 
@@ -17,6 +19,9 @@ public class ItemHammer extends ItemSL {
 
   @Override
   public void addRecipes() {
+
+    if (FunOres.registry.isItemDisabled(new ItemStack(this)))
+      return;
 
     // Crafting the hammer.
     String wood = "plankWood";
@@ -36,7 +41,8 @@ public class ItemHammer extends ItemSL {
     for (IMetal metal : item.getMetals()) {
       plate = new ItemStack(item, 1, metal.getMeta());
       ingot = "ingot" + metal.getMetalName();
-      GameRegistry.addRecipe(new ShapedOreRecipe(plate, "h", "i", "i", 'h', this, 'i', ingot));
+      if (!FunOres.registry.isItemDisabled(plate))
+        GameRegistry.addRecipe(new ShapedOreRecipe(plate, "h", "i", "i", 'h', this, 'i', ingot));
     }
 
     // Alloy plates
@@ -44,7 +50,8 @@ public class ItemHammer extends ItemSL {
     for (IMetal metal : item.getMetals()) {
       plate = new ItemStack(item, 1, metal.getMeta());
       ingot = "ingot" + metal.getMetalName();
-      GameRegistry.addRecipe(new ShapedOreRecipe(plate, "h", "i", "i", 'h', this, 'i', ingot));
+      if (!FunOres.registry.isItemDisabled(plate))
+        GameRegistry.addRecipe(new ShapedOreRecipe(plate, "h", "i", "i", 'h', this, 'i', ingot));
     }
   }
 }

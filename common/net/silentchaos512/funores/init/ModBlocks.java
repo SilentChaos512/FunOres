@@ -1,4 +1,4 @@
-package net.silentchaos512.funores.block;
+package net.silentchaos512.funores.init;
 
 import java.text.DecimalFormatSymbols;
 import java.util.List;
@@ -10,6 +10,14 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.biome.Biome;
 import net.silentchaos512.funores.FunOres;
+import net.silentchaos512.funores.block.AlloyBlock;
+import net.silentchaos512.funores.block.AlloySmelter;
+import net.silentchaos512.funores.block.BlockDryingRack;
+import net.silentchaos512.funores.block.MeatOre;
+import net.silentchaos512.funores.block.MetalBlock;
+import net.silentchaos512.funores.block.MetalFurnace;
+import net.silentchaos512.funores.block.MetalOre;
+import net.silentchaos512.funores.block.MobOre;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGen;
 import net.silentchaos512.funores.item.block.ItemBlockOre;
 import net.silentchaos512.funores.item.block.ItemBlockOreDrops;
@@ -19,29 +27,26 @@ import net.silentchaos512.lib.registry.SRegistry;
 
 public class ModBlocks {
 
-  public static MetalOre metalOre;
-  public static MeatOre meatOre;
-  public static MobOre mobOre;
-  public static MetalBlock metalBlock;
-  public static AlloyBlock alloyBlock;
-  public static MetalFurnace metalFurnace;
-  public static AlloySmelter alloySmelter;
-  public static BlockDryingRack dryingRack;
+  public static MetalOre metalOre = new MetalOre();
+  public static MeatOre meatOre = new MeatOre();
+  public static MobOre mobOre = new MobOre();
+  public static MetalBlock metalBlock = new MetalBlock();
+  public static AlloyBlock alloyBlock = new AlloyBlock();
+  public static MetalFurnace metalFurnace = new MetalFurnace();
+  public static AlloySmelter alloySmelter = new AlloySmelter();
+  public static BlockDryingRack dryingRack = new BlockDryingRack();
 
   public static void init() {
 
     SRegistry reg = FunOres.instance.registry;
-    metalOre = new MetalOre();
-    metalOre = (MetalOre) reg.registerBlock(metalOre, new ItemBlockOre(metalOre));
-    meatOre = new MeatOre();
-    meatOre = (MeatOre) reg.registerBlock(meatOre, new ItemBlockOreDrops(meatOre));
-    mobOre = new MobOre();
-    mobOre = (MobOre) reg.registerBlock(mobOre, new ItemBlockOreDrops(mobOre));
-    metalBlock = (MetalBlock) reg.registerBlock(new MetalBlock());
-    alloyBlock = (AlloyBlock) reg.registerBlock(new AlloyBlock());
-    metalFurnace = (MetalFurnace) reg.registerBlock(new MetalFurnace(), Names.METAL_FURNACE);
-    alloySmelter = (AlloySmelter) reg.registerBlock(new AlloySmelter(), Names.ALLOY_SMELTER);
-    dryingRack = (BlockDryingRack) reg.registerBlock(new BlockDryingRack(), Names.DRYING_RACK);
+    reg.registerBlock(metalOre, new ItemBlockOre(metalOre));
+    reg.registerBlock(meatOre, new ItemBlockOreDrops(meatOre));
+    reg.registerBlock(mobOre, new ItemBlockOreDrops(mobOre));
+    reg.registerBlock(metalBlock);
+    reg.registerBlock(alloyBlock);
+    reg.registerBlock(metalFurnace, Names.METAL_FURNACE);
+    reg.registerBlock(alloySmelter, Names.ALLOY_SMELTER);
+    reg.registerBlock(dryingRack, Names.DRYING_RACK);
   }
 
   public static List<String> getWitInfoForOre(ConfigOptionOreGen config, IBlockState state,

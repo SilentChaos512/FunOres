@@ -18,6 +18,7 @@ import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.lib.EnumAlloy;
 import net.silentchaos512.funores.lib.EnumMetal;
 import net.silentchaos512.funores.lib.EnumVanillaMetal;
+import net.silentchaos512.funores.lib.IDisableable;
 import net.silentchaos512.funores.lib.IMetal;
 import net.silentchaos512.funores.lib.Names;
 import net.silentchaos512.lib.item.ItemSL;
@@ -25,7 +26,7 @@ import net.silentchaos512.lib.util.LocalizationHelper;
 import net.silentchaos512.lib.util.LogHelper;
 import scala.reflect.internal.Mode;
 
-public class CraftingItem extends ItemSL {
+public class CraftingItem extends ItemSL implements IDisableable {
 
   public static final int BASE_METALS_COUNT = 18;
 
@@ -62,8 +63,10 @@ public class CraftingItem extends ItemSL {
       String iron = "ingotIron";
 
       for (IMetal metal : getMetals()) {
-        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(this, 1, metal.getMeta()), " m ",
-            "mim", " m ", 'm', "ingot" + metal.getMetalName(), 'i', iron));
+        ItemStack gear = metal.getGear();
+        if (!FunOres.registry.isItemDisabled(gear))
+          GameRegistry.addRecipe(new ShapedOreRecipe(gear, " m ", "mim", " m ", 'm',
+              "ingot" + metal.getMetalName(), 'i', iron));
       }
     }
   }
@@ -76,21 +79,25 @@ public class CraftingItem extends ItemSL {
     if (craftingItemName.equals(Names.GEAR)) {
       for (IMetal metal : getMetals()) {
         stack = new ItemStack(this, 1, metal.getMeta());
-        OreDictionary.registerOre("gear" + metal.getMetalName(), stack);
-        if (metal == EnumMetal.ALUMINIUM) {
-          OreDictionary.registerOre("gearAluminum", stack);
+        if (!FunOres.registry.isItemDisabled(stack)) {
+          OreDictionary.registerOre("gear" + metal.getMetalName(), stack);
+          if (metal == EnumMetal.ALUMINIUM) {
+            OreDictionary.registerOre("gearAluminum", stack);
+          }
         }
       }
     } else if (craftingItemName.equals(Names.PLATE)) {
       for (IMetal metal : getMetals()) {
         stack = new ItemStack(this, 1, metal.getMeta());
-        OreDictionary.registerOre("plate" + metal.getMetalName(), stack);
-        if (metal == EnumMetal.ALUMINIUM) {
-          OreDictionary.registerOre("plateAluminum", stack);
+        if (!FunOres.registry.isItemDisabled(stack)) {
+          OreDictionary.registerOre("plate" + metal.getMetalName(), stack);
+          if (metal == EnumMetal.ALUMINIUM) {
+            OreDictionary.registerOre("plateAluminum", stack);
+          }
         }
       }
     } else {
-      FunOres.instance.logHelper.warning("CraftingItem.addOreDict - Unknown item type: " + craftingItemName);
+      FunOres.logHelper.warning("CraftingItem.addOreDict - Unknown item type: " + craftingItemName);
     }
   }
 

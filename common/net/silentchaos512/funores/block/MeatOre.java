@@ -29,6 +29,7 @@ import net.silentchaos512.funores.configuration.Config;
 import net.silentchaos512.funores.configuration.ConfigItemDrop;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGen;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGenBonus;
+import net.silentchaos512.funores.init.ModBlocks;
 import net.silentchaos512.funores.lib.EnumMeat;
 import net.silentchaos512.funores.lib.Names;
 import net.silentchaos512.lib.block.BlockSL;
