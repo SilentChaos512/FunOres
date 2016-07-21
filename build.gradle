@@ -21,6 +21,9 @@ version = "1.2.7"
 group= "net.silentchaos512.funores" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "FunOres-1.9.4"
 
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
 minecraft {
     version = "1.9.4-12.17.0.1909-1.9.4"
     runDir = "run"

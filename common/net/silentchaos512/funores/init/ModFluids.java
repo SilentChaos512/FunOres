@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fluids.BlockFluidBase;
@@ -17,6 +18,8 @@ import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.silentchaos512.funores.FunOres;
@@ -52,19 +55,22 @@ public class ModFluids {
 
   public static void init() {
 
-    // if (Loader.isModLoaded("tconstruct")) {
-    fluidPlatinum = newFluid("platinum", 2000, 10000, 800, 10, 0x81A3F0);
-    fluidTitanium = newFluid("titanium", 2000, 10000, 800, 10, 0x4845B4);
+    if (Loader.isModLoaded("tconstruct")) {
+      fluidPlatinum = newFluid("platinum", 2000, 10000, 800, 10, 0xFF81A3F0);
+      fluidTitanium = newFluid("titanium", 2000, 10000, 800, 10, 0xFF4845B4);
 
-    fluidBlockPlatinum = registerFluidBlock(fluidPlatinum, new BlockMoltenFluid(fluidPlatinum),
-        "platinum");
-    fluidBlockTitanium = registerFluidBlock(fluidTitanium, new BlockMoltenFluid(fluidTitanium),
-        "titanium");
-    // }
+      fluidBlockPlatinum = registerFluidBlock(fluidPlatinum, new BlockMoltenFluid(fluidPlatinum),
+          "platinum");
+      fluidBlockTitanium = registerFluidBlock(fluidTitanium, new BlockMoltenFluid(fluidTitanium),
+          "titanium");
+
+      registerFluidWithTCon(fluidPlatinum, true);
+      registerFluidWithTCon(fluidTitanium, true);
+    }
   }
 
   private static Fluid newFluid(String name, int density, int viscosity, int temperature,
-      int luminosity, int tintColor) {
+      int luminosity, final int tintColor) {
 
     Fluid fluid = new Fluid(name, new ResourceLocation(FunOres.MOD_ID + ":blocks/molten_metal"),
         new ResourceLocation(FunOres.MOD_ID + ":blocks/molten_metal_flow")) {
@@ -92,12 +98,26 @@ public class ModFluids {
     return fluid;
   }
 
+  private static void registerFluidWithTCon(Fluid fluid, boolean toolForge) {
+
+    if(Loader.isModLoaded("tconstruct")) {
+      NBTTagCompound message = new NBTTagCompound();
+      String name = fluid.getName();
+      message.setString("fluid", name);
+      message.setString("ore", Character.toUpperCase(name.charAt(0)) + name.substring(1));
+      message.setBoolean("toolforge", toolForge);
+
+      // send the NBT to TCon
+      FMLInterModComms.sendMessage("tconstruct", "integrateSmeltery", message);
+    }
+  }
+
   private static BlockFluidClassic registerFluidBlock(Fluid fluid, BlockFluidClassic block,
       String name) {
 
-    FunOres.registry.registerBlock(block, name);
-    block.setUnlocalizedName(FunOres.RESOURCE_PREFIX + "Molten"
-        + Character.toUpperCase(name.charAt(0)) + name.substring(1));
+    String blockName = "Molten" + Character.toUpperCase(name.charAt(0)) + name.substring(1);
+    FunOres.registry.registerBlock(block, blockName);
+    block.setUnlocalizedName(FunOres.RESOURCE_PREFIX + blockName);
     fluidBlocks.put(fluid, block);
     fluidBlockNames.put(block, name);
     return block;
