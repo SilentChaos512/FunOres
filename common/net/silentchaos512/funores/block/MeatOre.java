@@ -1,10 +1,12 @@
 package net.silentchaos512.funores.block;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import com.google.common.collect.Lists;
+import com.mojang.authlib.GameProfile;
 
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -14,24 +16,34 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntityBat;
+import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
+import net.minecraft.world.storage.loot.LootContext;
+import net.minecraft.world.storage.loot.LootTable;
+import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.oredict.OreDictionary;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.configuration.Config;
-import net.silentchaos512.funores.configuration.ConfigItemDrop;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGen;
-import net.silentchaos512.funores.configuration.ConfigOptionOreGenBonus;
 import net.silentchaos512.funores.init.ModBlocks;
 import net.silentchaos512.funores.lib.EnumMeat;
 import net.silentchaos512.funores.lib.Names;
+import net.silentchaos512.funores.util.OreLootHelper;
 import net.silentchaos512.lib.block.BlockSL;
 import net.silentchaos512.wit.api.IWitHudInfo;
 
@@ -48,7 +60,7 @@ public class MeatOre extends BlockSL implements IWitHudInfo {
     setSoundType(SoundType.STONE);
     setHarvestLevel("pickaxe", 0);
 
-//    setHasSubtypes(true);
+    // setHasSubtypes(true);
     setUnlocalizedName(Names.MEAT_ORE);
   }
 
@@ -78,7 +90,8 @@ public class MeatOre extends BlockSL implements IWitHudInfo {
 
     List<ModelResourceLocation> models = Lists.newArrayList();
     for (EnumMeat meat : EnumMeat.values()) {
-      models.add(new ModelResourceLocation(FunOres.MOD_ID + ":Ore" + meat.getUnmodifiedName(), "inventory"));
+      models.add(new ModelResourceLocation(FunOres.MOD_ID + ":Ore" + meat.getUnmodifiedName(),
+          "inventory"));
     }
     return models;
   }
@@ -148,40 +161,50 @@ public class MeatOre extends BlockSL implements IWitHudInfo {
   public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state,
       int fortune) {
 
-    List<ItemStack> ret = new ArrayList<ItemStack>();
+//    List<ItemStack> ret = new ArrayList<ItemStack>();
 
-    Random rand = world instanceof World ? ((World) world).rand : RANDOM;
+    Random rand = FunOres.random;
 
-    ConfigOptionOreGenBonus config = ((EnumMeat) state.getValue(MEAT)).getConfig();
-
-    ConfigItemDrop[] dropsToTry;
-    // Pick a certain number from the list, or try them all?
-    if (config.pick != 0) {
-      dropsToTry = new ConfigItemDrop[config.pick];
-      for (int i = 0; i < config.pick; ++i) {
-        dropsToTry[i] = config.drops.get(rand.nextInt(config.drops.size()));
-      }
-    } else {
-      dropsToTry = config.drops.toArray(new ConfigItemDrop[] {});
+    if (world instanceof WorldServer) {
+      WorldServer worldServer = (WorldServer) world;
+      EnumMeat meat = ((EnumMeat) state.getValue(MEAT));
+      EntityLivingBase entityLiving = meat.getEntityLiving(worldServer);
+      int tryCount = meat == EnumMeat.FISH ? 2 + rand.nextInt(3) : 1;
+      return OreLootHelper.getDrops(worldServer, fortune, meat, tryCount);
     }
 
-    for (ConfigItemDrop drop : dropsToTry) {
-      // Make sure drop config isn't null.
-      if (drop != null) {
-        // Should we do the drop?
-        if (rand.nextFloat() < drop.getDropChance(fortune)) {
-          // How many to drop?
-          ItemStack stack = drop.getStack().copy();
-          stack.stackSize = drop.getDropCount(fortune, rand);
-          // Drop stuff.
-          for (int i = 0; i < stack.stackSize; ++i) {
-            ret.add(new ItemStack(stack.getItem(), 1, stack.getItemDamage()));
-          }
-        }
-      }
-    }
+    return Lists.newArrayList();
 
-    return ret;
+    // ConfigOptionOreGenBonus config = ((EnumMeat) state.getValue(MEAT)).getConfig();
+    //
+    // ConfigItemDrop[] dropsToTry;
+    // // Pick a certain number from the list, or try them all?
+    // if (config.pick != 0) {
+    // dropsToTry = new ConfigItemDrop[config.pick];
+    // for (int i = 0; i < config.pick; ++i) {
+    // dropsToTry[i] = config.drops.get(rand.nextInt(config.drops.size()));
+    // }
+    // } else {
+    // dropsToTry = config.drops.toArray(new ConfigItemDrop[] {});
+    // }
+    //
+    // for (ConfigItemDrop drop : dropsToTry) {
+    // // Make sure drop config isn't null.
+    // if (drop != null) {
+    // // Should we do the drop?
+    // if (rand.nextFloat() < drop.getDropChance(fortune)) {
+    // // How many to drop?
+    // ItemStack stack = drop.getStack().copy();
+    // stack.stackSize = drop.getDropCount(fortune, rand);
+    // // Drop stuff.
+    // for (int i = 0; i < stack.stackSize; ++i) {
+    // ret.add(new ItemStack(stack.getItem(), 1, stack.getItemDamage()));
+    // }
+    // }
+    // }
+    // }
+
+//    return ret;
   }
 
   private ItemStack getBonusItemDropped(IBlockState state, Random rand, int fortune) {

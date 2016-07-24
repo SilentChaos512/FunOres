@@ -15,6 +15,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityEndermite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -22,6 +23,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.oredict.OreDictionary;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.configuration.Config;
@@ -32,6 +34,7 @@ import net.silentchaos512.funores.init.ModBlocks;
 import net.silentchaos512.funores.lib.EnumMeat;
 import net.silentchaos512.funores.lib.EnumMob;
 import net.silentchaos512.funores.lib.Names;
+import net.silentchaos512.funores.util.OreLootHelper;
 import net.silentchaos512.lib.block.BlockSL;
 import net.silentchaos512.wit.api.IWitHudInfo;
 
@@ -147,39 +150,49 @@ public class MobOre extends BlockSL implements IWitHudInfo {
   @Override
   public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
 
-    List<ItemStack> ret = new ArrayList<ItemStack>();
+//    List<ItemStack> ret = new ArrayList<ItemStack>();
 
     Random rand = world instanceof World ? ((World) world).rand : RANDOM;
 
-    ConfigOptionOreGenBonus config = ((EnumMob) state.getValue(MOB)).getConfig();
-
-    ConfigItemDrop[] dropsToTry;
-    // Pick a certain number from the list, or try them all?
-    if (config.pick != 0) {
-      dropsToTry = new ConfigItemDrop[config.pick];
-      for (int i = 0; i < config.pick; ++i) {
-        dropsToTry[i] = config.drops.get(rand.nextInt(config.drops.size()));
-      }
-    } else {
-      dropsToTry = config.drops.toArray(new ConfigItemDrop[] {});
+    if (world instanceof WorldServer) {
+      WorldServer worldServer = (WorldServer) world;
+      EnumMob mob = ((EnumMob) state.getValue(MOB));
+      EntityLivingBase entityLiving = mob.getEntityLiving(worldServer);
+      int tryCount = 1;
+      return OreLootHelper.getDrops(worldServer, fortune, mob, tryCount);
     }
 
-    for (ConfigItemDrop drop : dropsToTry) {
-      // Make sure drop config isn't null.
-      if (drop != null) {
-        // Should we do the drop?
-        if (rand.nextFloat() < drop.getDropChance(fortune)) {
-          // How many to drop?
-          ItemStack stack = drop.getStack().copy();
-          stack.stackSize = drop.getDropCount(fortune, rand);
-          // Drop stuff.
-          for (int i = 0; i < stack.stackSize; ++i) {
-            ret.add(new ItemStack(stack.getItem(), 1, stack.getItemDamage()));
-          }
-        }
-      }
-    }
+    return Lists.newArrayList();
 
-    return ret;
+//    ConfigOptionOreGenBonus config = ((EnumMob) state.getValue(MOB)).getConfig();
+//
+//    ConfigItemDrop[] dropsToTry;
+//    // Pick a certain number from the list, or try them all?
+//    if (config.pick != 0) {
+//      dropsToTry = new ConfigItemDrop[config.pick];
+//      for (int i = 0; i < config.pick; ++i) {
+//        dropsToTry[i] = config.drops.get(rand.nextInt(config.drops.size()));
+//      }
+//    } else {
+//      dropsToTry = config.drops.toArray(new ConfigItemDrop[] {});
+//    }
+//
+//    for (ConfigItemDrop drop : dropsToTry) {
+//      // Make sure drop config isn't null.
+//      if (drop != null) {
+//        // Should we do the drop?
+//        if (rand.nextFloat() < drop.getDropChance(fortune)) {
+//          // How many to drop?
+//          ItemStack stack = drop.getStack().copy();
+//          stack.stackSize = drop.getDropCount(fortune, rand);
+//          // Drop stuff.
+//          for (int i = 0; i < stack.stackSize; ++i) {
+//            ret.add(new ItemStack(stack.getItem(), 1, stack.getItemDamage()));
+//          }
+//        }
+//      }
+//    }
+//
+//    return ret;
   }
 }
