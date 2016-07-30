@@ -11,6 +11,12 @@ public class DryingRackRecipeHandler implements IRecipeHandler<DryingRackRecipeJ
     return DryingRackRecipeCategory.CATEGORY;
   }
 
+  //@Override // TODO: Uncomment in 1.10.x
+  public String getRecipeCategoryUid(DryingRackRecipeJei arg0) {
+
+    return DryingRackRecipeCategory.CATEGORY;
+  }
+
   @Override
   public Class<DryingRackRecipeJei> getRecipeClass() {
 

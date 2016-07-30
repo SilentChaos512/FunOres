@@ -13,6 +13,12 @@ public class AlloySmelterRecipeHandler implements IRecipeHandler<AlloySmelterRec
     return AlloySmelterRecipeCategory.CATEGORY;
   }
 
+  //@Override // TODO: Uncomment in 1.10.x
+  public String getRecipeCategoryUid(AlloySmelterRecipeJei arg0) {
+
+    return AlloySmelterRecipeCategory.CATEGORY;
+  }
+
   @Override
   public Class<AlloySmelterRecipeJei> getRecipeClass() {
 

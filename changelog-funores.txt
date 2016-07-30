@@ -1,6 +1,8 @@
 1.3.0
 Added: Config options to disable many blocks and items.
 Added: TCon smeltery compatibility (eww, Tinkers!)
+Changed: Meat and Mob ores now use the loot tables of their respective mobs. Custom drops added in the config will not work for now.
+Changed: 1.9.4 source should now be 1.10.x compatible (less work for me, yay!)
 
 1.2.7
 Fixed: Drying Racks on servers.
