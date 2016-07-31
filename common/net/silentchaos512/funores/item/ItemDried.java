@@ -16,8 +16,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.silentchaos512.funores.FunOres;
+import net.silentchaos512.funores.lib.EnumAlloy;
 import net.silentchaos512.funores.lib.EnumDriedItem;
 import net.silentchaos512.funores.lib.IDisableable;
+import net.silentchaos512.funores.lib.IMetal;
 import net.silentchaos512.funores.lib.Names;
 import net.silentchaos512.lib.registry.IRegistryObject;
 
@@ -80,9 +82,16 @@ public class ItemDried extends ItemFood implements IRegistryObject, IDisableable
   @Override
   public void getSubItems(Item item, CreativeTabs tab, List list) {
 
-    for (EnumDriedItem e : EnumDriedItem.values()) {
-      list.add(new ItemStack(item, 1, e.meta));
-    }
+    list.addAll(getSubItems(item));
+  }
+
+  @Override
+  public List<ItemStack> getSubItems(Item item) {
+
+    List<ItemStack> ret = Lists.newArrayList();
+    for (EnumDriedItem e : EnumDriedItem.values())
+      ret.add(new ItemStack(item, 1, e.meta));
+    return ret;
   }
 
   public ItemStack getStack(EnumDriedItem e) {

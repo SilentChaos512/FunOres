@@ -4,8 +4,8 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.silentchaos512.funores.FunOres;
@@ -42,5 +42,14 @@ public class Shard extends ItemNamedSubtypes implements IDisableable {
       ItemStack ghastTear = new ItemStack(Items.GHAST_TEAR);
       GameRegistry.addShapedRecipe(ghastTear, "ss", "ss", 's', ghastShard);
     }
+  }
+
+  @Override
+  public List<ItemStack> getSubItems(Item item) {
+
+    List<ItemStack> ret = Lists.newArrayList();
+    for (int i = 0; i < subItemCount; ++i)
+      ret.add(new ItemStack(item, 1, i));
+    return ret;
   }
 }

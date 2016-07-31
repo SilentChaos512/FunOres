@@ -4,8 +4,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.google.common.collect.Lists;
-
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -18,6 +16,7 @@ import net.silentchaos512.lib.registry.SRegistry;
 
 /**
  * Modified SRegistry that automatically loads configs for disableable (IDisableable) items.
+ * 
  * @author Silent
  *
  */
@@ -33,11 +32,9 @@ public class FunOresRegistry extends SRegistry {
    */
   Set<String> disabledItems = new HashSet<>();
 
-  private List<ItemStack> getSubItems(Item item) {
+  private List<ItemStack> getSubItems(IDisableable disableable, Item item) {
 
-    List<ItemStack> list = Lists.newArrayList();
-    item.getSubItems(item, FunOres.tabFunOres, list);
-    return list;
+    return disableable.getSubItems(item);
   }
 
   /**
@@ -60,7 +57,7 @@ public class FunOresRegistry extends SRegistry {
   public Block registerBlock(Block block, String key, ItemBlock itemBlock) {
 
     if (block instanceof IDisableable) {
-      List<ItemStack> list = getSubItems(itemBlock);
+      List<ItemStack> list = getSubItems((IDisableable) block, itemBlock);
       for (ItemStack stack : list) {
         if (!Config.isItemDisabled(stack)) {
           block.setCreativeTab(FunOres.tabFunOres);
@@ -78,7 +75,7 @@ public class FunOresRegistry extends SRegistry {
   public Item registerItem(Item item, String key) {
 
     if (item instanceof IDisableable) {
-      List<ItemStack> list = getSubItems(item);
+      List<ItemStack> list = getSubItems((IDisableable) item, item);
       for (ItemStack stack : list) {
         if (!Config.isItemDisabled(stack)) {
           item.setCreativeTab(FunOres.tabFunOres);

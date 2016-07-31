@@ -13,6 +13,7 @@ import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.lib.EnumMetal;
 import net.silentchaos512.funores.lib.EnumVanillaMetal;
 import net.silentchaos512.funores.lib.IDisableable;
+import net.silentchaos512.funores.lib.IMetal;
 import net.silentchaos512.funores.lib.Names;
 import net.silentchaos512.lib.item.ItemSL;
 
@@ -59,9 +60,15 @@ public class MetalNugget extends ItemSL implements IDisableable {
   @Override
   public void getSubItems(Item item, CreativeTabs tab, List list) {
 
-    for (int i = 0; i < EnumMetal.count(); ++i) {
-      list.add(new ItemStack(this, 1, i));
-    }
-    list.add(new ItemStack(this, 1, META_IRON));
+    list.addAll(getSubItems(item));
+  }
+
+  @Override
+  public List<ItemStack> getSubItems(Item item) {
+
+    List<ItemStack> ret = Lists.newArrayList();
+    for (IMetal metal : EnumMetal.values())
+      ret.add(new ItemStack(item, 1, metal.getMeta()));
+    return ret;
   }
 }

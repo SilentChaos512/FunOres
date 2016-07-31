@@ -12,6 +12,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.lib.EnumAlloy;
 import net.silentchaos512.funores.lib.IDisableable;
+import net.silentchaos512.funores.lib.IMetal;
 import net.silentchaos512.funores.lib.Names;
 import net.silentchaos512.lib.item.ItemSL;
 import net.silentchaos512.lib.util.RecipeHelper;
@@ -66,8 +67,15 @@ public class AlloyIngot extends ItemSL implements IDisableable {
   @Override
   public void getSubItems(Item item, CreativeTabs tab, List list) {
 
-    for (EnumAlloy metal : EnumAlloy.values()) {
-      list.add(new ItemStack(item, 1, metal.getMeta()));
-    }
+    list.addAll(getSubItems(item));
+  }
+
+  @Override
+  public List<ItemStack> getSubItems(Item item) {
+
+    List<ItemStack> ret = Lists.newArrayList();
+    for (IMetal metal : EnumAlloy.values())
+      ret.add(new ItemStack(item, 1, metal.getMeta()));
+    return ret;
   }
 }

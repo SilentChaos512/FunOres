@@ -6,16 +6,14 @@ import com.google.common.collect.Lists;
 
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import net.silentchaos512.funores.FunOres;
-import net.silentchaos512.funores.init.ModBlocks;
-import net.silentchaos512.funores.init.ModItems;
 import net.silentchaos512.funores.lib.EnumMetal;
 import net.silentchaos512.funores.lib.EnumVanillaMetal;
 import net.silentchaos512.funores.lib.IDisableable;
+import net.silentchaos512.funores.lib.IMetal;
 import net.silentchaos512.funores.lib.Names;
 import net.silentchaos512.lib.item.ItemSL;
 import net.silentchaos512.lib.util.RecipeHelper;
@@ -81,14 +79,15 @@ public class MetalIngot extends ItemSL implements IDisableable {
   @Override
   public void getSubItems(Item item, CreativeTabs tab, List list) {
 
-    for (int i = 0; i < EnumMetal.count(); ++i) {
-      list.add(new ItemStack(this, 1, i));
-    }
+    list.addAll(getSubItems(item));
   }
 
   @Override
-  public boolean isBeaconPayment(ItemStack stack) {
+  public List<ItemStack> getSubItems(Item item) {
 
-    return true;
+    List<ItemStack> ret = Lists.newArrayList();
+    for (IMetal metal : EnumMetal.values())
+      ret.add(new ItemStack(item, 1, metal.getMeta()));
+    return ret;
   }
 }

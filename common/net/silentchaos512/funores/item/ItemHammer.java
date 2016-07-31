@@ -1,5 +1,10 @@
 package net.silentchaos512.funores.item;
 
+import java.util.List;
+
+import com.google.common.collect.Lists;
+
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
@@ -53,5 +58,11 @@ public class ItemHammer extends ItemSL implements IDisableable {
       if (!FunOres.registry.isItemDisabled(plate))
         GameRegistry.addRecipe(new ShapedOreRecipe(plate, "h", "i", "i", 'h', this, 'i', ingot));
     }
+  }
+
+  @Override
+  public List<ItemStack> getSubItems(Item item) {
+
+    return Lists.newArrayList(new ItemStack(item));
   }
 }

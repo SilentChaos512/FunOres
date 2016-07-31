@@ -86,8 +86,15 @@ public class MetalDust extends ItemSL implements IDisableable {
   @Override
   public void getSubItems(Item item, CreativeTabs tab, List list) {
 
-    for (IMetal metal : getMetals()) {
-      list.add(new ItemStack(this, 1, metal.getMeta()));
-    }
+    list.addAll(getSubItems(item));
+  }
+
+  @Override
+  public List<ItemStack> getSubItems(Item item) {
+
+    List<ItemStack> ret = Lists.newArrayList();
+    for (IMetal metal : EnumMetal.values())
+      ret.add(new ItemStack(item, 1, metal.getMeta()));
+    return ret;
   }
 }

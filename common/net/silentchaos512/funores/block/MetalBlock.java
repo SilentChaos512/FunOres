@@ -19,9 +19,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.oredict.OreDictionary;
 import net.silentchaos512.funores.FunOres;
+import net.silentchaos512.funores.lib.EnumAlloy;
 import net.silentchaos512.funores.lib.EnumMeat;
 import net.silentchaos512.funores.lib.EnumMetal;
 import net.silentchaos512.funores.lib.IDisableable;
+import net.silentchaos512.funores.lib.IMetal;
 import net.silentchaos512.funores.lib.Names;
 import net.silentchaos512.lib.block.BlockSL;
 
@@ -74,9 +76,16 @@ public class MetalBlock extends BlockSL implements IDisableable {
   @Override
   public void getSubBlocks(Item item, CreativeTabs tab, List list) {
 
-    for (int i = 0; i < EnumMetal.count(); ++i) {
-      list.add(new ItemStack(item, 1, EnumMetal.values()[i].getMeta()));
-    }
+    list.addAll(getSubItems(item));
+  }
+
+  @Override
+  public List<ItemStack> getSubItems(Item item) {
+
+    List<ItemStack> ret = Lists.newArrayList();
+    for (IMetal metal : EnumMetal.values())
+      ret.add(new ItemStack(item, 1, metal.getMeta()));
+    return ret;
   }
 
   @Override
