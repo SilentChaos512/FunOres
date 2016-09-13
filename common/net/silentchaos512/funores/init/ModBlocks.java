@@ -10,14 +10,14 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.biome.Biome;
 import net.silentchaos512.funores.FunOres;
-import net.silentchaos512.funores.block.AlloyBlock;
-import net.silentchaos512.funores.block.AlloySmelter;
-import net.silentchaos512.funores.block.BlockDryingRack;
-import net.silentchaos512.funores.block.MeatOre;
-import net.silentchaos512.funores.block.MetalBlock;
-import net.silentchaos512.funores.block.MetalFurnace;
-import net.silentchaos512.funores.block.MetalOre;
-import net.silentchaos512.funores.block.MobOre;
+import net.silentchaos512.funores.block.BlockAlloy;
+import net.silentchaos512.funores.block.BlockOreMeat;
+import net.silentchaos512.funores.block.BlockMetal;
+import net.silentchaos512.funores.block.BlockOreMetal;
+import net.silentchaos512.funores.block.BlockOreMob;
+import net.silentchaos512.funores.block.machine.BlockAlloySmelter;
+import net.silentchaos512.funores.block.machine.BlockDryingRack;
+import net.silentchaos512.funores.block.machine.BlockMetalFurnace;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGen;
 import net.silentchaos512.funores.item.block.ItemBlockOre;
 import net.silentchaos512.funores.item.block.ItemBlockOreDrops;
@@ -27,13 +27,13 @@ import net.silentchaos512.lib.registry.SRegistry;
 
 public class ModBlocks {
 
-  public static MetalOre metalOre = new MetalOre();
-  public static MeatOre meatOre = new MeatOre();
-  public static MobOre mobOre = new MobOre();
-  public static MetalBlock metalBlock = new MetalBlock();
-  public static AlloyBlock alloyBlock = new AlloyBlock();
-  public static MetalFurnace metalFurnace = new MetalFurnace();
-  public static AlloySmelter alloySmelter = new AlloySmelter();
+  public static BlockOreMetal metalOre = new BlockOreMetal();
+  public static BlockOreMeat meatOre = new BlockOreMeat();
+  public static BlockOreMob mobOre = new BlockOreMob();
+  public static BlockMetal metalBlock = new BlockMetal();
+  public static BlockAlloy alloyBlock = new BlockAlloy();
+  public static BlockMetalFurnace metalFurnace = new BlockMetalFurnace();
+  public static BlockAlloySmelter alloySmelter = new BlockAlloySmelter();
   public static BlockDryingRack dryingRack = new BlockDryingRack();
 
   public static void init() {

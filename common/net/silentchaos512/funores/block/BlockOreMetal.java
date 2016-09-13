@@ -28,11 +28,11 @@ import net.silentchaos512.funores.util.ModRecipeHelper;
 import net.silentchaos512.lib.block.BlockSL;
 import net.silentchaos512.wit.api.IWitHudInfo;
 
-public class MetalOre extends BlockSL implements IWitHudInfo {
+public class BlockOreMetal extends BlockSL implements IWitHudInfo {
 
   public static final PropertyEnum METAL = PropertyEnum.create("metal", EnumMetal.class);
 
-  public MetalOre() {
+  public BlockOreMetal() {
 
     super(EnumMetal.count(), FunOres.MOD_ID, Names.METAL_ORE, Material.ROCK);
 

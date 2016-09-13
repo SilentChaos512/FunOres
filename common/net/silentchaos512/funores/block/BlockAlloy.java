@@ -22,11 +22,11 @@ import net.silentchaos512.funores.lib.IMetal;
 import net.silentchaos512.funores.lib.Names;
 import net.silentchaos512.lib.block.BlockSL;
 
-public class AlloyBlock extends BlockSL implements IDisableable {
+public class BlockAlloy extends BlockSL implements IDisableable {
   
   public static final PropertyEnum ALLOY = PropertyEnum.create("alloy", EnumAlloy.class);
 
-  public AlloyBlock() {
+  public BlockAlloy() {
 
     super(EnumAlloy.count(), FunOres.MOD_ID, Names.ALLOY_BLOCK, Material.IRON);
 

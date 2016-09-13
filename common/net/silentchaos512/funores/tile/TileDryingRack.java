@@ -20,7 +20,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.ITextComponent;
 import net.silentchaos512.funores.api.recipe.dryingrack.DryingRackRecipe;
-import net.silentchaos512.funores.block.BlockMachine;
+import net.silentchaos512.funores.block.machine.BlockMachine;
 import net.silentchaos512.funores.lib.EnumMachineState;
 
 public class TileDryingRack extends TileEntity implements ITickable, IInventory {

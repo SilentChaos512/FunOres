@@ -1,4 +1,4 @@
-package net.silentchaos512.funores.block;
+package net.silentchaos512.funores.block.machine;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -16,9 +16,9 @@ import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.lib.Names;
 import net.silentchaos512.funores.tile.TileMetalFurnace;
 
-public class MetalFurnace extends BlockMachine {
+public class BlockMetalFurnace extends BlockMachine {
 
-  public MetalFurnace() {
+  public BlockMetalFurnace() {
 
     super(Material.IRON, Names.METAL_FURNACE);
   }

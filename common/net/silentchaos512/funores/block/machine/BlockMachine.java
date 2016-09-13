@@ -1,4 +1,4 @@
-package net.silentchaos512.funores.block;
+package net.silentchaos512.funores.block.machine;
 
 import java.util.List;
 import java.util.Random;

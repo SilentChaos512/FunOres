@@ -4,7 +4,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
 import net.silentchaos512.funores.FunOres;
-import net.silentchaos512.funores.block.MetalOre;
+import net.silentchaos512.funores.block.BlockOreMetal;
 import net.silentchaos512.funores.configuration.Config;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGen;
 import net.silentchaos512.funores.init.ModBlocks;
@@ -72,7 +72,7 @@ public enum EnumMetal implements IStringSerializable, IHasOre, IMetal {
   @Override
   public IBlockState getOre() {
 
-    return ModBlocks.metalOre.getDefaultState().withProperty(MetalOre.METAL, this);
+    return ModBlocks.metalOre.getDefaultState().withProperty(BlockOreMetal.METAL, this);
   }
 
   @Override

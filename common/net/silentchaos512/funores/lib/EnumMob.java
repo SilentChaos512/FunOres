@@ -20,7 +20,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootTableList;
 import net.silentchaos512.funores.FunOres;
-import net.silentchaos512.funores.block.MobOre;
+import net.silentchaos512.funores.block.BlockOreMob;
 import net.silentchaos512.funores.configuration.Config;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGenBonus;
 import net.silentchaos512.funores.init.ModBlocks;
@@ -76,7 +76,7 @@ public enum EnumMob implements IStringSerializable, IHasOre, ILootTableDrops {
   @Override
   public IBlockState getOre() {
 
-    return ModBlocks.mobOre.getDefaultState().withProperty(MobOre.MOB, this);
+    return ModBlocks.mobOre.getDefaultState().withProperty(BlockOreMob.MOB, this);
   }
 
   @Override

@@ -18,9 +18,9 @@ import net.silentchaos512.funores.lib.Names;
 import net.silentchaos512.lib.item.ItemSL;
 import net.silentchaos512.lib.util.RecipeHelper;
 
-public class MetalIngot extends ItemSL implements IDisableable {
+public class ItemIngotMetal extends ItemSL implements IDisableable {
 
-  public MetalIngot() {
+  public ItemIngotMetal() {
 
     super(EnumMetal.count(), FunOres.MOD_ID, Names.METAL_INGOT);
   }

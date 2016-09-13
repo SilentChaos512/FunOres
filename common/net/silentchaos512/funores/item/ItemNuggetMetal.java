@@ -17,11 +17,11 @@ import net.silentchaos512.funores.lib.IMetal;
 import net.silentchaos512.funores.lib.Names;
 import net.silentchaos512.lib.item.ItemSL;
 
-public class MetalNugget extends ItemSL implements IDisableable {
+public class ItemNuggetMetal extends ItemSL implements IDisableable {
 
   public static final int META_IRON = 16;
 
-  public MetalNugget() {
+  public ItemNuggetMetal() {
 
     super(EnumMetal.count(), FunOres.MOD_ID, Names.METAL_NUGGET);
   }

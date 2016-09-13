@@ -20,9 +20,9 @@ import net.silentchaos512.funores.lib.IMetal;
 import net.silentchaos512.funores.lib.Names;
 import net.silentchaos512.lib.item.ItemSL;
 
-public class MetalDust extends ItemSL implements IDisableable {
+public class ItemDustMetal extends ItemSL implements IDisableable {
 
-  public MetalDust() {
+  public ItemDustMetal() {
 
     super(EnumMetal.count(), FunOres.MOD_ID, Names.METAL_DUST);
   }

@@ -26,14 +26,14 @@ import net.silentchaos512.lib.util.LocalizationHelper;
 import net.silentchaos512.lib.util.LogHelper;
 import scala.reflect.internal.Mode;
 
-public class CraftingItem extends ItemSL implements IDisableable {
+public class ItemCraftingItem extends ItemSL implements IDisableable {
 
   public static final int BASE_METALS_COUNT = 18;
 
   public final String craftingItemName;
   public final boolean isAlloy;
 
-  public CraftingItem(String name, boolean isAlloy) {
+  public ItemCraftingItem(String name, boolean isAlloy) {
 
     super(
         isAlloy ? EnumAlloy.values().length

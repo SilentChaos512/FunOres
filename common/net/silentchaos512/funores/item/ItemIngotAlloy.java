@@ -15,22 +15,40 @@ import net.silentchaos512.funores.lib.IDisableable;
 import net.silentchaos512.funores.lib.IMetal;
 import net.silentchaos512.funores.lib.Names;
 import net.silentchaos512.lib.item.ItemSL;
+import net.silentchaos512.lib.util.RecipeHelper;
 
-public class AlloyNugget extends ItemSL implements IDisableable {
+public class ItemIngotAlloy extends ItemSL implements IDisableable {
 
-  public AlloyNugget() {
+  public ItemIngotAlloy() {
 
-    super(EnumAlloy.count(), FunOres.MOD_ID, Names.ALLOY_NUGGET);
+    super(EnumAlloy.count(), FunOres.MOD_ID, Names.ALLOY_INGOT);
+  }
+
+  @Override
+  public void addRecipes() {
+
+    for (EnumAlloy metal : EnumAlloy.values()) {
+      boolean disabledNugget = FunOres.registry.isItemDisabled(metal.getNugget());
+      boolean disabledIngot = FunOres.registry.isItemDisabled(metal.getIngot());
+      boolean disabledBlock = FunOres.registry.isItemDisabled(metal.getBlock());
+
+      // Ingots <--> Blocks
+      if (!disabledIngot && !disabledBlock)
+        RecipeHelper.addCompressionRecipe(metal.getIngot(), metal.getBlock(), 9);
+      // Nuggets <--> Ingots
+      if (!disabledNugget && !disabledIngot)
+        RecipeHelper.addCompressionRecipe(metal.getNugget(), metal.getIngot(), 9);
+    }
   }
 
   @Override
   public void addOreDict() {
 
     for (EnumAlloy metal : EnumAlloy.values()) {
-      ItemStack nugget = metal.getNugget();
-      if (!FunOres.registry.isItemDisabled(nugget)) {
-        String name = "nugget" + metal.getMetalName();
-        OreDictionary.registerOre(name, nugget);
+      ItemStack ingot = metal.getIngot();
+      if (!FunOres.registry.isItemDisabled(ingot)) {
+        String name = "ingot" + metal.getMetalName();
+        OreDictionary.registerOre(name, ingot);
       }
     }
   }
@@ -40,8 +58,8 @@ public class AlloyNugget extends ItemSL implements IDisableable {
 
     List<ModelResourceLocation> models = Lists.newArrayList();
     for (EnumAlloy metal : EnumAlloy.values()) {
-      models.add(new ModelResourceLocation(FunOres.MOD_ID + ":Nugget" + metal.getMetalName(),
-          "inventory"));
+      models.add(
+          new ModelResourceLocation(FunOres.MOD_ID + ":Ingot" + metal.getMetalName(), "inventory"));
     }
     return models;
   }

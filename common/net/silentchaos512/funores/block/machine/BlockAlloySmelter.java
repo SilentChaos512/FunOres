@@ -1,4 +1,4 @@
-package net.silentchaos512.funores.block;
+package net.silentchaos512.funores.block.machine;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -16,9 +16,9 @@ import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.lib.Names;
 import net.silentchaos512.funores.tile.TileAlloySmelter;
 
-public class AlloySmelter extends BlockMachine {
+public class BlockAlloySmelter extends BlockMachine {
 
-  public AlloySmelter() {
+  public BlockAlloySmelter() {
 
     super(Material.IRON, Names.ALLOY_SMELTER);
   }

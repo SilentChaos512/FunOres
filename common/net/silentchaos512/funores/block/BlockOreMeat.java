@@ -48,11 +48,11 @@ import net.silentchaos512.funores.util.OreLootHelper;
 import net.silentchaos512.lib.block.BlockSL;
 import net.silentchaos512.wit.api.IWitHudInfo;
 
-public class MeatOre extends BlockSL implements IWitHudInfo {
+public class BlockOreMeat extends BlockSL implements IWitHudInfo {
 
   public static final PropertyEnum MEAT = PropertyEnum.create("meat", EnumMeat.class);
 
-  public MeatOre() {
+  public BlockOreMeat() {
 
     super(EnumMeat.count(), FunOres.MOD_ID, Names.MEAT_ORE, Material.ROCK);
 

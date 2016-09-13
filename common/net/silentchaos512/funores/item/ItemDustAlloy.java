@@ -20,9 +20,9 @@ import net.silentchaos512.funores.lib.Names;
 import net.silentchaos512.funores.registry.FunOresRegistry;
 import net.silentchaos512.lib.item.ItemSL;
 
-public class AlloyDust extends ItemSL implements IDisableable {
+public class ItemDustAlloy extends ItemSL implements IDisableable {
 
-  public AlloyDust() {
+  public ItemDustAlloy() {
 
     super(EnumAlloy.count(), FunOres.MOD_ID, Names.ALLOY_DUST);
   }

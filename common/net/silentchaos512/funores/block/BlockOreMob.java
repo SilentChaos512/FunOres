@@ -38,11 +38,11 @@ import net.silentchaos512.funores.util.OreLootHelper;
 import net.silentchaos512.lib.block.BlockSL;
 import net.silentchaos512.wit.api.IWitHudInfo;
 
-public class MobOre extends BlockSL implements IWitHudInfo {
+public class BlockOreMob extends BlockSL implements IWitHudInfo {
 
   public static final PropertyEnum MOB = PropertyEnum.create("mob", EnumMob.class);
 
-  public MobOre() {
+  public BlockOreMob() {
 
     super(EnumMob.count(), FunOres.MOD_ID, Names.MOB_ORE, Material.ROCK);
 

@@ -14,7 +14,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootTableList;
 import net.silentchaos512.funores.FunOres;
-import net.silentchaos512.funores.block.MeatOre;
+import net.silentchaos512.funores.block.BlockOreMeat;
 import net.silentchaos512.funores.configuration.Config;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGenBonus;
 import net.silentchaos512.funores.init.ModBlocks;
@@ -65,7 +65,7 @@ public enum EnumMeat implements IStringSerializable, IHasOre, ILootTableDrops {
   @Override
   public IBlockState getOre() {
 
-    return ModBlocks.meatOre.getDefaultState().withProperty(MeatOre.MEAT, this);
+    return ModBlocks.meatOre.getDefaultState().withProperty(BlockOreMeat.MEAT, this);
   }
 
   @Override

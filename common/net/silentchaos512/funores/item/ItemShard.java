@@ -13,11 +13,11 @@ import net.silentchaos512.funores.lib.IDisableable;
 import net.silentchaos512.funores.lib.Names;
 import net.silentchaos512.lib.item.ItemNamedSubtypes;
 
-public class Shard extends ItemNamedSubtypes implements IDisableable {
+public class ItemShard extends ItemNamedSubtypes implements IDisableable {
 
   public static final String[] NAMES = { "ShardEnder", "ShardBlaze", "ShardGhast" };
 
-  public Shard() {
+  public ItemShard() {
 
     super(NAMES, FunOres.MOD_ID, Names.SHARD);
   }

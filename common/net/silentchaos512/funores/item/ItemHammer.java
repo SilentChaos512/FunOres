@@ -42,7 +42,7 @@ public class ItemHammer extends ItemSL implements IDisableable {
     String ingot;
 
     // Basic plates
-    CraftingItem item = ModItems.plateBasic;
+    ItemCraftingItem item = ModItems.plateBasic;
     for (IMetal metal : item.getMetals()) {
       plate = new ItemStack(item, 1, metal.getMeta());
       ingot = "ingot" + metal.getMetalName();
