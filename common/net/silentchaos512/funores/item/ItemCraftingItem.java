@@ -17,6 +17,7 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.lib.EnumAlloy;
 import net.silentchaos512.funores.lib.EnumMetal;
+import net.silentchaos512.funores.lib.EnumVanillaExtended;
 import net.silentchaos512.funores.lib.EnumVanillaMetal;
 import net.silentchaos512.funores.lib.IDisableable;
 import net.silentchaos512.funores.lib.IMetal;
@@ -32,6 +33,8 @@ public class ItemCraftingItem extends ItemSL implements IDisableable {
 
   public final String craftingItemName;
   public final boolean isAlloy;
+  public final boolean isGear;
+  public final boolean isPlate;
 
   public ItemCraftingItem(String name, boolean isAlloy) {
 
@@ -41,6 +44,8 @@ public class ItemCraftingItem extends ItemSL implements IDisableable {
         FunOres.MOD_ID, Names.CRAFTING_ITEM);
     this.craftingItemName = name;
     this.isAlloy = isAlloy;
+    this.isGear = craftingItemName.equals(Names.GEAR);
+    this.isPlate = craftingItemName.equals(Names.PLATE);
   }
 
   public List<IMetal> getMetals() {
@@ -52,6 +57,10 @@ public class ItemCraftingItem extends ItemSL implements IDisableable {
       // Basic metals (including vanilla)
       List<IMetal> metals = new ArrayList<IMetal>(Arrays.asList(EnumMetal.values()));
       metals.addAll(Arrays.asList(EnumVanillaMetal.values()));
+      // Extended vanilla
+      for (EnumVanillaExtended extended : EnumVanillaExtended.values())
+        if ((isGear && extended.allowGear) || (isPlate && extended.allowPlate))
+          metals.add(extended);
       return metals;
     }
   }
@@ -59,14 +68,17 @@ public class ItemCraftingItem extends ItemSL implements IDisableable {
   @Override
   public void addRecipes() {
 
-    if (craftingItemName.equals(Names.GEAR)) {
-      String iron = "ingotIron";
-
+    if (isGear) {
       for (IMetal metal : getMetals()) {
         ItemStack gear = metal.getGear();
-        if (!FunOres.registry.isItemDisabled(gear))
-          GameRegistry.addRecipe(new ShapedOreRecipe(gear, " m ", "mim", " m ", 'm',
-              "ingot" + metal.getMetalName(), 'i', iron));
+        if (gear != null && !FunOres.registry.isItemDisabled(gear)) {
+          String mat = metal instanceof EnumVanillaExtended
+              ? ((EnumVanillaExtended) metal).getMaterialOreDictKey()
+              : "ingot" + metal.getMetalName();
+          GameRegistry.addRecipe(new ShapedOreRecipe(gear, " m ", "mim", " m ", 'm', mat, 'i',
+              metal == EnumVanillaExtended.WOOD || metal == EnumVanillaExtended.STONE ? "stickWood"
+                  : "ingotIron"));
+        }
       }
     }
   }
@@ -76,7 +88,7 @@ public class ItemCraftingItem extends ItemSL implements IDisableable {
 
     ItemStack stack;
 
-    if (craftingItemName.equals(Names.GEAR)) {
+    if (isGear) {
       for (IMetal metal : getMetals()) {
         stack = new ItemStack(this, 1, metal.getMeta());
         if (!FunOres.registry.isItemDisabled(stack)) {
@@ -86,7 +98,7 @@ public class ItemCraftingItem extends ItemSL implements IDisableable {
           }
         }
       }
-    } else if (craftingItemName.equals(Names.PLATE)) {
+    } else if (isPlate) {
       for (IMetal metal : getMetals()) {
         stack = new ItemStack(this, 1, metal.getMeta());
         if (!FunOres.registry.isItemDisabled(stack)) {

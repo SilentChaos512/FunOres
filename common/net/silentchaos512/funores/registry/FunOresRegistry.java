@@ -50,6 +50,8 @@ public class FunOresRegistry extends SRegistry {
    */
   private String getStackKey(ItemStack stack) {
 
+    if (stack == null)
+      return "null";
     return stack.getUnlocalizedName() + ":" + stack.getItemDamage();
   }
 

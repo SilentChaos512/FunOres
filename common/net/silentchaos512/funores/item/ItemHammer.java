@@ -10,6 +10,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.init.ModItems;
+import net.silentchaos512.funores.lib.EnumVanillaExtended;
 import net.silentchaos512.funores.lib.IDisableable;
 import net.silentchaos512.funores.lib.IMetal;
 import net.silentchaos512.funores.lib.Names;
@@ -44,9 +45,10 @@ public class ItemHammer extends ItemSL implements IDisableable {
     // Basic plates
     ItemCraftingItem item = ModItems.plateBasic;
     for (IMetal metal : item.getMetals()) {
-      plate = new ItemStack(item, 1, metal.getMeta());
-      ingot = "ingot" + metal.getMetalName();
-      if (!FunOres.registry.isItemDisabled(plate))
+      plate = metal.getPlate();
+      ingot = metal instanceof EnumVanillaExtended
+          ? ((EnumVanillaExtended) metal).getMaterialOreDictKey() : "ingot" + metal.getMetalName();
+      if (plate != null && !FunOres.registry.isItemDisabled(plate))
         GameRegistry.addRecipe(new ShapedOreRecipe(plate, "h", "i", "i", 'h', this, 'i', ingot));
     }
 
