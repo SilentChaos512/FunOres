@@ -159,7 +159,8 @@ public class MobOre extends BlockSL implements IWitHudInfo {
       EnumMob mob = ((EnumMob) state.getValue(MOB));
       EntityLivingBase entityLiving = mob.getEntityLiving(worldServer);
       int tryCount = 1;
-      return OreLootHelper.getDrops(worldServer, fortune, mob, tryCount);
+      ConfigOptionOreGenBonus config = ((EnumMob) state.getValue(MOB)).getConfig();
+      return OreLootHelper.getDrops(worldServer, fortune, mob, tryCount, config);
     }
 
     return Lists.newArrayList();

@@ -15,7 +15,7 @@ public class ConfigOptionOreGenBonus extends ConfigOptionOreGen {
   private static final ArrayList<ConfigOptionOreGenBonus> LOADED_CONFIGS = new ArrayList<ConfigOptionOreGenBonus>();
 
   public static final String SPLITTER = "\\s+";
-  public static final String COMMENT_DROP = "The items drop by this ore. The parameters are "
+  public static final String COMMENT_DROP = "Additional items dropped by this ore. The parameters are "
       + "itemName, count, meta, baseChance, fortuneChanceBonus, fortuneCountBonus.";
   public static final String COMMENT_PICK = "If greater than 0, try this many drops from the "
       + "list when mining the ore. If 0, try them all.";
@@ -34,7 +34,7 @@ public class ConfigOptionOreGenBonus extends ConfigOptionOreGen {
   /**
    * The unparsed drops read from the config file.
    */
-  private ArrayList<String> dropKeys = new ArrayList<String>();
+  private ArrayList<String> bonusDropKeys = new ArrayList<String>();
 
   public ConfigOptionOreGenBonus(IStringSerializable ore) {
 
@@ -54,7 +54,7 @@ public class ConfigOptionOreGenBonus extends ConfigOptionOreGen {
 
     for (ConfigOptionOreGenBonus config : LOADED_CONFIGS) {
       config.drops.clear();
-      for (String dropKey : config.dropKeys) {
+      for (String dropKey : config.bonusDropKeys) {
         // LogHelper.debug(dropKey);
         ConfigItemDrop drop = config.parseItem(dropKey);
         if (drop != null) {
@@ -69,9 +69,9 @@ public class ConfigOptionOreGenBonus extends ConfigOptionOreGen {
    * 
    * @param key
    */
-  public void addDrop(String key) {
+  public void addBonusDrop(String key) {
 
-    dropKeys.add(key);
+    bonusDropKeys.add(key);
   }
 
   @Override
@@ -83,18 +83,12 @@ public class ConfigOptionOreGenBonus extends ConfigOptionOreGen {
 
     super.loadValue(c, category, comment);
 
-    // Did I forget to add default drops?
-    if (dropKeys.isEmpty()) {
-      FunOres.instance.logHelper.warning(
-          "The ore " + oreName + " has no drops assigned! You will get poisonous potatoes!");
-      dropKeys.add("minecraft:poisonous_potato, 1, 0, 1.0, 0.0, 0.0");
-    }
-
     if (enabled) {
-      String[] keys = c.get(category, "Drops", dropKeys.toArray(new String[] {})).getStringList();
-      dropKeys.clear();
+      String[] keys = c.get(category, "BonusDrops", bonusDropKeys.toArray(new String[] {}))
+          .getStringList();
+      bonusDropKeys.clear();
       for (String key : keys) {
-        dropKeys.add(key);
+        bonusDropKeys.add(key);
       }
 
       pick = c.get(category, "Pick", pick).getInt();
@@ -107,10 +101,11 @@ public class ConfigOptionOreGenBonus extends ConfigOptionOreGen {
   @Override
   protected ConfigOption loadExample(Configuration c) {
 
-    addDrop(ConfigItemDrop.getKey("minecraft:emerald", 1, 0, 1.0f, 0.0f, 1.0f));
-    addDrop(ConfigItemDrop.getKey("FunOres:AlloyIngot", 1, 2, 0.15f, 0.05f, 0.7f));
+    addBonusDrop(ConfigItemDrop.getKey("minecraft:emerald", 1, 0, 1.0f, 0.0f, 1.0f));
+    addBonusDrop(ConfigItemDrop.getKey("FunOres:AlloyIngot", 1, 2, 0.15f, 0.05f, 0.7f));
 
-    c.getStringList("Drops", CATEGORY_EXAMPLE, dropKeys.toArray(new String[] {}), COMMENT_DROP);
+    c.getStringList("BonusDrops", CATEGORY_EXAMPLE, bonusDropKeys.toArray(new String[] {}),
+        COMMENT_DROP);
     pick = c.getInt("Pick", CATEGORY_EXAMPLE, 0, PICK_MIN, PICK_MAX, COMMENT_PICK);
 
     super.loadExample(c);
@@ -173,7 +168,7 @@ public class ConfigOptionOreGenBonus extends ConfigOptionOreGen {
     int currentIndex = 0;
     try {
       count = parseInt(values[currentIndex = 1].trim());
-      meta =  parseInt(values[currentIndex = 2].trim());
+      meta = parseInt(values[currentIndex = 2].trim());
     } catch (NumberFormatException ex) {
       String error = "Could not parse \"%s\" as integer: %s";
       error = String.format(error, values[currentIndex], input);
@@ -210,7 +205,7 @@ public class ConfigOptionOreGenBonus extends ConfigOptionOreGen {
       throw new NumberFormatException();
     }
 
-//    LogHelper.debug(input + " -> " + number.intValue());
+    // LogHelper.debug(input + " -> " + number.intValue());
     return number.intValue();
   }
 
@@ -224,7 +219,7 @@ public class ConfigOptionOreGenBonus extends ConfigOptionOreGen {
       throw new NumberFormatException();
     }
 
-//    LogHelper.debug(input + " -> " + number.floatValue());
+    // LogHelper.debug(input + " -> " + number.floatValue());
     return number.floatValue();
   }
 }

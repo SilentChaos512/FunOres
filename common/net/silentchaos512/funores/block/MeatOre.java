@@ -40,6 +40,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.configuration.Config;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGen;
+import net.silentchaos512.funores.configuration.ConfigOptionOreGenBonus;
 import net.silentchaos512.funores.init.ModBlocks;
 import net.silentchaos512.funores.lib.EnumMeat;
 import net.silentchaos512.funores.lib.Names;
@@ -170,7 +171,8 @@ public class MeatOre extends BlockSL implements IWitHudInfo {
       EnumMeat meat = ((EnumMeat) state.getValue(MEAT));
       EntityLivingBase entityLiving = meat.getEntityLiving(worldServer);
       int tryCount = meat == EnumMeat.FISH ? 2 + rand.nextInt(3) : 1;
-      return OreLootHelper.getDrops(worldServer, fortune, meat, tryCount);
+      ConfigOptionOreGenBonus config = ((EnumMeat) state.getValue(MEAT)).getConfig();
+      return OreLootHelper.getDrops(worldServer, fortune, meat, tryCount, config);
     }
 
     return Lists.newArrayList();
