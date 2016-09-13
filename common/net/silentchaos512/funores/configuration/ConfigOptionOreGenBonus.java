@@ -3,12 +3,15 @@ package net.silentchaos512.funores.configuration;
 import java.text.NumberFormat;
 import java.text.ParsePosition;
 import java.util.ArrayList;
+import java.util.List;
+
+import com.google.common.collect.Lists;
 
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.config.Configuration;
-import net.silentchaos512.funores.FunOres;
 
 public class ConfigOptionOreGenBonus extends ConfigOptionOreGen {
 
@@ -23,18 +26,30 @@ public class ConfigOptionOreGenBonus extends ConfigOptionOreGen {
   public static final int PICK_MIN = 0;
   public static final int PICK_MAX = 9001;
 
+  static final String KEY_DROPS_BONUS = "DropsBonus";
+  static final String KEY_DROPS_REMOVED = "DropsRemoved";
+  static final String KEY_PICK = "Pick";
+
   /**
-   * The number of drops from the list to attempt to drop when mining the ore.
+   * The number of drops from the bonus drops list to attempt to drop when mining the ore.
    */
   public int pick = 0;
   /**
-   * The drops that the player can get from the ore.
+   * The list of standard loot table drops to remove.
    */
-  public ArrayList<ConfigItemDrop> drops = new ArrayList<ConfigItemDrop>();
+  public List<ItemStack> removedDrops = Lists.newArrayList();
+  /**
+   * The unparsed stack keys for removed drops.
+   */
+  private List<String> removedDropKeys = Lists.newArrayList();
+  /**
+   * The bonus drops that the player can get from the ore.
+   */
+  public List<ConfigItemDrop> bonusDrops = Lists.newArrayList();
   /**
    * The unparsed drops read from the config file.
    */
-  private ArrayList<String> bonusDropKeys = new ArrayList<String>();
+  private List<String> bonusDropKeys = Lists.newArrayList();
 
   public ConfigOptionOreGenBonus(IStringSerializable ore) {
 
@@ -53,25 +68,45 @@ public class ConfigOptionOreGenBonus extends ConfigOptionOreGen {
   public static void initItemKeys() {
 
     for (ConfigOptionOreGenBonus config : LOADED_CONFIGS) {
-      config.drops.clear();
+      config.bonusDrops.clear();
+      // Parse bonus drop keys.
       for (String dropKey : config.bonusDropKeys) {
-        // LogHelper.debug(dropKey);
-        ConfigItemDrop drop = config.parseItem(dropKey);
-        if (drop != null) {
-          config.drops.add(drop);
-        }
+        ConfigItemDrop drop = config.parseItemDrop(dropKey);
+        if (drop != null)
+          config.bonusDrops.add(drop);
+      }
+
+      // Parse the removed standard drop keys.
+      config.removedDrops.clear();
+      for (String stackKey : config.removedDropKeys) {
+        ItemStack stack = config.parseStack(stackKey);
+        if (stack != null)
+          config.removedDrops.add(stack);
       }
     }
   }
 
   /**
-   * Used to add default drops.
+   * Used to add bonus drops.
    * 
    * @param key
    */
   public void addBonusDrop(String key) {
 
     bonusDropKeys.add(key);
+  }
+
+  public void removeStandardDrop(String key) {
+
+    removedDropKeys.add(key);
+  }
+
+  public boolean shouldRemoveDrop(ItemStack drop) {
+
+    for (ItemStack stack : removedDrops)
+      if (stack.isItemEqual(drop))
+        return true;
+    return false;
   }
 
   @Override
@@ -84,14 +119,21 @@ public class ConfigOptionOreGenBonus extends ConfigOptionOreGen {
     super.loadValue(c, category, comment);
 
     if (enabled) {
-      String[] keys = c.get(category, "BonusDrops", bonusDropKeys.toArray(new String[] {}))
-          .getStringList();
+      //@formatter:off
+      String[] keys;
+      // Bonus drops
+      keys = c.get(category, KEY_DROPS_BONUS, bonusDropKeys.toArray(new String[] {})).getStringList();
       bonusDropKeys.clear();
-      for (String key : keys) {
-        bonusDropKeys.add(key);
-      }
+      for (String key : keys) bonusDropKeys.add(key);
 
-      pick = c.get(category, "Pick", pick).getInt();
+      // Removed standard drops
+      keys = c.get(category, KEY_DROPS_REMOVED, removedDropKeys.toArray(new String[] {})).getStringList();
+      removedDropKeys.clear();
+      for (String key : keys) removedDropKeys.add(key);
+
+      // Bonus drop pick count
+      pick = c.get(category, KEY_PICK, pick).getInt();
+      //@formatter:on
     }
 
     LOADED_CONFIGS.add(this);
@@ -104,9 +146,9 @@ public class ConfigOptionOreGenBonus extends ConfigOptionOreGen {
     addBonusDrop(ConfigItemDrop.getKey("minecraft:emerald", 1, 0, 1.0f, 0.0f, 1.0f));
     addBonusDrop(ConfigItemDrop.getKey("FunOres:AlloyIngot", 1, 2, 0.15f, 0.05f, 0.7f));
 
-    c.getStringList("BonusDrops", CATEGORY_EXAMPLE, bonusDropKeys.toArray(new String[] {}),
+    c.getStringList(KEY_DROPS_BONUS, CATEGORY_EXAMPLE, bonusDropKeys.toArray(new String[] {}),
         COMMENT_DROP);
-    pick = c.getInt("Pick", CATEGORY_EXAMPLE, 0, PICK_MIN, PICK_MAX, COMMENT_PICK);
+    pick = c.getInt(KEY_PICK, CATEGORY_EXAMPLE, 0, PICK_MIN, PICK_MAX, COMMENT_PICK);
 
     super.loadExample(c);
 
@@ -127,7 +169,7 @@ public class ConfigOptionOreGenBonus extends ConfigOptionOreGen {
    * @param input
    * @return
    */
-  private ConfigItemDrop parseItem(String input) {
+  private ConfigItemDrop parseItemDrop(String input) {
 
     // minecraft:stick, count, meta, chance, fortuneChanceBonus, fortuneCountBonus
 
@@ -193,6 +235,53 @@ public class ConfigOptionOreGenBonus extends ConfigOptionOreGen {
 
     // Finally, create ConfigItemDrop
     return new ConfigItemDrop(item, count, meta, chance, chanceBonus, countBonus);
+  }
+
+  private ItemStack parseStack(String input) {
+
+    if (input.trim().toLowerCase().startsWith("null"))
+      return null;
+
+    String original = input;
+    input = input.trim();
+    String[] values = input.split(SPLITTER);
+    for (int i = 0; i < values.length; ++i)
+      values[i] = values[i].replaceAll(",$", "");
+
+    // Check for correctly formed key.
+    if (values.length != 3) {
+      String error = "Removed drop key must have 3 elements (has %d): %s";
+      error = String.format(error, values.length, input);
+      ConfigItemDrop.errorList.add(error);
+      return null;
+    }
+
+    // Get item
+    Item item = Item.getByNameOrId(values[0]);
+    if (item == null) {
+      String error = "Item \"%s\" not found: %s";
+      error = String.format(error, values[0], input);
+      ConfigItemDrop.errorList.add(error);
+      return null;
+    }
+
+    NumberFormat format = NumberFormat.getInstance();
+
+    // Get stack size and meta
+    int count = -1;
+    int meta = -1;
+    int currentIndex = 0;
+    try {
+      count = parseInt(values[currentIndex = 1].trim());
+      meta = parseInt(values[currentIndex = 2].trim());
+    } catch (NumberFormatException ex) {
+      String error = "Could not parse \"%s\" as integer: %s";
+      error = String.format(error, values[currentIndex], input);
+      ConfigItemDrop.errorList.add(error);
+      return null;
+    }
+
+    return new ItemStack(item, count, meta);
   }
 
   public int parseInt(String input) {

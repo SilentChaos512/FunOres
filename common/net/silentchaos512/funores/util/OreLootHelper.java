@@ -50,9 +50,11 @@ public class OreLootHelper {
         .withLootedEntity(entityLiving).withPlayer(fakePlayer.get())
         .withDamageSource(DamageSource.causePlayerDamage(fakePlayer.get()));
 
+    // Add drops from mob loot table
     for (int i = 0; i < tryCount; ++i)
       for (ItemStack stack : lootTable.generateLootForPools(rand, lootContextBuilder.build()))
-        ret.add(stack);
+        if (!config.shouldRemoveDrop(stack))
+          ret.add(stack);
 
     addBonusDrops(ret, fortune, config);
 
@@ -69,10 +71,10 @@ public class OreLootHelper {
     if (config.pick != 0) {
       dropsToTry = new ConfigItemDrop[config.pick];
       for (int i = 0; i < config.pick; ++i) {
-        dropsToTry[i] = config.drops.get(rand.nextInt(config.drops.size()));
+        dropsToTry[i] = config.bonusDrops.get(rand.nextInt(config.bonusDrops.size()));
       }
     } else {
-      dropsToTry = config.drops.toArray(new ConfigItemDrop[] {});
+      dropsToTry = config.bonusDrops.toArray(new ConfigItemDrop[] {});
     }
 
     for (ConfigItemDrop drop : dropsToTry) {

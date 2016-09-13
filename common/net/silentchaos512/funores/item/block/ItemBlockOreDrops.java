@@ -38,7 +38,7 @@ public class ItemBlockOreDrops extends ItemBlockOre {
     if (shifted) {
       list.add(FunOres.instance.localizationHelper.getMiscText("PossibleDrops"));
 
-      for (ConfigItemDrop drop : config.drops) {
+      for (ConfigItemDrop drop : config.bonusDrops) {
         String str = drop.stack.getUnlocalizedName() + ".name";
         str = I18n.translateToLocal(str);
         TextFormatting format = this.getRarityColor(drop);

@@ -425,8 +425,9 @@ public class Config {
       enderman.minY = mobMinY;
       enderman.maxY = mobMaxY;
       enderman.rarity = mobRarity;
-//      enderman.addBonusDrop(ConfigItemDrop.getKey("FunOres:Shard", 1, 0, 1.0f, 0.0f, 0.7f));
-//      enderman.addBonusDrop(ConfigItemDrop.getKey("FunOres:Shard", 1, 0, 0.10f, 0.0f, 0.4f));
+      enderman.removeStandardDrop("minecraft:ender_pearl 1 0");
+      enderman.addBonusDrop(ConfigItemDrop.getKey("FunOres:Shard", 1, 0, 1.0f, 0.0f, 0.7f));
+      enderman.addBonusDrop(ConfigItemDrop.getKey("FunOres:Shard", 1, 0, 0.10f, 0.0f, 0.4f));
       enderman.loadValue(c, CATEGORY_MOB_ORE);
 
       slime.enabled = true;
@@ -477,8 +478,9 @@ public class Config {
       ghast.minY = mobMinY;
       ghast.maxY = mobMaxY;
       ghast.rarity = mobRarity;
-//      ghast.addBonusDrop(ConfigItemDrop.getKey("FunOres:Shard", 1, 2, 1.0f, 0.00f, 0.7f));
-//      ghast.addBonusDrop(ConfigItemDrop.getKey("FunOres:Shard", 1, 2, 0.25f, 0.0f, 0.4f));
+      ghast.removeStandardDrop("minecraft:ghast_tear 1 0");
+      ghast.addBonusDrop(ConfigItemDrop.getKey("FunOres:Shard", 1, 2, 1.0f, 0.00f, 0.7f));
+      ghast.addBonusDrop(ConfigItemDrop.getKey("FunOres:Shard", 1, 2, 0.25f, 0.0f, 0.4f));
       ghast.loadValue(c, CATEGORY_MOB_ORE);
 
       magmaCube.enabled = true;
@@ -503,8 +505,9 @@ public class Config {
       blaze.minY = mobMinY;
       blaze.maxY = mobMaxY;
       blaze.rarity = mobRarity;
-//      blaze.addBonusDrop(ConfigItemDrop.getKey("FunOres:Shard", 1, 1, 1.0f, 0.0f, 0.7f));
-//      blaze.addBonusDrop(ConfigItemDrop.getKey("FunOres:Shard", 1, 1, 0.10f, 0.0f, 0.4f));
+      blaze.removeStandardDrop("minecraft:blaze_rod 1 0");
+      blaze.addBonusDrop(ConfigItemDrop.getKey("FunOres:Shard", 1, 1, 1.0f, 0.0f, 0.7f));
+      blaze.addBonusDrop(ConfigItemDrop.getKey("FunOres:Shard", 1, 1, 0.10f, 0.0f, 0.4f));
       blaze.loadValue(c, CATEGORY_MOB_ORE);
 
       // Vanilla Ores
