@@ -24,12 +24,21 @@ public class Config {
   public static boolean disableMetalOres = false;
   public static boolean disableMeatOres = false;
   public static boolean disableMobOres = false;
+
   public static boolean disableMetalBlocks = false;
   public static boolean disableMetalIngots = false;
   public static boolean disableMetalNuggets = false;
   public static boolean disableMetalDusts = false;
   public static boolean disableMetalPlates = false;
   public static boolean disableMetalGears = false;
+
+  public static boolean disableAlloyBlocks = false;
+  public static boolean disableAlloyIngots = false;
+  public static boolean disableAlloyNuggets = false;
+  public static boolean disableAlloyDusts = false;
+  public static boolean disableAlloyPlates = false;
+  public static boolean disableAlloyGears = false;
+
   public static boolean disableFoods = false;
   public static boolean disableShards = false;
 
@@ -138,18 +147,33 @@ public class Config {
           "Disable all meat (passive mob) ores.");
       disableMobOres = c.getBoolean("DisableMobOres", CATEGORY_QUICK_TWEAKS, disableMobOres,
           "Disable all mob (hostile mob) ores.");
+
       disableMetalBlocks = c.getBoolean("Disable Metal Blocks", CATEGORY_QUICK_TWEAKS,
-          disableMetalBlocks, "Disables all metal and alloy blocks.");
+          disableMetalBlocks, "Disables all metal (non-alloy) blocks.");
       disableMetalIngots = c.getBoolean("Disable Metal Ingots", CATEGORY_QUICK_TWEAKS,
-          disableMetalIngots, "Disables all metal and alloy ingots.");
+          disableMetalIngots, "Disables all metal (non-alloy) ingots.");
       disableMetalNuggets = c.getBoolean("Disable Metal Nuggets", CATEGORY_QUICK_TWEAKS,
-          disableMetalNuggets, "Disable all metal and alloy nuggets.");
+          disableMetalNuggets, "Disable all metal (non-alloy) nuggets.");
       disableMetalDusts = c.getBoolean("Disable Metal Dusts", CATEGORY_QUICK_TWEAKS,
-          disableMetalDusts, "Disable all metal and alloy dusts.");
+          disableMetalDusts, "Disable all metal (non-alloy) dusts.");
       disableMetalPlates = c.getBoolean("Disable Metal Plates", CATEGORY_QUICK_TWEAKS,
-          disableMetalPlates, "Disable all metal and alloy plates.");
+          disableMetalPlates, "Disable all metal (non-alloy) plates.");
       disableMetalGears = c.getBoolean("Disable Metal Gears", CATEGORY_QUICK_TWEAKS,
-          disableMetalGears, "Disable all metal and alloy gears.");
+          disableMetalGears, "Disable all metal (non-alloy) gears.");
+
+      disableAlloyBlocks = c.getBoolean("Disable Alloy Blocks", CATEGORY_QUICK_TWEAKS,
+          disableAlloyBlocks, "Disables all alloy blocks.");
+      disableAlloyIngots = c.getBoolean("Disable Alloy Ingots", CATEGORY_QUICK_TWEAKS,
+          disableAlloyIngots, "Disables all alloy ingots.");
+      disableAlloyNuggets = c.getBoolean("Disable Alloy Nuggets", CATEGORY_QUICK_TWEAKS,
+          disableAlloyNuggets, "Disable all alloy nuggets.");
+      disableAlloyDusts = c.getBoolean("Disable Alloy Dusts", CATEGORY_QUICK_TWEAKS,
+          disableAlloyDusts, "Disable all alloy dusts.");
+      disableAlloyPlates = c.getBoolean("Disable Alloy Plates", CATEGORY_QUICK_TWEAKS,
+          disableAlloyPlates, "Disable all alloy plates.");
+      disableAlloyGears = c.getBoolean("Disable Alloy Gears", CATEGORY_QUICK_TWEAKS,
+          disableAlloyGears, "Disable all alloy gears.");
+
       disableFoods = c.getBoolean("Disable Foods", CATEGORY_QUICK_TWEAKS, disableFoods,
           "Disable all foods.");
       disableShards = c.getBoolean("Disable Shards", CATEGORY_QUICK_TWEAKS, disableShards,
@@ -598,12 +622,18 @@ public class Config {
 
     // Check for quick tweaks disabled items...
     Item item = stack.getItem(); //@formatter:off
-    if (checkItemQuickDisable(item, disableMetalBlocks, ModBlocks.metalBlock, ModBlocks.alloyBlock)
-        || checkItemQuickDisable(item, disableMetalIngots, ModItems.metalIngot,ModItems.alloyIngot)
-        || checkItemQuickDisable(item, disableMetalNuggets, ModItems.metalNugget, ModItems.alloyNugget)
-        || checkItemQuickDisable(item, disableMetalDusts, ModItems.metalDust, ModItems.alloyDust)
-        || checkItemQuickDisable(item, disableMetalGears, ModItems.gearBasic, ModItems.gearAlloy)
-        || checkItemQuickDisable(item, disableMetalPlates, ModItems.plateBasic, ModItems.plateAlloy)
+    if (checkItemQuickDisable(item, disableMetalBlocks, ModBlocks.metalBlock)
+        || checkItemQuickDisable(item, disableMetalIngots, ModItems.metalIngot)
+        || checkItemQuickDisable(item, disableMetalNuggets, ModItems.metalNugget)
+        || checkItemQuickDisable(item, disableMetalDusts, ModItems.metalDust)
+        || checkItemQuickDisable(item, disableMetalGears, ModItems.gearBasic)
+        || checkItemQuickDisable(item, disableMetalPlates, ModItems.plateBasic)
+        || checkItemQuickDisable(item, disableAlloyBlocks, ModBlocks.alloyBlock)
+        || checkItemQuickDisable(item, disableAlloyIngots, ModItems.alloyIngot)
+        || checkItemQuickDisable(item, disableAlloyNuggets, ModItems.alloyNugget)
+        || checkItemQuickDisable(item, disableAlloyDusts, ModItems.alloyDust)
+        || checkItemQuickDisable(item, disableAlloyGears, ModItems.gearAlloy)
+        || checkItemQuickDisable(item, disableAlloyPlates, ModItems.plateAlloy)
         || checkItemQuickDisable(item, disableFoods, ModItems.driedItem)
         || checkItemQuickDisable(item, disableShards, ModItems.shard))
       return true; //@formatter:on
@@ -624,10 +654,9 @@ public class Config {
     else
       compare = item;
 
-    for (Object obj : objects) {
+    for (Object obj : objects)
       if (obj != null && obj.equals(compare))
         return true;
-    }
 
     return false;
   }
