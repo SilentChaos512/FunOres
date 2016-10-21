@@ -1,5 +1,7 @@
 package net.silentchaos512.funores.item;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.google.common.collect.Lists;
@@ -24,6 +26,13 @@ public class ItemNuggetMetal extends ItemSL implements IDisableable {
   public ItemNuggetMetal() {
 
     super(EnumMetal.count(), FunOres.MOD_ID, Names.METAL_NUGGET);
+  }
+  
+  public static List<IMetal> getMetals() {
+
+    List<IMetal> list = new ArrayList<IMetal>(Arrays.asList(EnumMetal.values()));
+    list.addAll(Arrays.asList(EnumVanillaMetal.values()));
+    return list;
   }
 
   @Override
@@ -67,7 +76,7 @@ public class ItemNuggetMetal extends ItemSL implements IDisableable {
   public List<ItemStack> getSubItems(Item item) {
 
     List<ItemStack> ret = Lists.newArrayList();
-    for (IMetal metal : EnumMetal.values())
+    for (IMetal metal : getMetals())
       ret.add(new ItemStack(item, 1, metal.getMeta()));
     return ret;
   }

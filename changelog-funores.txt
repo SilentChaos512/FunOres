@@ -1,3 +1,6 @@
+1.3.2
+Fixed: Iron nugget and iron/gold dust not appearing in JEI.
+
 1.3.1
 Added: Config options for meat/mob ores to remove specific loot table drops and add bonus drops. This should allow full customization of ore drops. By default, ender pearls, blaze rods, and ghast tears are replaced by their respective shards once again. All missing drops are back, including eggs from chicken ore. The old "S:Drops" config is no longer used and may be removed.
 Added: Wood/stone/obsidian/diamond/emerald gears and obsidian/diamond/emerald plates. (Yes, I know the wood/stone gear textures are horrible at the moment. Contributors?)

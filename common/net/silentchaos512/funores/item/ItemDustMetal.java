@@ -93,7 +93,7 @@ public class ItemDustMetal extends ItemSL implements IDisableable {
   public List<ItemStack> getSubItems(Item item) {
 
     List<ItemStack> ret = Lists.newArrayList();
-    for (IMetal metal : EnumMetal.values())
+    for (IMetal metal : getMetals())
       ret.add(new ItemStack(item, 1, metal.getMeta()));
     return ret;
   }
