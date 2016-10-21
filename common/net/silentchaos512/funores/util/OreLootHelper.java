@@ -68,7 +68,7 @@ public class OreLootHelper {
 
     ConfigItemDrop[] dropsToTry;
     // Pick a certain number from the list, or try them all?
-    if (config.pick != 0) {
+    if (config.pick != 0 && config.bonusDrops.size() > 0) {
       dropsToTry = new ConfigItemDrop[config.pick];
       for (int i = 0; i < config.pick; ++i) {
         dropsToTry[i] = config.bonusDrops.get(rand.nextInt(config.bonusDrops.size()));
