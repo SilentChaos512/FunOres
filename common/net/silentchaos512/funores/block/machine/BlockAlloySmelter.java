@@ -32,10 +32,10 @@ public class BlockAlloySmelter extends BlockMachine {
   @Override
   public void addRecipes() {
 
-    for (String aluminium : new String[] { "plateAluminium", "plateAluminum" }) {
-      GameRegistry.addRecipe(new ShapedOreRecipe(this, "iii", "a a", "bab", 'i', "plateIron", 'a',
-          aluminium, 'b', Blocks.BRICK_BLOCK));
-    }
+    if (!FunOres.registry.isItemDisabled(new ItemStack(this)))
+      for (String aluminium : new String[] { "plateAluminium", "plateAluminum" })
+        GameRegistry.addRecipe(new ShapedOreRecipe(this, "iii", "a a", "bab", 'i', "plateIron", 'a',
+            aluminium, 'b', Blocks.BRICK_BLOCK));
   }
 
   @Override

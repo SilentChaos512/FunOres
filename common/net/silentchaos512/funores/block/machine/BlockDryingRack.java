@@ -21,6 +21,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.lib.Names;
 import net.silentchaos512.funores.tile.TileDryingRack;
 
@@ -73,8 +74,9 @@ public class BlockDryingRack extends BlockMachine {
   public void addRecipes() {
 
     ItemStack stack = new ItemStack(this, 2);
-    GameRegistry
-        .addRecipe(new ShapedOreRecipe(stack, "www", "sss", 'w', "slabWood", 's', "stickWood"));
+    if (!FunOres.registry.isItemDisabled(stack))
+      GameRegistry
+          .addRecipe(new ShapedOreRecipe(stack, "www", "sss", 'w', "slabWood", 's', "stickWood"));
   }
 
   @Override
@@ -97,11 +99,11 @@ public class BlockDryingRack extends BlockMachine {
     addCollisionBoxToList(pos, entityBox, collidingBoxes, getBoundingBox(state, worldIn, pos));
   }
 
-//  @Override
-//  public AxisAlignedBB getCollisionBoundingBox(IBlockState worldIn, World pos, BlockPos state) {
-//
-//    return worldIn.getSelectedBoundingBox(pos, state);
-//  }
+  // @Override
+  // public AxisAlignedBB getCollisionBoundingBox(IBlockState worldIn, World pos, BlockPos state) {
+  //
+  // return worldIn.getSelectedBoundingBox(pos, state);
+  // }
 
   @Override
   public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {

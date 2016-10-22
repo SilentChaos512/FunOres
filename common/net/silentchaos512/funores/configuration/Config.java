@@ -25,6 +25,8 @@ public class Config {
   public static boolean disableMeatOres = false;
   public static boolean disableMobOres = false;
 
+  public static boolean disableMachines = false;
+
   public static boolean disableMetalBlocks = false;
   public static boolean disableMetalIngots = false;
   public static boolean disableMetalNuggets = false;
@@ -147,6 +149,9 @@ public class Config {
           "Disable all meat (passive mob) ores.");
       disableMobOres = c.getBoolean("DisableMobOres", CATEGORY_QUICK_TWEAKS, disableMobOres,
           "Disable all mob (hostile mob) ores.");
+
+      disableMachines = c.getBoolean("Disable Machines", CATEGORY_QUICK_TWEAKS, disableMachines,
+          "Disable all machine blocks.");
 
       disableMetalBlocks = c.getBoolean("Disable Metal Blocks", CATEGORY_QUICK_TWEAKS,
           disableMetalBlocks, "Disables all metal (non-alloy) blocks.");
@@ -575,7 +580,8 @@ public class Config {
 
     // Check for quick tweaks disabled items...
     Item item = stack.getItem(); //@formatter:off
-    if (checkItemQuickDisable(item, disableMetalBlocks, ModBlocks.metalBlock)
+    if (checkItemQuickDisable(item, disableMachines, ModBlocks.metalFurnace, ModBlocks.alloySmelter, ModBlocks.dryingRack)
+        || checkItemQuickDisable(item, disableMetalBlocks, ModBlocks.metalBlock)
         || checkItemQuickDisable(item, disableMetalIngots, ModItems.metalIngot)
         || checkItemQuickDisable(item, disableMetalNuggets, ModItems.metalNugget)
         || checkItemQuickDisable(item, disableMetalDusts, ModItems.metalDust)

@@ -14,6 +14,7 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -30,11 +31,12 @@ import net.minecraft.world.World;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.configuration.Config;
 import net.silentchaos512.funores.lib.EnumMachineState;
+import net.silentchaos512.funores.lib.IDisableable;
 import net.silentchaos512.funores.lib.ModDamageSources;
 import net.silentchaos512.lib.registry.IRegistryObject;
 import net.silentchaos512.wit.api.IWitHudInfo;
 
-public class BlockMachine extends BlockContainer implements IRegistryObject, IWitHudInfo {
+public class BlockMachine extends BlockContainer implements IRegistryObject, IDisableable, IWitHudInfo {
 
   public static final PropertyEnum FACING = PropertyEnum.create("facing", EnumMachineState.class);
   protected static boolean keepInventory;
@@ -53,6 +55,20 @@ public class BlockMachine extends BlockContainer implements IRegistryObject, IWi
     setHarvestLevel("pickaxe", 1);
 
     setUnlocalizedName(name);
+  }
+
+  @Override
+  public List<ItemStack> getSubItems(Item item) {
+
+    return Lists.newArrayList(new ItemStack(item));
+  }
+
+  @Override
+  public void getSubBlocks(Item item, CreativeTabs tab, List list) {
+
+    ItemStack stack = new ItemStack(item);
+    if (!FunOres.registry.isItemDisabled(stack))
+      list.add(stack);
   }
 
   @Override
@@ -84,7 +100,10 @@ public class BlockMachine extends BlockContainer implements IRegistryObject, IWi
   @Override
   public List<ModelResourceLocation> getVariants() {
 
-    return Lists.newArrayList(new ModelResourceLocation(getFullName()));
+    if (!FunOres.registry.isItemDisabled(new ItemStack(this)))
+      return Lists.newArrayList(new ModelResourceLocation(getFullName()));
+    else
+      return Lists.newArrayList();
   }
 
   @Override

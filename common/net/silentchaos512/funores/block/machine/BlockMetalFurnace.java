@@ -32,10 +32,10 @@ public class BlockMetalFurnace extends BlockMachine {
   @Override
   public void addRecipes() {
 
-    for (String alloy : new String[] { "plateBronze", "plateBrass" }) {
-      GameRegistry.addRecipe(new ShapedOreRecipe(this, "aaa", "afa", "bab", 'a', alloy, 'b',
-          Blocks.BRICK_BLOCK, 'f', Blocks.FURNACE));
-    }
+    if (!FunOres.registry.isItemDisabled(new ItemStack(this)))
+      for (String alloy : new String[] { "plateBronze", "plateBrass" })
+        GameRegistry.addRecipe(new ShapedOreRecipe(this, "aaa", "afa", "bab", 'a', alloy, 'b',
+            Blocks.BRICK_BLOCK, 'f', Blocks.FURNACE));
   }
 
   @Override
@@ -54,71 +54,4 @@ public class BlockMetalFurnace extends BlockMachine {
       return true;
     }
   }
-
-  // @Override
-  // public void randomDisplayTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
-  //
-  // if (this.isBurning) {
-  // EnumFacing enumfacing = (EnumFacing) state.getValue(FACING);
-  // double d0 = (double) pos.getX() + 0.5D;
-  // double d1 = (double) pos.getY() + rand.nextDouble() * 6.0D / 16.0D;
-  // double d2 = (double) pos.getZ() + 0.5D;
-  // double d3 = 0.52D;
-  // double d4 = rand.nextDouble() * 0.6D - 0.3D;
-  //
-  // switch (BlockFurnace.SwitchEnumFacing.FACING_LOOKUP[enumfacing.ordinal()]) {
-  // case 1:
-  // worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0 - d3, d1, d2 + d4, 0.0D, 0.0D,
-  // 0.0D, new int[0]);
-  // worldIn.spawnParticle(EnumParticleTypes.FLAME, d0 - d3, d1, d2 + d4, 0.0D, 0.0D, 0.0D,
-  // new int[0]);
-  // break;
-  // case 2:
-  // worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0 + d3, d1, d2 + d4, 0.0D, 0.0D,
-  // 0.0D, new int[0]);
-  // worldIn.spawnParticle(EnumParticleTypes.FLAME, d0 + d3, d1, d2 + d4, 0.0D, 0.0D, 0.0D,
-  // new int[0]);
-  // break;
-  // case 3:
-  // worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0 + d4, d1, d2 - d3, 0.0D, 0.0D,
-  // 0.0D, new int[0]);
-  // worldIn.spawnParticle(EnumParticleTypes.FLAME, d0 + d4, d1, d2 - d3, 0.0D, 0.0D, 0.0D,
-  // new int[0]);
-  // break;
-  // case 4:
-  // worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0 + d4, d1, d2 + d3, 0.0D, 0.0D,
-  // 0.0D, new int[0]);
-  // worldIn.spawnParticle(EnumParticleTypes.FLAME, d0 + d4, d1, d2 + d3, 0.0D, 0.0D, 0.0D,
-  // new int[0]);
-  // }
-  // }
-  // }
-
-  // public static void setState(boolean active, World worldIn, BlockPos pos) {
-  //
-  // IBlockState iblockstate = worldIn.getBlockState(pos);
-  // TileEntity tileentity = worldIn.getTileEntity(pos);
-  // keepInventory = true;
-  //
-  // if (active) {
-  // worldIn.setBlockState(pos,
-  // Blocks.lit_furnace.getDefaultState().withProperty(FACING, iblockstate.getValue(FACING)),
-  // 3);
-  // worldIn.setBlockState(pos,
-  // Blocks.lit_furnace.getDefaultState().withProperty(FACING, iblockstate.getValue(FACING)),
-  // 3);
-  // } else {
-  // worldIn.setBlockState(pos,
-  // Blocks.furnace.getDefaultState().withProperty(FACING, iblockstate.getValue(FACING)), 3);
-  // worldIn.setBlockState(pos,
-  // Blocks.furnace.getDefaultState().withProperty(FACING, iblockstate.getValue(FACING)), 3);
-  // }
-  //
-  // keepInventory = false;
-  //
-  // if (tileentity != null) {
-  // tileentity.validate();
-  // worldIn.setTileEntity(pos, tileentity);
-  // }
-  // }
 }
