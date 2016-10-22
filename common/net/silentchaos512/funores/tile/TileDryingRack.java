@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -11,7 +12,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumHand;
@@ -21,6 +21,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.ITextComponent;
 import net.silentchaos512.funores.api.recipe.dryingrack.DryingRackRecipe;
 import net.silentchaos512.funores.block.machine.BlockMachine;
+import net.silentchaos512.funores.init.ModBlocks;
 import net.silentchaos512.funores.lib.EnumMachineState;
 
 public class TileDryingRack extends TileEntity implements ITickable, IInventory {
@@ -225,7 +226,10 @@ public class TileDryingRack extends TileEntity implements ITickable, IInventory 
 
   public EnumMachineState getMachineState() {
 
-    return (EnumMachineState) worldObj.getBlockState(pos).getValue(BlockMachine.FACING);
+    IBlockState state = worldObj.getBlockState(pos);
+    if (state != null && state.getBlock() == ModBlocks.dryingRack)
+      return (EnumMachineState) worldObj.getBlockState(pos).getValue(BlockMachine.FACING);
+    return EnumMachineState.NORTH_OFF;
   }
 
   public int getTotalDryTime() {
