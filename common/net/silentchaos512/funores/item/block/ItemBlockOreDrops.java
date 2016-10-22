@@ -2,18 +2,9 @@ package net.silentchaos512.funores.item.block;
 
 import java.util.List;
 
-import org.lwjgl.input.Keyboard;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.translation.I18n;
-import net.silentchaos512.funores.FunOres;
-import net.silentchaos512.funores.configuration.ConfigItemDrop;
-import net.silentchaos512.funores.configuration.ConfigOptionOreGen;
-import net.silentchaos512.funores.configuration.ConfigOptionOreGenBonus;
 
 public class ItemBlockOreDrops extends ItemBlockOre {
 
@@ -27,39 +18,39 @@ public class ItemBlockOreDrops extends ItemBlockOre {
 
     super.addInformation(stack, player, list, advanced);
 
-    ConfigOptionOreGen config1 = getOreConfig(stack);
-    if (config1 == null || !(config1 instanceof ConfigOptionOreGenBonus)) {
-      return;
-    }
-    ConfigOptionOreGenBonus config = (ConfigOptionOreGenBonus) config1;
-
-    boolean shifted = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)
-        || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT);
-    if (shifted) {
-      list.add(FunOres.instance.localizationHelper.getMiscText("PossibleDrops"));
-
-      for (ConfigItemDrop drop : config.bonusDrops) {
-        String str = drop.stack.getUnlocalizedName() + ".name";
-        str = I18n.translateToLocal(str);
-        TextFormatting format = this.getRarityColor(drop);
-        list.add(format + str);
-      }
-    } else {
-      String str = FunOres.instance.localizationHelper.getMiscText("PressShift");
-      list.add(TextFormatting.ITALIC + str);
-    }
+//    ConfigOptionOreGen config1 = getOreConfig(stack);
+//    if (config1 == null || !(config1 instanceof ConfigOptionOreGenBonus)) {
+//      return;
+//    }
+//    ConfigOptionOreGenBonus config = (ConfigOptionOreGenBonus) config1;
+//
+//    boolean shifted = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)
+//        || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT);
+//    if (shifted) {
+//      list.add(FunOres.instance.localizationHelper.getMiscText("PossibleDrops"));
+//
+//      for (ConfigItemDrop drop : config.bonusDrops) {
+//        String str = drop.stack.getUnlocalizedName() + ".name";
+//        str = I18n.translateToLocal(str);
+//        TextFormatting format = this.getRarityColor(drop);
+//        list.add(format + str);
+//      }
+//    } else {
+//      String str = FunOres.instance.localizationHelper.getMiscText("PressShift");
+//      list.add(TextFormatting.ITALIC + str);
+//    }
   }
 
-  private TextFormatting getRarityColor(ConfigItemDrop drop) {
-
-    if (drop.baseChance <= 0.01) {
-      return EnumRarity.EPIC.rarityColor;
-    } else if (drop.baseChance < 0.06) {
-      return EnumRarity.RARE.rarityColor;
-    } else if (drop.baseChance < 0.33) {
-      return EnumRarity.UNCOMMON.rarityColor;
-    } else {
-      return EnumRarity.COMMON.rarityColor;
-    }
-  }
+//  private TextFormatting getRarityColor(ConfigItemDrop drop) {
+//
+//    if (drop.baseChance <= 0.01) {
+//      return EnumRarity.EPIC.rarityColor;
+//    } else if (drop.baseChance < 0.06) {
+//      return EnumRarity.RARE.rarityColor;
+//    } else if (drop.baseChance < 0.33) {
+//      return EnumRarity.UNCOMMON.rarityColor;
+//    } else {
+//      return EnumRarity.COMMON.rarityColor;
+//    }
+//  }
 }
