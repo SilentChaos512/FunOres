@@ -1,63 +1,23 @@
 package net.silentchaos512.funores.item;
 
+import java.util.Arrays;
 import java.util.List;
 
-import com.google.common.collect.Lists;
-
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
-import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.lib.EnumAlloy;
-import net.silentchaos512.funores.lib.IDisableable;
 import net.silentchaos512.funores.lib.IMetal;
 import net.silentchaos512.funores.lib.Names;
-import net.silentchaos512.lib.item.ItemSL;
 
-public class ItemNuggetAlloy extends ItemSL implements IDisableable {
+public class ItemNuggetAlloy extends ItemBaseMetal {
 
   public ItemNuggetAlloy() {
 
-    super(EnumAlloy.count(), FunOres.MOD_ID, Names.ALLOY_NUGGET);
+    super(Names.ALLOY_NUGGET, "Nugget", "nugget");
   }
 
   @Override
-  public void addOreDict() {
+  public List<IMetal> getMetals(Item item) {
 
-    for (EnumAlloy metal : EnumAlloy.values()) {
-      ItemStack nugget = metal.getNugget();
-      if (!FunOres.registry.isItemDisabled(nugget)) {
-        String name = "nugget" + metal.getMetalName();
-        OreDictionary.registerOre(name, nugget);
-      }
-    }
-  }
-
-  @Override
-  public List<ModelResourceLocation> getVariants() {
-
-    List<ModelResourceLocation> models = Lists.newArrayList();
-    for (EnumAlloy metal : EnumAlloy.values()) {
-      models.add(new ModelResourceLocation(FunOres.MOD_ID + ":Nugget" + metal.getMetalName(),
-          "inventory"));
-    }
-    return models;
-  }
-
-  @Override
-  public void getSubItems(Item item, CreativeTabs tab, List list) {
-
-    list.addAll(getSubItems(item));
-  }
-
-  @Override
-  public List<ItemStack> getSubItems(Item item) {
-
-    List<ItemStack> ret = Lists.newArrayList();
-    for (IMetal metal : EnumAlloy.values())
-      ret.add(new ItemStack(item, 1, metal.getMeta()));
-    return ret;
+    return Arrays.asList(EnumAlloy.values());
   }
 }

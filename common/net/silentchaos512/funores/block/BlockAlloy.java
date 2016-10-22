@@ -23,7 +23,7 @@ import net.silentchaos512.funores.lib.Names;
 import net.silentchaos512.lib.block.BlockSL;
 
 public class BlockAlloy extends BlockSL implements IDisableable {
-  
+
   public static final PropertyEnum ALLOY = PropertyEnum.create("alloy", EnumAlloy.class);
 
   public BlockAlloy() {
@@ -35,7 +35,6 @@ public class BlockAlloy extends BlockSL implements IDisableable {
     setSoundType(SoundType.METAL);
     setHarvestLevel("pickaxe", 1);
 
-//    setHasSubtypes(true);
     setUnlocalizedName(Names.ALLOY_BLOCK);
   }
 
@@ -49,24 +48,29 @@ public class BlockAlloy extends BlockSL implements IDisableable {
 
   @Override
   public List<ModelResourceLocation> getVariants() {
-    
+
     List<ModelResourceLocation> models = Lists.newArrayList();
     for (EnumAlloy metal : EnumAlloy.values()) {
-      models.add(new ModelResourceLocation(FunOres.MOD_ID + ":Block" + metal.getMetalName()));
+      if (!FunOres.registry.isItemDisabled(metal.getBlock())) {
+        String name = FunOres.MOD_ID + ":Block" + metal.getMetalName();
+        models.add(new ModelResourceLocation(name, "inventory"));
+      }
     }
     return models;
   }
-  
+
   @Override
   public int damageDropped(IBlockState state) {
-    
+
     return ((EnumAlloy) state.getValue(ALLOY)).getMeta();
   }
-  
+
   @Override
   public void getSubBlocks(Item item, CreativeTabs tab, List list) {
-    
-    list.addAll(getSubItems(item));
+
+    for (ItemStack stack : getSubItems(item))
+      if (!FunOres.registry.isItemDisabled(stack))
+        list.add(stack);
   }
 
   @Override
@@ -77,22 +81,22 @@ public class BlockAlloy extends BlockSL implements IDisableable {
       ret.add(new ItemStack(item, 1, metal.getMeta()));
     return ret;
   }
-  
+
   @Override
   public IBlockState getStateFromMeta(int meta) {
-    
+
     return this.getDefaultState().withProperty(ALLOY, EnumAlloy.byMetadata(meta));
   }
-  
+
   @Override
   public int getMetaFromState(IBlockState state) {
-    
+
     return ((EnumAlloy) state.getValue(ALLOY)).getMeta();
   }
-  
+
   @Override
   protected BlockStateContainer createBlockState() {
-    
+
     return new BlockStateContainer(this, new IProperty[] { ALLOY });
   }
 }

@@ -61,8 +61,10 @@ public class BlockMetal extends BlockSL implements IDisableable {
 
     List<ModelResourceLocation> models = Lists.newArrayList();
     for (EnumMetal metal : EnumMetal.values()) {
-      models.add(
-          new ModelResourceLocation(FunOres.MOD_ID + ":Block" + metal.getMetalName(), "inventory"));
+      if (!FunOres.registry.isItemDisabled(metal.getBlock())) {
+        String name = FunOres.MOD_ID + ":Block" + metal.getMetalName();
+        models.add(new ModelResourceLocation(name, "inventory"));
+      }
     }
     return models;
   }
@@ -76,7 +78,9 @@ public class BlockMetal extends BlockSL implements IDisableable {
   @Override
   public void getSubBlocks(Item item, CreativeTabs tab, List list) {
 
-    list.addAll(getSubItems(item));
+    for (ItemStack stack : getSubItems(item))
+      if (!FunOres.registry.isItemDisabled(stack))
+        list.add(stack);
   }
 
   @Override

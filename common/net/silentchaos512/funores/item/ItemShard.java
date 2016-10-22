@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -51,5 +53,26 @@ public class ItemShard extends ItemNamedSubtypes implements IDisableable {
     for (int i = 0; i < subItemCount; ++i)
       ret.add(new ItemStack(item, 1, i));
     return ret;
+  }
+
+  @Override
+  public void getSubItems(Item item, CreativeTabs tab, List list) {
+
+    for (ItemStack stack : getSubItems(item))
+      if (!FunOres.registry.isItemDisabled(stack))
+        list.add(stack);
+  }
+
+  @Override
+  public List<ModelResourceLocation> getVariants() {
+
+    List<ModelResourceLocation> models = Lists.newArrayList();
+    for (int i = 0; i < NAMES.length; ++i) {
+      if (!FunOres.registry.isItemDisabled(new ItemStack(this, 1, i)))
+        models.add(new ModelResourceLocation(modId + ":" + NAMES[i], "inventory"));
+      else
+        models.add(null);
+    }
+    return models;
   }
 }

@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -44,7 +46,7 @@ public class ItemHammer extends ItemSL implements IDisableable {
 
     // Basic plates
     ItemCraftingItem item = ModItems.plateBasic;
-    for (IMetal metal : item.getMetals()) {
+    for (IMetal metal : item.getMetals(item)) {
       plate = metal.getPlate();
       ingot = metal instanceof EnumVanillaExtended
           ? ((EnumVanillaExtended) metal).getMaterialOreDictKey() : "ingot" + metal.getMetalName();
@@ -54,7 +56,7 @@ public class ItemHammer extends ItemSL implements IDisableable {
 
     // Alloy plates
     item = ModItems.plateAlloy;
-    for (IMetal metal : item.getMetals()) {
+    for (IMetal metal : item.getMetals(item)) {
       plate = new ItemStack(item, 1, metal.getMeta());
       ingot = "ingot" + metal.getMetalName();
       if (!FunOres.registry.isItemDisabled(plate))
@@ -63,8 +65,24 @@ public class ItemHammer extends ItemSL implements IDisableable {
   }
 
   @Override
+  public List<ModelResourceLocation> getVariants() {
+
+    if (!FunOres.registry.isItemDisabled(new ItemStack(this)))
+      return super.getVariants();
+    return Lists.newArrayList();
+  }
+
+  @Override
   public List<ItemStack> getSubItems(Item item) {
 
-    return Lists.newArrayList(new ItemStack(item));
+    return Lists.newArrayList(new ItemStack(this));
+  }
+
+  @Override
+  public void getSubItems(Item item, CreativeTabs tab, List list) {
+
+    ItemStack hammer = new ItemStack(this);
+    if (!FunOres.registry.isItemDisabled(hammer))
+      list.add(hammer);
   }
 }

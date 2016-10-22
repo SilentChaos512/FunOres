@@ -1,27 +1,26 @@
 package net.silentchaos512.funores.item;
 
+import java.util.Arrays;
 import java.util.List;
 
-import com.google.common.collect.Lists;
-
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.lib.EnumAlloy;
-import net.silentchaos512.funores.lib.IDisableable;
 import net.silentchaos512.funores.lib.IMetal;
 import net.silentchaos512.funores.lib.Names;
-import net.silentchaos512.lib.item.ItemSL;
 import net.silentchaos512.lib.util.RecipeHelper;
 
-public class ItemIngotAlloy extends ItemSL implements IDisableable {
+public class ItemIngotAlloy extends ItemBaseMetal {
 
   public ItemIngotAlloy() {
 
-    super(EnumAlloy.count(), FunOres.MOD_ID, Names.ALLOY_INGOT);
+    super(Names.ALLOY_INGOT, "Ingot", "ingot");
+  }
+
+  @Override
+  public List<IMetal> getMetals(Item item) {
+
+    return Arrays.asList(EnumAlloy.values());
   }
 
   @Override
@@ -39,43 +38,5 @@ public class ItemIngotAlloy extends ItemSL implements IDisableable {
       if (!disabledNugget && !disabledIngot)
         RecipeHelper.addCompressionRecipe(metal.getNugget(), metal.getIngot(), 9);
     }
-  }
-
-  @Override
-  public void addOreDict() {
-
-    for (EnumAlloy metal : EnumAlloy.values()) {
-      ItemStack ingot = metal.getIngot();
-      if (!FunOres.registry.isItemDisabled(ingot)) {
-        String name = "ingot" + metal.getMetalName();
-        OreDictionary.registerOre(name, ingot);
-      }
-    }
-  }
-
-  @Override
-  public List<ModelResourceLocation> getVariants() {
-
-    List<ModelResourceLocation> models = Lists.newArrayList();
-    for (EnumAlloy metal : EnumAlloy.values()) {
-      models.add(
-          new ModelResourceLocation(FunOres.MOD_ID + ":Ingot" + metal.getMetalName(), "inventory"));
-    }
-    return models;
-  }
-
-  @Override
-  public void getSubItems(Item item, CreativeTabs tab, List list) {
-
-    list.addAll(getSubItems(item));
-  }
-
-  @Override
-  public List<ItemStack> getSubItems(Item item) {
-
-    List<ItemStack> ret = Lists.newArrayList();
-    for (IMetal metal : EnumAlloy.values())
-      ret.add(new ItemStack(item, 1, metal.getMeta()));
-    return ret;
   }
 }

@@ -1,30 +1,29 @@
 package net.silentchaos512.funores.item;
 
-import java.rmi.registry.Registry;
+import java.util.Arrays;
 import java.util.List;
 
-import com.google.common.collect.Lists;
-
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.lib.EnumAlloy;
-import net.silentchaos512.funores.lib.IDisableable;
 import net.silentchaos512.funores.lib.IMetal;
 import net.silentchaos512.funores.lib.Names;
 import net.silentchaos512.funores.registry.FunOresRegistry;
-import net.silentchaos512.lib.item.ItemSL;
 
-public class ItemDustAlloy extends ItemSL implements IDisableable {
+public class ItemDustAlloy extends ItemBaseMetal {
 
   public ItemDustAlloy() {
 
-    super(EnumAlloy.count(), FunOres.MOD_ID, Names.ALLOY_DUST);
+    super(Names.ALLOY_DUST, "Dust", "dust");
+  }
+  
+  @Override
+  public List<IMetal> getMetals(Item item) {
+
+    return Arrays.asList(EnumAlloy.values());
   }
 
   @Override
@@ -66,43 +65,5 @@ public class ItemDustAlloy extends ItemSL implements IDisableable {
       if (!reg.isItemDisabled(dust) && !reg.isItemDisabled(ingot))
         GameRegistry.addSmelting(dust, ingot, 0.6f);
     }
-  }
-
-  @Override
-  public void addOreDict() {
-
-    for (EnumAlloy metal : EnumAlloy.values()) {
-      ItemStack dust = metal.getDust();
-      if (!FunOres.registry.isItemDisabled(dust)) {
-        String name = "dust" + metal.getMetalName();
-        OreDictionary.registerOre(name, dust);
-      }
-    }
-  }
-
-  @Override
-  public List<ModelResourceLocation> getVariants() {
-
-    List<ModelResourceLocation> models = Lists.newArrayList();
-    for (EnumAlloy metal : EnumAlloy.values()) {
-      models.add(
-          new ModelResourceLocation(FunOres.MOD_ID + ":Dust" + metal.getMetalName(), "inventory"));
-    }
-    return models;
-  }
-
-  @Override
-  public void getSubItems(Item item, CreativeTabs tab, List list) {
-
-    list.addAll(getSubItems(item));
-  }
-
-  @Override
-  public List<ItemStack> getSubItems(Item item) {
-
-    List<ItemStack> ret = Lists.newArrayList();
-    for (IMetal metal : EnumAlloy.values())
-      ret.add(new ItemStack(item, 1, metal.getMeta()));
-    return ret;
   }
 }

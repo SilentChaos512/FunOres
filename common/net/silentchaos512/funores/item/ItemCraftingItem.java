@@ -6,8 +6,6 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -19,15 +17,10 @@ import net.silentchaos512.funores.lib.EnumAlloy;
 import net.silentchaos512.funores.lib.EnumMetal;
 import net.silentchaos512.funores.lib.EnumVanillaExtended;
 import net.silentchaos512.funores.lib.EnumVanillaMetal;
-import net.silentchaos512.funores.lib.IDisableable;
 import net.silentchaos512.funores.lib.IMetal;
 import net.silentchaos512.funores.lib.Names;
-import net.silentchaos512.lib.item.ItemSL;
-import net.silentchaos512.lib.util.LocalizationHelper;
-import net.silentchaos512.lib.util.LogHelper;
-import scala.reflect.internal.Mode;
 
-public class ItemCraftingItem extends ItemSL implements IDisableable {
+public class ItemCraftingItem extends ItemBaseMetal {
 
   public static final int BASE_METALS_COUNT = 18;
 
@@ -38,24 +31,22 @@ public class ItemCraftingItem extends ItemSL implements IDisableable {
 
   public ItemCraftingItem(String name, boolean isAlloy) {
 
-    super(
-        isAlloy ? EnumAlloy.values().length
-            : EnumMetal.values().length + EnumVanillaMetal.values().length,
-        FunOres.MOD_ID, Names.CRAFTING_ITEM);
+    super(Names.CRAFTING_ITEM, name, name.toLowerCase());
     this.craftingItemName = name;
     this.isAlloy = isAlloy;
     this.isGear = craftingItemName.equals(Names.GEAR);
     this.isPlate = craftingItemName.equals(Names.PLATE);
   }
 
-  public List<IMetal> getMetals() {
+  @Override
+  public List<IMetal> getMetals(Item item) {
 
     if (isAlloy) {
       // Alloys
-      return new ArrayList<IMetal>(Arrays.asList(EnumAlloy.values()));
+      return Arrays.asList(EnumAlloy.values());
     } else {
       // Basic metals (including vanilla)
-      List<IMetal> metals = new ArrayList<IMetal>(Arrays.asList(EnumMetal.values()));
+      List<IMetal> metals = new ArrayList(Arrays.asList(EnumMetal.values()));
       metals.addAll(Arrays.asList(EnumVanillaMetal.values()));
       // Extended vanilla
       for (EnumVanillaExtended extended : EnumVanillaExtended.values())
@@ -69,7 +60,7 @@ public class ItemCraftingItem extends ItemSL implements IDisableable {
   public void addRecipes() {
 
     if (isGear) {
-      for (IMetal metal : getMetals()) {
+      for (IMetal metal : getMetals(this)) {
         ItemStack gear = metal.getGear();
         if (gear != null && !FunOres.registry.isItemDisabled(gear)) {
           String mat = metal instanceof EnumVanillaExtended
@@ -86,65 +77,18 @@ public class ItemCraftingItem extends ItemSL implements IDisableable {
   @Override
   public void addOreDict() {
 
-    ItemStack stack;
+    super.addOreDict();
 
-    if (isGear) {
-      for (IMetal metal : getMetals()) {
-        stack = new ItemStack(this, 1, metal.getMeta());
-        if (!FunOres.registry.isItemDisabled(stack)) {
-          OreDictionary.registerOre("gear" + metal.getMetalName(), stack);
-          if (metal == EnumMetal.ALUMINIUM) {
-            OreDictionary.registerOre("gearAluminum", stack);
-          }
-        }
-      }
-    } else if (isPlate) {
-      for (IMetal metal : getMetals()) {
-        stack = new ItemStack(this, 1, metal.getMeta());
-        if (!FunOres.registry.isItemDisabled(stack)) {
-          OreDictionary.registerOre("plate" + metal.getMetalName(), stack);
-          if (metal == EnumMetal.ALUMINIUM) {
-            OreDictionary.registerOre("plateAluminum", stack);
-          }
-        }
-      }
-    } else {
-      FunOres.logHelper.warning("CraftingItem.addOreDict - Unknown item type: " + craftingItemName);
-    }
+    if (!isAlloy)
+      OreDictionary.registerOre(oreDictPrefix + "Aluminum",
+          new ItemStack(this, 1, EnumMetal.ALUMINIUM.meta));
   }
-
-  @Override
-  public List<ModelResourceLocation> getVariants() {
-
-    String prefix = FunOres.MOD_ID + ":" + craftingItemName;
-    ModelResourceLocation[] models = new ModelResourceLocation[32];
-    for (IMetal metal : getMetals()) {
-      models[metal.getMeta()] = new ModelResourceLocation(prefix + metal.getMetalName());
-    }
-    return Arrays.asList(models);
-  }
-
-  @Override
-  public void getSubItems(Item item, CreativeTabs tab, List list) {
-
-    list.addAll(getSubItems(item));
-  }
-
-  @Override
-  public List<ItemStack> getSubItems(Item item) {
-
-    List<ItemStack> ret = Lists.newArrayList();
-    for (IMetal metal : getMetals())
-      ret.add(new ItemStack(item, 1, metal.getMeta()));
-    return ret;
-  }
-
   @Override
   public String getNameForStack(ItemStack stack) {
 
     String metalName = null;
     int meta = stack.getItemDamage();
-    List<IMetal> metals = getMetals();
+    List<IMetal> metals = getMetals(this);
     if (meta >= 0 && meta < metals.size() && metals.get(meta) != null) {
       metalName = metals.get(meta).getMetalName();
     } else {

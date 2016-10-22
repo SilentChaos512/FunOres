@@ -27,7 +27,7 @@ public class ItemDried extends ItemFood implements IRegistryObject, IDisableable
 
   public ItemDried() {
 
-    super(2, true);
+    super(EnumDriedItem.values().length, true);
     setMaxStackSize(64);
     setHasSubtypes(true);
     setMaxDamage(0);
@@ -39,11 +39,11 @@ public class ItemDried extends ItemFood implements IRegistryObject, IDisableable
 
     boolean shifted = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)
         || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT);
-    if (shifted) {
-      for (String line : FunOres.localizationHelper.getItemDescriptionLines(getEnum(stack).name)) {
+
+    // Display flavor text when shift is held.
+    if (shifted)
+      for (String line : FunOres.localizationHelper.getItemDescriptionLines(getEnum(stack).name))
         list.add(TextFormatting.ITALIC + line);
-      }
-    }
   }
 
   @Override
@@ -63,9 +63,8 @@ public class ItemDried extends ItemFood implements IRegistryObject, IDisableable
   public int getHealAmount(ItemStack stack) {
 
     EnumDriedItem e = getEnum(stack);
-    if (e != null) {
+    if (e != null)
       return e.foodValue;
-    }
     return super.getHealAmount(stack);
   }
 
@@ -73,21 +72,24 @@ public class ItemDried extends ItemFood implements IRegistryObject, IDisableable
   public float getSaturationModifier(ItemStack stack) {
 
     EnumDriedItem e = getEnum(stack);
-    if (e != null) {
+    if (e != null)
       return e.saturationValue;
-    }
     return super.getSaturationModifier(stack);
   }
 
   @Override
   public void getSubItems(Item item, CreativeTabs tab, List list) {
 
-    list.addAll(getSubItems(item));
+    // Add only non-disabled items for display!
+    for (ItemStack stack : getSubItems(item))
+      if (!FunOres.registry.isItemDisabled(stack))
+        list.add(stack);
   }
 
   @Override
   public List<ItemStack> getSubItems(Item item) {
 
+    // Make a list of all possible items, including disabled ones.
     List<ItemStack> ret = Lists.newArrayList();
     for (EnumDriedItem e : EnumDriedItem.values())
       ret.add(new ItemStack(item, 1, e.meta));
@@ -101,11 +103,10 @@ public class ItemDried extends ItemFood implements IRegistryObject, IDisableable
 
   public EnumDriedItem getEnum(ItemStack stack) {
 
-    for (EnumDriedItem e : EnumDriedItem.values()) {
-      if (e.meta == stack.getItemDamage()) {
+    for (EnumDriedItem e : EnumDriedItem.values())
+      if (e.meta == stack.getItemDamage())
         return e;
-      }
-    }
+
     return null;
   }
 
@@ -138,15 +139,15 @@ public class ItemDried extends ItemFood implements IRegistryObject, IDisableable
   public List<ModelResourceLocation> getVariants() {
 
     List<ModelResourceLocation> models = Lists.newArrayList();
-    for (EnumDriedItem item : EnumDriedItem.values()) {
-      models.add(new ModelResourceLocation(FunOres.MOD_ID + ":" + item.textureName, "inventory"));
-    }
+    for (EnumDriedItem item : EnumDriedItem.values())
+      if (!FunOres.registry.isItemDisabled(item.getItem())) // Don't load disabled item models.
+        models.add(new ModelResourceLocation(FunOres.MOD_ID + ":" + item.textureName, "inventory"));
     return models;
   }
 
   @Override
   public boolean registerModels() {
 
-    return false;
+    return false; // Use standard model registration.
   }
 }
