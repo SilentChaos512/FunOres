@@ -5,7 +5,6 @@ import java.util.List;
 import com.google.common.collect.Lists;
 
 import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
@@ -19,22 +18,22 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.silentchaos512.funores.FunOres;
+import net.silentchaos512.funores.configuration.Config;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGen;
 import net.silentchaos512.funores.init.ModBlocks;
-import net.silentchaos512.funores.init.ModItems;
 import net.silentchaos512.funores.lib.EnumMetal;
 import net.silentchaos512.funores.lib.Names;
+import net.silentchaos512.funores.registry.FunOresRegistry;
 import net.silentchaos512.funores.util.ModRecipeHelper;
-import net.silentchaos512.lib.block.BlockSL;
 import net.silentchaos512.wit.api.IWitHudInfo;
 
-public class BlockOreMetal extends BlockSL implements IWitHudInfo {
+public class BlockOreMetal extends BlockFunOre implements IWitHudInfo {
 
   public static final PropertyEnum METAL = PropertyEnum.create("metal", EnumMetal.class);
 
   public BlockOreMetal() {
 
-    super(EnumMetal.count(), FunOres.MOD_ID, Names.METAL_ORE, Material.ROCK);
+    super(EnumMetal.count(), Names.METAL_ORE);
 
     setHardness(3.0f);
     setResistance(15.0f);
@@ -49,24 +48,48 @@ public class BlockOreMetal extends BlockSL implements IWitHudInfo {
       }
     }
 
-    // setHasSubtypes(true);
     setUnlocalizedName(Names.METAL_ORE);
+  }
+
+  @Override
+  public ConfigOptionOreGen getConfig(int meta) {
+
+    if (meta < 0 || meta >= EnumMetal.values().length)
+      return null;
+    return EnumMetal.byMetadata(meta).getConfig();
+  }
+
+  @Override
+  public boolean isEnabled(int meta) {
+
+    if (Config.disableMetalOres)
+      return false;
+
+    ConfigOptionOreGen config = getConfig(meta);
+    return config == null ? false : config.enabled;
   }
 
   @Override
   public void addRecipes() {
 
+    FunOresRegistry reg = FunOres.registry;
     for (EnumMetal metal : EnumMetal.values()) {
       ItemStack ore = new ItemStack(this, 1, metal.meta);
-      ItemStack ingot = metal.getIngot();
+      // No recipes for disabled ores!
+      if (!reg.isItemDisabled(ore)) {
+        ItemStack ingot = metal.getIngot();
 
-      if (!FunOres.registry.isItemDisabled(ingot))
-        GameRegistry.addSmelting(ore, ingot, 0.5f);
+        // Vanilla smelting
+        if (!reg.isItemDisabled(ingot))
+          GameRegistry.addSmelting(ore, ingot, 0.5f);
 
-      ItemStack dust = metal.getDust();
-      ItemStack bonus = metal.getBonus();
-      if (!FunOres.registry.isItemDisabled(dust) && !FunOres.registry.isItemDisabled(bonus))
-        ModRecipeHelper.addSagMillRecipe(metal.getMetalName(), ore, dust, bonus, "cobblestone", 3000);
+        // Ender IO Sag Mill
+        ItemStack dust = metal.getDust();
+        ItemStack bonus = metal.getBonus();
+        if (!reg.isItemDisabled(dust) && !reg.isItemDisabled(bonus))
+          ModRecipeHelper.addSagMillRecipe(metal.getMetalName(), ore, dust, bonus, "cobblestone",
+              3000);
+      }
     }
   }
 
@@ -75,11 +98,13 @@ public class BlockOreMetal extends BlockSL implements IWitHudInfo {
 
     for (EnumMetal metal : EnumMetal.values()) {
       ItemStack stack = new ItemStack(this, 1, metal.getMeta());
-      OreDictionary.registerOre("ore" + metal.getMetalName(), stack);
+      if (!FunOres.registry.isItemDisabled(stack)) {
+        OreDictionary.registerOre("ore" + metal.getMetalName(), stack);
+        // Alternative spelling of aluminium
+        if (metal == EnumMetal.ALUMINIUM)
+          OreDictionary.registerOre("oreAluminum", stack);
+      }
     }
-
-    // Alternative spelling of aluminium
-    OreDictionary.registerOre("oreAluminum", new ItemStack(this, 1, EnumMetal.ALUMINIUM.meta));
   }
 
   @Override
@@ -100,8 +125,12 @@ public class BlockOreMetal extends BlockSL implements IWitHudInfo {
 
     List<ModelResourceLocation> models = Lists.newArrayList();
     for (EnumMetal metal : EnumMetal.values()) {
-      models.add(
-          new ModelResourceLocation(FunOres.MOD_ID + ":Ore" + metal.getMetalName(), "inventory"));
+      if (!FunOres.registry.isItemDisabled(new ItemStack(this, 1, metal.meta))) {
+        String name = FunOres.MOD_ID + ":Ore" + metal.getMetalName();
+        models.add(new ModelResourceLocation(name, "inventory"));
+      } else {
+        models.add(null);
+      }
     }
     return models;
   }
@@ -115,8 +144,10 @@ public class BlockOreMetal extends BlockSL implements IWitHudInfo {
   @Override
   public void getSubBlocks(Item item, CreativeTabs tab, List list) {
 
-    for (int i = 0; i < EnumMetal.count(); ++i) {
-      list.add(new ItemStack(item, 1, EnumMetal.values()[i].getMeta()));
+    for (EnumMetal metal : EnumMetal.values()) {
+      ItemStack stack = new ItemStack(item, 1, metal.meta);
+      if (!FunOres.registry.isItemDisabled(stack))
+        list.add(stack);
     }
   }
 

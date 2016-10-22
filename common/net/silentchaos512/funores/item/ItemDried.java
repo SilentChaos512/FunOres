@@ -139,9 +139,12 @@ public class ItemDried extends ItemFood implements IRegistryObject, IDisableable
   public List<ModelResourceLocation> getVariants() {
 
     List<ModelResourceLocation> models = Lists.newArrayList();
-    for (EnumDriedItem item : EnumDriedItem.values())
+    for (EnumDriedItem item : EnumDriedItem.values()) {
       if (!FunOres.registry.isItemDisabled(item.getItem())) // Don't load disabled item models.
         models.add(new ModelResourceLocation(FunOres.MOD_ID + ":" + item.textureName, "inventory"));
+      else
+        models.add(null);
+    }
     return models;
   }
 

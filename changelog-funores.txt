@@ -1,8 +1,9 @@
 1.3.2
 Significantly improved block/item disabling.
-- Disabled blocks/items should no longer appear in creative tabs (let me know if any still show up).
-- Less copy-pasted code should make behavior more consistent.
-- The models for disabled blocks/items are no longer loaded. Hurray for SLIGHTLY less memory usage...?
+    - Disabled blocks/items should no longer appear in creative tabs (let me know if any still show up).
+    - Disabled ores are now hidden.
+    - Less copy-pasted code should make behavior more consistent.
+    - The models for disabled blocks/items are no longer loaded. Hurray for SLIGHTLY less memory usage...?
 Fixed: A crash when an ore has no bonus drops assigned, but pick count is set higher than zero.
 Fixed: Iron nugget and iron/gold dust not appearing in JEI.
 

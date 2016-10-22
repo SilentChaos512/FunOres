@@ -9,8 +9,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.silentchaos512.funores.FunOres;
+import net.silentchaos512.funores.block.BlockFunOre;
 import net.silentchaos512.funores.compat.jei.FunOresPlugin;
 import net.silentchaos512.funores.configuration.Config;
+import net.silentchaos512.funores.configuration.ConfigOptionOreGen;
 import net.silentchaos512.funores.lib.IDisableable;
 import net.silentchaos512.lib.registry.SRegistry;
 
@@ -59,11 +61,22 @@ public class FunOresRegistry extends SRegistry {
   public Block registerBlock(Block block, String key, ItemBlock itemBlock) {
 
     if (block instanceof IDisableable) {
+      // General disableable blocks.
       List<ItemStack> list = getSubItems((IDisableable) block, itemBlock);
       for (ItemStack stack : list) {
         if (!Config.isItemDisabled(stack)) {
           block.setCreativeTab(FunOres.tabFunOres);
         } else {
+          disabledItems.add(getStackKey(stack));
+          FunOresPlugin.disabledItems.add(stack);
+        }
+      }
+    } else if (block instanceof BlockFunOre) {
+      // Ores are not IDisableable, so we check the ore configs.
+      BlockFunOre ore = (BlockFunOre) block;
+      for (int i = 0; i < ore.maxMeta; ++i) {
+        if (!ore.isEnabled(i)) {
+          ItemStack stack = new ItemStack(itemBlock, 1, i);
           disabledItems.add(getStackKey(stack));
           FunOresPlugin.disabledItems.add(stack);
         }

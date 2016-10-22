@@ -64,6 +64,8 @@ public class BlockMetal extends BlockSL implements IDisableable {
       if (!FunOres.registry.isItemDisabled(metal.getBlock())) {
         String name = FunOres.MOD_ID + ":Block" + metal.getMetalName();
         models.add(new ModelResourceLocation(name, "inventory"));
+      } else {
+        models.add(null);
       }
     }
     return models;

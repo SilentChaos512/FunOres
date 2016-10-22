@@ -1,14 +1,11 @@
 package net.silentchaos512.funores.block;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import com.google.common.collect.Lists;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
@@ -27,39 +24,55 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.oredict.OreDictionary;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.configuration.Config;
-import net.silentchaos512.funores.configuration.ConfigItemDrop;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGen;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGenBonus;
 import net.silentchaos512.funores.init.ModBlocks;
-import net.silentchaos512.funores.lib.EnumMeat;
 import net.silentchaos512.funores.lib.EnumMob;
 import net.silentchaos512.funores.lib.Names;
 import net.silentchaos512.funores.util.OreLootHelper;
-import net.silentchaos512.lib.block.BlockSL;
 import net.silentchaos512.wit.api.IWitHudInfo;
 
-public class BlockOreMob extends BlockSL implements IWitHudInfo {
+public class BlockOreMob extends BlockFunOre implements IWitHudInfo {
 
   public static final PropertyEnum MOB = PropertyEnum.create("mob", EnumMob.class);
 
   public BlockOreMob() {
 
-    super(EnumMob.count(), FunOres.MOD_ID, Names.MOB_ORE, Material.ROCK);
+    super(EnumMob.count(), Names.MOB_ORE);
 
     setHardness(1.5f);
     setResistance(10.0f);
     setSoundType(SoundType.STONE);
     setHarvestLevel("pickaxe", 0);
 
-//    setHasSubtypes(true);
     setUnlocalizedName(Names.MOB_ORE);
+  }
+
+  @Override
+  public ConfigOptionOreGen getConfig(int meta) {
+
+    if (meta < 0 || meta >= EnumMob.values().length)
+      return null;
+    return EnumMob.byMetadata(meta).getConfig();
+  }
+
+  @Override
+  public boolean isEnabled(int meta) {
+
+    if (Config.disableMobOres)
+      return false;
+
+    ConfigOptionOreGen config = getConfig(meta);
+    return config == null ? false : config.enabled;
   }
 
   @Override
   public void addOreDict() {
 
     for (EnumMob mob : EnumMob.values()) {
-      OreDictionary.registerOre("ore" + mob.getName(), new ItemStack(this, 1, mob.getMeta()));
+      ItemStack stack = new ItemStack(this, 1, mob.getMeta());
+      if (!FunOres.registry.isItemDisabled(stack))
+        OreDictionary.registerOre("ore" + mob.getName(), stack);
     }
   }
 
@@ -71,7 +84,7 @@ public class BlockOreMob extends BlockSL implements IWitHudInfo {
       return null;
     }
 
-    EnumMob mob= EnumMob.byMetadata(state.getBlock().getMetaFromState(state));
+    EnumMob mob = EnumMob.byMetadata(state.getBlock().getMetaFromState(state));
     ConfigOptionOreGen config = mob.getConfig();
     return ModBlocks.getWitInfoForOre(config, state, pos, player);
   }
@@ -81,7 +94,12 @@ public class BlockOreMob extends BlockSL implements IWitHudInfo {
 
     List<ModelResourceLocation> models = Lists.newArrayList();
     for (EnumMob mob : EnumMob.values()) {
-      models.add(new ModelResourceLocation(FunOres.MOD_ID + ":Ore" + mob.getUnmodifiedName(), "inventory"));
+      if (!FunOres.registry.isItemDisabled(new ItemStack(this, 1, mob.meta))) {
+        String name = FunOres.MOD_ID + ":Ore" + mob.getUnmodifiedName();
+        models.add(new ModelResourceLocation(name, "inventory"));
+      } else {
+        models.add(null);
+      }
     }
     return models;
   }
@@ -95,8 +113,10 @@ public class BlockOreMob extends BlockSL implements IWitHudInfo {
   @Override
   public void getSubBlocks(Item item, CreativeTabs tab, List list) {
 
-    for (int i = 0; i < EnumMob.count(); ++i) {
-      list.add(new ItemStack(item, 1, EnumMob.values()[i].getMeta()));
+    for (EnumMob mob : EnumMob.values()) {
+      ItemStack stack = new ItemStack(item, 1, mob.meta);
+      if (!FunOres.registry.isItemDisabled(stack))
+        list.add(stack);
     }
   }
 
@@ -148,9 +168,8 @@ public class BlockOreMob extends BlockSL implements IWitHudInfo {
   }
 
   @Override
-  public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
-
-//    List<ItemStack> ret = new ArrayList<ItemStack>();
+  public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state,
+      int fortune) {
 
     Random rand = world instanceof World ? ((World) world).rand : RANDOM;
 
@@ -164,36 +183,5 @@ public class BlockOreMob extends BlockSL implements IWitHudInfo {
     }
 
     return Lists.newArrayList();
-
-//    ConfigOptionOreGenBonus config = ((EnumMob) state.getValue(MOB)).getConfig();
-//
-//    ConfigItemDrop[] dropsToTry;
-//    // Pick a certain number from the list, or try them all?
-//    if (config.pick != 0) {
-//      dropsToTry = new ConfigItemDrop[config.pick];
-//      for (int i = 0; i < config.pick; ++i) {
-//        dropsToTry[i] = config.drops.get(rand.nextInt(config.drops.size()));
-//      }
-//    } else {
-//      dropsToTry = config.drops.toArray(new ConfigItemDrop[] {});
-//    }
-//
-//    for (ConfigItemDrop drop : dropsToTry) {
-//      // Make sure drop config isn't null.
-//      if (drop != null) {
-//        // Should we do the drop?
-//        if (rand.nextFloat() < drop.getDropChance(fortune)) {
-//          // How many to drop?
-//          ItemStack stack = drop.getStack().copy();
-//          stack.stackSize = drop.getDropCount(fortune, rand);
-//          // Drop stuff.
-//          for (int i = 0; i < stack.stackSize; ++i) {
-//            ret.add(new ItemStack(stack.getItem(), 1, stack.getItemDamage()));
-//          }
-//        }
-//      }
-//    }
-//
-//    return ret;
   }
 }

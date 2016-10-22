@@ -25,8 +25,12 @@ public class ItemBaseDisableable extends ItemSL implements IDisableable {
     List<ModelResourceLocation> models = Lists.newArrayList();
     String prefix = FunOres.MOD_ID + ":" + itemName;
 
-    for (int i = 0; i < subItemCount; ++i)
-      models.add(new ModelResourceLocation(prefix + i, "inventory"));
+    for (int i = 0; i < subItemCount; ++i) {
+      if (!FunOres.registry.isItemDisabled(new ItemStack(this, 1, i)))
+        models.add(new ModelResourceLocation(prefix + i, "inventory"));
+      else
+        models.add(null);
+    }
 
     return models;
   }

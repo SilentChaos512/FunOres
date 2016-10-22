@@ -1,15 +1,11 @@
 package net.silentchaos512.funores.block;
 
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import com.google.common.collect.Lists;
-import com.mojang.authlib.GameProfile;
 
 import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
@@ -18,24 +14,13 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntityBat;
-import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Enchantments;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
-import net.minecraft.world.storage.loot.LootContext;
-import net.minecraft.world.storage.loot.LootTable;
-import net.minecraftforge.common.util.FakePlayer;
-import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.oredict.OreDictionary;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.configuration.Config;
@@ -45,31 +30,49 @@ import net.silentchaos512.funores.init.ModBlocks;
 import net.silentchaos512.funores.lib.EnumMeat;
 import net.silentchaos512.funores.lib.Names;
 import net.silentchaos512.funores.util.OreLootHelper;
-import net.silentchaos512.lib.block.BlockSL;
 import net.silentchaos512.wit.api.IWitHudInfo;
 
-public class BlockOreMeat extends BlockSL implements IWitHudInfo {
+public class BlockOreMeat extends BlockFunOre implements IWitHudInfo {
 
   public static final PropertyEnum MEAT = PropertyEnum.create("meat", EnumMeat.class);
 
   public BlockOreMeat() {
 
-    super(EnumMeat.count(), FunOres.MOD_ID, Names.MEAT_ORE, Material.ROCK);
+    super(EnumMeat.count(), Names.MEAT_ORE);
 
     setHardness(1.5f);
     setResistance(10.0f);
     setSoundType(SoundType.STONE);
     setHarvestLevel("pickaxe", 0);
 
-    // setHasSubtypes(true);
     setUnlocalizedName(Names.MEAT_ORE);
+  }
+
+  @Override
+  public ConfigOptionOreGen getConfig(int meta) {
+
+    if (meta < 0 || meta >= EnumMeat.values().length)
+      return null;
+    return EnumMeat.byMetadata(meta).getConfig();
+  }
+
+  @Override
+  public boolean isEnabled(int meta) {
+
+    if (Config.disableMeatOres)
+      return false;
+
+    ConfigOptionOreGen config = getConfig(meta);
+    return config == null ? false : config.enabled;
   }
 
   @Override
   public void addOreDict() {
 
     for (EnumMeat meat : EnumMeat.values()) {
-      OreDictionary.registerOre("ore" + meat.getName(), new ItemStack(this, 1, meat.getMeta()));
+      ItemStack stack = new ItemStack(this, 1, meat.meta);
+      if (!FunOres.registry.isItemDisabled(stack))
+        OreDictionary.registerOre("ore" + meat.getName(), stack);
     }
   }
 
@@ -91,8 +94,12 @@ public class BlockOreMeat extends BlockSL implements IWitHudInfo {
 
     List<ModelResourceLocation> models = Lists.newArrayList();
     for (EnumMeat meat : EnumMeat.values()) {
-      models.add(new ModelResourceLocation(FunOres.MOD_ID + ":Ore" + meat.getUnmodifiedName(),
-          "inventory"));
+      if (!FunOres.registry.isItemDisabled(new ItemStack(this, 1, meat.meta))) {
+        String name = FunOres.MOD_ID + ":Ore" + meat.getUnmodifiedName();
+        models.add(new ModelResourceLocation(name, "inventory"));
+      } else {
+        models.add(null);
+      }
     }
     return models;
   }
@@ -106,8 +113,10 @@ public class BlockOreMeat extends BlockSL implements IWitHudInfo {
   @Override
   public void getSubBlocks(Item item, CreativeTabs tab, List list) {
 
-    for (int i = 0; i < EnumMeat.count(); ++i) {
-      list.add(new ItemStack(item, 1, EnumMeat.values()[i].getMeta()));
+    for (EnumMeat meat : EnumMeat.values()) {
+      ItemStack stack = new ItemStack(item, 1, meat.meta);
+      if (!FunOres.registry.isItemDisabled(stack))
+        list.add(stack);
     }
   }
 
@@ -162,8 +171,6 @@ public class BlockOreMeat extends BlockSL implements IWitHudInfo {
   public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state,
       int fortune) {
 
-//    List<ItemStack> ret = new ArrayList<ItemStack>();
-
     Random rand = FunOres.random;
 
     if (world instanceof WorldServer) {
@@ -176,124 +183,7 @@ public class BlockOreMeat extends BlockSL implements IWitHudInfo {
     }
 
     return Lists.newArrayList();
-
-    // ConfigOptionOreGenBonus config = ((EnumMeat) state.getValue(MEAT)).getConfig();
-    //
-    // ConfigItemDrop[] dropsToTry;
-    // // Pick a certain number from the list, or try them all?
-    // if (config.pick != 0) {
-    // dropsToTry = new ConfigItemDrop[config.pick];
-    // for (int i = 0; i < config.pick; ++i) {
-    // dropsToTry[i] = config.drops.get(rand.nextInt(config.drops.size()));
-    // }
-    // } else {
-    // dropsToTry = config.drops.toArray(new ConfigItemDrop[] {});
-    // }
-    //
-    // for (ConfigItemDrop drop : dropsToTry) {
-    // // Make sure drop config isn't null.
-    // if (drop != null) {
-    // // Should we do the drop?
-    // if (rand.nextFloat() < drop.getDropChance(fortune)) {
-    // // How many to drop?
-    // ItemStack stack = drop.getStack().copy();
-    // stack.stackSize = drop.getDropCount(fortune, rand);
-    // // Drop stuff.
-    // for (int i = 0; i < stack.stackSize; ++i) {
-    // ret.add(new ItemStack(stack.getItem(), 1, stack.getItemDamage()));
-    // }
-    // }
-    // }
-    // }
-
-//    return ret;
   }
-
-  private ItemStack getBonusItemDropped(IBlockState state, Random rand, int fortune) {
-
-    int r;
-    switch ((EnumMeat) state.getValue(MEAT)) {
-      case PIG:
-        if (rand.nextInt(100) < 2 + 1 * fortune) {
-          return new ItemStack(Items.SADDLE);
-        } else {
-          return null;
-        }
-      case FISH:
-        r = rand.nextInt(100);
-        int meta = 0;
-        if (r < 50) {
-          meta = 1;
-        } else if (r < 65) {
-          meta = 2;
-        } else if (r < 75) {
-          meta = 3;
-        }
-        if (meta > 0) {
-          return new ItemStack(Items.FISH, 1 + rand.nextInt(fortune + 1), meta);
-        } else {
-          return null;
-        }
-      case COW:
-        if (rand.nextInt(100) < 50 + 7 * fortune) {
-          return new ItemStack(Items.LEATHER, 1 + rand.nextInt(fortune + 1));
-        } else {
-          return null;
-        }
-      case CHICKEN:
-        if (rand.nextInt(100) < 15) {
-          return new ItemStack(Items.EGG, 2 + rand.nextInt(fortune + 1));
-        } else if (rand.nextInt(100) < 50 + 8 * fortune) {
-          return new ItemStack(Items.FEATHER, 2 + rand.nextInt(fortune + 1));
-        } else {
-          return null;
-        }
-      case RABBIT:
-        r = rand.nextInt(100);
-        if (r < 60 + 5 * fortune) {
-          return new ItemStack(Items.RABBIT_HIDE, 1 + rand.nextInt(fortune + 1));
-        } else if (r < 65 + 5 * fortune) {
-          return new ItemStack(Items.RABBIT_FOOT, 1 + rand.nextInt(fortune / 2 + 1));
-        } else {
-          return null;
-        }
-      case SHEEP:
-        if (rand.nextInt(100) < 45 + 6 * fortune) {
-          return new ItemStack(Blocks.WOOL, 1 + rand.nextInt(fortune + 1));
-        } else {
-          return null;
-        }
-      default:
-        return null;
-    }
-  }
-
-  // @Override
-  // public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-  //
-  // switch ((EnumMeat) state.getValue(MEAT)) {
-  // case PIG:
-  // return Items.porkchop;
-  // case FISH:
-  // return Items.fish;
-  // case COW:
-  // return Items.beef;
-  // case CHICKEN:
-  // return Items.chicken;
-  // case RABBIT:
-  // return Items.rabbit;
-  // case SHEEP:
-  // return Items.mutton;
-  // default:
-  // return Items.rotten_flesh;
-  // }
-  // }
-
-  // @Override
-  // public int quantityDropped(Random random) {
-  //
-  // return 1;
-  // }
 
   @Override
   public int quantityDroppedWithBonus(int fortune, Random random) {
