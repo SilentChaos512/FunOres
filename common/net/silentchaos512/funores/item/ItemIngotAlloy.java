@@ -1,5 +1,6 @@
 package net.silentchaos512.funores.item;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -20,7 +21,8 @@ public class ItemIngotAlloy extends ItemBaseMetal {
   @Override
   public List<IMetal> getMetals(Item item) {
 
-    return Arrays.asList(EnumAlloy.values());
+    List<IMetal> list = new ArrayList<IMetal>(Arrays.asList(EnumAlloy.values()));
+    return list; // Build fails if not assigned to a variable?
   }
 
   @Override

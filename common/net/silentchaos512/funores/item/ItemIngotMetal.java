@@ -1,5 +1,6 @@
 package net.silentchaos512.funores.item;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -7,6 +8,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import net.silentchaos512.funores.FunOres;
+import net.silentchaos512.funores.lib.EnumAlloy;
 import net.silentchaos512.funores.lib.EnumMetal;
 import net.silentchaos512.funores.lib.EnumVanillaMetal;
 import net.silentchaos512.funores.lib.IMetal;
@@ -23,7 +25,8 @@ public class ItemIngotMetal extends ItemBaseMetal {
   @Override
   public List<IMetal> getMetals(Item item) {
 
-    return Arrays.asList(EnumMetal.values()); // No vanilla metals for ingots!
+    List<IMetal> list = new ArrayList(Arrays.asList(EnumMetal.values())); // No vanilla metals for ingots!
+    return list; // Build fails if not assigned to a variable?
   }
 
   @Override

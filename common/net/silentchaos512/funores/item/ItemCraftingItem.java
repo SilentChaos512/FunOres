@@ -41,12 +41,14 @@ public class ItemCraftingItem extends ItemBaseMetal {
   @Override
   public List<IMetal> getMetals(Item item) {
 
+    List<IMetal> metals = Lists.newArrayList();
+
     if (isAlloy) {
       // Alloys
-      return Arrays.asList(EnumAlloy.values());
+      metals.addAll(Arrays.asList(EnumAlloy.values()));
     } else {
       // Basic metals (including vanilla)
-      List<IMetal> metals = new ArrayList(Arrays.asList(EnumMetal.values()));
+      metals.addAll(Arrays.asList(EnumMetal.values()));
       metals.addAll(Arrays.asList(EnumVanillaMetal.values()));
       // Extended vanilla
       for (EnumVanillaExtended extended : EnumVanillaExtended.values())
@@ -54,6 +56,8 @@ public class ItemCraftingItem extends ItemBaseMetal {
           metals.add(extended);
       return metals;
     }
+
+    return metals;
   }
 
   @Override
@@ -83,6 +87,7 @@ public class ItemCraftingItem extends ItemBaseMetal {
       OreDictionary.registerOre(oreDictPrefix + "Aluminum",
           new ItemStack(this, 1, EnumMetal.ALUMINIUM.meta));
   }
+
   @Override
   public String getNameForStack(ItemStack stack) {
 
