@@ -7,6 +7,8 @@ import java.util.Set;
 import com.google.common.collect.Sets;
 
 import net.minecraft.item.ItemStack;
+import net.silentchaos512.funores.FunOres;
+import net.silentchaos512.funores.init.ModBlocks;
 
 public class AlloySmelterRecipe {
 
@@ -38,6 +40,8 @@ public class AlloySmelterRecipe {
    *          should be greater than 0, less than 5.
    */
   public static void addRecipe(ItemStack output, int cookTime, float experience, Object... inputs) {
+
+    if (FunOres.registry.isItemDisabled(new ItemStack(ModBlocks.alloySmelter))) return;
 
     AlloySmelterRecipe newRecipe = new AlloySmelterRecipe(output, cookTime, experience, inputs);
     for (AlloySmelterRecipeObject recipeObject : newRecipe.getInputs()) {

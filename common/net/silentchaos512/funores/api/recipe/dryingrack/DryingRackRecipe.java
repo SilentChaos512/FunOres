@@ -7,6 +7,8 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 import net.minecraft.item.ItemStack;
+import net.silentchaos512.funores.FunOres;
+import net.silentchaos512.funores.init.ModBlocks;
 
 public class DryingRackRecipe {
 
@@ -29,6 +31,8 @@ public class DryingRackRecipe {
 
   public static void addRecipe(ItemStack output, DryingRackRecipeObject input, int dryTime,
       float experience) {
+
+    if (FunOres.registry.isItemDisabled(new ItemStack(ModBlocks.dryingRack))) return;
 
     DryingRackRecipe newRecipe = new DryingRackRecipe(output, input, dryTime, experience);
     allIngredients.add(newRecipe.input);
