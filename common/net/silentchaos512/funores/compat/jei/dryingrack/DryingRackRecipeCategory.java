@@ -7,6 +7,7 @@ import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IDrawableAnimated;
 import mezz.jei.api.gui.IDrawableStatic;
 import mezz.jei.api.gui.IRecipeLayout;
+import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeCategory;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
@@ -73,6 +74,12 @@ public class DryingRackRecipeCategory implements IRecipeCategory {
   @Override
   public void setRecipe(IRecipeLayout recipeLayout, IRecipeWrapper recipeWrapper) {
 
+    setRecipe(recipeLayout, recipeWrapper, null);
+  }
+
+  @Override
+  public void setRecipe(IRecipeLayout recipeLayout, IRecipeWrapper recipeWrapper, IIngredients ingredients) {
+
     recipeLayout.getItemStacks().init(0, true, 26, 11);
     recipeLayout.getItemStacks().init(1, false, 77, 11);
 
@@ -81,5 +88,12 @@ public class DryingRackRecipeCategory implements IRecipeCategory {
       recipeLayout.getItemStacks().set(0, wrapper.getInputs());
       recipeLayout.getItemStacks().set(1, wrapper.getOutputs());
     }
+  }
+
+  @Override
+  public IDrawable getIcon() {
+
+    // TODO Auto-generated method stub
+    return null;
   }
 }

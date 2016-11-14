@@ -9,6 +9,7 @@ import javax.annotation.Nonnull;
 
 import com.google.common.collect.Lists;
 
+import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -56,5 +57,12 @@ public class AlloySmelterRecipeJei extends BlankRecipeWrapper {
     fontRender.drawStringWithShadow(str, 63, 0, 0xFFFFFF);
     str = recipe.getCookTime() + "t";
     fontRender.drawStringWithShadow(str, 66, 28, 0xFFFFFF);
+  }
+
+  @Override
+  public void getIngredients(IIngredients arg0) {
+
+    // TODO Auto-generated method stub
+    
   }
 }

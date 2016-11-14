@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -41,5 +42,12 @@ public class DryingRackRecipeJei extends BlankRecipeWrapper {
     fontRender.drawStringWithShadow(str, 46, 0, 0xFFFFFF);
     str = recipe.getDryTime() + "t";
     fontRender.drawStringWithShadow(str, 46, 28, 0xFFFFFF);
+  }
+
+  @Override
+  public void getIngredients(IIngredients arg0) {
+
+    // TODO Auto-generated method stub
+    
   }
 }

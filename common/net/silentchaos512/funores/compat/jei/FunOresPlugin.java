@@ -9,7 +9,9 @@ import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.IJeiRuntime;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.IModRegistry;
+import mezz.jei.api.ISubtypeRegistry;
 import mezz.jei.api.JEIPlugin;
+import mezz.jei.api.ingredients.IModIngredientRegistration;
 import net.minecraft.item.ItemStack;
 import net.silentchaos512.funores.compat.jei.alloysmelter.AlloySmelterRecipeCategory;
 import net.silentchaos512.funores.compat.jei.alloysmelter.AlloySmelterRecipeHandler;
@@ -63,5 +65,19 @@ public class FunOresPlugin implements IModPlugin {
   public void onRuntimeAvailable(IJeiRuntime runtime) {
 
     // TODO Auto-generated method stub
+  }
+
+  @Override
+  public void registerIngredients(IModIngredientRegistration arg0) {
+
+    // TODO Auto-generated method stub
+    
+  }
+
+  @Override
+  public void registerItemSubtypes(ISubtypeRegistry arg0) {
+
+    // TODO Auto-generated method stub
+    
   }
 }

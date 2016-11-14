@@ -185,6 +185,6 @@ public class FunOresGenerator implements IWorldGenerator {
     int posZ = (pos.getZ() & 0xFFFFFFF0) + 8;
     BlockPos center = new BlockPos(posX, 64, posZ);
     // LogHelper.debug(pos + " -> " + center);
-    return world.getBiomeGenForCoords(center);
+    return world.getBiome(center);
   }
 }

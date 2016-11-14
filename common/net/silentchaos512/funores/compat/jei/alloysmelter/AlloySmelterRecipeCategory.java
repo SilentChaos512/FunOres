@@ -7,6 +7,7 @@ import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IDrawableAnimated;
 import mezz.jei.api.gui.IDrawableStatic;
 import mezz.jei.api.gui.IRecipeLayout;
+import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeCategory;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
@@ -82,6 +83,13 @@ public class AlloySmelterRecipeCategory implements IRecipeCategory {
   @Override
   public void setRecipe(IRecipeLayout recipeLayout, IRecipeWrapper recipeWrapper) {
 
+    // TODO
+    setRecipe(recipeLayout, recipeWrapper, null);
+  }
+
+  @Override
+  public void setRecipe(IRecipeLayout recipeLayout, IRecipeWrapper recipeWrapper, IIngredients ingredients) {
+
     recipeLayout.getItemStacks().init(0, true, 25, 0);
     recipeLayout.getItemStacks().init(1, true, 43, 0);
     recipeLayout.getItemStacks().init(2, true, 25, 18);
@@ -100,5 +108,12 @@ public class AlloySmelterRecipeCategory implements IRecipeCategory {
       // Set output
       recipeLayout.getItemStacks().set(TileAlloySmelter.SLOT_OUTPUT, wrapper.getOutputs());
     }
+  }
+
+  @Override
+  public IDrawable getIcon() {
+
+    // TODO Auto-generated method stub
+    return null;
   }
 }
