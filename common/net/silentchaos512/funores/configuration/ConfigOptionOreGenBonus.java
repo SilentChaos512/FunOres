@@ -4,6 +4,7 @@ import java.text.NumberFormat;
 import java.text.ParsePosition;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import com.google.common.collect.Lists;
 
@@ -12,6 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.config.Configuration;
+import net.silentchaos512.funores.FunOres;
 
 public class ConfigOptionOreGenBonus extends ConfigOptionOreGen {
 
@@ -67,11 +69,13 @@ public class ConfigOptionOreGenBonus extends ConfigOptionOreGen {
    */
   public static void initItemKeys() {
 
+    NumberFormat numberFormat = NumberFormat.getInstance(Locale.US);
+
     for (ConfigOptionOreGenBonus config : LOADED_CONFIGS) {
       config.bonusDrops.clear();
       // Parse bonus drop keys.
       for (String dropKey : config.bonusDropKeys) {
-        ConfigItemDrop drop = config.parseItemDrop(dropKey);
+        ConfigItemDrop drop = config.parseItemDrop(dropKey, numberFormat);
         if (drop != null)
           config.bonusDrops.add(drop);
       }
@@ -79,7 +83,7 @@ public class ConfigOptionOreGenBonus extends ConfigOptionOreGen {
       // Parse the removed standard drop keys.
       config.removedDrops.clear();
       for (String stackKey : config.removedDropKeys) {
-        ItemStack stack = config.parseStack(stackKey);
+        ItemStack stack = config.parseStack(stackKey, numberFormat);
         if (stack != null)
           config.removedDrops.add(stack);
       }
@@ -169,7 +173,7 @@ public class ConfigOptionOreGenBonus extends ConfigOptionOreGen {
    * @param input
    * @return
    */
-  private ConfigItemDrop parseItemDrop(String input) {
+  private ConfigItemDrop parseItemDrop(String input, NumberFormat numberFormat) {
 
     // minecraft:stick, count, meta, chance, fortuneChanceBonus, fortuneCountBonus
 
@@ -202,15 +206,13 @@ public class ConfigOptionOreGenBonus extends ConfigOptionOreGen {
       return null;
     }
 
-    NumberFormat format = NumberFormat.getInstance();
-
     // Get stack size and meta
     int count = -1;
     int meta = -1;
     int currentIndex = 0;
     try {
-      count = parseInt(values[currentIndex = 1].trim());
-      meta = parseInt(values[currentIndex = 2].trim());
+      count = parseInt(values[currentIndex = 1].trim(), numberFormat);
+      meta = parseInt(values[currentIndex = 2].trim(), numberFormat);
     } catch (NumberFormatException ex) {
       String error = "Could not parse \"%s\" as integer: %s";
       error = String.format(error, values[currentIndex], input);
@@ -223,9 +225,9 @@ public class ConfigOptionOreGenBonus extends ConfigOptionOreGen {
     float chance;
     float chanceBonus;
     try {
-      chance = parseFloat(values[currentIndex = 3].trim());
-      chanceBonus = parseFloat(values[currentIndex = 4].trim());
-      countBonus = parseFloat(values[currentIndex = 5].trim());
+      chance = parseFloat(values[currentIndex = 3].trim(), numberFormat);
+      chanceBonus = parseFloat(values[currentIndex = 4].trim(), numberFormat);
+      countBonus = parseFloat(values[currentIndex = 5].trim(), numberFormat);
     } catch (NumberFormatException ex) {
       String error = "Could not parse \"%s\" as float: %s";
       error = String.format(error, values[currentIndex], input);
@@ -233,11 +235,13 @@ public class ConfigOptionOreGenBonus extends ConfigOptionOreGen {
       return null;
     }
 
+    //FunOres.logHelper.debug(item.getUnlocalizedName(), count, meta, chance, chanceBonus, countBonus);
+
     // Finally, create ConfigItemDrop
     return new ConfigItemDrop(item, count, meta, chance, chanceBonus, countBonus);
   }
 
-  private ItemStack parseStack(String input) {
+  private ItemStack parseStack(String input, NumberFormat numberFormat) {
 
     if (input.trim().toLowerCase().startsWith("null"))
       return null;
@@ -246,7 +250,7 @@ public class ConfigOptionOreGenBonus extends ConfigOptionOreGen {
     input = input.trim();
     String[] values = input.split(SPLITTER);
     for (int i = 0; i < values.length; ++i)
-      values[i] = values[i].replaceAll(",$", "");
+      values[i] = values[i].replaceFirst(",$", "");
 
     // Check for correctly formed key.
     if (values.length != 3) {
@@ -265,15 +269,13 @@ public class ConfigOptionOreGenBonus extends ConfigOptionOreGen {
       return null;
     }
 
-    NumberFormat format = NumberFormat.getInstance();
-
     // Get stack size and meta
     int count = -1;
     int meta = -1;
     int currentIndex = 0;
     try {
-      count = parseInt(values[currentIndex = 1].trim());
-      meta = parseInt(values[currentIndex = 2].trim());
+      count = parseInt(values[currentIndex = 1].trim(), numberFormat);
+      meta = parseInt(values[currentIndex = 2].trim(), numberFormat);
     } catch (NumberFormatException ex) {
       String error = "Could not parse \"%s\" as integer: %s";
       error = String.format(error, values[currentIndex], input);
@@ -284,9 +286,8 @@ public class ConfigOptionOreGenBonus extends ConfigOptionOreGen {
     return new ItemStack(item, count, meta);
   }
 
-  public int parseInt(String input) {
+  public int parseInt(String input, NumberFormat numberFormat) {
 
-    NumberFormat numberFormat = NumberFormat.getNumberInstance();
     ParsePosition parsePosition = new ParsePosition(0);
     Number number = numberFormat.parse(input, parsePosition);
 
@@ -294,21 +295,18 @@ public class ConfigOptionOreGenBonus extends ConfigOptionOreGen {
       throw new NumberFormatException();
     }
 
-    // LogHelper.debug(input + " -> " + number.intValue());
     return number.intValue();
   }
 
-  public float parseFloat(String input) {
+  public float parseFloat(String input, NumberFormat numberFormat) {
 
-    NumberFormat numberFormat = NumberFormat.getNumberInstance();
     ParsePosition parsePosition = new ParsePosition(0);
-    Number number = numberFormat.parse(input, parsePosition);
+    Number number = numberFormat.parse(input.replaceFirst(",", "."), parsePosition);
 
     if (parsePosition.getIndex() != input.length()) {
       throw new NumberFormatException();
     }
 
-    // LogHelper.debug(input + " -> " + number.floatValue());
     return number.floatValue();
   }
 }

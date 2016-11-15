@@ -1,6 +1,7 @@
 package net.silentchaos512.funores.configuration;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 import com.google.common.collect.Lists;
@@ -53,7 +54,7 @@ public class ConfigItemDrop {
       float fortuneChanceBonus, float fortuneCountBonus) {
 
     // LogHelper.debug(Item.getByNameOrId(itemName).getUnlocalizedName());
-    return String.format("%s %d %d %.3f %.3f %.3f", itemName, count, meta, baseChance,
+    return String.format(Locale.US, "%s %d %d %.3f %.3f %.3f", itemName, count, meta, baseChance,
         fortuneChanceBonus, fortuneCountBonus);
   }
 
