@@ -8,6 +8,7 @@
     "metal=platinum": { "model": "FunOres:BlockPlatinum" },
     "metal=aluminium": { "model": "FunOres:BlockAluminium" },
     "metal=zinc": { "model": "FunOres:BlockZinc" },
-    "metal=titanium": { "model": "FunOres:BlockTitanium" }
+    "metal=titanium": { "model": "FunOres:BlockTitanium" },
+    "metal=osmium": { "model": "FunOres:BlockOsmium" }
   }
 }

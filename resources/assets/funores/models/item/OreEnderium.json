@@ -1,6 +1,0 @@
-{
-  "parent": "FunOres:block/OreEnderium",
-  "textures": {
-    "layer0": "FunOres:blocks/OreEnderium"
-  }
-}

@@ -34,6 +34,7 @@ tile.funores:MetalBlock5.name=Platinum Block
 tile.funores:MetalBlock6.name=Aluminium Block
 tile.funores:MetalBlock7.name=Zinc Block
 tile.funores:MetalBlock8.name=Titanium Block
+tile.funores:MetalBlock9.name=Osmium Block
 
 tile.funores:MetalFurnace.name=Metal Furnace
 
@@ -46,6 +47,7 @@ tile.funores:MetalOre5.name=Platinum Ore
 tile.funores:MetalOre6.name=Aluminium Ore
 tile.funores:MetalOre7.name=Zinc Ore
 tile.funores:MetalOre8.name=Titanium Ore
+tile.funores:MetalOre9.name=Osmium Ore
 
 tile.funores:MobOre0.name=Zombie Ore
 tile.funores:MobOre1.name=Skeleton Ore
@@ -96,6 +98,7 @@ item.funores:GearPlatinum.name=Platinum Gear
 item.funores:GearAluminium.name=Aluminium Gear
 item.funores:GearZinc.name=Zinc Gear
 item.funores:GearTitanium.name=Titanium Gear
+item.funores:GearOsmium.name=Osmium Gear
 item.funores:GearIron.name=Iron Gear
 item.funores:GearGold.name=Gold Gear
 item.funores:GearWood.name=Wooden Gear
@@ -122,6 +125,7 @@ item.funores:MetalDust5.name=Platinum Dust
 item.funores:MetalDust6.name=Aluminium Dust
 item.funores:MetalDust7.name=Zinc Dust
 item.funores:MetalDust8.name=Titanium Dust
+item.funores:MetalDust9.name=Osmium Dust
 item.funores:MetalDust16.name=Iron Dust
 item.funores:MetalDust17.name=Gold Dust
 
@@ -134,6 +138,7 @@ item.funores:MetalIngot5.name=Platinum Ingot
 item.funores:MetalIngot6.name=Aluminium Ingot
 item.funores:MetalIngot7.name=Zinc Ingot
 item.funores:MetalIngot8.name=Titanium Ingot
+item.funores:MetalIngot9.name=Osmium Ingot
 
 item.funores:MetalNugget0.name=Copper Nugget
 item.funores:MetalNugget1.name=Tin Nugget
@@ -144,6 +149,7 @@ item.funores:MetalNugget5.name=Platinum Nugget
 item.funores:MetalNugget6.name=Aluminium Nugget
 item.funores:MetalNugget7.name=Zinc Nugget
 item.funores:MetalNugget8.name=Titanium Nugget
+item.funores:MetalNugget9.name=Osmium Nugget
 item.funores:MetalNugget16.name=Iron Nugget
 
 item.funores:PlateCopper.name=Copper Plate
@@ -155,6 +161,7 @@ item.funores:PlatePlatinum.name=Platinum Plate
 item.funores:PlateAluminium.name=Aluminium Plate
 item.funores:PlateZinc.name=Zinc Plate
 item.funores:PlateTitanium.name=Titanium Plate
+item.funores:PlateOsmium.name=Osmium Plate
 item.funores:PlateIron.name=Iron Plate
 item.funores:PlateGold.name=Gold Plate
 item.funores:PlateObsidian.name=Obsidian Plate

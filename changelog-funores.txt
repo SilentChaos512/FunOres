@@ -1,3 +1,8 @@
+1.4.0 (Minecraft 1.11)
+Changed: Biome list config for ores now work better. You can list specific biomes now. Try "minecraft:forest", "minecraft:extreme_hills", etc. No quotes, of course. You can still list biome types (hot, cold, wet, dry, etc.)
+Fixed: The mod not being detected. This was likely caused by changes to biome types in recent Forge versions.
+Fixed: Mod ID is now lowercase... Shouldn't cause any issues.
+
 1.3.2
 Significantly improved block/item disabling.
     - Disabled blocks/items should no longer appear in creative tabs (let me know if any still show up).
