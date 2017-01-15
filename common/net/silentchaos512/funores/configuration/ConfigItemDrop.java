@@ -42,7 +42,7 @@ public class ConfigItemDrop {
     if (bonus > 0) {
       bonus = random.nextInt(bonus + 1);
     }
-    return stack.stackSize + bonus;
+    return stack.getCount() + bonus;
   }
 
   public ItemStack getStack() {
@@ -81,10 +81,10 @@ public class ConfigItemDrop {
 
     String prefix = String.format("[%s] ", FunOres.MOD_ID);
     String str = String.format(ERROR_WARNING_MESSAGE, errorList.size());
-    player.addChatMessage(new TextComponentString(TextFormatting.DARK_RED + prefix + str));
+    player.sendMessage(new TextComponentString(TextFormatting.DARK_RED + prefix + str));
 
     for (String error : errorList) {
-      player.addChatMessage(new TextComponentString(prefix + error));
+      player.sendMessage(new TextComponentString(prefix + error));
     }
   }
 }

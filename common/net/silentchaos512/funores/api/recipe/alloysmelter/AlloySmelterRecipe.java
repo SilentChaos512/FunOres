@@ -82,7 +82,7 @@ public class AlloySmelterRecipe {
   public static boolean isValidIngredient(ItemStack stack) {
 
     ItemStack copy = stack.copy();
-    copy.stackSize = 64;
+    copy.setCount(64);
     for (AlloySmelterRecipeObject recipeObject : allIngredients) {
       if (recipeObject.matches(copy)) {
         return true;

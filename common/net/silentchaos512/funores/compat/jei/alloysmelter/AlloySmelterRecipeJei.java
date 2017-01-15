@@ -32,7 +32,7 @@ public class AlloySmelterRecipeJei extends BlankRecipeWrapper {
     return Arrays.asList(recipe.getInputs());
   }
 
-  @Override
+  //@Override
   public List getInputs() {
 
     List<ItemStack> list = Lists.newArrayList();
@@ -42,7 +42,7 @@ public class AlloySmelterRecipeJei extends BlankRecipeWrapper {
     return list;
   }
 
-  @Override
+  //@Override
   public List getOutputs() {
 
     return Collections.singletonList(recipe.getOutput());

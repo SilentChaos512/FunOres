@@ -7,13 +7,13 @@ import mezz.jei.api.recipe.IRecipeWrapper;
 
 public class AlloySmelterRecipeHandler implements IRecipeHandler<AlloySmelterRecipeJei> {
 
+//  @Override
+//  public String getRecipeCategoryUid() {
+//
+//    return AlloySmelterRecipeCategory.CATEGORY;
+//  }
+
   @Override
-  public String getRecipeCategoryUid() {
-
-    return AlloySmelterRecipeCategory.CATEGORY;
-  }
-
-  //@Override // TODO: Uncomment in 1.10.x
   public String getRecipeCategoryUid(AlloySmelterRecipeJei arg0) {
 
     return AlloySmelterRecipeCategory.CATEGORY;

@@ -12,9 +12,9 @@ import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.block.BlockFunOre;
 import net.silentchaos512.funores.compat.jei.FunOresPlugin;
 import net.silentchaos512.funores.configuration.Config;
-import net.silentchaos512.funores.configuration.ConfigOptionOreGen;
 import net.silentchaos512.funores.lib.IDisableable;
 import net.silentchaos512.lib.registry.SRegistry;
+import net.silentchaos512.lib.util.LogHelper;
 
 /**
  * Modified SRegistry that automatically loads configs for disableable (IDisableable) items.
@@ -24,9 +24,9 @@ import net.silentchaos512.lib.registry.SRegistry;
  */
 public class FunOresRegistry extends SRegistry {
 
-  public FunOresRegistry(String modId) {
+  public FunOresRegistry(String modId, LogHelper logHelper) {
 
-    super(modId);
+    super(modId, logHelper);
   }
 
   /**
@@ -79,6 +79,8 @@ public class FunOresRegistry extends SRegistry {
           ItemStack stack = new ItemStack(itemBlock, 1, i);
           disabledItems.add(getStackKey(stack));
           FunOresPlugin.disabledItems.add(stack);
+        } else {
+          block.setCreativeTab(FunOres.tabFunOres);
         }
       }
     }

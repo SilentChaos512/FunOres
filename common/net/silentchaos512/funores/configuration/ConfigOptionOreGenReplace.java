@@ -1,11 +1,11 @@
 package net.silentchaos512.funores.configuration;
 
-import net.minecraft.util.IStringSerializable;
 import net.minecraftforge.common.config.Configuration;
+import net.silentchaos512.funores.lib.IHasOre;
 
 public class ConfigOptionOreGenReplace extends ConfigOptionOreGen {
 
-  public ConfigOptionOreGenReplace(IStringSerializable ore) {
+  public ConfigOptionOreGenReplace(IHasOre ore) {
 
     super(ore);
   }

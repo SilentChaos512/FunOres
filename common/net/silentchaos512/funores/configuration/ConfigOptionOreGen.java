@@ -1,5 +1,6 @@
 package net.silentchaos512.funores.configuration;
 
+import java.util.Iterator;
 import java.util.List;
 
 import com.google.common.base.Predicate;
@@ -7,7 +8,7 @@ import com.google.common.collect.Lists;
 
 import net.minecraft.block.state.pattern.BlockMatcher;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
@@ -31,6 +32,9 @@ public class ConfigOptionOreGen extends ConfigOption {
     }
   };
 
+  /*
+   * Config comments
+   */
   public static final String COMMENT_ENABLED = "Spawns the ore if set to true, disables it if false.";
   public static final String COMMENT_CLUSTER_COUNT = "The number of veins the game will attempt to spawn per chunk.";
   public static final String COMMENT_CLUSTER_SIZE = "The size of veins that are spawned.";
@@ -41,15 +45,20 @@ public class ConfigOptionOreGen extends ConfigOption {
   public static final String COMMENT_BIOME_LIST_TYPE = "Biome list type.\n"
       + "BLACKLIST: Do not spawn in biome types in the list. An empty blacklist means all biomes are OK.\n"
       + "WHITELIST: Spawn only in biome types in the list. An empty whitelist will fail to spawn the ore!\n"
-      + "FAVORS: Spawns more often in the biome types in the list. Spawns in all other biomes less often.\n"
-      + "AVOIDS: Spawns less often in the biome types in the list. Spawns in all other biomes more often.\n"
+      + "FAVORS: Spawns more often in the biomes in the list. Spawns in all other biomes less often.\n"
+      + "AVOIDS: Spawns less often in the biomes in the list. Spawns in all other biomes more often.\n"
       + "See: https://github.com/MinecraftForge/MinecraftForge/blob/master/src/main/java/net/minecraftforge/common/BiomeDictionary.java";
 
+  /*
+   * Ore spawn predicates (what block the ore replaces)
+   */
   public static final Predicate PREDICATE_STONE = BlockMatcher.forBlock(Blocks.STONE);
   public static final Predicate PREDICATE_NETHERRACK = BlockMatcher.forBlock(Blocks.NETHERRACK);
   public static final Predicate PREDICATE_END_STONE = BlockMatcher.forBlock(Blocks.END_STONE);
 
-  // Cluster count multiplied/divide by this for favored/avoided biomes.
+  /*
+   * Min/max values for various properties.
+   */
   public static final int CLUSTER_COUNT_MIN = 0;
   public static final int CLUSTER_COUNT_MAX = 1000;
   public static final int CLUSTER_SIZE_MIN = 0;
@@ -61,37 +70,43 @@ public class ConfigOptionOreGen extends ConfigOption {
   public static final String[] BIOMES_LIST_TYPE_VALID_VALUES = BiomeListType.getValidValues();
   protected static String CATEGORY_EXAMPLE = "an_example";
 
+  /*
+   * Ore spawn properties
+   */
+
+  /** Legacy support. Setting cluster count to 0 would have been better, but too late now. */
   public boolean enabled = true;
+  /** The number of veins to spawn per chunk */
   public int clusterCount = 8;
+  /** The size of veins */
   public int clusterSize = 8;
+  /** The lowest Y-level the ore can be found at. */
   public int minY = 0;
+  /** The highest Y-level the ore can be found at. */
   public int maxY = 128;
+  /** The ore has a 1/rarity chance of spawning for each vein the world generator attempts to place. */
   public int rarity = 1;
-  // public boolean isBiomeBlacklist = true;
+  /** How do we use the biome list? */
   public BiomeListType biomeListType = BiomeListType.BLACKLIST;
-  public List<BiomeDictionary.Type> biomes = Lists.newArrayList();
-//  private Dictionary<BiomeDictionary.Type, Float> clusterCountByBiomeType = new Hashtable<BiomeDictionary.Type, Float>();
+  /** The biome list. How this is used depends on biomeListType */
+  public List<String> biomes = Lists.newArrayList();
+  /** The name of the ore. Used in the config file and a couple other places. */
   public final String oreName;
-  public IStringSerializable ore;
+  /**  */
+  public IHasOre ore;
   public final Predicate predicate;
   protected boolean isExample = false;
 
-  public ConfigOptionOreGen(IStringSerializable ore) {
+  public ConfigOptionOreGen(IHasOre ore) {
 
     this.ore = ore;
     this.oreName = ore.getName();
 
-    if (ore instanceof IHasOre) {
-      IHasOre hasOre = (IHasOre) ore;
-      if (hasOre.getDimension() == -1)
-        predicate = PREDICATE_NETHERRACK;
-      else if (hasOre.getDimension() == 1)
-        predicate = PREDICATE_END_STONE;
-      else
-        predicate = PREDICATE_STONE;
-    } else {
-      predicate = PREDICATE_STONE;
-    }
+    switch (ore.getDimension()) { //@formatter:off
+      case -1: predicate = PREDICATE_NETHERRACK; break;
+      case  1: predicate = PREDICATE_END_STONE; break;
+      default: predicate = PREDICATE_STONE;
+    } //@formatter:on
   }
 
   public ConfigOptionOreGen(boolean example) {
@@ -116,41 +131,36 @@ public class ConfigOptionOreGen extends ConfigOption {
     }
 
     enabled = c.get(category, "Enabled", enabled).getBoolean();
-    if (enabled) {
-      clusterCount = c.get(category, "ClusterCount", clusterCount).getInt();
-      clusterSize = c.get(category, "ClusterSize", clusterSize).getInt();
-      minY = c.get(category, "MinY", minY).getInt();
-      maxY = c.get(category, "MaxY", maxY).getInt();
-      rarity = c.get(category, "Rarity", rarity).getInt();
 
-      // Biome list type
-      String listType = c.get(category, "BiomeListType", "BLACKLIST").getString().toUpperCase();
-      // Add missing S?
-      if (listType.equals("FAVOR") || listType.equals("AVOID")) {
-        listType += "S";
+    clusterCount = c.get(category, "ClusterCount", clusterCount).getInt();
+    clusterSize = c.get(category, "ClusterSize", clusterSize).getInt();
+    minY = c.get(category, "MinY", minY).getInt();
+    maxY = c.get(category, "MaxY", maxY).getInt();
+    rarity = c.get(category, "Rarity", rarity).getInt();
+
+    if (clusterCount <= 0) {
+      enabled = false;
+    }
+
+    // Biome list type
+    String listType = c.get(category, "BiomeListType", "BLACKLIST").getString().toUpperCase();
+    // Add missing S?
+    if (listType.equals("FAVOR") || listType.equals("AVOID")) {
+      listType += "S";
+    }
+    // Get the enum...
+    for (BiomeListType type : BiomeListType.values()) {
+      if (type.name().equals(listType)) {
+        biomeListType = type;
       }
-      // Get the enum...
-      for (BiomeListType type : BiomeListType.values()) {
-        if (type.name().equals(listType)) {
-          biomeListType = type;
-        }
-      }
-      // isBiomeBlacklist = !biomeListType.equals("WHITELIST");
-      String[] biomeList = c.get(category, "BiomeTypes", new String[] {}).getStringList();
-      for (String str : biomeList) {
-        boolean foundMatch = false;
-        for (BiomeDictionary.Type type : BiomeDictionary.Type.values()) {
-          boolean isInList = type.name().toUpperCase().equals(str.toUpperCase());
-          foundMatch = isInList ? true : foundMatch;
-          if (isInList) {
-            biomes.add(type);
-          }
-//          setClusterCountForBiomeType(type, isInList);
-        }
-        if (!foundMatch) {
-          FunOres.instance.logHelper.warning("Unknown biome type: " + str);
-        }
-      }
+    }
+
+    // Get biome list
+    String[] biomeList = c.get(category, "Biomes", new String[0]).getStringList();
+    for (String str : biomeList) {
+      // if (!str.matches("[a-z_]+:.+"))
+      // str = "minecraft:" + str;
+      biomes.add(str);
     }
 
     return this.validate();
@@ -169,7 +179,7 @@ public class ConfigOptionOreGen extends ConfigOption {
     String biomeListType = c.getString("BiomeListType", CATEGORY_EXAMPLE, "BLACKLIST",
         COMMENT_BIOME_LIST_TYPE, BIOMES_LIST_TYPE_VALID_VALUES).toUpperCase();
     // isBiomeBlacklist = !biomeListType.equals("WHITELIST");
-    String[] biomeList = c.get(CATEGORY_EXAMPLE, "Biomes", new String[] {}).getStringList();
+    String[] biomeList = c.get(CATEGORY_EXAMPLE, "Biomes", new String[] { "dry", "minecraft:forest" }).getStringList();
     // for (String str : biomeList) {
     // for (BiomeDictionary.Type type : BiomeDictionary.Type.values()) {
     // if (type.name().toUpperCase().equals(str.toUpperCase())) {
@@ -181,86 +191,70 @@ public class ConfigOptionOreGen extends ConfigOption {
     return this;
   }
 
-//  private void setClusterCountForBiomeType(BiomeDictionary.Type type, boolean isInList) {
-//
-//    final float multi = Config.oreGenBiomeFavorsMultiplier;
-//    float count;
-//    switch (biomeListType) {
-//      case AVOIDS:
-//        count = isInList ? clusterCount / multi : clusterCount * multi;
-//        break;
-//      case BLACKLIST:
-//        count = isInList ? 0 : clusterCount;
-//        break;
-//      case FAVORS:
-//        count = isInList ? clusterCount * multi : clusterCount / multi;
-//        break;
-//      case WHITELIST:
-//        count = isInList ? clusterCount : 0;
-//        break;
-//      default:
-//        count = clusterCount;
-//        LogHelper.warning(
-//            "ConfigOptionOreGen.setClusterCountForBiomeType - unknown list type: " + biomeListType);
-//        break;
-//    }
-//    clusterCountByBiomeType.put(type, count);
-//  }
-
   @Override
   public ConfigOption validate() {
 
-    clusterCount = MathHelper.clamp_int(clusterCount, CLUSTER_COUNT_MIN, CLUSTER_COUNT_MAX);
-    clusterSize = MathHelper.clamp_int(clusterSize, CLUSTER_SIZE_MIN, CLUSTER_SIZE_MAX);
-    minY = MathHelper.clamp_int(minY, Y_MIN, Y_MAX);
-    maxY = MathHelper.clamp_int(maxY, Y_MIN, Y_MAX);
-    rarity = MathHelper.clamp_int(rarity, RARITY_MIN, RARITY_MAX);
+    clusterCount = MathHelper.clamp(clusterCount, CLUSTER_COUNT_MIN, CLUSTER_COUNT_MAX);
+    clusterSize = MathHelper.clamp(clusterSize, CLUSTER_SIZE_MIN, CLUSTER_SIZE_MAX);
+    minY = MathHelper.clamp(minY, Y_MIN, Y_MAX);
+    maxY = MathHelper.clamp(maxY, Y_MIN, Y_MAX);
+    rarity = MathHelper.clamp(rarity, RARITY_MIN, RARITY_MAX);
 
     return this;
   }
 
+  public boolean isBiomeInList(Biome biome) {
+
+    for (String str : biomes) {
+      // Biome type match?
+      for (BiomeDictionary.Type type : BiomeDictionary.getTypes(biome))
+        if (type.toString().toLowerCase().equals(str))
+          return true;
+
+      // Is listed biome an exact match?
+      Biome b = Biome.REGISTRY.getObject(new ResourceLocation(str));
+      if (b != null && b.equals(biome))
+        return true;
+      // Trying adding minecraft resource prefix
+      b = Biome.REGISTRY.getObject(new ResourceLocation("minecraft:" + str));
+      if (b != null && b.equals(biome))
+        return true;
+    }
+
+    return false;
+  }
+
   public boolean canSpawnInBiome(Biome biome) {
 
-    for (BiomeDictionary.Type type : BiomeDictionary.getTypesForBiome(biome)) {
-      for (BiomeDictionary.Type typeInList : biomes) {
-        if (type == typeInList) {
-          return biomeListType != BiomeListType.BLACKLIST;
-        }
-      }
-    }
-    return biomeListType != BiomeListType.WHITELIST;
+    return isBiomeInList(biome) ? biomeListType != BiomeListType.BLACKLIST
+        : biomeListType != BiomeListType.WHITELIST;
   }
 
   public float getClusterCountForBiome(Biome biome) {
 
-    // LogHelper.debug(clusterCountByBiomeType);
     float count = 0f;
     float countForBiome;
-
     boolean foundMatch = false;
-    for (BiomeDictionary.Type type : BiomeDictionary.getTypesForBiome(biome)) {
-      for (BiomeDictionary.Type typeInList : biomes) {
-        if (type == typeInList) {
-          foundMatch = true;
-          switch (biomeListType) {
-            case AVOIDS:
-              countForBiome = clusterCount / Config.oreGenBiomeFavorsMultiplier;
-              break;
-            case BLACKLIST:
-              countForBiome = 0f;
-              break;
-            case FAVORS:
-              countForBiome = clusterCount * Config.oreGenBiomeFavorsMultiplier;
-              break;
-            case WHITELIST:
-              countForBiome = clusterCount;
-              break;
-            default:
-              countForBiome = 0f;
-          }
-          count = Math.max(count, countForBiome);
-        }
+
+    if (isBiomeInList(biome)) {
+      foundMatch = true;
+      switch (biomeListType) {
+        case AVOIDS:
+          countForBiome = clusterCount / Config.oreGenBiomeFavorsMultiplier;
+          break;
+        case BLACKLIST:
+          countForBiome = 0f;
+          break;
+        case FAVORS:
+          countForBiome = clusterCount * Config.oreGenBiomeFavorsMultiplier;
+          break;
+        case WHITELIST:
+          countForBiome = clusterCount;
+          break;
+        default:
+          countForBiome = 0f;
       }
+      count = Math.max(count, countForBiome);
     }
 
     if (!foundMatch) {
@@ -282,27 +276,5 @@ public class ConfigOptionOreGen extends ConfigOption {
     }
 
     return count == 0 ? clusterCount : count;
-
-    // for (BiomeDictionary.Type type1 : biomes) {
-    // for (BiomeDictionary.Type type2 : BiomeDictionary.getTypesForBiome(biome)) {
-    // if (type1 == type2) {
-    // // Biome is in list.
-    // if (biomeListType == BiomeListType.FAVORS) {
-    // return (int) (clusterCount * BIOME_FAVOR_COUNT_MULTI);
-    // } else if (biomeListType == BiomeListType.AVOIDS) {
-    // return (int) (clusterCount / BIOME_FAVOR_COUNT_MULTI);
-    // } else {
-    // return clusterCount;
-    // }
-    // }
-    // }
-    // }
-    // // Empty biome list or biome is not in list.
-    // if (biomeListType == BiomeListType.FAVORS) {
-    // return (int) (clusterCount / BIOME_FAVOR_COUNT_MULTI);
-    // } else if (biomeListType == BiomeListType.AVOIDS) {
-    // return (int) (clusterCount * BIOME_FAVOR_COUNT_MULTI);
-    // }
-    // return clusterCount;
   }
 }

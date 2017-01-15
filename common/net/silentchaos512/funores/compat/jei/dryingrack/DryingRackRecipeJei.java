@@ -21,13 +21,13 @@ public class DryingRackRecipeJei extends BlankRecipeWrapper {
     this.recipe = recipe;
   }
 
-  @Override
+  //@Override
   public List getInputs() {
 
     return recipe.getInput().getStacks();
   }
 
-  @Override
+  //@Override
   public List getOutputs() {
 
     return Collections.singletonList(recipe.getOutput());

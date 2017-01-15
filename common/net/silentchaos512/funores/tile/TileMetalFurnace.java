@@ -3,6 +3,8 @@ package net.silentchaos512.funores.tile;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 import com.google.common.collect.Lists;
 
 import net.minecraft.block.state.IBlockState;
@@ -12,25 +14,22 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.inventory.ContainerMetalFurnace;
+import net.silentchaos512.lib.tile.TileSidedInventorySL;
 
-public class TileMetalFurnace extends TileEntity implements ITickable, ISidedInventory {
+public class TileMetalFurnace extends TileSidedInventorySL implements ITickable {
 
   public static final int COOK_TIME_NO_SECONDARY = 133;
   public static final int COOK_TIME_WITH_SECONDARY = 266;
@@ -41,6 +40,7 @@ public class TileMetalFurnace extends TileEntity implements ITickable, ISidedInv
   public static final int SLOT_FUEL = 1;
   public static final int SLOT_OUTPUT_1 = 2;
   public static final int SLOT_OUTPUT_2 = 3;
+  public static final int SIZE_INVENTORY = 4;
 
   public static final Pattern REGEX_ITEM_MATCH = Pattern.compile("^(ingot|gem)");
 
@@ -48,7 +48,6 @@ public class TileMetalFurnace extends TileEntity implements ITickable, ISidedInv
   private static final int[] SLOTS_BOTTOM = new int[] { SLOT_FUEL, SLOT_OUTPUT_1, SLOT_OUTPUT_2 };
   private static final int[] SLOTS_SIDES = new int[] { SLOT_FUEL };
 
-  private ItemStack[] stacks = new ItemStack[4];
   private int furnaceBurnTime;
   private int currentItemBurnTime;
   private int cookTime;
@@ -66,8 +65,8 @@ public class TileMetalFurnace extends TileEntity implements ITickable, ISidedInv
     list.add("totalCookTime = " + totalCookTime);
     ItemStack output1 = getPrimaryOutput();
     ItemStack output2 = getSecondaryOutput();
-    list.add("output1 = " + (output1 == null ? "null" : output1.getDisplayName()));
-    list.add("output2 = " + (output2 == null ? "null" : output2.getDisplayName()));
+    list.add("output1 = " + (output1.isEmpty() ? "null" : output1.getDisplayName()));
+    list.add("output2 = " + (output2.isEmpty() ? "null" : output2.getDisplayName()));
     list.add("canSmelt = " + canSmelt());
     list.add(sep);
     list.add("COOK_TIME_NO_SECONDARY = " + COOK_TIME_NO_SECONDARY);
@@ -79,57 +78,19 @@ public class TileMetalFurnace extends TileEntity implements ITickable, ISidedInv
 
   public int getCookTime() {
 
-    return getSecondaryOutput() == null ? COOK_TIME_NO_SECONDARY : COOK_TIME_WITH_SECONDARY;
-  }
-
-  @Override
-  public int getSizeInventory() {
-
-    return stacks.length;
-  }
-
-  @Override
-  public ItemStack getStackInSlot(int index) {
-
-    return index >= 0 && index < stacks.length ? stacks[index] : null;
-  }
-
-  @Override
-  public ItemStack decrStackSize(int index, int count) {
-
-    if (this.stacks[index] != null) {
-      ItemStack stack;
-
-      if (this.stacks[index].stackSize <= count) {
-        stack = this.stacks[index];
-        this.stacks[index] = null;
-        return stack;
-      } else {
-        stack = this.stacks[index].splitStack(count);
-
-        if (this.stacks[index].stackSize == 0) {
-          this.stacks[index] = null;
-        }
-
-        return stack;
-      }
-    } else {
-      return null;
-    }
+    return getSecondaryOutput().isEmpty() ? COOK_TIME_NO_SECONDARY : COOK_TIME_WITH_SECONDARY;
   }
 
   @Override
   public void setInventorySlotContents(int index, ItemStack stack) {
 
-    boolean flag = stack != null && stack.isItemEqual(this.stacks[index])
-        && ItemStack.areItemStacksEqual(stack, this.stacks[index]);
-    this.stacks[index] = stack;
+    ItemStack current = getStackInSlot(index);
+    boolean flag = !current.isEmpty() && stack.isItemEqual(current)
+        && ItemStack.areItemStacksEqual(stack, current);
 
-    if (stack != null && stack.stackSize > this.getInventoryStackLimit()) {
-      stack.stackSize = this.getInventoryStackLimit();
-    }
+    super.setInventorySlotContents(index, stack);
 
-    if (index == 0 && !flag) {
+    if (index == SLOT_INPUT && !flag) {
       this.totalCookTime = this.getCookTime();
       this.cookTime = 0;
       this.markDirty();
@@ -137,39 +98,14 @@ public class TileMetalFurnace extends TileEntity implements ITickable, ISidedInv
   }
 
   @Override
-  public int getInventoryStackLimit() {
-
-    return 64;
-  }
-
-  @Override
-  public boolean isUseableByPlayer(EntityPlayer player) {
-
-    return this.worldObj.getTileEntity(this.pos) != this ? false
-        : player.getDistanceSq((double) this.pos.getX() + 0.5D, (double) this.pos.getY() + 0.5D,
-            (double) this.pos.getZ() + 0.5D) <= 64.0D;
-  }
-
-  @Override
-  public void openInventory(EntityPlayer player) {
-
-  }
-
-  @Override
-  public void closeInventory(EntityPlayer player) {
-
-  }
-
-  @Override
   public boolean isItemValidForSlot(int index, ItemStack stack) {
 
-    if (index >= SLOT_OUTPUT_1) {
+    if (index >= SLOT_OUTPUT_1)
       return false;
-    } else if (index == SLOT_FUEL) {
+    else if (index == SLOT_FUEL)
       return isItemFuel(stack);
-    } else {
+    else
       return true;
-    }
   }
 
   @Override
@@ -177,13 +113,13 @@ public class TileMetalFurnace extends TileEntity implements ITickable, ISidedInv
 
     switch (id) {
       case 0:
-        return this.furnaceBurnTime;
+        return furnaceBurnTime;
       case 1:
-        return this.currentItemBurnTime;
+        return currentItemBurnTime;
       case 2:
-        return this.cookTime;
+        return cookTime;
       case 3:
-        return this.totalCookTime;
+        return totalCookTime;
       default:
         return 0;
     }
@@ -214,26 +150,6 @@ public class TileMetalFurnace extends TileEntity implements ITickable, ISidedInv
   }
 
   @Override
-  public void clear() {
-
-    for (int i = 0; i < this.stacks.length; ++i) {
-      this.stacks[i] = null;
-    }
-  }
-
-  @Override
-  public boolean hasCustomName() {
-
-    return false;
-  }
-
-  @Override
-  public ITextComponent getDisplayName() {
-
-    return null;
-  }
-
-  @Override
   public int[] getSlotsForFace(EnumFacing side) {
 
     return side == EnumFacing.DOWN ? SLOTS_BOTTOM
@@ -243,7 +159,7 @@ public class TileMetalFurnace extends TileEntity implements ITickable, ISidedInv
   @Override
   public boolean canInsertItem(int index, ItemStack itemStackIn, EnumFacing direction) {
 
-    return this.isItemValidForSlot(index, itemStackIn);
+    return isItemValidForSlot(index, itemStackIn);
   }
 
   @Override
@@ -252,9 +168,8 @@ public class TileMetalFurnace extends TileEntity implements ITickable, ISidedInv
     if (direction == EnumFacing.DOWN && index == 1) {
       Item item = stack.getItem();
 
-      if (item != Items.WATER_BUCKET && item != Items.BUCKET) {
+      if (item != Items.WATER_BUCKET && item != Items.BUCKET)
         return false;
-      }
     }
 
     return true;
@@ -271,60 +186,60 @@ public class TileMetalFurnace extends TileEntity implements ITickable, ISidedInv
     boolean flag = this.isBurning();
     boolean flag1 = false;
 
-    if (this.isBurning()) {
-      --this.furnaceBurnTime;
+    if (isBurning()) {
+      --furnaceBurnTime;
     }
 
-    if (!this.worldObj.isRemote) {
-      if (!this.isBurning()
-          && (this.stacks[SLOT_FUEL] == null || this.stacks[SLOT_INPUT] == null)) {
-        if (!this.isBurning() && this.cookTime > 0) {
-          this.cookTime = MathHelper.clamp_int(this.cookTime - 2, 0, this.totalCookTime);
+    if (!world.isRemote) {
+      ItemStack fuel = getStackInSlot(SLOT_FUEL);
+      ItemStack input = getStackInSlot(SLOT_INPUT);
+      if (!isBurning() && (fuel.isEmpty() || input.isEmpty())) {
+        if (!isBurning() && cookTime > 0) {
+          cookTime = MathHelper.clamp(cookTime - 2, 0, totalCookTime);
         }
       } else {
-        if (!this.isBurning() && this.canSmelt()) {
-          this.currentItemBurnTime = this.furnaceBurnTime = getItemBurnTime(this.stacks[SLOT_FUEL]);
+        if (!isBurning() && canSmelt()) {
+          this.currentItemBurnTime = this.furnaceBurnTime = getItemBurnTime(fuel);
 
-          if (this.isBurning()) {
+          if (isBurning()) {
             flag1 = true;
 
-            if (this.stacks[SLOT_FUEL] != null) {
-              --this.stacks[SLOT_FUEL].stackSize;
+            if (!fuel.isEmpty()) {
+              fuel.shrink(1);
 
-              if (this.stacks[SLOT_FUEL].stackSize == 0) {
-                this.stacks[SLOT_FUEL] = stacks[SLOT_FUEL].getItem()
-                    .getContainerItem(stacks[SLOT_FUEL]);
+              if (fuel.isEmpty()) {
+                fuel = fuel.getItem().getContainerItem(fuel);
               }
             }
           }
         }
 
-        if (this.isBurning() && this.canSmelt()) {
-          ++this.cookTime;
+        if (isBurning() && canSmelt()) {
+          ++cookTime;
 
-          if (this.cookTime == this.totalCookTime) {
-            this.cookTime = 0;
-            this.totalCookTime = this.getCookTime();
-            this.smeltItem();
+          if (cookTime == totalCookTime) {
+            cookTime = 0;
+            totalCookTime = getCookTime();
+            smeltItem();
             flag1 = true;
           }
         } else {
-          this.cookTime = 0;
+          cookTime = 0;
         }
       }
 
-      if (flag != this.isBurning()) {
+      if (flag != isBurning()) {
         flag1 = true;
         // Set off/on state.
-        IBlockState state = worldObj.getBlockState(pos);
+        IBlockState state = world.getBlockState(pos);
         int meta = state.getBlock().getMetaFromState(state);
         meta = isBurning() ? meta | 8 : meta & 7;
-        worldObj.setBlockState(pos, state.getBlock().getStateFromMeta(meta));
+        world.setBlockState(pos, state.getBlock().getStateFromMeta(meta));
       }
     }
 
     if (flag1) {
-      this.markDirty();
+      markDirty();
     }
   }
 
@@ -339,49 +254,28 @@ public class TileMetalFurnace extends TileEntity implements ITickable, ISidedInv
   public void readFromNBT(NBTTagCompound compound) {
 
     super.readFromNBT(compound);
-    NBTTagList tagList = compound.getTagList("Items", 10);
-    this.stacks = new ItemStack[this.getSizeInventory()];
-
-    for (int i = 0; i < tagList.tagCount(); ++i) {
-      NBTTagCompound tagCompound = tagList.getCompoundTagAt(i);
-      byte b0 = tagCompound.getByte("Slot");
-
-      if (b0 >= 0 && b0 <= this.stacks.length) {
-        this.stacks[b0] = ItemStack.loadItemStackFromNBT(tagCompound);
-      }
-    }
 
     this.furnaceBurnTime = compound.getShort("BurnTime");
     this.cookTime = compound.getShort("CookTime");
     this.totalCookTime = compound.getShort("CookTimeTotal");
-    this.currentItemBurnTime = getItemBurnTime(this.stacks[SLOT_FUEL]);
+    this.currentItemBurnTime = getItemBurnTime(getStackInSlot(SLOT_FUEL));
   }
 
   @Override
   public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 
     super.writeToNBT(compound);
+
     compound.setShort("BurnTime", (short) this.furnaceBurnTime);
     compound.setShort("CookTime", (short) this.cookTime);
     compound.setShort("CookTimeTotal", (short) this.totalCookTime);
-    NBTTagList tagList = new NBTTagList();
 
-    for (int i = 0; i < this.stacks.length; ++i) {
-      if (this.stacks[i] != null) {
-        NBTTagCompound tagCompound = new NBTTagCompound();
-        tagCompound.setByte("Slot", (byte) i);
-        this.stacks[i].writeToNBT(tagCompound);
-        tagList.appendTag(tagCompound);
-      }
-    }
-
-    compound.setTag("Items", tagList);
     return compound;
   }
 
   public boolean isBurning() {
 
-    return this.furnaceBurnTime > 0;
+    return furnaceBurnTime > 0;
   }
 
   public boolean isBurning(IInventory inventory) {
@@ -389,25 +283,24 @@ public class TileMetalFurnace extends TileEntity implements ITickable, ISidedInv
     return inventory.getField(0) > 0;
   }
 
-  public ItemStack getPrimaryOutput() {
+  public @Nonnull ItemStack getPrimaryOutput() {
 
-    ItemStack inputStack = stacks[SLOT_INPUT];
-    if (inputStack == null) {
-      return null;
-    }
+    ItemStack inputStack = getStackInSlot(SLOT_INPUT);
+    if (inputStack.isEmpty())
+      return ItemStack.EMPTY;
     return FurnaceRecipes.instance().getSmeltingResult(inputStack);
   }
 
-  public ItemStack getSecondaryOutput() {
+  public @Nonnull ItemStack getSecondaryOutput() {
 
-    ItemStack inputStack = this.stacks[SLOT_INPUT];
-    if (inputStack == null) {
-      return null;
+    ItemStack inputStack = getStackInSlot(SLOT_INPUT);
+    if (inputStack.isEmpty()) {
+      return ItemStack.EMPTY;
     }
 
     ItemStack outputPrimary = FurnaceRecipes.instance().getSmeltingResult(inputStack);
-    if (outputPrimary == null) {
-      return null;
+    if (outputPrimary.isEmpty()) {
+      return ItemStack.EMPTY;
     }
 
     String inputName, outputName;
@@ -424,57 +317,57 @@ public class TileMetalFurnace extends TileEntity implements ITickable, ISidedInv
             List<ItemStack> nuggets = OreDictionary.getOres("nugget" + inputName);
             if (!nuggets.isEmpty()) {
               ItemStack result = nuggets.get(0).copy();
-              result.stackSize = BONUS_NUGGETS_MIN
-                  + FunOres.instance.random.nextInt(BONUS_NUGGETS_MAX - BONUS_NUGGETS_MIN + 1);
+              result.setCount(BONUS_NUGGETS_MIN
+                  + FunOres.instance.random.nextInt(BONUS_NUGGETS_MAX - BONUS_NUGGETS_MIN + 1));
               return result;
             } else {
-              return null;
+              return ItemStack.EMPTY;
             }
           }
         }
       }
     }
 
-    return null;
+    return ItemStack.EMPTY;
   }
 
   private boolean canSmelt() {
 
-    if (stacks[SLOT_INPUT] == null) {
+    ItemStack inputStack = getStackInSlot(SLOT_INPUT);
+    if (inputStack.isEmpty()) {
       return false;
     } else {
-      ItemStack inputStack = stacks[SLOT_INPUT];
       ItemStack outputPrimary = getPrimaryOutput();
       ItemStack outputSecondary = getSecondaryOutput();
-      if (outputSecondary != null) {
-        outputSecondary.stackSize = BONUS_NUGGETS_MAX;
+      if (!outputSecondary.isEmpty()) {
+        outputSecondary.setCount(BONUS_NUGGETS_MAX);
       }
-      ItemStack outputSlot1 = stacks[SLOT_OUTPUT_1];
-      ItemStack outputSlot2 = stacks[SLOT_OUTPUT_2];
+      ItemStack outputSlot1 = getStackInSlot(SLOT_OUTPUT_1);
+      ItemStack outputSlot2 = getStackInSlot(SLOT_OUTPUT_2);
 
-      if (outputPrimary == null) {
+      if (outputPrimary.isEmpty()) {
         return false;
       }
 
-      if (outputSlot1 == null && outputSlot2 == null) {
+      if (outputSlot1.isEmpty() && outputSlot2.isEmpty()) {
         return true;
       }
 
-      boolean output1ClearOrSame = outputSlot1 == null
-          || (outputSlot1 != null && outputSlot1.isItemEqual(outputPrimary));
-      boolean output2ClearOrSame = outputSecondary == null || outputSlot2 == null
-          || (outputSlot2 != null && outputSlot2.isItemEqual(outputSecondary));
+      boolean output1ClearOrSame = outputSlot1.isEmpty()
+          || (!outputSlot1.isEmpty() && outputSlot1.isItemEqual(outputPrimary));
+      boolean output2ClearOrSame = outputSecondary.isEmpty() || outputSlot2.isEmpty()
+          || (!outputSlot2.isEmpty() && outputSlot2.isItemEqual(outputSecondary));
       if (!output1ClearOrSame || !output2ClearOrSame) {
-        // LogHelper.list(output1ClearOrSame, output2ClearOrSame);
         return false;
       }
 
-      int newSize1 = outputSlot1 == null ? 0 : outputSlot1.stackSize + outputPrimary.stackSize;
+      int newSize1 = outputSlot1.isEmpty() ? 0 : outputSlot1.getCount() + outputPrimary.getCount();
       int maxSize1 = outputPrimary.getMaxStackSize();
       int newSize2 = 0;
-      int maxSize2 = outputSecondary == null ? 64 : outputSecondary.getMaxStackSize();
-      if (outputSecondary != null) {
-        newSize2 = (outputSlot2 == null ? 0 : outputSlot2.stackSize) + outputSecondary.stackSize;
+      int maxSize2 = outputSecondary.isEmpty() ? 64 : outputSecondary.getMaxStackSize();
+      if (!outputSecondary.isEmpty()) {
+        newSize2 = (outputSlot2.isEmpty() ? 0 : outputSlot2.getCount())
+            + outputSecondary.getCount();
       }
       boolean flag1 = newSize1 <= getInventoryStackLimit() && newSize1 <= maxSize1;
       boolean flag2 = newSize2 <= getInventoryStackLimit() && newSize2 <= maxSize2;
@@ -489,36 +382,40 @@ public class TileMetalFurnace extends TileEntity implements ITickable, ISidedInv
 
   public void smeltItem() {
 
-    if (this.canSmelt()) {
+    if (canSmelt()) {
       ItemStack outputPrimary = getPrimaryOutput();
       ItemStack outputSecondary = getSecondaryOutput();
+      ItemStack output1 = getStackInSlot(SLOT_OUTPUT_1);
+      ItemStack output2 = getStackInSlot(SLOT_OUTPUT_2);
 
-      if (this.stacks[SLOT_OUTPUT_1] == null) {
-        this.stacks[SLOT_OUTPUT_1] = outputPrimary.copy();
-      } else if (this.stacks[SLOT_OUTPUT_1].getItem() == outputPrimary.getItem()) {
-        this.stacks[SLOT_OUTPUT_1].stackSize += outputPrimary.stackSize; // Forge BugFix: Results may have multiple
-                                                                         // items
+      if (output1.isEmpty()) {
+        output1 = outputPrimary.copy();
+      } else if (output1.getItem() == outputPrimary.getItem()) {
+        output1.grow(outputPrimary.getCount());
       }
+      setInventorySlotContents(SLOT_OUTPUT_1, output1);
 
-      if (outputSecondary != null) {
-        if (this.stacks[SLOT_OUTPUT_2] == null) {
-          this.stacks[SLOT_OUTPUT_2] = outputSecondary.copy();
-        } else if (this.stacks[SLOT_OUTPUT_2].getItem() == outputSecondary.getItem()) {
-          this.stacks[SLOT_OUTPUT_2].stackSize += outputSecondary.stackSize;
+      if (!outputSecondary.isEmpty()) {
+        if (output2.isEmpty()) {
+          output2 = outputSecondary.copy();
+        } else if (output2.getItem() == outputSecondary.getItem()) {
+          output2.grow(outputSecondary.getCount());
         }
+        setInventorySlotContents(SLOT_OUTPUT_2, output2);
       }
 
-      if (this.stacks[SLOT_INPUT].getItem() == Item.getItemFromBlock(Blocks.SPONGE)
-          && this.stacks[SLOT_INPUT].getMetadata() == 1 && this.stacks[SLOT_FUEL] != null
-          && this.stacks[SLOT_FUEL].getItem() == Items.BUCKET) {
-        this.stacks[SLOT_FUEL] = new ItemStack(Items.WATER_BUCKET);
+      ItemStack input = getStackInSlot(SLOT_INPUT);
+      ItemStack fuel = getStackInSlot(SLOT_FUEL);
+      if (input.getItem() == Item.getItemFromBlock(Blocks.SPONGE) && input.getMetadata() == 1
+          && fuel.getItem() == Items.BUCKET) {
+        setInventorySlotContents(SLOT_FUEL, new ItemStack(Items.WATER_BUCKET));
       }
 
-      --this.stacks[SLOT_INPUT].stackSize;
+      input.shrink(1);
 
-      if (this.stacks[SLOT_INPUT].stackSize <= 0) {
-        this.stacks[SLOT_INPUT] = null;
-      }
+      // if (this.stacks[SLOT_INPUT].stackSize <= 0) {
+      // this.stacks[SLOT_INPUT] = null;
+      // }
     }
   }
 
@@ -533,20 +430,14 @@ public class TileMetalFurnace extends TileEntity implements ITickable, ISidedInv
   }
 
   @Override
-  public ItemStack removeStackFromSlot(int index) {
-
-    if (stacks[index] != null) {
-      ItemStack stack = stacks[index];
-      stacks[index] = null;
-      return stack;
-    } else {
-      return null;
-    }
-  }
-
-  @Override
   public String getName() {
 
     return "container.funores.metalfurnace.name";
+  }
+
+  @Override
+  public int getSizeInventory() {
+
+    return SIZE_INVENTORY;
   }
 }

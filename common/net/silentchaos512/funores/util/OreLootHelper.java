@@ -84,9 +84,9 @@ public class OreLootHelper {
         if (rand.nextFloat() < drop.getDropChance(fortune)) {
           // How many to drop?
           ItemStack stack = drop.getStack().copy();
-          stack.stackSize = drop.getDropCount(fortune, rand);
+          stack.setCount(drop.getDropCount(fortune, rand));
           // Drop stuff.
-          for (int i = 0; i < stack.stackSize; ++i) {
+          for (int i = 0; i < stack.getCount(); ++i) {
             list.add(new ItemStack(stack.getItem(), 1, stack.getItemDamage()));
           }
         }

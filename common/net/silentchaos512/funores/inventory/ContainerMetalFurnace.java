@@ -1,5 +1,7 @@
 package net.silentchaos512.funores.inventory;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -89,13 +91,13 @@ public class ContainerMetalFurnace extends Container {
   @Override
   public boolean canInteractWith(EntityPlayer playerIn) {
 
-    return this.tileFurnace.isUseableByPlayer(playerIn);
+    return this.tileFurnace.isUsableByPlayer(playerIn);
   }
 
   @Override
-  public ItemStack transferStackInSlot(EntityPlayer playerIn, int index) {
+  public @Nonnull ItemStack transferStackInSlot(EntityPlayer playerIn, int index) {
 
-    ItemStack itemstack = null;
+    ItemStack itemstack = ItemStack.EMPTY;
     Slot slot = (Slot) this.inventorySlots.get(index);
 
     if (slot != null && slot.getHasStack()) {
@@ -104,41 +106,41 @@ public class ContainerMetalFurnace extends Container {
 
       if (index == 2 || index == 3) { // TODO: Does this need to be changed?
         if (!this.mergeItemStack(itemstack1, 4, 40, true)) {
-          return null;
+          return ItemStack.EMPTY;
         }
 
         slot.onSlotChange(itemstack1, itemstack);
       } else if (index != 1 && index != 0) {
         if (FurnaceRecipes.instance().getSmeltingResult(itemstack1) != null) {
           if (!this.mergeItemStack(itemstack1, 0, 1, false)) {
-            return null;
+            return ItemStack.EMPTY;
           }
         } else if (TileEntityFurnace.isItemFuel(itemstack1)) {
           if (!this.mergeItemStack(itemstack1, 1, 2, false)) {
-            return null;
+            return ItemStack.EMPTY;
           }
         } else if (index >= 4 && index < 31) {
           if (!this.mergeItemStack(itemstack1, 31, 40, false)) {
-            return null;
+            return ItemStack.EMPTY;
           }
         } else if (index >= 31 && index < 40 && !this.mergeItemStack(itemstack1, 4, 31, false)) {
-          return null;
+          return ItemStack.EMPTY;
         }
       } else if (!this.mergeItemStack(itemstack1, 4, 40, false)) {
-        return null;
+        return ItemStack.EMPTY;
       }
 
-      if (itemstack1.stackSize == 0) {
-        slot.putStack((ItemStack) null);
+      if (itemstack1.isEmpty()) {
+        slot.putStack(ItemStack.EMPTY);
       } else {
         slot.onSlotChanged();
       }
 
-      if (itemstack1.stackSize == itemstack.stackSize) {
-        return null;
+      if (itemstack1.getCount() == itemstack.getCount()) {
+        return ItemStack.EMPTY;
       }
 
-      slot.onPickupFromSlot(playerIn, itemstack1);
+      slot.onTake(playerIn, itemstack1);
     }
 
     return itemstack;

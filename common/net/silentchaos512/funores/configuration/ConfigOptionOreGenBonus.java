@@ -10,10 +10,9 @@ import com.google.common.collect.Lists;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.config.Configuration;
-import net.silentchaos512.funores.FunOres;
+import net.silentchaos512.funores.lib.IHasOre;
 
 public class ConfigOptionOreGenBonus extends ConfigOptionOreGen {
 
@@ -53,7 +52,7 @@ public class ConfigOptionOreGenBonus extends ConfigOptionOreGen {
    */
   private List<String> bonusDropKeys = Lists.newArrayList();
 
-  public ConfigOptionOreGenBonus(IStringSerializable ore) {
+  public ConfigOptionOreGenBonus(IHasOre ore) {
 
     super(ore);
   }
@@ -162,7 +161,7 @@ public class ConfigOptionOreGenBonus extends ConfigOptionOreGen {
   @Override
   public ConfigOption validate() {
 
-    pick = MathHelper.clamp_int(pick, PICK_MIN, PICK_MAX);
+    pick = MathHelper.clamp(pick, PICK_MIN, PICK_MAX);
 
     return super.validate();
   }

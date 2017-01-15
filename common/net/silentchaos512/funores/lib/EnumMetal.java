@@ -10,7 +10,7 @@ import net.silentchaos512.funores.configuration.ConfigOptionOreGen;
 import net.silentchaos512.funores.init.ModBlocks;
 import net.silentchaos512.funores.init.ModItems;
 
-public enum EnumMetal implements IStringSerializable, IHasOre, IMetal {
+public enum EnumMetal implements IHasOre, IMetal {
 
   COPPER(0, "Copper"),
   TIN(1, "Tin"),
@@ -20,7 +20,8 @@ public enum EnumMetal implements IStringSerializable, IHasOre, IMetal {
   PLATINUM(5, "Platinum"),
   ALUMINIUM(6, "Aluminium"),
   ZINC(7, "Zinc"),
-  TITANIUM(8, "Titanium");
+  TITANIUM(8, "Titanium"),
+  OSMIUM(9, "Osmium");
 
   public final int meta;
   public final int dimension;
@@ -144,6 +145,8 @@ public enum EnumMetal implements IStringSerializable, IHasOre, IMetal {
         return Config.zinc;
       case 8:
         return Config.titanium;
+      case 9:
+        return Config.osmium;
       default:
         FunOres.instance.logHelper.debug("EnumMetal: Don't know config for ore with meta " + meta);
         return null;
@@ -171,6 +174,8 @@ public enum EnumMetal implements IStringSerializable, IHasOre, IMetal {
         return ZINC.getDust();
       case ZINC:
         return TIN.getDust();
+      case OSMIUM:
+        return EnumVanillaMetal.IRON.getDust();
       default:
         return null;
     }

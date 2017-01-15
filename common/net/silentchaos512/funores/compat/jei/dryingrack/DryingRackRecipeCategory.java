@@ -42,7 +42,7 @@ public class DryingRackRecipeCategory implements IRecipeCategory {
         IDrawableAnimated.StartDirection.LEFT, false);
   }
 
-  @Override
+  //@Override
   public void drawAnimations(Minecraft mc) {
 
     arrow.draw(mc, 47, 10);
@@ -71,11 +71,11 @@ public class DryingRackRecipeCategory implements IRecipeCategory {
     return CATEGORY;
   }
 
-  @Override
-  public void setRecipe(IRecipeLayout recipeLayout, IRecipeWrapper recipeWrapper) {
-
-    setRecipe(recipeLayout, recipeWrapper, null);
-  }
+//  @Override
+//  public void setRecipe(IRecipeLayout recipeLayout, IRecipeWrapper recipeWrapper) {
+//
+//    setRecipe(recipeLayout, recipeWrapper, null);
+//  }
 
   @Override
   public void setRecipe(IRecipeLayout recipeLayout, IRecipeWrapper recipeWrapper, IIngredients ingredients) {

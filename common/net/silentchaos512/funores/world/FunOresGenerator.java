@@ -19,7 +19,6 @@ import net.silentchaos512.funores.lib.EnumMeat;
 import net.silentchaos512.funores.lib.EnumMetal;
 import net.silentchaos512.funores.lib.EnumMob;
 import net.silentchaos512.funores.lib.EnumVanillaOre;
-import net.silentchaos512.funores.lib.IHasOre;
 
 public class FunOresGenerator implements IWorldGenerator {
 
@@ -91,10 +90,10 @@ public class FunOresGenerator implements IWorldGenerator {
       return;
     }
 
-    if (!(ore.ore instanceof IHasOre)) {
-      FunOres.instance.logHelper.debug(ore.oreName + " is not an ore?");
-      return;
-    }
+//    if (!(ore.ore instanceof IHasOre)) {
+//      FunOres.instance.logHelper.debug(ore.oreName + " is not an ore?");
+//      return;
+//    }
 
     if (ore instanceof ConfigOptionOreGenReplace) {
       ConfigOptionOreGenReplace oreGenReplace = (ConfigOptionOreGenReplace) ore;
@@ -126,7 +125,7 @@ public class FunOresGenerator implements IWorldGenerator {
           z = posZ + random.nextInt(16);
 
           BlockPos pos = new BlockPos(x, y, z);
-          IBlockState state = ((IHasOre) ore.ore).getOre();
+          IBlockState state = ore.ore.getOre();
           IBlockState targetState = world.getBlockState(pos);
 
           new WorldGenMinable(state, ore.clusterSize, ore.predicate).generate(world, random, pos);
@@ -151,7 +150,7 @@ public class FunOresGenerator implements IWorldGenerator {
 
   private void removeExistingOres(ConfigOptionOreGenReplace ore, World world, int posX, int posZ) {
 
-    IBlockState state = ((IHasOre) ore.ore).getOre();
+    IBlockState state = ore.ore.getOre();
     IBlockState stone = Blocks.STONE.getDefaultState();
     BlockPos pos;
 

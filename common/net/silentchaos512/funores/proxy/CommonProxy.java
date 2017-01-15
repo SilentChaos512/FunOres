@@ -14,16 +14,15 @@ public class CommonProxy extends net.silentchaos512.lib.proxy.CommonProxy {
   public void init(SRegistry reg) {
 
     super.init(reg);
-    registerTileEntities();
+    registerTileEntities(reg);
     registerRenderers();
   }
 
-  public void registerTileEntities() {
+  public void registerTileEntities(SRegistry reg) {
 
-    String prefix = "tile.funores:";
-    GameRegistry.registerTileEntity(TileMetalFurnace.class, prefix + Names.METAL_FURNACE);
-    GameRegistry.registerTileEntity(TileAlloySmelter.class, prefix + Names.ALLOY_SMELTER);
-    GameRegistry.registerTileEntity(TileDryingRack.class, prefix + Names.DRYING_RACK);
+    reg.registerTileEntity(TileMetalFurnace.class, Names.METAL_FURNACE);
+    reg.registerTileEntity(TileAlloySmelter.class, Names.ALLOY_SMELTER);
+    reg.registerTileEntity(TileDryingRack.class, Names.DRYING_RACK);
   }
 
   public void registerRenderers() {

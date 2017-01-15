@@ -13,6 +13,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.silentchaos512.funores.FunOres;
@@ -78,7 +79,7 @@ public class ItemDried extends ItemFood implements IRegistryObject, IDisableable
   }
 
   @Override
-  public void getSubItems(Item item, CreativeTabs tab, List list) {
+  public void getSubItems(Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
 
     // Add only non-disabled items for display!
     for (ItemStack stack : getSubItems(item))

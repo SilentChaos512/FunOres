@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.oredict.OreDictionary;
@@ -78,7 +79,7 @@ public class BlockMetal extends BlockSL implements IDisableable {
   }
 
   @Override
-  public void getSubBlocks(Item item, CreativeTabs tab, List list) {
+  public void getSubBlocks(Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
 
     for (ItemStack stack : getSubItems(item))
       if (!FunOres.registry.isItemDisabled(stack))

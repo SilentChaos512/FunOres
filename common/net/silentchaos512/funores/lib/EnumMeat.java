@@ -19,7 +19,7 @@ import net.silentchaos512.funores.configuration.Config;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGenBonus;
 import net.silentchaos512.funores.init.ModBlocks;
 
-public enum EnumMeat implements IStringSerializable, IHasOre, ILootTableDrops {
+public enum EnumMeat implements IHasOre, ILootTableDrops {
 
   PIG(0, "Pig"),
   FISH(1, "Fish"),

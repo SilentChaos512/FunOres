@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.lib.IDisableable;
 import net.silentchaos512.lib.item.ItemSL;
@@ -36,7 +37,7 @@ public class ItemBaseDisableable extends ItemSL implements IDisableable {
   }
 
   @Override
-  public void getSubItems(Item item, CreativeTabs tab, List list) {
+  public void getSubItems(Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
 
     for (ItemStack stack : getSubItems(item))
       if (!FunOres.registry.isItemDisabled(stack))

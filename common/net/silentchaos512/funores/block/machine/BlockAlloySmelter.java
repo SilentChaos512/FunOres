@@ -40,7 +40,7 @@ public class BlockAlloySmelter extends BlockMachine {
 
   @Override
   public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player,
-      EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+      EnumHand hand, EnumFacing facing, float side, float hitX, float hitY) {
 
     if (world.isRemote) {
       return true;

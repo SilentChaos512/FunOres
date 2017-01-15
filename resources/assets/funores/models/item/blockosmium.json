@@ -1,0 +1,6 @@
+{
+  "parent": "FunOres:block/BlockOsmium",
+  "textures": {
+    "layer0": "FunOres:blocks/BlockOsmium"
+  }
+}

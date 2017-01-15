@@ -26,6 +26,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.silentchaos512.funores.FunOres;
@@ -36,7 +38,8 @@ import net.silentchaos512.funores.lib.ModDamageSources;
 import net.silentchaos512.lib.registry.IRegistryObject;
 import net.silentchaos512.wit.api.IWitHudInfo;
 
-public class BlockMachine extends BlockContainer implements IRegistryObject, IDisableable, IWitHudInfo {
+public class BlockMachine extends BlockContainer
+    implements IRegistryObject, IDisableable, IWitHudInfo {
 
   public static final PropertyEnum FACING = PropertyEnum.create("facing", EnumMachineState.class);
   protected static boolean keepInventory;
@@ -64,7 +67,7 @@ public class BlockMachine extends BlockContainer implements IRegistryObject, IDi
   }
 
   @Override
-  public void getSubBlocks(Item item, CreativeTabs tab, List list) {
+  public void getSubBlocks(Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
 
     ItemStack stack = new ItemStack(item);
     if (!FunOres.registry.isItemDisabled(stack))
@@ -147,7 +150,8 @@ public class BlockMachine extends BlockContainer implements IRegistryObject, IDi
   }
 
   @Override
-  public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
+  public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state,
+      Entity entity) {
 
     if (Config.machinesCanBurn && getMachineState(world, pos).isOn) {
       entity.attackEntityFrom(ModDamageSources.hotMachine, 0.5f);
@@ -196,8 +200,8 @@ public class BlockMachine extends BlockContainer implements IRegistryObject, IDi
   }
 
   @Override
-  public IBlockState onBlockPlaced(World world, BlockPos pos, EnumFacing facing, float hitX,
-      float hitY, float hitZ, int meta, EntityLivingBase placer) {
+  public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX,
+      float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
 
     EnumMachineState machineState = EnumMachineState
         .fromEnumFacing(placer.getHorizontalFacing().getOpposite());
@@ -254,11 +258,11 @@ public class BlockMachine extends BlockContainer implements IRegistryObject, IDi
   }
 
   // TODO: What's this?
-//  @Override
-//  public IBlockState getStateForEntityRender(IBlockState state) {
-//
-//    return this.getDefaultState().withProperty(FACING, EnumMachineState.SOUTH_OFF);
-//  }
+  // @Override
+  // public IBlockState getStateForEntityRender(IBlockState state) {
+  //
+  // return this.getDefaultState().withProperty(FACING, EnumMachineState.SOUTH_OFF);
+  // }
 
   public IBlockState getStateFromMeta(int meta) {
 

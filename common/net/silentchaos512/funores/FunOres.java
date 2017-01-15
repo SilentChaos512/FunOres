@@ -60,17 +60,17 @@ import net.silentchaos512.lib.util.LogHelper;
 //@formatter:on
 public class FunOres {
 
-  public static final String MOD_ID = "FunOres";
+  public static final String MOD_ID = "funores";
   public static final String MOD_NAME = "Fun Ores";
   public static final String VERSION_NUMBER = "@VERSION@";
-  public static final String DEPENDENCIES = "required-after:Forge@[12.16.0.1826,);required-after:SilentLib;";
+  public static final String DEPENDENCIES = "required-after:forge@[13.19.0.2156,);required-after:silentlib;";
   public static final String RESOURCE_PREFIX = MOD_ID.toLowerCase() + ":";
 
   public static Random random = new Random();
   public static LogHelper logHelper = new LogHelper(MOD_NAME);
   public static LocalizationHelper localizationHelper;
 
-  public static FunOresRegistry registry = new FunOresRegistry(MOD_ID);
+  public static FunOresRegistry registry = new FunOresRegistry(MOD_ID, logHelper);
 
   @Instance(MOD_ID)
   public static FunOres instance;
@@ -164,8 +164,7 @@ public class FunOres {
         400, 2.0f,
         "ingotGold*1", "ingotSilver*1");
 
-    ItemStack enderEyes = new ItemStack(Items.ENDER_EYE);
-    enderEyes.stackSize = 4;
+    ItemStack enderEyes = new ItemStack(Items.ENDER_EYE, 4);
     addAlloySmelterRecipe(
         EnumAlloy.ENDERIUM.getMetalName(), EnumAlloy.ENDERIUM.getIngot(), 4,
         800, 4.0f,
@@ -243,9 +242,9 @@ public class FunOres {
   public static CreativeTabs tabFunOres = new CreativeTabs("tabFunOres") {
 
     @Override
-    public Item getTabIconItem() {
+    public ItemStack getTabIconItem() {
 
-      return Item.getItemFromBlock(ModBlocks.meatOre);
+      return new ItemStack(ModBlocks.meatOre);
     }
   };
 }

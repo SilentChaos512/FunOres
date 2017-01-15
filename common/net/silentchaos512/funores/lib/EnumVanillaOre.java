@@ -7,7 +7,7 @@ import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.configuration.Config;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGenReplace;
 
-public enum EnumVanillaOre implements IStringSerializable,IHasOre {
+public enum EnumVanillaOre implements IHasOre {
 
   IRON(0, "Iron", Blocks.IRON_ORE.getDefaultState()),
   GOLD(1, "Gold", Blocks.GOLD_ORE.getDefaultState()),

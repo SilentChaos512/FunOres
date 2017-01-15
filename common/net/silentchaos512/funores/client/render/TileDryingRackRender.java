@@ -38,7 +38,7 @@ public class TileDryingRackRender extends TileEntitySpecialRenderer<TileDryingRa
     if (stack != null) {
       // GlStateManager.translate(0.5, 0.5, 0.5);
       EntityItem entityitem = new EntityItem(world, 0.0D, 0.0D, 0.0D, stack);
-      entityitem.getEntityItem().stackSize = 1;
+      entityitem.getEntityItem().setCount(1);
       entityitem.hoverStart = 0.0F;
       GlStateManager.pushMatrix();
       GlStateManager.disableLighting();

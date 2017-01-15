@@ -23,7 +23,7 @@ public class SlotAlloySmelterOutput extends SlotFurnaceOutput {
   public ItemStack decrStackSize(int amount) {
 
     if (this.getHasStack()) {
-      this.removeCount += Math.min(amount, this.getStack().stackSize);
+      this.removeCount += Math.min(amount, this.getStack().getCount());
     }
 
     return super.decrStackSize(amount);
@@ -32,7 +32,7 @@ public class SlotAlloySmelterOutput extends SlotFurnaceOutput {
   public void onPickupFromSlot(EntityPlayer playerIn, ItemStack stack) {
 
     this.onCrafting(stack);
-    super.onPickupFromSlot(playerIn, stack);
+    super.onTake(playerIn, stack);
   }
 
   /**
@@ -48,9 +48,9 @@ public class SlotAlloySmelterOutput extends SlotFurnaceOutput {
   @Override
   protected void onCrafting(ItemStack stack) {
 
-    stack.onCrafting(this.thePlayer.worldObj, this.thePlayer, this.removeCount);
+    stack.onCrafting(this.thePlayer.world, this.thePlayer, this.removeCount);
 
-    if (!this.thePlayer.worldObj.isRemote) {
+    if (!this.thePlayer.world.isRemote) {
       int i = this.removeCount;
 
       AlloySmelterRecipe recipe = AlloySmelterRecipe.getRecipeByOutput(stack);
@@ -59,9 +59,9 @@ public class SlotAlloySmelterOutput extends SlotFurnaceOutput {
       if (f == 0.0F) {
         i = 0;
       } else if (f < 1.0F) {
-        int j = MathHelper.floor_float((float) i * f);
+        int j = MathHelper.floor((float) i * f);
 
-        if (j < MathHelper.ceiling_float_int((float) i * f)
+        if (j < MathHelper.ceil((float) i * f)
             && Math.random() < (double) ((float) i * f - (float) j)) {
           ++j;
         }
@@ -72,7 +72,7 @@ public class SlotAlloySmelterOutput extends SlotFurnaceOutput {
       while (i > 0) {
         int k = EntityXPOrb.getXPSplit(i);
         i -= k;
-        this.thePlayer.worldObj.spawnEntityInWorld(new EntityXPOrb(this.thePlayer.worldObj,
+        this.thePlayer.world.spawnEntity(new EntityXPOrb(this.thePlayer.world,
             this.thePlayer.posX, this.thePlayer.posY + 0.5D, this.thePlayer.posZ + 0.5D, k));
       }
     }

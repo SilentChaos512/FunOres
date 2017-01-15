@@ -58,7 +58,7 @@ public class FunOresAPI {
       float experience, Object... inputs) {
 
     ItemStack newOutput = output.copy();
-    newOutput.stackSize = outputCount;
+    newOutput.setCount(outputCount);
     addAlloySmelterRecipe(newOutput, cookTime, experience, inputs);
   }
 

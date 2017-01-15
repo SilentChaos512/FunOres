@@ -50,7 +50,7 @@ public class AlloySmelterRecipeCategory implements IRecipeCategory {
         IDrawableAnimated.StartDirection.LEFT, false);
   }
 
-  @Override
+  //@Override
   public void drawAnimations(Minecraft mc) {
 
     flame.draw(mc, 2, 4);
@@ -80,12 +80,12 @@ public class AlloySmelterRecipeCategory implements IRecipeCategory {
     return CATEGORY;
   }
 
-  @Override
-  public void setRecipe(IRecipeLayout recipeLayout, IRecipeWrapper recipeWrapper) {
-
-    // TODO
-    setRecipe(recipeLayout, recipeWrapper, null);
-  }
+//  @Override
+//  public void setRecipe(IRecipeLayout recipeLayout, IRecipeWrapper recipeWrapper) {
+//
+//    // TODO
+//    setRecipe(recipeLayout, recipeWrapper, null);
+//  }
 
   @Override
   public void setRecipe(IRecipeLayout recipeLayout, IRecipeWrapper recipeWrapper, IIngredients ingredients) {

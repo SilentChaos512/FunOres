@@ -2,6 +2,8 @@ package net.silentchaos512.funores.tile;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import com.google.common.collect.Lists;
 
 import net.minecraft.block.state.IBlockState;
@@ -28,7 +30,7 @@ public class TileDryingRack extends TileEntity implements ITickable, IInventory 
 
   public static final int BASE_DRY_SPEED = 1;
 
-  private ItemStack stack = null;
+  private @Nonnull ItemStack stack = ItemStack.EMPTY;
   private int dryTime = 0;
   private int totalDryTime = 0;
   private float xp = 0;
@@ -70,33 +72,33 @@ public class TileDryingRack extends TileEntity implements ITickable, IInventory 
 
   public boolean interact(EntityPlayer player, EnumHand hand, ItemStack heldItem) {
 
-    if (stack == null && heldItem != null) {
+    if (stack.isEmpty() && !heldItem.isEmpty()) {
       // Add to rack.
       stack = heldItem.copy();
-      stack.stackSize = 1;
-      --heldItem.stackSize;
-      if (heldItem.stackSize <= 0) {
-        heldItem = null;
-      }
+      stack.setCount(1);
+      heldItem.shrink(1);
+//      if (heldItem.stackSize <= 0) {
+//        heldItem = null;
+//      }
       dryTime = 0;
       totalDryTime = getTotalDryTime();
       markDirty();
       // FIXME
       // worldObj.markBlockForUpdate(pos);
-    } else if (stack != null) {
+    } else if (!stack.isEmpty()) {
       // Remove from rack.
-      if (!player.worldObj.isRemote) {
+      if (!player.world.isRemote) {
         Vec3d v = new Vec3d(player.posX, player.posY + 1.1, player.posZ);
         Vec3d lookVec = player.getLookVec();
         v = v.add(lookVec);
-        stack.stackSize = 1; // Not sure why this is necessary...
-        EntityItem entityItem = new EntityItem(player.worldObj, v.xCoord, v.yCoord, v.zCoord,
+        stack.setCount(1); // Not sure why this is necessary...
+        EntityItem entityItem = new EntityItem(player.world, v.xCoord, v.yCoord, v.zCoord,
             stack);
         // LogHelper.list(entityItem, entityItem.getEntityItem().stackSize);
-        player.worldObj.spawnEntityInWorld(entityItem);
+        player.world.spawnEntity(entityItem);
       }
       givePlayerXp(player);
-      stack = null;
+      stack = ItemStack.EMPTY;
       dryTime = 0;
       totalDryTime = getTotalDryTime();
       markDirty();
@@ -109,7 +111,7 @@ public class TileDryingRack extends TileEntity implements ITickable, IInventory 
 
   protected void givePlayerXp(EntityPlayer player) {
 
-    if (worldObj.isRemote) {
+    if (world.isRemote) {
       xp = 0;
       return;
     }
@@ -117,14 +119,14 @@ public class TileDryingRack extends TileEntity implements ITickable, IInventory 
     int amount = (int) xp;
     xp -= amount;
     if (xp > 0.0f) {
-      amount = player.worldObj.rand.nextInt((int) (1.0f / xp)) == 0 ? 1 : 0;
+      amount = player.world.rand.nextInt((int) (1.0f / xp)) == 0 ? 1 : 0;
     }
 
     if (amount > 0) {
       player.addExperience(amount);
-      worldObj.playSound(null, player.posX, player.posY, player.posZ,
-          SoundEvents.ENTITY_EXPERIENCE_ORB_TOUCH, SoundCategory.PLAYERS, 0.1F,
-          0.5F * ((worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.7F + 1.8F));
+      world.playSound(null, player.posX, player.posY, player.posZ,
+          SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.PLAYERS, 0.1F,
+          0.5F * ((world.rand.nextFloat() - world.rand.nextFloat()) * 0.7F + 1.8F));
     }
 
     xp = 0;
@@ -132,9 +134,9 @@ public class TileDryingRack extends TileEntity implements ITickable, IInventory 
 
   protected int getDrySpeed() {
 
-    boolean canSeeSky = worldObj.canBlockSeeSky(getPos());
-    boolean daytime = worldObj.isDaytime(); // Always returns true?
-    boolean raining = worldObj.isRaining();
+    boolean canSeeSky = world.canBlockSeeSky(getPos());
+    boolean daytime = world.isDaytime(); // Always returns true?
+    boolean raining = world.isRaining();
 
     if (canSeeSky) {
       if (daytime && !raining) {
@@ -159,7 +161,7 @@ public class TileDryingRack extends TileEntity implements ITickable, IInventory 
     tags.setInteger("DryTime", dryTime);
     tags.setInteger("TotalDryTime", totalDryTime);
     tags.setFloat("XP", xp);
-    if (stack != null)
+    if (!stack.isEmpty())
       tags.setTag("ItemStack", stack.writeToNBT(new NBTTagCompound()));
     return tags;
   }
@@ -172,9 +174,9 @@ public class TileDryingRack extends TileEntity implements ITickable, IInventory 
     totalDryTime = tags.getInteger("TotalDryTime");
     xp = tags.getFloat("XP");
     if (tags.hasKey("ItemStack")) {
-      stack = ItemStack.loadItemStackFromNBT(tags.getCompoundTag("ItemStack"));
+      stack = new ItemStack(tags.getCompoundTag("ItemStack"));
     } else {
-      stack = null;
+      stack = ItemStack.EMPTY;
     }
 
     if (getWorld().isRemote) {
@@ -187,7 +189,7 @@ public class TileDryingRack extends TileEntity implements ITickable, IInventory 
   public void readFromNBT(NBTTagCompound compound) {
 
     super.readFromNBT(compound);
-    stack = ItemStack.loadItemStackFromNBT(compound.getCompoundTag("ItemStack"));
+    stack = new ItemStack(compound.getCompoundTag("ItemStack"));
     dryTime = compound.getShort("DryTime");
     totalDryTime = getTotalDryTime();
   }
@@ -198,37 +200,37 @@ public class TileDryingRack extends TileEntity implements ITickable, IInventory 
     super.writeToNBT(compound);
     compound.setShort("DryTime", (short) dryTime);
     NBTTagCompound tagCompound = new NBTTagCompound();
-    if (stack != null) {
+    if (!stack.isEmpty()) {
       stack.writeToNBT(tagCompound);
     }
     compound.setTag("ItemStack", tagCompound);
     return compound;
   }
 
-  public ItemStack getOutput() {
+  public @Nonnull ItemStack getOutput() {
 
     DryingRackRecipe recipe = DryingRackRecipe.getMatchingRecipe(stack);
     if (recipe != null) {
       return recipe.getOutput();
     }
-    return null;
+    return ItemStack.EMPTY;
   }
 
-  public ItemStack getStack() {
+  public @Nonnull ItemStack getStack() {
 
     return stack;
   }
 
-  public void setStack(ItemStack stack) {
+  public void setStack(@Nonnull ItemStack stack) {
 
     this.stack = stack;
   }
 
   public EnumMachineState getMachineState() {
 
-    IBlockState state = worldObj.getBlockState(pos);
+    IBlockState state = world.getBlockState(pos);
     if (state != null && state.getBlock() == ModBlocks.dryingRack)
-      return (EnumMachineState) worldObj.getBlockState(pos).getValue(BlockMachine.FACING);
+      return (EnumMachineState) world.getBlockState(pos).getValue(BlockMachine.FACING);
     return EnumMachineState.NORTH_OFF;
   }
 
@@ -281,7 +283,7 @@ public class TileDryingRack extends TileEntity implements ITickable, IInventory 
   public ItemStack removeStackFromSlot(int index) {
 
     ItemStack copy = stack;
-    stack = null;
+    stack = ItemStack.EMPTY;
     return stack;
   }
 
@@ -298,9 +300,9 @@ public class TileDryingRack extends TileEntity implements ITickable, IInventory 
   }
 
   @Override
-  public boolean isUseableByPlayer(EntityPlayer player) {
+  public boolean isUsableByPlayer(EntityPlayer player) {
 
-    return this.worldObj.getTileEntity(this.pos) != this ? false
+    return this.world.getTileEntity(this.pos) != this ? false
         : player.getDistanceSq((double) this.pos.getX() + 0.5D, (double) this.pos.getY() + 0.5D,
             (double) this.pos.getZ() + 0.5D) <= 64.0D;
   }
@@ -356,6 +358,12 @@ public class TileDryingRack extends TileEntity implements ITickable, IInventory 
   @Override
   public void clear() {
 
-    stack = null;
+    stack = ItemStack.EMPTY;
+  }
+
+  @Override
+  public boolean isEmpty() {
+
+    return stack.isEmpty();
   }
 }

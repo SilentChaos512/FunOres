@@ -99,7 +99,7 @@ public class ContainerAlloySmelter extends Container {
   @Override
   public boolean canInteractWith(EntityPlayer playerIn) {
 
-    return this.tileAlloySmelter.isUseableByPlayer(playerIn);
+    return this.tileAlloySmelter.isUsableByPlayer(playerIn);
   }
 
   @Override
@@ -147,17 +147,17 @@ public class ContainerAlloySmelter extends Container {
         return null;
       }
 
-      if (itemstack1.stackSize == 0) {
-        slot.putStack((ItemStack) null);
+      if (!itemstack1.isEmpty()) {
+        slot.putStack(ItemStack.EMPTY);
       } else {
         slot.onSlotChanged();
       }
 
-      if (itemstack1.stackSize == itemstack.stackSize) {
+      if (itemstack1.getCount() == itemstack.getCount()) {
         return null;
       }
 
-      slot.onPickupFromSlot(playerIn, itemstack1);
+      slot.onTake(playerIn, itemstack1);
     }
 
     return itemstack;

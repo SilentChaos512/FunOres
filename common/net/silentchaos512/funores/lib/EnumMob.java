@@ -25,7 +25,7 @@ import net.silentchaos512.funores.configuration.Config;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGenBonus;
 import net.silentchaos512.funores.init.ModBlocks;
 
-public enum EnumMob implements IStringSerializable, IHasOre, ILootTableDrops {
+public enum EnumMob implements IHasOre, ILootTableDrops {
 
   ZOMBIE(0, "Zombie"),
   SKELETON(1, "Skeleton"),

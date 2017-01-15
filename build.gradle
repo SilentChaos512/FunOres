@@ -17,34 +17,30 @@ plugins {
     id "net.minecraftforge.gradle.forge" version "2.0.2"
 }
 */
-version = "1.3.3"
+version = "1.4.0"
 group= "net.silentchaos512.funores" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "FunOres-1.10.2"
+archivesBaseName = "FunOres-1.11"
 
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
 minecraft {
-    version = "1.10.2-12.18.2.2125"
-    runDir = "run"
+    version = "1.11-13.19.1.2188"
+    runDir = "eclipse"
 
     replace "@VERSION@", project.version
     replaceIn "FunOres.java"
     
-    mappings = "snapshot_20161111"
-    useDepAts = true
+    mappings = "snapshot_20161122"
 }
 
 repositories {
     maven {
         url "http://dvs1.progwml6.com/files/maven"
     }
-    flatDir {
-        dirs 'libs'
-    }
 }
 dependencies {
-    deobfCompile "mezz.jei:jei_1.10.2:3.13.3.369"
+    deobfCompile "mezz.jei:jei_1.11:4.0.0.188"
 }
 
 processResources

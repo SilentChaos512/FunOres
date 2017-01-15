@@ -57,7 +57,7 @@ public class ModBlocks {
     }
 
     // Show average veins per chunk (cluster count divided by rarity)
-    Biome biome = FunOresGenerator.getBiomeForPos(player.worldObj, pos);
+    Biome biome = FunOresGenerator.getBiomeForPos(player.world, pos);
     float veinsPerChunk = (float) config.getClusterCountForBiome(biome) / config.rarity;
     String veinCountString = String.format("%.3f", veinsPerChunk);
 

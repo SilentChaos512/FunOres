@@ -105,7 +105,7 @@ public class AlloySmelterRecipeObject {
   public ItemStack getMatchingStack(ItemStack inputStack) {
 
     for (ItemStack recipeStack : possibleStacks) {
-      if (inputStack.isItemEqual(recipeStack) && inputStack.stackSize >= recipeStack.stackSize) {
+      if (inputStack.isItemEqual(recipeStack) && inputStack.getCount() >= recipeStack.getCount()) {
         return recipeStack.copy();
       }
     }
@@ -161,7 +161,7 @@ public class AlloySmelterRecipeObject {
 //      if (stackSize > copy.getMaxStackSize()) {
 //        throw new IllegalArgumentException("Item count for stack " + copy + " is too big!");
 //      }
-      copy.stackSize = stackSize;
+      copy.setCount(stackSize);
       result.add(copy);
     }
 

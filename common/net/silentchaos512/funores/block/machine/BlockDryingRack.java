@@ -47,13 +47,13 @@ public class BlockDryingRack extends BlockMachine {
   public List<String> getWitLines(IBlockState state, BlockPos pos, EntityPlayer player,
       boolean advanced) {
 
-    TileEntity tile = player.worldObj.getTileEntity(pos);
+    TileEntity tile = player.world.getTileEntity(pos);
     if (tile != null && tile instanceof TileDryingRack) {
       TileDryingRack rack = (TileDryingRack) tile;
       List<String> list = Lists.newArrayList();
 
       // Display item name
-      if (rack.getStack() != null) {
+      if (!rack.getStack().isEmpty()) {
         String itemName = rack.getStack().getDisplayName();
         list.add(rack.getStack().getRarity().rarityColor + itemName);
       }
@@ -81,11 +81,12 @@ public class BlockDryingRack extends BlockMachine {
 
   @Override
   public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player,
-      EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+      EnumHand hand, EnumFacing facing, float side, float hitX, float hitY) {
 
     TileEntity tile = world.getTileEntity(pos);
     if (tile != null && tile instanceof TileDryingRack) {
       TileDryingRack tileDryingRack = (TileDryingRack) tile;
+      ItemStack heldItem = player.getHeldItem(hand);
       return tileDryingRack.interact(player, hand, heldItem);
     }
     return true;

@@ -2,6 +2,8 @@ package net.silentchaos512.funores.tile;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import com.google.common.collect.Lists;
 
 import net.minecraft.block.state.IBlockState;
@@ -10,15 +12,14 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
@@ -26,8 +27,9 @@ import net.minecraft.world.World;
 import net.silentchaos512.funores.api.recipe.alloysmelter.AlloySmelterRecipe;
 import net.silentchaos512.funores.api.recipe.alloysmelter.AlloySmelterRecipeObject;
 import net.silentchaos512.funores.inventory.ContainerAlloySmelter;
+import net.silentchaos512.lib.tile.TileSidedInventorySL;
 
-public class TileAlloySmelter extends TileEntity implements ITickable, ISidedInventory {
+public class TileAlloySmelter extends TileSidedInventorySL implements ITickable {
 
   public static final float BURN_TIME_MULTI = 0.5f;
 
@@ -41,9 +43,6 @@ public class TileAlloySmelter extends TileEntity implements ITickable, ISidedInv
   public static final int[] SLOTS_TOP = SLOTS_INPUT;
   public static final int[] SLOTS_BOTTOM = { SLOT_OUTPUT, SLOT_FUEL };
   public static final int[] SLOTS_SIDES = { SLOT_FUEL };
-
-  // Block's inventory
-  private ItemStack[] stacks = new ItemStack[NUMBER_OF_SLOTS];
 
   private int furnaceBurnTime;
   private int currentItemBurnTime;
@@ -71,10 +70,7 @@ public class TileAlloySmelter extends TileEntity implements ITickable, ISidedInv
   public int getCookTime() {
 
     AlloySmelterRecipe recipe = AlloySmelterRecipe.getMatchingRecipe(getInputStacks());
-    if (recipe != null) {
-      return recipe.getCookTime();
-    }
-    return 0;
+    return recipe == null ? 0 : recipe.getCookTime();
   }
 
   public static int getItemBurnTime(ItemStack stack) {
@@ -100,24 +96,21 @@ public class TileAlloySmelter extends TileEntity implements ITickable, ISidedInv
   public boolean canSmelt() {
 
     ItemStack result = getSmeltingResult();
-    if (result == null) {
+    if (result.isEmpty())
       return false;
-    }
 
-    ItemStack outputSlot = stacks[SLOT_OUTPUT];
-    if (outputSlot == null) {
+    ItemStack outputSlot = getStackInSlot(SLOT_OUTPUT);
+    if (outputSlot.isEmpty())
       return true; // Output slot free.
-    }
 
     // Output slot not free. Same item?
-    if (!result.isItemEqual(outputSlot)) {
+    if (!result.isItemEqual(outputSlot))
       return false;
-    }
+
     // Enough room?
-    int newOutputSize = outputSlot.stackSize + result.stackSize;
-    if (newOutputSize > getInventoryStackLimit() || newOutputSize > result.getMaxStackSize()) {
+    int newOutputSize = outputSlot.getCount() + result.getCount();
+    if (newOutputSize > getInventoryStackLimit() || newOutputSize > result.getMaxStackSize())
       return false;
-    }
 
     return true;
   }
@@ -127,25 +120,25 @@ public class TileAlloySmelter extends TileEntity implements ITickable, ISidedInv
     if (canSmelt()) {
       ItemStack output = getSmeltingResult();
 
+      ItemStack slotOutput = getStackInSlot(SLOT_OUTPUT);
+
       // Set output
-      if (stacks[SLOT_OUTPUT] == null) {
-        stacks[SLOT_OUTPUT] = output; // No need to copy, since output is a copy, right?
-      } else if (stacks[SLOT_OUTPUT].isItemEqual(output)) {
-        stacks[SLOT_OUTPUT].stackSize += output.stackSize;
-      }
+      if (slotOutput.isEmpty())
+        setInventorySlotContents(SLOT_OUTPUT, output); // No need to copy, since output is a copy, right?
+      else if (slotOutput.isItemEqual(output))
+        slotOutput.grow(output.getCount());
 
       // Consume ingredients
       AlloySmelterRecipe recipe = AlloySmelterRecipe.getMatchingRecipe(getInputStacks());
       AlloySmelterRecipeObject[] inputList = recipe.getInputs();
       for (AlloySmelterRecipeObject recipeObject : inputList) {
         for (int i = 0; i < SLOTS_INPUT.length; ++i) {
-          if (stacks[i] != null) {
-            if (recipeObject.matches(stacks[i])) {
-              stacks[i].stackSize -= recipeObject.getMatchingStack(stacks[i]).stackSize;
-              if (stacks[i].stackSize <= 0) {
-                // stacks[i] = null;
-                stacks[i] = stacks[i].getItem().getContainerItem(stacks[i]);
-              }
+          ItemStack stack = getStackInSlot(i);
+          if (!stack.isEmpty()) {
+            if (recipeObject.matches(stack)) {
+              stack.shrink(recipeObject.getMatchingStack(stack).getCount());
+              if (stack.isEmpty())
+                stack = stack.getItem().getContainerItem(stack);
               break;
             }
           }
@@ -158,85 +151,27 @@ public class TileAlloySmelter extends TileEntity implements ITickable, ISidedInv
    * Alloy smelting functions.
    */
 
-  public ItemStack getSmeltingResult() {
+  public @Nonnull ItemStack getSmeltingResult() {
 
     AlloySmelterRecipe recipe = AlloySmelterRecipe.getMatchingRecipe(getInputStacks());
-    if (recipe != null) {
-      return recipe.getOutput();
-    }
-
-    return null;
+    return recipe == null ? ItemStack.EMPTY : recipe.getOutput();
   }
 
-  public List<ItemStack> getInputStacks() {
+  public NonNullList<ItemStack> getInputStacks() {
 
-    List<ItemStack> result = Lists.newArrayList();
-    for (int i = 0; i < SLOTS_INPUT.length; ++i) {
-      if (stacks[i] != null) {
-        result.add(stacks[i]);
-      }
-    }
+    NonNullList<ItemStack> result = NonNullList.create();
+    for (int i = 0; i < SLOTS_INPUT.length; ++i)
+      result.add(getStackInSlot(i));
     return result;
-  }
-
-  @Override
-  public int getSizeInventory() {
-
-    return stacks.length;
-  }
-
-  @Override
-  public ItemStack getStackInSlot(int index) {
-
-    return index >= 0 && index < stacks.length ? stacks[index] : null;
-  }
-
-  @Override
-  public ItemStack decrStackSize(int index, int count) {
-
-    if (this.stacks[index] != null) {
-      ItemStack stack;
-
-      if (this.stacks[index].stackSize <= count) {
-        stack = this.stacks[index];
-        this.stacks[index] = null;
-        return stack;
-      } else {
-        stack = this.stacks[index].splitStack(count);
-
-        if (this.stacks[index].stackSize == 0) {
-          this.stacks[index] = null;
-        }
-
-        return stack;
-      }
-    } else {
-      return null;
-    }
-  }
-
-  @Override
-  public ItemStack removeStackFromSlot(int index) {
-
-    if (stacks[index] != null) {
-      ItemStack stack = stacks[index];
-      stacks[index] = null;
-      return stack;
-    } else {
-      return null;
-    }
   }
 
   @Override
   public void setInventorySlotContents(int index, ItemStack stack) {
 
-    boolean flag = stack != null && stack.isItemEqual(this.stacks[index])
-        && ItemStack.areItemStacksEqual(stack, this.stacks[index]);
-    this.stacks[index] = stack;
+    boolean flag = !stack.isEmpty() && stack.isItemEqual(getStackInSlot(index))
+        && ItemStack.areItemStacksEqual(stack, getStackInSlot(index));
 
-    if (stack != null && stack.stackSize > this.getInventoryStackLimit()) {
-      stack.stackSize = this.getInventoryStackLimit();
-    }
+    super.setInventorySlotContents(index, stack);
 
     if (index < SLOTS_INPUT.length && !flag) {
       this.totalCookTime = this.getCookTime();
@@ -252,37 +187,12 @@ public class TileAlloySmelter extends TileEntity implements ITickable, ISidedInv
   }
 
   @Override
-  public void markDirty() {
-
-    super.markDirty();
-  }
-
-  @Override
-  public boolean isUseableByPlayer(EntityPlayer player) {
-
-    return this.worldObj.getTileEntity(this.pos) != this ? false
-        : player.getDistanceSq((double) this.pos.getX() + 0.5D, (double) this.pos.getY() + 0.5D,
-            (double) this.pos.getZ() + 0.5D) <= 64.0D;
-  }
-
-  @Override
-  public void openInventory(EntityPlayer player) {
-
-  }
-
-  @Override
-  public void closeInventory(EntityPlayer player) {
-
-  }
-
-  @Override
   public boolean isItemValidForSlot(int index, ItemStack stack) {
 
-    if (index == SLOT_FUEL) {
+    if (index == SLOT_FUEL)
       return isItemFuel(stack);
-    } else if (index < SLOTS_INPUT.length) {
+    else if (index < SLOTS_INPUT.length)
       return AlloySmelterRecipe.isValidIngredient(stack);
-    }
 
     return true;
   }
@@ -329,29 +239,9 @@ public class TileAlloySmelter extends TileEntity implements ITickable, ISidedInv
   }
 
   @Override
-  public void clear() {
-
-    for (int i = 0; i < stacks.length; ++i) {
-      stacks[i] = null;
-    }
-  }
-
-  @Override
   public String getName() {
 
     return "container.funores.alloysmelter.name";
-  }
-
-  @Override
-  public boolean hasCustomName() {
-
-    return false;
-  }
-
-  @Override
-  public ITextComponent getDisplayName() {
-
-    return null;
   }
 
   @Override
@@ -396,23 +286,25 @@ public class TileAlloySmelter extends TileEntity implements ITickable, ISidedInv
       --furnaceBurnTime;
     }
 
-    if (!worldObj.isRemote) {
-      if (!isBurning() && (stacks[SLOT_FUEL] == null /* || stacks[SLOT_INPUT] == null */)) {
+    if (!world.isRemote) {
+      ItemStack slotFuel = getStackInSlot(SLOT_FUEL);
+
+      if (!isBurning() && (slotFuel.isEmpty() /* || stacks[SLOT_INPUT] == null */)) {
         if (!isBurning() && cookTime > 0) {
-          cookTime = MathHelper.clamp_int(cookTime - 2, 0, totalCookTime);
+          cookTime = MathHelper.clamp(cookTime - 2, 0, totalCookTime);
         }
       } else {
         if (!isBurning() && canSmelt()) {
-          currentItemBurnTime = furnaceBurnTime = getItemBurnTime(stacks[SLOT_FUEL]);
+          currentItemBurnTime = furnaceBurnTime = getItemBurnTime(slotFuel);
 
           if (isBurning()) {
             flag1 = true;
 
-            if (stacks[SLOT_FUEL] != null) {
-              --stacks[SLOT_FUEL].stackSize;
+            if (!slotFuel.isEmpty()) {
+              slotFuel.shrink(1);
 
-              if (stacks[SLOT_FUEL].stackSize == 0) {
-                stacks[SLOT_FUEL] = stacks[SLOT_FUEL].getItem().getContainerItem(stacks[SLOT_FUEL]);
+              if (slotFuel.isEmpty()) {
+                slotFuel = slotFuel.getItem().getContainerItem(slotFuel);
               }
             }
           }
@@ -436,10 +328,10 @@ public class TileAlloySmelter extends TileEntity implements ITickable, ISidedInv
       if (flag != isBurning()) {
         flag1 = true;
         // Set off/on state.
-        IBlockState state = worldObj.getBlockState(pos);
+        IBlockState state = world.getBlockState(pos);
         int meta = state.getBlock().getMetaFromState(state);
         meta = isBurning() ? meta | 8 : meta & 7;
-        worldObj.setBlockState(pos, state.getBlock().getStateFromMeta(meta));
+        world.setBlockState(pos, state.getBlock().getStateFromMeta(meta));
       }
     }
 
@@ -459,43 +351,28 @@ public class TileAlloySmelter extends TileEntity implements ITickable, ISidedInv
   public void readFromNBT(NBTTagCompound compound) {
 
     super.readFromNBT(compound);
-    NBTTagList tagList = compound.getTagList("Items", 10);
-    this.stacks = new ItemStack[this.getSizeInventory()];
-
-    for (int i = 0; i < tagList.tagCount(); ++i) {
-      NBTTagCompound tagCompound = tagList.getCompoundTagAt(i);
-      byte b0 = tagCompound.getByte("Slot");
-
-      if (b0 >= 0 && b0 <= this.stacks.length) {
-        this.stacks[b0] = ItemStack.loadItemStackFromNBT(tagCompound);
-      }
-    }
 
     this.furnaceBurnTime = compound.getShort("BurnTime");
     this.cookTime = compound.getShort("CookTime");
     this.totalCookTime = compound.getShort("CookTimeTotal");
-    this.currentItemBurnTime = getItemBurnTime(this.stacks[SLOT_FUEL]);
+    this.currentItemBurnTime = getItemBurnTime(getStackInSlot(SLOT_FUEL));
   }
 
   @Override
   public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 
     super.writeToNBT(compound);
+
     compound.setShort("BurnTime", (short) this.furnaceBurnTime);
     compound.setShort("CookTime", (short) this.cookTime);
     compound.setShort("CookTimeTotal", (short) this.totalCookTime);
-    NBTTagList tagList = new NBTTagList();
 
-    for (int i = 0; i < this.stacks.length; ++i) {
-      if (this.stacks[i] != null) {
-        NBTTagCompound tagCompound = new NBTTagCompound();
-        tagCompound.setByte("Slot", (byte) i);
-        this.stacks[i].writeToNBT(tagCompound);
-        tagList.appendTag(tagCompound);
-      }
-    }
-
-    compound.setTag("Items", tagList);
     return compound;
+  }
+
+  @Override
+  public int getSizeInventory() {
+
+    return NUMBER_OF_SLOTS;
   }
 }

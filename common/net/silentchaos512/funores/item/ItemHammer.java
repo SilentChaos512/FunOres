@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.silentchaos512.funores.FunOres;
@@ -79,7 +80,7 @@ public class ItemHammer extends ItemSL implements IDisableable {
   }
 
   @Override
-  public void getSubItems(Item item, CreativeTabs tab, List list) {
+  public void getSubItems(Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
 
     ItemStack hammer = new ItemStack(this);
     if (!FunOres.registry.isItemDisabled(hammer))

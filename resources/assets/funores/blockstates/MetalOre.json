@@ -8,6 +8,7 @@
     "metal=platinum": { "model": "FunOres:OrePlatinum" },
     "metal=aluminium": { "model": "FunOres:OreAluminium" },
     "metal=zinc": { "model": "FunOres:OreZinc" },
-    "metal=titanium": { "model": "FunOres:OreTitanium" }
+    "metal=titanium": { "model": "FunOres:OreTitanium" },
+    "metal=osmium": { "model": "FunOres:OreOsmium" }
   }
 }
