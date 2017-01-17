@@ -72,19 +72,20 @@ public class TileDryingRack extends TileEntity implements ITickable, IInventory 
 
   public boolean interact(EntityPlayer player, EnumHand hand, ItemStack heldItem) {
 
+    if (player.world.isRemote)
+      return true;
+
+    boolean markForUpdate = false;
+
     if (stack.isEmpty() && !heldItem.isEmpty()) {
       // Add to rack.
       stack = heldItem.copy();
       stack.setCount(1);
       heldItem.shrink(1);
-//      if (heldItem.stackSize <= 0) {
-//        heldItem = null;
-//      }
+
       dryTime = 0;
       totalDryTime = getTotalDryTime();
-      markDirty();
-      // FIXME
-      // worldObj.markBlockForUpdate(pos);
+      markForUpdate = true;
     } else if (!stack.isEmpty()) {
       // Remove from rack.
       if (!player.world.isRemote) {
@@ -101,9 +102,12 @@ public class TileDryingRack extends TileEntity implements ITickable, IInventory 
       stack = ItemStack.EMPTY;
       dryTime = 0;
       totalDryTime = getTotalDryTime();
-      markDirty();
-      // FIXME
-      // worldObj.markBlockForUpdate(pos);
+      markForUpdate = true;
+    }
+
+    if (markForUpdate) {
+      IBlockState state = world.getBlockState(pos);
+      world.notifyBlockUpdate(pos, state, state, 2);
     }
 
     return true;

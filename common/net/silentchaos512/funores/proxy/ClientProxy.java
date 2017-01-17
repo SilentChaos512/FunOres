@@ -30,6 +30,7 @@ public class ClientProxy extends CommonProxy {
   public void postInit(SRegistry reg) {
 
     super.postInit(reg);
+    reg.clientPostInit();
   }
 
   @Override
