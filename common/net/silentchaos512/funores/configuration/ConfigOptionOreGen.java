@@ -160,7 +160,10 @@ public class ConfigOptionOreGen extends ConfigOption {
     for (String str : biomeList) {
       // if (!str.matches("[a-z_]+:.+"))
       // str = "minecraft:" + str;
-      biomes.add(str);
+      biomes.add(str.trim().replaceFirst(",$", ""));
+    }
+    if (biomes.isEmpty()) {
+      c.renameProperty(category, "BiomeTypes", "Biomes");
     }
 
     return this.validate();
@@ -208,7 +211,7 @@ public class ConfigOptionOreGen extends ConfigOption {
     for (String str : biomes) {
       // Biome type match?
       for (BiomeDictionary.Type type : BiomeDictionary.getTypes(biome))
-        if (type.toString().toLowerCase().equals(str))
+        if (type.getName().equalsIgnoreCase(str))
           return true;
 
       // Is listed biome an exact match?
