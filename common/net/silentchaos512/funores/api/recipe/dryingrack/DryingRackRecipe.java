@@ -9,6 +9,7 @@ import com.google.common.collect.Sets;
 import net.minecraft.item.ItemStack;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.init.ModBlocks;
+import net.silentchaos512.lib.compat.StackHelper;
 
 public class DryingRackRecipe {
 
@@ -41,7 +42,7 @@ public class DryingRackRecipe {
 
   public static DryingRackRecipe getMatchingRecipe(ItemStack inputStack) {
 
-    if (inputStack != null) {
+    if (inputStack != null && !StackHelper.isEmpty(inputStack)) {
       for (DryingRackRecipe recipe : allRecipes) {
         if (recipe.matches(inputStack)) {
           return recipe;
@@ -73,6 +74,6 @@ public class DryingRackRecipe {
 
   public ItemStack getOutput() {
 
-    return output.copy();
+    return StackHelper.copy(output);
   }
 }

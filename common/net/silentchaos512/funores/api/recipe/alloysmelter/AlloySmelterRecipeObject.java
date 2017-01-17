@@ -8,6 +8,7 @@ import com.google.common.collect.Lists;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
+import net.silentchaos512.lib.compat.StackHelper;
 
 /**
  * Represents an object in an alloy smelter recipe. Unlike an ItemStack, this represents all possibilities (everything
@@ -156,12 +157,12 @@ public class AlloySmelterRecipeObject {
 
     ItemStack copy;
     for (ItemStack stack : OreDictionary.getOres(oreName)) {
-      copy = stack.copy();
+      copy = StackHelper.copy(stack);
       // Should stack size be checked? Probably not...
 //      if (stackSize > copy.getMaxStackSize()) {
 //        throw new IllegalArgumentException("Item count for stack " + copy + " is too big!");
 //      }
-      copy.setCount(stackSize);
+      StackHelper.setCount(copy, stackSize);
       result.add(copy);
     }
 
