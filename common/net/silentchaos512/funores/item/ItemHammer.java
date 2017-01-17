@@ -12,6 +12,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.silentchaos512.funores.FunOres;
+import net.silentchaos512.funores.configuration.Config;
 import net.silentchaos512.funores.init.ModItems;
 import net.silentchaos512.funores.lib.EnumVanillaExtended;
 import net.silentchaos512.funores.lib.IDisableable;
@@ -51,8 +52,12 @@ public class ItemHammer extends ItemSL implements IDisableable {
       plate = metal.getPlate();
       ingot = metal instanceof EnumVanillaExtended
           ? ((EnumVanillaExtended) metal).getMaterialOreDictKey() : "ingot" + metal.getMetalName();
-      if (plate != null && !FunOres.registry.isItemDisabled(plate))
-        GameRegistry.addRecipe(new ShapedOreRecipe(plate, "h", "i", "i", 'h', this, 'i', ingot));
+      if (plate != null && !FunOres.registry.isItemDisabled(plate)) {
+        if (Config.oneIngotPlates)
+          GameRegistry.addRecipe(new ShapedOreRecipe(plate, "h", "i", 'h', this, 'i', ingot));
+        else
+          GameRegistry.addRecipe(new ShapedOreRecipe(plate, "h", "i", "i", 'h', this, 'i', ingot));
+      }
     }
 
     // Alloy plates
@@ -60,8 +65,12 @@ public class ItemHammer extends ItemSL implements IDisableable {
     for (IMetal metal : item.getMetals(item)) {
       plate = new ItemStack(item, 1, metal.getMeta());
       ingot = "ingot" + metal.getMetalName();
-      if (!FunOres.registry.isItemDisabled(plate))
-        GameRegistry.addRecipe(new ShapedOreRecipe(plate, "h", "i", "i", 'h', this, 'i', ingot));
+      if (!FunOres.registry.isItemDisabled(plate)) {
+        if (Config.oneIngotPlates)
+          GameRegistry.addRecipe(new ShapedOreRecipe(plate, "h", "i", 'h', this, 'i', ingot));
+        else
+          GameRegistry.addRecipe(new ShapedOreRecipe(plate, "h", "i", "i", 'h', this, 'i', ingot));
+      }
     }
   }
 

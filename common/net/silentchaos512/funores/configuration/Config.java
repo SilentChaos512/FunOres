@@ -46,6 +46,7 @@ public class Config {
 
   // Misc
   public static boolean machinesCanBurn = true;
+  public static boolean oneIngotPlates = false;
   public static float oreGenBiomeFavorsMultiplier = 1.5f;
   public static float spawnEndermiteChance = 0.15f;
   public static float spawnBatChance = 0.4f;
@@ -195,6 +196,8 @@ public class Config {
 
       machinesCanBurn = c.getBoolean("MachinesCanBurn", CATEGORY_MISC, machinesCanBurn,
           "If true, active machines can damage entities that step on top of them. Ouch.");
+      oneIngotPlates = c.getBoolean("One Ingot Per Plate", CATEGORY_MISC, oneIngotPlates,
+          "Change plate recipes to require only one ingot instead of two.");
       oreGenBiomeFavorsMultiplier = c.getFloat("OreGenFavorsBiomeMultiplier", CATEGORY_MISC,
           oreGenBiomeFavorsMultiplier, 0.01f, 100f,
           "When ores favor certain biomes the number of clusters (veins) is multiplied by this, or divided by this if it avoids the biome.");
