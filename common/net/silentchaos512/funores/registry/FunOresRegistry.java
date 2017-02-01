@@ -8,6 +8,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.Loader;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.block.BlockFunOre;
 import net.silentchaos512.funores.compat.jei.FunOresPlugin;
@@ -68,7 +69,8 @@ public class FunOresRegistry extends SRegistry {
           block.setCreativeTab(FunOres.tabFunOres);
         } else {
           disabledItems.add(getStackKey(stack));
-          FunOresPlugin.disabledItems.add(stack);
+          if (Loader.isModLoaded("jei"))
+            FunOresPlugin.disabledItems.add(stack);
         }
       }
     } else if (block instanceof BlockFunOre) {
@@ -78,7 +80,8 @@ public class FunOresRegistry extends SRegistry {
         if (!ore.isEnabled(i)) {
           ItemStack stack = new ItemStack(itemBlock, 1, i);
           disabledItems.add(getStackKey(stack));
-          FunOresPlugin.disabledItems.add(stack);
+          if (Loader.isModLoaded("jei"))
+            FunOresPlugin.disabledItems.add(stack);
         } else {
           block.setCreativeTab(FunOres.tabFunOres);
         }
@@ -98,7 +101,8 @@ public class FunOresRegistry extends SRegistry {
           item.setCreativeTab(FunOres.tabFunOres);
         } else {
           disabledItems.add(getStackKey(stack));
-          FunOresPlugin.disabledItems.add(stack);
+          if (Loader.isModLoaded("jei"))
+            FunOresPlugin.disabledItems.add(stack);
         }
       }
     }

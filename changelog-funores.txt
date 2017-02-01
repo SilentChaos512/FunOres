@@ -1,3 +1,10 @@
+1.4.2
+Fixed: Crash when blocks/items are disabled and JEI is not installed.
+
+1.4.1
+Added: Config to change plate recipes to require one ingot.
+Fixed: Biome lists for ore generation not working in some cases. The old "BiomeTypes" list will be removed from the config.
+
 1.4.0 (Minecraft 1.11)
 Changed: Biome list config for ores now work better. You can list specific biomes now. Try "minecraft:forest", "minecraft:extreme_hills", etc. No quotes, of course. You can still list biome types (hot, cold, wet, dry, etc.)
 Fixed: The mod not being detected. This was likely caused by changes to biome types in recent Forge versions.
