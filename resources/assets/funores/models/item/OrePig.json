@@ -1,6 +1,6 @@
 {
-  "parent": "FunOres:block/OrePig",
+  "parent": "funores:block/orepig",
   "textures": {
-    "layer0": "FunOres:blocks/OrePig"
+    "layer0": "funores:blocks/orepig"
   }
 }

@@ -1,6 +1,6 @@
 {
-  "parent": "FunOres:block/OreGhast",
+  "parent": "funores:block/oreghast",
   "textures": {
-    "layer0": "FunOres:blocks/OreGhast"
+    "layer0": "funores:blocks/oreghast"
   }
 }

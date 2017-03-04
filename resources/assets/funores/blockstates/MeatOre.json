@@ -1,12 +1,12 @@
 {
   "variants": {
-    "meat=pig": { "model": "FunOres:OrePig" },
-    "meat=fish": { "model": "FunOres:OreFish" },
-    "meat=cow": { "model": "FunOres:OreCow" },
-    "meat=chicken": { "model": "FunOres:OreChicken" },
-    "meat=rabbit": { "model": "FunOres:OreRabbit" },
-    "meat=sheep": { "model": "FunOres:OreSheep" },
-    "meat=squid": { "model": "FunOres:OreSquid" },
-    "meat=bat": { "model": "FunOres:OreBat" }
+    "meat=pig": { "model": "funores:orepig" },
+    "meat=fish": { "model": "funores:orefish" },
+    "meat=cow": { "model": "funores:orecow" },
+    "meat=chicken": { "model": "funores:orechicken" },
+    "meat=rabbit": { "model": "funores:orerabbit" },
+    "meat=sheep": { "model": "funores:oresheep" },
+    "meat=squid": { "model": "funores:oresquid" },
+    "meat=bat": { "model": "funores:orebat" }
   }
 }

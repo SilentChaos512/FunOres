@@ -1,6 +1,6 @@
 {
-  "parent": "FunOres:block/OreGuardian",
+  "parent": "funores:block/oreguardian",
   "textures": {
-    "layer0": "FunOres:blocks/OreGuardian"
+    "layer0": "funores:blocks/oreguardian"
   }
 }

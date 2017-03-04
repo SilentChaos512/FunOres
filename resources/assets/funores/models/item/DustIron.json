@@ -1,7 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "FunOres:items/DustIron"
+    "layer0": "funores:items/dustiron"
   }
 }
 

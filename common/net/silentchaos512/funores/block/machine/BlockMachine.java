@@ -6,7 +6,6 @@ import java.util.Random;
 import com.google.common.collect.Lists;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -35,11 +34,11 @@ import net.silentchaos512.funores.configuration.Config;
 import net.silentchaos512.funores.lib.EnumMachineState;
 import net.silentchaos512.funores.lib.IDisableable;
 import net.silentchaos512.funores.lib.ModDamageSources;
+import net.silentchaos512.lib.block.BlockContainerSL;
 import net.silentchaos512.lib.registry.IRegistryObject;
 import net.silentchaos512.wit.api.IWitHudInfo;
 
-public class BlockMachine extends BlockContainer
-    implements IRegistryObject, IDisableable, IWitHudInfo {
+public class BlockMachine extends BlockContainerSL implements IDisableable, IWitHudInfo {
 
   public static final PropertyEnum FACING = PropertyEnum.create("facing", EnumMachineState.class);
   protected static boolean keepInventory;
@@ -47,7 +46,7 @@ public class BlockMachine extends BlockContainer
 
   protected BlockMachine(Material materialIn, String name) {
 
-    super(materialIn);
+    super(1, FunOres.MOD_ID, name, materialIn);
     this.machineBlockName = name;
     setDefaultState(blockState.getBaseState().withProperty(FACING, EnumMachineState.NORTH_OFF));
     setCreativeTab(FunOres.tabFunOres);
@@ -56,8 +55,6 @@ public class BlockMachine extends BlockContainer
     setResistance(6000.0f);
     setSoundType(SoundType.METAL);
     setHarvestLevel("pickaxe", 1);
-
-    setUnlocalizedName(name);
   }
 
   @Override
@@ -67,7 +64,7 @@ public class BlockMachine extends BlockContainer
   }
 
   @Override
-  public void getSubBlocks(Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
+  public void clGetSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
 
     ItemStack stack = new ItemStack(item);
     if (!FunOres.registry.isItemDisabled(stack))
@@ -104,7 +101,7 @@ public class BlockMachine extends BlockContainer
   public List<ModelResourceLocation> getVariants() {
 
     if (!FunOres.registry.isItemDisabled(new ItemStack(this)))
-      return Lists.newArrayList(new ModelResourceLocation(getFullName()));
+      return Lists.newArrayList(new ModelResourceLocation(getFullName().toLowerCase()));
     else
       return Lists.newArrayList();
   }
@@ -200,8 +197,8 @@ public class BlockMachine extends BlockContainer
   }
 
   @Override
-  public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX,
-      float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
+  protected IBlockState clGetStateForPlacement(World world, BlockPos pos, EnumFacing facing,
+      float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
 
     EnumMachineState machineState = EnumMachineState
         .fromEnumFacing(placer.getHorizontalFacing().getOpposite());

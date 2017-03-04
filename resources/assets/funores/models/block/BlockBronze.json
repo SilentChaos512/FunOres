@@ -1,6 +1,6 @@
 {
   "parent": "block/cube_all",
   "textures": {
-    "all": "FunOres:blocks/BlockBronze"
+    "all": "funores:blocks/blockbronze"
   }
 }

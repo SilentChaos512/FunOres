@@ -1,3 +1,7 @@
+1.5.0
+Updated for Silent Lib 2. Cross compatible between Minecraft 1.10.2, 1.11, and 1.11.2.
+Changed: Dried Flesh to Leather now requires just two Dried Flesh.
+
 1.4.2
 Fixed: Crash when blocks/items are disabled and JEI is not installed.
 

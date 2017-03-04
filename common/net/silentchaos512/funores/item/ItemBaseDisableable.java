@@ -28,7 +28,7 @@ public class ItemBaseDisableable extends ItemSL implements IDisableable {
 
     for (int i = 0; i < subItemCount; ++i) {
       if (!FunOres.registry.isItemDisabled(new ItemStack(this, 1, i)))
-        models.add(new ModelResourceLocation(prefix + i, "inventory"));
+        models.add(new ModelResourceLocation((prefix + i).toLowerCase(), "inventory"));
       else
         models.add(null);
     }
@@ -37,7 +37,7 @@ public class ItemBaseDisableable extends ItemSL implements IDisableable {
   }
 
   @Override
-  public void getSubItems(Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
+  protected void clGetSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
 
     for (ItemStack stack : getSubItems(item))
       if (!FunOres.registry.isItemDisabled(stack))

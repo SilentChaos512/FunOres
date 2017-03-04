@@ -1,6 +1,6 @@
 {
   "parent": "block/cube_all",
   "textures": {
-    "all": "FunOres:blocks/OreTitanium"
+    "all": "funores:blocks/oretitanium"
   }
 }

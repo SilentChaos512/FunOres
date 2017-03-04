@@ -1,6 +1,6 @@
 {
-  "parent": "FunOres:block/OreSquid",
+  "parent": "funores:block/oresquid",
   "textures": {
-    "layer0": "FunOres:blocks/OreSquid"
+    "layer0": "funores:blocks/oresquid"
   }
 }

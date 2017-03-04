@@ -1,6 +1,6 @@
 {
-  "parent": "FunOres:block/OreBlaze",
+  "parent": "funores:block/oreblaze",
   "textures": {
-    "layer0": "FunOres:blocks/OreBlaze"
+    "layer0": "funores:blocks/oreblaze"
   }
 }

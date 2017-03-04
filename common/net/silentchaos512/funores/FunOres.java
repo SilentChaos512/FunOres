@@ -56,6 +56,7 @@ import net.silentchaos512.lib.util.LogHelper;
     name = FunOres.MOD_NAME,
     version = FunOres.VERSION_NUMBER,
     dependencies = FunOres.DEPENDENCIES,
+    acceptedMinecraftVersions = FunOres.ACCEPTED_MC_VERSIONS,
     updateJSON = "https://raw.githubusercontent.com/SilentChaos512/FunOres/master/update.json")
 //@formatter:on
 public class FunOres {
@@ -63,8 +64,13 @@ public class FunOres {
   public static final String MOD_ID = "funores";
   public static final String MOD_NAME = "Fun Ores";
   public static final String VERSION_NUMBER = "@VERSION@";
-  public static final String DEPENDENCIES = "required-after:forge@[13.19.0.2156,);required-after:silentlib;";
+  public static final String VERSION_SILENTLIB = "SL_VERSION";
+  public static final String DEPENDENCIES = "required-after:silentlib@[" + VERSION_SILENTLIB + ",);";
+  //"required-after:forge@[13.19.0.2156,);required-after:silentlib;";
+  public static final String ACCEPTED_MC_VERSIONS = "[1.10.2,1.11.2]";
   public static final String RESOURCE_PREFIX = MOD_ID.toLowerCase() + ":";
+
+  public static final boolean DEBUG_MODE = true;
 
   public static Random random = new Random();
   public static LogHelper logHelper = new LogHelper(MOD_NAME);

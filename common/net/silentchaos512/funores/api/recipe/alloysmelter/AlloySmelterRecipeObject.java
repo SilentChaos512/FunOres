@@ -8,6 +8,7 @@ import com.google.common.collect.Lists;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
+import net.silentchaos512.lib.util.StackHelper;
 
 /**
  * Represents an object in an alloy smelter recipe. Unlike an ItemStack, this represents all possibilities (everything
@@ -104,9 +105,12 @@ public class AlloySmelterRecipeObject {
    */
   public ItemStack getMatchingStack(ItemStack inputStack) {
 
+    if (StackHelper.isEmpty(inputStack))
+      return null;
+
     for (ItemStack recipeStack : possibleStacks) {
-      if (inputStack.isItemEqual(recipeStack) && inputStack.getCount() >= recipeStack.getCount()) {
-        return recipeStack.copy();
+      if (StackHelper.isValid(recipeStack) && inputStack.isItemEqual(recipeStack) && StackHelper.getCount(inputStack) >= StackHelper.getCount(recipeStack)) {
+        return StackHelper.safeCopy(recipeStack);
       }
     }
     return null;
@@ -155,13 +159,13 @@ public class AlloySmelterRecipeObject {
     List<ItemStack> result = new ArrayList<ItemStack>();
 
     ItemStack copy;
-    for (ItemStack stack : OreDictionary.getOres(oreName)) {
-      copy = stack.copy();
+    for (ItemStack stack : StackHelper.getOres(oreName)) {
+      copy = StackHelper.safeCopy(stack);
       // Should stack size be checked? Probably not...
 //      if (stackSize > copy.getMaxStackSize()) {
 //        throw new IllegalArgumentException("Item count for stack " + copy + " is too big!");
 //      }
-      copy.setCount(stackSize);
+      StackHelper.setCount(copy, stackSize);
       result.add(copy);
     }
 

@@ -53,7 +53,7 @@ public abstract class ItemBaseMetal extends ItemBaseDisableable {
 
       // Add the model, if it's not disabled.
       if (!FunOres.registry.isItemDisabled(new ItemStack(this, 1, metal.getMeta())))
-        models.add(new ModelResourceLocation(prefix + metal.getMetalName(), "inventory"));
+        models.add(new ModelResourceLocation((prefix + metal.getMetalName()).toLowerCase(), "inventory"));
       else
         models.add(null);
 

@@ -1,7 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "FunOres:items/GearBronze"
+    "layer0": "funores:items/gearbronze"
   }
 }
 

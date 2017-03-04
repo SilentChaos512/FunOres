@@ -1,12 +1,12 @@
 {
-    "__comment": "Model generated using MrCrayfish's Model Creator (http://mrcrayfish.com/modelcreator/)",
+    "__comment": "model generated using mrcrayfish's model creator (http://mrcrayfish.com/modelcreator/)",
     "textures": {
         "particle": "minecraft:blocks/planks_oak",
         "0": "blocks/planks_oak"
     },
     "elements": [
         {
-            "name": "Cube",
+            "name": "cube",
             "from": [ 0.0, 12.0, 12.0 ], 
             "to": [ 8.0, 16.0, 16.0 ], 
             "faces": {
@@ -19,7 +19,7 @@
             }
         },
         {
-            "name": "Cube",
+            "name": "cube",
             "from": [ 8.0, 12.0, 12.0 ], 
             "to": [ 16.0, 16.0, 16.0 ], 
             "faces": {

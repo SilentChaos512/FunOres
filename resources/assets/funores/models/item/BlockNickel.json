@@ -1,6 +1,6 @@
 {
-  "parent": "FunOres:block/BlockNickel",
+  "parent": "funores:block/blocknickel",
   "textures": {
-    "layer0": "FunOres:blocks/BlockNickel"
+    "layer0": "funores:blocks/blocknickel"
   }
 }

@@ -1,6 +1,6 @@
 {
   "parent": "block/cube_all",
   "textures": {
-    "all": "FunOres:blocks/OreLead"
+    "all": "funores:blocks/orelead"
   }
 }

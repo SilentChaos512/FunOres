@@ -1,6 +1,6 @@
 {
-  "parent": "FunOres:block/OreWither",
+  "parent": "funores:block/orewither",
   "textures": {
-    "layer0": "FunOres:blocks/OreWither"
+    "layer0": "funores:blocks/orewither"
   }
 }

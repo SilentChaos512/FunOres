@@ -12,6 +12,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.silentchaos512.funores.FunOres;
+import net.silentchaos512.lib.util.ChatHelper;
+import net.silentchaos512.lib.util.StackHelper;
 
 public class ConfigItemDrop {
 
@@ -42,7 +44,7 @@ public class ConfigItemDrop {
     if (bonus > 0) {
       bonus = random.nextInt(bonus + 1);
     }
-    return stack.getCount() + bonus;
+    return StackHelper.getCount(stack) + bonus;
   }
 
   public ItemStack getStack() {
@@ -66,10 +68,10 @@ public class ConfigItemDrop {
       return;
     }
 
-    FunOres.instance.logHelper.warning(String.format(ERROR_WARNING_MESSAGE, errorList.size()));
+    FunOres.logHelper.warning(String.format(ERROR_WARNING_MESSAGE, errorList.size()));
 
     for (String error : errorList) {
-      FunOres.instance.logHelper.warning(error);
+      FunOres.logHelper.warning(error);
     }
   }
 
@@ -81,10 +83,10 @@ public class ConfigItemDrop {
 
     String prefix = String.format("[%s] ", FunOres.MOD_ID);
     String str = String.format(ERROR_WARNING_MESSAGE, errorList.size());
-    player.sendMessage(new TextComponentString(TextFormatting.DARK_RED + prefix + str));
+    ChatHelper.sendMessage(player, TextFormatting.DARK_RED + prefix + str);
 
     for (String error : errorList) {
-      player.sendMessage(new TextComponentString(prefix + error));
+      ChatHelper.sendMessage(player, prefix + error);
     }
   }
 }

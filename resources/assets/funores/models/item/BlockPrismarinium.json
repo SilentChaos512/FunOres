@@ -1,6 +1,6 @@
 {
-  "parent": "FunOres:block/BlockPrismarinium",
+  "parent": "funores:block/blockprismarinium",
   "textures": {
-    "layer0": "FunOres:blocks/BlockPrismarinium"
+    "layer0": "funores:blocks/blockprismarinium"
   }
 }

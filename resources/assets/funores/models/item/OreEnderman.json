@@ -1,6 +1,6 @@
 {
-  "parent": "FunOres:block/OreEnderman",
+  "parent": "funores:block/oreenderman",
   "textures": {
-    "layer0": "FunOres:blocks/OreEnderman"
+    "layer0": "funores:blocks/oreenderman"
   }
 }

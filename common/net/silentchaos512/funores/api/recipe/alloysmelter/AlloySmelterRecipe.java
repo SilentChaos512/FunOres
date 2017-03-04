@@ -9,6 +9,7 @@ import com.google.common.collect.Sets;
 import net.minecraft.item.ItemStack;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.init.ModBlocks;
+import net.silentchaos512.lib.util.StackHelper;
 
 public class AlloySmelterRecipe {
 
@@ -81,6 +82,9 @@ public class AlloySmelterRecipe {
 
   public static boolean isValidIngredient(ItemStack stack) {
 
+    if (StackHelper.isEmpty(stack))
+      return false;
+
     ItemStack copy = stack.copy();
     copy.setCount(64);
     for (AlloySmelterRecipeObject recipeObject : allIngredients) {
@@ -106,7 +110,7 @@ public class AlloySmelterRecipe {
     }
 
     // No outputs?
-    if (output == null) {
+    if (StackHelper.isEmpty(output)) {
       return false;
     }
 
@@ -175,6 +179,6 @@ public class AlloySmelterRecipe {
    */
   public ItemStack getOutput() {
 
-    return output.copy();
+    return StackHelper.safeCopy(output);
   }
 }

@@ -54,7 +54,7 @@ public class BlockAlloy extends BlockSL implements IDisableable {
     for (EnumAlloy metal : EnumAlloy.values()) {
       if (!FunOres.registry.isItemDisabled(metal.getBlock())) {
         String name = FunOres.MOD_ID + ":Block" + metal.getMetalName();
-        models.add(new ModelResourceLocation(name, "inventory"));
+        models.add(new ModelResourceLocation(name.toLowerCase(), "inventory"));
       } else {
         models.add(null);
       }
@@ -69,7 +69,7 @@ public class BlockAlloy extends BlockSL implements IDisableable {
   }
 
   @Override
-  public void getSubBlocks(Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
+  public void clGetSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
 
     for (ItemStack stack : getSubItems(item))
       if (!FunOres.registry.isItemDisabled(stack))

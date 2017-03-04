@@ -10,7 +10,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -25,12 +24,14 @@ import net.silentchaos512.funores.api.recipe.dryingrack.DryingRackRecipe;
 import net.silentchaos512.funores.block.machine.BlockMachine;
 import net.silentchaos512.funores.init.ModBlocks;
 import net.silentchaos512.funores.lib.EnumMachineState;
+import net.silentchaos512.lib.tile.IInventorySL;
+import net.silentchaos512.lib.util.StackHelper;
 
-public class TileDryingRack extends TileEntity implements ITickable, IInventory {
+public class TileDryingRack extends TileEntity implements ITickable, IInventorySL {
 
   public static final int BASE_DRY_SPEED = 1;
 
-  private @Nonnull ItemStack stack = ItemStack.EMPTY;
+  private @Nonnull ItemStack stack = StackHelper.empty();
   private int dryTime = 0;
   private int totalDryTime = 0;
   private float xp = 0;
@@ -47,8 +48,8 @@ public class TileDryingRack extends TileEntity implements ITickable, IInventory 
     list.add("drySpeed = " + getDrySpeed());
     list.add("xp = " + xp);
     ItemStack output = getOutput();
-    list.add("stack = " + (stack == null ? "null" : stack.getDisplayName()));
-    list.add("output = " + (output == null ? "null" : output.getDisplayName()));
+    list.add("stack = " + (StackHelper.isEmpty(stack) ? "null" : stack.getDisplayName()));
+    list.add("output = " + (StackHelper.isEmpty(output) ? "null" : output.getDisplayName()));
     list.add(sep);
     // constants
     return list;
@@ -58,7 +59,7 @@ public class TileDryingRack extends TileEntity implements ITickable, IInventory 
   public void update() {
 
     DryingRackRecipe recipe = DryingRackRecipe.getMatchingRecipe(stack);
-    ItemStack output = recipe == null ? null : recipe.getOutput();
+    ItemStack output = recipe == null ? StackHelper.empty() : recipe.getOutput();
     if (recipe != null && output != null) {
       dryTime += getDrySpeed();
       if (dryTime >= totalDryTime) {
@@ -77,29 +78,29 @@ public class TileDryingRack extends TileEntity implements ITickable, IInventory 
 
     boolean markForUpdate = false;
 
-    if (stack.isEmpty() && !heldItem.isEmpty()) {
+    if (StackHelper.isEmpty(stack) && StackHelper.isValid(heldItem)) {
       // Add to rack.
-      stack = heldItem.copy();
-      stack.setCount(1);
-      heldItem.shrink(1);
+      stack = StackHelper.safeCopy(heldItem);
+      StackHelper.setCount(stack, 1);
+      StackHelper.shrink(heldItem, 1);
 
       dryTime = 0;
       totalDryTime = getTotalDryTime();
       markForUpdate = true;
-    } else if (!stack.isEmpty()) {
+    } else if (StackHelper.isValid(stack)) {
       // Remove from rack.
       if (!player.world.isRemote) {
         Vec3d v = new Vec3d(player.posX, player.posY + 1.1, player.posZ);
         Vec3d lookVec = player.getLookVec();
         v = v.add(lookVec);
-        stack.setCount(1); // Not sure why this is necessary...
+        StackHelper.setCount(stack, 1); // Not sure why this is necessary...
         EntityItem entityItem = new EntityItem(player.world, v.xCoord, v.yCoord, v.zCoord,
             stack);
         // LogHelper.list(entityItem, entityItem.getEntityItem().stackSize);
         player.world.spawnEntity(entityItem);
       }
       givePlayerXp(player);
-      stack = ItemStack.EMPTY;
+      stack = StackHelper.empty();
       dryTime = 0;
       totalDryTime = getTotalDryTime();
       markForUpdate = true;
@@ -165,7 +166,7 @@ public class TileDryingRack extends TileEntity implements ITickable, IInventory 
     tags.setInteger("DryTime", dryTime);
     tags.setInteger("TotalDryTime", totalDryTime);
     tags.setFloat("XP", xp);
-    if (!stack.isEmpty())
+    if (StackHelper.isValid(stack))
       tags.setTag("ItemStack", stack.writeToNBT(new NBTTagCompound()));
     return tags;
   }
@@ -178,9 +179,9 @@ public class TileDryingRack extends TileEntity implements ITickable, IInventory 
     totalDryTime = tags.getInteger("TotalDryTime");
     xp = tags.getFloat("XP");
     if (tags.hasKey("ItemStack")) {
-      stack = new ItemStack(tags.getCompoundTag("ItemStack"));
+      stack = StackHelper.loadFromNBT(tags.getCompoundTag("ItemStack"));
     } else {
-      stack = ItemStack.EMPTY;
+      stack = StackHelper.empty();
     }
 
     if (getWorld().isRemote) {
@@ -193,7 +194,7 @@ public class TileDryingRack extends TileEntity implements ITickable, IInventory 
   public void readFromNBT(NBTTagCompound compound) {
 
     super.readFromNBT(compound);
-    stack = new ItemStack(compound.getCompoundTag("ItemStack"));
+    stack = StackHelper.loadFromNBT(compound.getCompoundTag("ItemStack"));
     dryTime = compound.getShort("DryTime");
     totalDryTime = getTotalDryTime();
   }
@@ -204,7 +205,7 @@ public class TileDryingRack extends TileEntity implements ITickable, IInventory 
     super.writeToNBT(compound);
     compound.setShort("DryTime", (short) dryTime);
     NBTTagCompound tagCompound = new NBTTagCompound();
-    if (!stack.isEmpty()) {
+    if (StackHelper.isValid(stack)) {
       stack.writeToNBT(tagCompound);
     }
     compound.setTag("ItemStack", tagCompound);
@@ -217,7 +218,7 @@ public class TileDryingRack extends TileEntity implements ITickable, IInventory 
     if (recipe != null) {
       return recipe.getOutput();
     }
-    return ItemStack.EMPTY;
+    return StackHelper.empty();
   }
 
   public @Nonnull ItemStack getStack() {
@@ -287,8 +288,8 @@ public class TileDryingRack extends TileEntity implements ITickable, IInventory 
   public ItemStack removeStackFromSlot(int index) {
 
     ItemStack copy = stack;
-    stack = ItemStack.EMPTY;
-    return stack;
+    stack = StackHelper.empty();
+    return copy;
   }
 
   @Override
@@ -304,7 +305,7 @@ public class TileDryingRack extends TileEntity implements ITickable, IInventory 
   }
 
   @Override
-  public boolean isUsableByPlayer(EntityPlayer player) {
+  public boolean isUsable(EntityPlayer player) {
 
     return this.world.getTileEntity(this.pos) != this ? false
         : player.getDistanceSq((double) this.pos.getX() + 0.5D, (double) this.pos.getY() + 0.5D,
@@ -362,12 +363,12 @@ public class TileDryingRack extends TileEntity implements ITickable, IInventory 
   @Override
   public void clear() {
 
-    stack = ItemStack.EMPTY;
+    stack = StackHelper.empty();
   }
 
   @Override
   public boolean isEmpty() {
 
-    return stack.isEmpty();
+    return StackHelper.isEmpty(stack);
   }
 }

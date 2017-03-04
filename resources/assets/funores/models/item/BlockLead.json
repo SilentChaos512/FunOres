@@ -1,6 +1,6 @@
 {
-  "parent": "FunOres:block/BlockLead",
+  "parent": "funores:block/blocklead",
   "textures": {
-    "layer0": "FunOres:blocks/BlockLead"
+    "layer0": "funores:blocks/blocklead"
   }
 }

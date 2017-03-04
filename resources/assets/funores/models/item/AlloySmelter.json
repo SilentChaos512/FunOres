@@ -1,5 +1,5 @@
 {
-  "parent": "FunOres:block/AlloySmelter_Off",
+  "parent": "funores:block/alloysmelter_off",
   "display": {
     "thirdperson": {
       "rotation": [ 10, -45, 170 ],

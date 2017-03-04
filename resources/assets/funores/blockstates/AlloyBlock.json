@@ -1,11 +1,11 @@
 {
   "variants": {
-    "alloy=bronze": { "model": "FunOres:BlockBronze" },
-    "alloy=brass": { "model": "FunOres:BlockBrass" },
-    "alloy=steel": { "model": "FunOres:BlockSteel" },
-    "alloy=invar": { "model": "FunOres:BlockInvar" },
-    "alloy=electrum": { "model": "FunOres:BlockElectrum" },
-    "alloy=enderium": { "model": "FunOres:BlockEnderium" },
-    "alloy=prismarinium": { "model": "FunOres:BlockPrismarinium" }
+    "alloy=bronze": { "model": "funores:blockbronze" },
+    "alloy=brass": { "model": "funores:blockbrass" },
+    "alloy=steel": { "model": "funores:blocksteel" },
+    "alloy=invar": { "model": "funores:blockinvar" },
+    "alloy=electrum": { "model": "funores:blockelectrum" },
+    "alloy=enderium": { "model": "funores:blockenderium" },
+    "alloy=prismarinium": { "model": "funores:blockprismarinium" }
   }
 }

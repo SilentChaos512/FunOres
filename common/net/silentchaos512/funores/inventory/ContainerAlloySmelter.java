@@ -9,10 +9,10 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotFurnaceFuel;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
-import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.api.recipe.alloysmelter.AlloySmelterRecipe;
 import net.silentchaos512.funores.inventory.slot.SlotAlloySmelterOutput;
 import net.silentchaos512.funores.tile.TileAlloySmelter;
+import net.silentchaos512.lib.util.StackHelper;
 
 public class ContainerAlloySmelter extends Container {
 
@@ -52,12 +52,12 @@ public class ContainerAlloySmelter extends Container {
     }
   }
 
-  @Override
-  public void addListener(IContainerListener listener) {
-
-    super.addListener(listener);
-    listener.updateCraftingInventory(this, this.getInventory());
-  }
+//  @Override
+//  public void addListener(IContainerListener listener) {
+//
+//    super.addListener(listener);
+//    listener.updateCraftingInventory(this, this.getInventory());
+//  }
 
   @Override
   public void detectAndSendChanges() {
@@ -105,8 +105,8 @@ public class ContainerAlloySmelter extends Container {
   @Override
   public ItemStack transferStackInSlot(EntityPlayer playerIn, int index) {
 
-    FunOres.instance.logHelper.debug("index = " + index);
-    ItemStack itemstack = null;
+    //FunOres.instance.logHelper.debug("index = " + index);
+    ItemStack itemstack = StackHelper.empty();
     Slot slot = (Slot) this.inventorySlots.get(index);
 
     if (slot != null && slot.getHasStack()) {
@@ -117,11 +117,11 @@ public class ContainerAlloySmelter extends Container {
       final boolean test = true;
 
       ItemStack itemstack1 = slot.getStack();
-      itemstack = itemstack1.copy();
+      itemstack = StackHelper.safeCopy(itemstack1);
 
       if (index == TileAlloySmelter.SLOT_OUTPUT) {
         if (!this.mergeItemStack(itemstack1, slotCount, slotCount + 36, true)) {
-          return null;
+          return StackHelper.empty();
         }
 
         slot.onSlotChange(itemstack1, itemstack);
@@ -129,32 +129,32 @@ public class ContainerAlloySmelter extends Container {
         if (TileEntityFurnace.isItemFuel(itemstack1)) {
           // Insert fuel?
           if (!this.mergeItemStack(itemstack1, slotFuel, slotFuel + 1, false)) {
-            return null;
+            return StackHelper.empty();
           }
         } else if (AlloySmelterRecipe.isValidIngredient(itemstack1)) {
           // Insert ingredients?
           if (!this.mergeItemStack(itemstack1, 0, inputSlotCount, false)) {
-            return null;
+            return StackHelper.empty();
           }
         } else if (index >= 4 && index < 31) {
           if (!this.mergeItemStack(itemstack1, 31, 40, false)) {
-            return null;
+            return StackHelper.empty();
           }
         } else if (index >= 31 && index < 40 && !this.mergeItemStack(itemstack1, 4, 31, false)) {
-          return null;
+          return StackHelper.empty();
         }
       } else if (!this.mergeItemStack(itemstack1, slotCount, slotCount + 36, false)) {
-        return null;
+        return StackHelper.empty();
       }
 
-      if (!itemstack1.isEmpty()) {
-        slot.putStack(ItemStack.EMPTY);
+      if (StackHelper.isValid(itemstack1)) {
+        slot.putStack(StackHelper.empty());
       } else {
         slot.onSlotChanged();
       }
 
-      if (itemstack1.getCount() == itemstack.getCount()) {
-        return null;
+      if (StackHelper.getCount(itemstack1) == StackHelper.getCount(itemstack)) {
+        return StackHelper.empty();
       }
 
       slot.onTake(playerIn, itemstack1);

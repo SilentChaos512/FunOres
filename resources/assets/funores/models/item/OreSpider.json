@@ -1,6 +1,6 @@
 {
-  "parent": "FunOres:block/OreSpider",
+  "parent": "funores:block/orespider",
   "textures": {
-    "layer0": "FunOres:blocks/OreSpider"
+    "layer0": "funores:blocks/orespider"
   }
 }

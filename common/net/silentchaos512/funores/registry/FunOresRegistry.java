@@ -16,6 +16,7 @@ import net.silentchaos512.funores.configuration.Config;
 import net.silentchaos512.funores.lib.IDisableable;
 import net.silentchaos512.lib.registry.SRegistry;
 import net.silentchaos512.lib.util.LogHelper;
+import net.silentchaos512.lib.util.StackHelper;
 
 /**
  * Modified SRegistry that automatically loads configs for disableable (IDisableable) items.
@@ -53,7 +54,7 @@ public class FunOresRegistry extends SRegistry {
    */
   private String getStackKey(ItemStack stack) {
 
-    if (stack == null)
+    if (stack == null || StackHelper.isEmpty(stack))
       return "null";
     return stack.getUnlocalizedName() + ":" + stack.getItemDamage();
   }

@@ -1,6 +1,6 @@
 {
-  "parent": "FunOres:block/OreIron",
+  "parent": "funores:block/oreiron",
   "textures": {
-    "layer0": "FunOres:blocks/OreIron"
+    "layer0": "funores:blocks/oreiron"
   }
 }

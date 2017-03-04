@@ -16,7 +16,7 @@ import net.silentchaos512.funores.tile.TileAlloySmelter;
 public class GuiAlloySmelter extends GuiContainer {
 
   private static final ResourceLocation guiTextures = new ResourceLocation(FunOres.MOD_ID,
-      "textures/gui/AlloySmelter.png");
+      "textures/gui/alloysmelter.png");
   private final InventoryPlayer playerInventory;
   private IInventory tileAlloySmelter;
 
@@ -45,7 +45,8 @@ public class GuiAlloySmelter extends GuiContainer {
     i1 = this.getCookProgressScaled(24);
     this.drawTexturedModalRect(k + 79, l + 34, 176, 14, i1 + 1, 16);
 
-    //drawDebugInfo();
+    if (FunOres.DEBUG_MODE)
+      drawDebugInfo();
   }
 
   private int getCookProgressScaled(int pixels) {

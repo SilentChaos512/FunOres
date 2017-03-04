@@ -1,6 +1,6 @@
 {
-  "parent": "FunOres:block/BlockTin",
+  "parent": "funores:block/blocktin",
   "textures": {
-    "layer0": "FunOres:blocks/BlockTin"
+    "layer0": "funores:blocks/blocktin"
   }
 }

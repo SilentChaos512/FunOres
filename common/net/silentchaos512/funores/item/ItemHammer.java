@@ -89,7 +89,7 @@ public class ItemHammer extends ItemSL implements IDisableable {
   }
 
   @Override
-  public void getSubItems(Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
+  protected void clGetSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
 
     ItemStack hammer = new ItemStack(this);
     if (!FunOres.registry.isItemDisabled(hammer))

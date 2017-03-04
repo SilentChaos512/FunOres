@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.silentchaos512.funores.tile.TileDryingRack;
+import net.silentchaos512.lib.util.StackHelper;
 
 public class TileDryingRackRender extends TileEntitySpecialRenderer<TileDryingRack> {
 
@@ -24,7 +25,6 @@ public class TileDryingRackRender extends TileEntitySpecialRenderer<TileDryingRa
     ItemStack stack = te.getStack();
     tileDryingRack = te;
 
-    // These lines needed?
     GlStateManager.pushMatrix();
     GlStateManager.translate(x, y, z);
     renderItem(te.getWorld(), stack, partialTicks);
@@ -35,10 +35,10 @@ public class TileDryingRackRender extends TileEntitySpecialRenderer<TileDryingRa
   private void renderItem(World world, ItemStack stack, float partialTicks) {
 
     RenderItem itemRenderer = mc.getRenderItem();
-    if (stack != null) {
+    if (StackHelper.isValid(stack)) {
       // GlStateManager.translate(0.5, 0.5, 0.5);
       EntityItem entityitem = new EntityItem(world, 0.0D, 0.0D, 0.0D, stack);
-      entityitem.getEntityItem().setCount(1);
+      StackHelper.setCount(entityitem.getEntityItem(), 1);
       entityitem.hoverStart = 0.0F;
       GlStateManager.pushMatrix();
       GlStateManager.disableLighting();

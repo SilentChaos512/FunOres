@@ -1,6 +1,6 @@
 {
-  "parent": "FunOres:block/OreBat",
+  "parent": "funores:block/orebat",
   "textures": {
-    "layer0": "FunOres:blocks/OreBat"
+    "layer0": "funores:blocks/orebat"
   }
 }

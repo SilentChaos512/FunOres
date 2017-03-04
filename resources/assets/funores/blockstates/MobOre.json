@@ -1,17 +1,17 @@
 {
   "variants": {
-    "mob=zombie": { "model": "FunOres:OreZombie" },
-    "mob=skeleton": { "model": "FunOres:OreSkeleton" },
-    "mob=creeper": { "model": "FunOres:OreCreeper" },
-    "mob=spider": { "model": "FunOres:OreSpider" },
-    "mob=enderman": { "model": "FunOres:OreEnderman" },
-    "mob=slime": { "model": "FunOres:OreSlime" },
-    "mob=witch": { "model": "FunOres:OreWitch" },
-    "mob=pigman": { "model": "FunOres:OrePigman" },
-    "mob=ghast": { "model": "FunOres:OreGhast" },
-    "mob=magmacube": { "model": "FunOres:OreMagmaCube" },
-    "mob=wither": { "model": "FunOres:OreWither" },
-    "mob=blaze": { "model": "FunOres:OreBlaze" },
-    "mob=guardian": { "model": "FunOres:OreGuardian" }
+    "mob=zombie": { "model": "funores:orezombie" },
+    "mob=skeleton": { "model": "funores:oreskeleton" },
+    "mob=creeper": { "model": "funores:orecreeper" },
+    "mob=spider": { "model": "funores:orespider" },
+    "mob=enderman": { "model": "funores:oreenderman" },
+    "mob=slime": { "model": "funores:oreslime" },
+    "mob=witch": { "model": "funores:orewitch" },
+    "mob=pigman": { "model": "funores:orepigman" },
+    "mob=ghast": { "model": "funores:oreghast" },
+    "mob=magmacube": { "model": "funores:oremagmacube" },
+    "mob=wither": { "model": "funores:orewither" },
+    "mob=blaze": { "model": "funores:oreblaze" },
+    "mob=guardian": { "model": "funores:oreguardian" }
   }
 }

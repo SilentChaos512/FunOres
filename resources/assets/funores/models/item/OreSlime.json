@@ -1,6 +1,6 @@
 {
-  "parent": "FunOres:block/OreSlime",
+  "parent": "funores:block/oreslime",
   "textures": {
-    "layer0": "FunOres:blocks/OreSlime"
+    "layer0": "funores:blocks/oreslime"
   }
 }

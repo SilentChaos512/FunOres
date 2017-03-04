@@ -1,5 +1,5 @@
 {
-  "parent": "FunOres:block/MetalFurnace_Off",
+  "parent": "funores:block/metalfurnace_off",
   "display": {
     "thirdperson": {
       "rotation": [ 10, -45, 170 ],

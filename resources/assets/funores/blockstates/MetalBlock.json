@@ -1,14 +1,14 @@
 {
   "variants": {
-    "metal=copper": { "model": "FunOres:BlockCopper" },
-    "metal=tin": { "model": "FunOres:BlockTin" },
-    "metal=silver": { "model": "FunOres:BlockSilver" },
-    "metal=lead": { "model": "FunOres:BlockLead" },
-    "metal=nickel": { "model": "FunOres:BlockNickel" },
-    "metal=platinum": { "model": "FunOres:BlockPlatinum" },
-    "metal=aluminium": { "model": "FunOres:BlockAluminium" },
-    "metal=zinc": { "model": "FunOres:BlockZinc" },
-    "metal=titanium": { "model": "FunOres:BlockTitanium" },
-    "metal=osmium": { "model": "FunOres:BlockOsmium" }
+    "metal=copper": { "model": "funores:blockcopper" },
+    "metal=tin": { "model": "funores:blocktin" },
+    "metal=silver": { "model": "funores:blocksilver" },
+    "metal=lead": { "model": "funores:blocklead" },
+    "metal=nickel": { "model": "funores:blocknickel" },
+    "metal=platinum": { "model": "funores:blockplatinum" },
+    "metal=aluminium": { "model": "funores:blockaluminium" },
+    "metal=zinc": { "model": "funores:blockzinc" },
+    "metal=titanium": { "model": "funores:blocktitanium" },
+    "metal=osmium": { "model": "funores:blockosmium" }
   }
 }

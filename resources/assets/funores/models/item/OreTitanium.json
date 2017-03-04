@@ -1,6 +1,6 @@
 {
-  "parent": "FunOres:block/OreTitanium",
+  "parent": "funores:block/oretitanium",
   "textures": {
-    "layer0": "FunOres:blocks/OreTitanium"
+    "layer0": "funores:blocks/oretitanium"
   }
 }

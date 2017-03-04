@@ -12,8 +12,8 @@ import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.block.BlockAlloy;
-import net.silentchaos512.funores.block.BlockOreMeat;
 import net.silentchaos512.funores.block.BlockMetal;
+import net.silentchaos512.funores.block.BlockOreMeat;
 import net.silentchaos512.funores.block.BlockOreMetal;
 import net.silentchaos512.funores.block.BlockOreMob;
 import net.silentchaos512.funores.block.machine.BlockAlloySmelter;
@@ -75,8 +75,11 @@ public class ModBlocks {
 
     // List biome types
     line = "";
-    for (BiomeDictionary.Type biomeType : BiomeDictionary.getTypes(biome))
-      line += biomeType.toString() + ", ";
+    try {
+      for (BiomeDictionary.Type biomeType : BiomeDictionary.getTypes(biome))
+        line += biomeType.toString() + ", ";
+    } catch (NoSuchMethodError ex) {
+    }
     list.add(line.replaceFirst(", $", ""));
 
     return list;

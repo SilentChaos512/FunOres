@@ -5,7 +5,7 @@ import java.util.List;
 import com.google.common.collect.Lists;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
+import net.silentchaos512.lib.util.StackHelper;
 
 public class DryingRackRecipeObject {
 
@@ -13,7 +13,7 @@ public class DryingRackRecipeObject {
 
   public DryingRackRecipeObject(String oreName) {
 
-    for (ItemStack stack : OreDictionary.getOres(oreName)) {
+    for (ItemStack stack : StackHelper.getOres(oreName)) {
       stacks.add(stack);
     }
   }

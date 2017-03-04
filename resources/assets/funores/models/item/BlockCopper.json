@@ -1,6 +1,6 @@
 {
-  "parent": "FunOres:block/BlockCopper",
+  "parent": "funores:block/blockcopper",
   "textures": {
-    "layer0": "FunOres:blocks/BlockCopper"
+    "layer0": "funores:blocks/blockcopper"
   }
 }

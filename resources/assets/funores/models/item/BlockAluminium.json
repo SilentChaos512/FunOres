@@ -1,6 +1,6 @@
 {
-  "parent": "FunOres:block/BlockAluminium",
+  "parent": "funores:block/blockaluminium",
   "textures": {
-    "layer0": "FunOres:blocks/BlockAluminium"
+    "layer0": "funores:blocks/blockaluminium"
   }
 }

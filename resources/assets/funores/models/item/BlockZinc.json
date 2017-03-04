@@ -1,6 +1,6 @@
 {
-  "parent": "FunOres:block/BlockZinc",
+  "parent": "funores:block/blockzinc",
   "textures": {
-    "layer0": "FunOres:blocks/BlockZinc"
+    "layer0": "funores:blocks/blockzinc"
   }
 }

@@ -24,6 +24,7 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.lib.Names;
 import net.silentchaos512.funores.tile.TileDryingRack;
+import net.silentchaos512.lib.util.StackHelper;
 
 public class BlockDryingRack extends BlockMachine {
 
@@ -53,15 +54,14 @@ public class BlockDryingRack extends BlockMachine {
       List<String> list = Lists.newArrayList();
 
       // Display item name
-      if (!rack.getStack().isEmpty()) {
+      if (StackHelper.isValid(rack.getStack())) {
         String itemName = rack.getStack().getDisplayName();
         list.add(rack.getStack().getRarity().rarityColor + itemName);
       }
 
       // Debug info
-      // if (advanced) {
-      // list.addAll(rack.getDebugLines());
-      // }
+      if (advanced && FunOres.DEBUG_MODE)
+        list.addAll(rack.getDebugLines());
 
       list.addAll(super.getWitLines(state, pos, player, advanced));
       return list;
@@ -80,7 +80,7 @@ public class BlockDryingRack extends BlockMachine {
   }
 
   @Override
-  public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player,
+  protected boolean clOnBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player,
       EnumHand hand, EnumFacing facing, float side, float hitX, float hitY) {
 
     TileEntity tile = world.getTileEntity(pos);
@@ -93,7 +93,7 @@ public class BlockDryingRack extends BlockMachine {
   }
 
   @Override
-  public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos,
+  protected void clAddCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos,
       AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn) {
 
     state = state.getActualState(worldIn, pos);

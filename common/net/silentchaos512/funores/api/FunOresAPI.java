@@ -7,6 +7,7 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.silentchaos512.funores.api.recipe.alloysmelter.AlloySmelterRecipe;
 import net.silentchaos512.funores.api.recipe.dryingrack.DryingRackRecipe;
 import net.silentchaos512.funores.api.recipe.dryingrack.DryingRackRecipeObject;
+import net.silentchaos512.lib.util.StackHelper;
 
 /**
  * Here I will try my best to create some methods to make interacting with Fun Ores a bit easier.
@@ -57,9 +58,11 @@ public class FunOresAPI {
   public static void addAlloySmelterRecipe(ItemStack output, int outputCount, int cookTime,
       float experience, Object... inputs) {
 
-    ItemStack newOutput = output.copy();
-    newOutput.setCount(outputCount);
-    addAlloySmelterRecipe(newOutput, cookTime, experience, inputs);
+    ItemStack newOutput = StackHelper.safeCopy(output);
+    if (StackHelper.isValid(newOutput)) {
+      newOutput = StackHelper.setCount(newOutput, outputCount);
+      addAlloySmelterRecipe(newOutput, cookTime, experience, inputs);
+    }
   }
 
   /**

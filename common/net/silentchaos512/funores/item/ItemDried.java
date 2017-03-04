@@ -11,24 +11,21 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.silentchaos512.funores.FunOres;
-import net.silentchaos512.funores.lib.EnumAlloy;
 import net.silentchaos512.funores.lib.EnumDriedItem;
 import net.silentchaos512.funores.lib.IDisableable;
-import net.silentchaos512.funores.lib.IMetal;
 import net.silentchaos512.funores.lib.Names;
-import net.silentchaos512.lib.registry.IRegistryObject;
+import net.silentchaos512.lib.item.ItemFoodSL;
 
-public class ItemDried extends ItemFood implements IRegistryObject, IDisableable {
+public class ItemDried extends ItemFoodSL implements IDisableable {
 
   public ItemDried() {
 
-    super(EnumDriedItem.values().length, true);
+    super(EnumDriedItem.values().length, FunOres.MOD_ID, Names.DRIED_ITEM, 1, 0.1f, true);
     setMaxStackSize(64);
     setHasSubtypes(true);
     setMaxDamage(0);
@@ -50,14 +47,9 @@ public class ItemDried extends ItemFood implements IRegistryObject, IDisableable
   @Override
   public void addRecipes() {
 
-    if (!FunOres.registry.isItemDisabled(getStack(EnumDriedItem.DRIED_FLESH)))
-      GameRegistry.addShapedRecipe(new ItemStack(Items.LEATHER), "ff", "ff", 'f',
-          getStack(EnumDriedItem.DRIED_FLESH));
-  }
-
-  @Override
-  public void addOreDict() {
-
+    ItemStack driedFlesh = getStack(EnumDriedItem.DRIED_FLESH);
+    if (!FunOres.registry.isItemDisabled(driedFlesh))
+      GameRegistry.addShapelessRecipe(new ItemStack(Items.LEATHER), driedFlesh, driedFlesh);
   }
 
   @Override
@@ -79,7 +71,7 @@ public class ItemDried extends ItemFood implements IRegistryObject, IDisableable
   }
 
   @Override
-  public void getSubItems(Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
+  protected void clGetSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
 
     // Add only non-disabled items for display!
     for (ItemStack stack : getSubItems(item))
@@ -119,39 +111,16 @@ public class ItemDried extends ItemFood implements IRegistryObject, IDisableable
   }
 
   @Override
-  public String getName() {
-
-    return Names.DRIED_ITEM;
-  }
-
-  @Override
-  public String getFullName() {
-
-    return FunOres.MOD_ID + ":" + getName();
-  }
-
-  @Override
-  public String getModId() {
-
-    return FunOres.MOD_ID;
-  }
-
-  @Override
   public List<ModelResourceLocation> getVariants() {
 
     List<ModelResourceLocation> models = Lists.newArrayList();
     for (EnumDriedItem item : EnumDriedItem.values()) {
       if (!FunOres.registry.isItemDisabled(item.getItem())) // Don't load disabled item models.
-        models.add(new ModelResourceLocation(FunOres.MOD_ID + ":" + item.textureName, "inventory"));
+        models.add(
+            new ModelResourceLocation((modId + ":" + item.textureName).toLowerCase(), "inventory"));
       else
         models.add(null);
     }
     return models;
-  }
-
-  @Override
-  public boolean registerModels() {
-
-    return false; // Use standard model registration.
   }
 }

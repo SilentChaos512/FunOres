@@ -97,7 +97,7 @@ public class BlockOreMeat extends BlockFunOre implements IWitHudInfo {
     for (EnumMeat meat : EnumMeat.values()) {
       if (!FunOres.registry.isItemDisabled(new ItemStack(this, 1, meat.meta))) {
         String name = FunOres.MOD_ID + ":Ore" + meat.getUnmodifiedName();
-        models.add(new ModelResourceLocation(name, "inventory"));
+        models.add(new ModelResourceLocation(name.toLowerCase(), "inventory"));
       } else {
         models.add(null);
       }
@@ -112,7 +112,7 @@ public class BlockOreMeat extends BlockFunOre implements IWitHudInfo {
   }
 
   @Override
-  public void getSubBlocks(Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
+  public void clGetSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
 
     for (EnumMeat meat : EnumMeat.values()) {
       ItemStack stack = new ItemStack(item, 1, meat.meta);

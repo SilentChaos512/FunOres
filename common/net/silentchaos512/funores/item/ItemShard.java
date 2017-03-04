@@ -57,7 +57,7 @@ public class ItemShard extends ItemNamedSubtypes implements IDisableable {
   }
 
   @Override
-  public void getSubItems(Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
+  protected void clGetSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
 
     for (ItemStack stack : getSubItems(item))
       if (!FunOres.registry.isItemDisabled(stack))
@@ -70,7 +70,7 @@ public class ItemShard extends ItemNamedSubtypes implements IDisableable {
     List<ModelResourceLocation> models = Lists.newArrayList();
     for (int i = 0; i < NAMES.length; ++i) {
       if (!FunOres.registry.isItemDisabled(new ItemStack(this, 1, i)))
-        models.add(new ModelResourceLocation(modId + ":" + NAMES[i], "inventory"));
+        models.add(new ModelResourceLocation((modId + ":" + NAMES[i]).toLowerCase(), "inventory"));
       else
         models.add(null);
     }
