@@ -18,9 +18,10 @@ plugins {
 }
 */
 version = "1.5.0"
+def silentlib_version = "2.0.1"
 def buildNum = 0
 group= "net.silentchaos512.funores" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "FunOres-1.11"
+archivesBaseName = "FunOres-1.11.x"
 
 sourceCompatibility = targetCompatibility = 1.8
 
@@ -29,6 +30,7 @@ minecraft {
     runDir = "eclipse"
 
     replace "@VERSION@", project.version
+    replace "SL_VERSION", silentlib_version
     replaceIn "FunOres.java"
     
     mappings = "snapshot_20161122"

@@ -21,6 +21,7 @@ import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLMissingMappingsEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -47,6 +48,7 @@ import net.silentchaos512.funores.proxy.CommonProxy;
 import net.silentchaos512.funores.registry.FunOresRegistry;
 import net.silentchaos512.funores.world.FunOresGenerator;
 import net.silentchaos512.lib.SilentLib;
+import net.silentchaos512.lib.registry.MC10IdRemapper;
 import net.silentchaos512.lib.registry.SRegistry;
 import net.silentchaos512.lib.util.LocalizationHelper;
 import net.silentchaos512.lib.util.LogHelper;
@@ -253,4 +255,12 @@ public class FunOres {
       return new ItemStack(ModBlocks.meatOre);
     }
   };
+
+  @EventHandler
+  public void onMissingMapping(FMLMissingMappingsEvent event) {
+
+    for (FMLMissingMappingsEvent.MissingMapping mismap : event.get()) {
+      MC10IdRemapper.remap(mismap);
+    }
+  }
 }
