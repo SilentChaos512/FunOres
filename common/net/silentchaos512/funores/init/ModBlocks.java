@@ -25,6 +25,7 @@ import net.silentchaos512.funores.item.block.ItemBlockOreDrops;
 import net.silentchaos512.funores.lib.Names;
 import net.silentchaos512.funores.world.FunOresGenerator;
 import net.silentchaos512.lib.registry.SRegistry;
+import net.silentchaos512.lib.util.BiomeHelper;
 
 public class ModBlocks {
 
@@ -75,11 +76,8 @@ public class ModBlocks {
 
     // List biome types
     line = "";
-    try {
-      for (BiomeDictionary.Type biomeType : BiomeDictionary.getTypes(biome))
-        line += biomeType.toString() + ", ";
-    } catch (NoSuchMethodError ex) {
-    }
+    for (BiomeDictionary.Type biomeType : BiomeHelper.getTypes(biome))
+      line += biomeType.toString() + ", ";
     list.add(line.replaceFirst(", $", ""));
 
     return list;

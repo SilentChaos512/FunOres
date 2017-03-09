@@ -1,3 +1,6 @@
+1.5.1
+Fixed: A crash when using biome lists in ore gen configs in 1.10.2 (requires Silent Lib 2.0.2)
+
 1.5.0
 Updated for Silent Lib 2. Cross compatible between Minecraft 1.10.2, 1.11, and 1.11.2.
 Changed: Dried Flesh to Leather now requires just two Dried Flesh.

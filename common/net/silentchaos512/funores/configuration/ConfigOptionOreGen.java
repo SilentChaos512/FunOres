@@ -1,6 +1,5 @@
 package net.silentchaos512.funores.configuration;
 
-import java.util.Iterator;
 import java.util.List;
 
 import com.google.common.base.Predicate;
@@ -13,8 +12,8 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.config.Configuration;
-import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.lib.IHasOre;
+import net.silentchaos512.lib.util.BiomeHelper;
 
 public class ConfigOptionOreGen extends ConfigOption {
 
@@ -210,8 +209,8 @@ public class ConfigOptionOreGen extends ConfigOption {
 
     for (String str : biomes) {
       // Biome type match?
-      for (BiomeDictionary.Type type : BiomeDictionary.getTypes(biome))
-        if (type.getName().equalsIgnoreCase(str))
+      for (BiomeDictionary.Type type : BiomeHelper.getTypes(biome))
+        if (BiomeHelper.getTypeName(type).equalsIgnoreCase(str))
           return true;
 
       // Is listed biome an exact match?
