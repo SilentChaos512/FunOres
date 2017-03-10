@@ -58,6 +58,6 @@ public class ItemBlockOre extends ItemBlockSL {
       return false;
     }
 
-    return config.enabled;
+    return config.isEnabled();
   }
 }

@@ -86,7 +86,7 @@ public class FunOresGenerator implements IWorldGenerator {
 
   public void generateOre(ConfigOptionOreGen ore, World world, Random random, int posX, int posZ) {
 
-    if (!ore.enabled) {
+    if (!ore.isEnabled()) {
       return;
     }
 

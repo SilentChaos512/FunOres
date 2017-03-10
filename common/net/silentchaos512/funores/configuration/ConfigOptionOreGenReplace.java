@@ -20,9 +20,7 @@ public class ConfigOptionOreGenReplace extends ConfigOptionOreGen {
     }
 
     super.loadValue(c, category, comment);
-    if (enabled) {
-      replaceExisting = c.get(category, "ReplaceExisting", replaceExisting).getBoolean();
-    }
+    replaceExisting = c.get(category, "ReplaceExisting", replaceExisting).getBoolean();
 
     return this.validate();
   }

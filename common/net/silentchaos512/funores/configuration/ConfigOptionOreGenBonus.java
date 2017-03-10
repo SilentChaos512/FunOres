@@ -121,23 +121,21 @@ public class ConfigOptionOreGenBonus extends ConfigOptionOreGen {
 
     super.loadValue(c, category, comment);
 
-    if (enabled) {
-      //@formatter:off
-      String[] keys;
-      // Bonus drops
-      keys = c.get(category, KEY_DROPS_BONUS, bonusDropKeys.toArray(new String[] {})).getStringList();
-      bonusDropKeys.clear();
-      for (String key : keys) bonusDropKeys.add(key);
+    //@formatter:on
+    String[] keys;
+    // Bonus drops
+    keys = c.get(category, KEY_DROPS_BONUS, bonusDropKeys.toArray(new String[] {})).getStringList();
+    bonusDropKeys.clear();
+    for (String key : keys) bonusDropKeys.add(key);
 
-      // Removed standard drops
-      keys = c.get(category, KEY_DROPS_REMOVED, removedDropKeys.toArray(new String[] {})).getStringList();
-      removedDropKeys.clear();
-      for (String key : keys) removedDropKeys.add(key);
+    // Removed standard drops
+    keys = c.get(category, KEY_DROPS_REMOVED, removedDropKeys.toArray(new String[] {})).getStringList();
+    removedDropKeys.clear();
+    for (String key : keys) removedDropKeys.add(key);
 
-      // Bonus drop pick count
-      pick = c.get(category, KEY_PICK, pick).getInt();
-      //@formatter:on
-    }
+    // Bonus drop pick count
+    pick = c.get(category, KEY_PICK, pick).getInt();
+    //@formatter:on
 
     LOADED_CONFIGS.add(this);
     return this.validate();

@@ -67,7 +67,7 @@ public class BlockOreMetal extends BlockFunOre implements IWitHudInfo {
       return false;
 
     ConfigOptionOreGen config = getConfig(meta);
-    return config == null ? false : config.enabled;
+    return config == null ? false : config.isEnabled();
   }
 
   @Override

@@ -74,7 +74,8 @@ public class ConfigOptionOreGen extends ConfigOption {
    */
 
   /** Legacy support. Setting cluster count to 0 would have been better, but too late now. */
-  public boolean enabled = true;
+  @Deprecated
+  protected boolean enabled = true;
   /** The number of veins to spawn per chunk */
   public int clusterCount = 8;
   /** The size of veins */
@@ -203,6 +204,11 @@ public class ConfigOptionOreGen extends ConfigOption {
     rarity = MathHelper.clamp(rarity, RARITY_MIN, RARITY_MAX);
 
     return this;
+  }
+
+  public boolean isEnabled() {
+
+    return enabled && clusterCount > 0;
   }
 
   public boolean isBiomeInList(Biome biome) {

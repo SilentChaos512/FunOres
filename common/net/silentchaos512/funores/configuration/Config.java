@@ -230,7 +230,6 @@ public class Config {
 
       c.setCategoryComment(CATEGORY_METAL_ORE, COMMENT_METAL_ORE);
 
-      copper.enabled = true;
       copper.clusterCount = 10;
       copper.clusterSize = 8;
       copper.minY = 40;
@@ -238,7 +237,6 @@ public class Config {
       copper.rarity = 1;
       copper.loadValue(c, CATEGORY_METAL_ORE);
 
-      tin.enabled = true;
       tin.clusterCount = 10;
       tin.clusterSize = 8;
       tin.minY = 20;
@@ -246,7 +244,6 @@ public class Config {
       tin.rarity = 1;
       tin.loadValue(c, CATEGORY_METAL_ORE);
 
-      silver.enabled = true;
       silver.clusterCount = 6;
       silver.clusterSize = 8;
       silver.minY = 5;
@@ -254,7 +251,6 @@ public class Config {
       silver.rarity = 1;
       silver.loadValue(c, CATEGORY_METAL_ORE);
 
-      lead.enabled = true;
       lead.clusterCount = 4;
       lead.clusterSize = 8;
       lead.minY = 10;
@@ -262,7 +258,6 @@ public class Config {
       lead.rarity = 1;
       lead.loadValue(c, CATEGORY_METAL_ORE);
 
-      nickel.enabled = true;
       nickel.clusterCount = 2;
       nickel.clusterSize = 4;
       nickel.minY = 5;
@@ -270,7 +265,6 @@ public class Config {
       nickel.rarity = 1;
       nickel.loadValue(c, CATEGORY_METAL_ORE);
 
-      platinum.enabled = true;
       platinum.clusterCount = 4;
       platinum.clusterSize = 6;
       platinum.minY = 5;
@@ -278,7 +272,6 @@ public class Config {
       platinum.rarity = 10;
       platinum.loadValue(c, CATEGORY_METAL_ORE);
 
-      aluminium.enabled = true;
       aluminium.clusterCount = 6;
       aluminium.clusterSize = 7;
       aluminium.minY = 10;
@@ -286,7 +279,6 @@ public class Config {
       aluminium.rarity = 1;
       aluminium.loadValue(c, CATEGORY_METAL_ORE);
 
-      zinc.enabled = true;
       zinc.clusterCount = 4;
       zinc.clusterSize = 8;
       zinc.minY = 20;
@@ -294,7 +286,6 @@ public class Config {
       zinc.rarity = 1;
       zinc.loadValue(c, CATEGORY_METAL_ORE);
 
-      titanium.enabled = true;
       titanium.clusterCount = 3;
       titanium.clusterSize = 6;
       titanium.minY = 5;
@@ -302,7 +293,6 @@ public class Config {
       titanium.rarity = 10;
       titanium.loadValue(c, CATEGORY_METAL_ORE);
 
-      osmium.enabled = true;
       osmium.clusterCount = 7;
       osmium.clusterSize = 8;
       osmium.minY = 8;
@@ -321,7 +311,6 @@ public class Config {
       int meatMaxY = 96;
       int meatRarity = 14;
 
-      pig.enabled = true;
       pig.clusterCount = meatClusterCount;
       pig.clusterSize = meatClusterSize;
       pig.minY = meatMinY;
@@ -330,7 +319,6 @@ public class Config {
       pig.addBonusDrop(ConfigItemDrop.getKey("minecraft:saddle", 1, 0, 0.025f, 0.01f, 0.0f));
       pig.loadValue(c, CATEGORY_MEAT_ORE);
 
-      fish.enabled = true;
       fish.clusterCount = meatClusterCount;
       fish.clusterSize = meatClusterSize;
       fish.minY = meatMinY;
@@ -338,7 +326,6 @@ public class Config {
       fish.rarity = meatRarity;
       fish.loadValue(c, CATEGORY_MEAT_ORE);
 
-      cow.enabled = true;
       cow.clusterCount = meatClusterCount;
       cow.clusterSize = meatClusterSize;
       cow.minY = meatMinY;
@@ -346,7 +333,6 @@ public class Config {
       cow.rarity = meatRarity;
       cow.loadValue(c, CATEGORY_MEAT_ORE);
 
-      chicken.enabled = true;
       chicken.clusterCount = meatClusterCount;
       chicken.clusterSize = meatClusterSize;
       chicken.minY = meatMinY;
@@ -355,7 +341,6 @@ public class Config {
       chicken.addBonusDrop(ConfigItemDrop.getKey("minecraft:egg", 2, 0, 0.15f, 0.02f, 0.7f));
       chicken.loadValue(c, CATEGORY_MEAT_ORE);
 
-      rabbit.enabled = true;
       rabbit.clusterCount = meatClusterCount;
       rabbit.clusterSize = meatClusterSize;
       rabbit.minY = meatMinY;
@@ -363,7 +348,6 @@ public class Config {
       rabbit.rarity = meatRarity;
       rabbit.loadValue(c, CATEGORY_MEAT_ORE);
 
-      sheep.enabled = true;
       sheep.clusterCount = meatClusterCount;
       sheep.clusterSize = meatClusterSize;
       sheep.minY = meatMinY;
@@ -371,7 +355,6 @@ public class Config {
       sheep.rarity = meatRarity;
       sheep.loadValue(c, CATEGORY_MEAT_ORE);
 
-      squid.enabled = true;
       squid.clusterCount = meatClusterCount;
       squid.clusterSize = meatClusterSize;
       squid.minY = meatMinY;
@@ -379,7 +362,6 @@ public class Config {
       squid.rarity = meatRarity;
       squid.loadValue(c, CATEGORY_MEAT_ORE);
 
-      bat.enabled = true;
       bat.clusterCount = meatClusterCount;
       bat.clusterSize = meatClusterSize;
       bat.minY = meatMinY;
@@ -403,7 +385,6 @@ public class Config {
 
       // Overworld
 
-      zombie.enabled = true;
       zombie.clusterCount = mobClusterCount;
       zombie.clusterSize = mobClusterSize;
       zombie.minY = mobMinY;
@@ -411,7 +392,6 @@ public class Config {
       zombie.rarity = mobRarity;
       zombie.loadValue(c, CATEGORY_MOB_ORE);
 
-      skeleton.enabled = true;
       skeleton.clusterCount = mobClusterCount;
       skeleton.clusterSize = mobClusterSize;
       skeleton.minY = mobMinY;
@@ -419,7 +399,6 @@ public class Config {
       skeleton.rarity = mobRarity;
       skeleton.loadValue(c, CATEGORY_MOB_ORE);
 
-      creeper.enabled = true;
       creeper.clusterCount = mobClusterCount;
       creeper.clusterSize = mobClusterSize;
       creeper.minY = mobMinY;
@@ -427,7 +406,6 @@ public class Config {
       creeper.rarity = mobRarity;
       creeper.loadValue(c, CATEGORY_MOB_ORE);
 
-      spider.enabled = true;
       spider.clusterCount = mobClusterCount;
       spider.clusterSize = mobClusterSize;
       spider.minY = mobMinY;
@@ -435,7 +413,6 @@ public class Config {
       spider.rarity = mobRarity;
       spider.loadValue(c, CATEGORY_MOB_ORE);
 
-      enderman.enabled = true;
       enderman.clusterCount = mobClusterCount;
       enderman.clusterSize = mobClusterSize;
       enderman.minY = mobMinY;
@@ -446,7 +423,6 @@ public class Config {
       enderman.addBonusDrop(ConfigItemDrop.getKey("FunOres:Shard", 1, 0, 0.10f, 0.0f, 0.4f));
       enderman.loadValue(c, CATEGORY_MOB_ORE);
 
-      slime.enabled = true;
       slime.clusterCount = mobClusterCount;
       slime.clusterSize = mobClusterSize;
       slime.minY = mobMinY;
@@ -454,7 +430,6 @@ public class Config {
       slime.rarity = mobRarity;
       slime.loadValue(c, CATEGORY_MOB_ORE);
 
-      witch.enabled = true;
       witch.clusterCount = mobClusterCount;
       witch.clusterSize = mobClusterSize;
       witch.minY = mobMinY;
@@ -463,7 +438,6 @@ public class Config {
       witch.pick = 2;
       witch.loadValue(c, CATEGORY_MOB_ORE);
 
-      guardian.enabled = true;
       guardian.clusterCount = mobClusterCount;
       guardian.clusterSize = mobClusterSize;
       guardian.minY = mobMinY;
@@ -480,7 +454,6 @@ public class Config {
       mobMaxY = 116;
       mobRarity = 24;
 
-      pigman.enabled = true;
       pigman.clusterCount = mobClusterCount;
       pigman.clusterSize = mobClusterSize;
       pigman.minY = mobMinY;
@@ -488,7 +461,6 @@ public class Config {
       pigman.rarity = mobRarity;
       pigman.loadValue(c, CATEGORY_MOB_ORE);
 
-      ghast.enabled = true;
       ghast.clusterCount = mobClusterCount;
       ghast.clusterSize = mobClusterSize;
       ghast.minY = mobMinY;
@@ -499,7 +471,6 @@ public class Config {
       ghast.addBonusDrop(ConfigItemDrop.getKey("FunOres:Shard", 1, 2, 0.25f, 0.0f, 0.4f));
       ghast.loadValue(c, CATEGORY_MOB_ORE);
 
-      magmaCube.enabled = true;
       magmaCube.clusterCount = mobClusterCount;
       magmaCube.clusterSize = mobClusterSize;
       magmaCube.minY = mobMinY;
@@ -507,7 +478,6 @@ public class Config {
       magmaCube.rarity = mobRarity;
       magmaCube.loadValue(c, CATEGORY_MOB_ORE);
 
-      wither.enabled = true;
       wither.clusterCount = mobClusterCount;
       wither.clusterSize = mobClusterSize;
       wither.minY = mobMinY;
@@ -515,7 +485,6 @@ public class Config {
       wither.rarity = mobRarity;
       wither.loadValue(c, CATEGORY_MOB_ORE);
 
-      blaze.enabled = true;
       blaze.clusterCount = mobClusterCount;
       blaze.clusterSize = mobClusterSize;
       blaze.minY = mobMinY;
@@ -527,27 +496,22 @@ public class Config {
       blaze.loadValue(c, CATEGORY_MOB_ORE);
 
       // Vanilla Ores
-      // All are disabled by default. Default settings are set so that bonus ores will spawn if
-      // enabled, not replacements.
+      // Default settings are set so that bonus ores will spawn if enabled, not replacements.
 
       c.setCategoryComment(CATEGORY_VANILLA_ORE, COMMENT_VANILLA_ORE);
 
-      iron.enabled = false;
       iron.clusterCount = 4;
       iron.maxY = 64;
       iron.loadValue(c, CATEGORY_VANILLA_ORE);
 
-      gold.enabled = false;
       gold.clusterCount = 4;
       gold.maxY = 32;
       gold.loadValue(c, CATEGORY_VANILLA_ORE);
 
-      diamond.enabled = false;
       diamond.clusterCount = 1;
       diamond.maxY = 16;
       diamond.loadValue(c, CATEGORY_VANILLA_ORE);
 
-      emerald.enabled = false;
       emerald.clusterCount = 2;
       emerald.clusterSize = 1;
       emerald.minY = 8;
@@ -555,22 +519,18 @@ public class Config {
       emerald.rarity = 24;
       emerald.loadValue(c, CATEGORY_VANILLA_ORE);
 
-      coal.enabled = false;
       coal.clusterCount = 0;
       coal.clusterSize = 16;
       coal.loadValue(c, CATEGORY_VANILLA_ORE);
 
-      redstone.enabled = false;
       redstone.clusterCount = 2;
       redstone.maxY = 16;
       redstone.loadValue(c, CATEGORY_VANILLA_ORE);
 
-      lapis.enabled = false;
       lapis.clusterCount = 0;
       lapis.maxY = 16;
       lapis.loadValue(c, CATEGORY_VANILLA_ORE);
 
-      quartz.enabled = false;
       quartz.clusterCount = 0;
       quartz.clusterSize = 13;
       quartz.loadValue(c, CATEGORY_VANILLA_ORE);
