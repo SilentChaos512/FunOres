@@ -1,3 +1,8 @@
+1.5.2
+Changed: Additional vanilla ore generation is now enabled by default (existing config files will not changed). It adds to some vanilla ores, but does not replace them.
+Fixed: The "ReplaceExisting" option for vanilla ores not being included on first config generation.
+Fixed: [1.10.2] Crash when trying to use creative tab.
+
 1.5.1
 Fixed: A crash when using biome lists in ore gen configs in 1.10.2 (requires Silent Lib 2.0.2)
 

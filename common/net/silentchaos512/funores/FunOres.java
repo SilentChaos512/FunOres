@@ -1,19 +1,10 @@
 package net.silentchaos512.funores;
 
-import java.util.HashSet;
-import java.util.List;
 import java.util.Random;
-import java.util.Set;
 
-import com.google.common.collect.Lists;
-
-import net.minecraft.block.Block;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
@@ -42,14 +33,13 @@ import net.silentchaos512.funores.init.ModItems;
 import net.silentchaos512.funores.lib.EnumAlloy;
 import net.silentchaos512.funores.lib.EnumDriedItem;
 import net.silentchaos512.funores.lib.ExtraRecipes;
-import net.silentchaos512.funores.lib.IDisableable;
 import net.silentchaos512.funores.lib.ModDamageSources;
 import net.silentchaos512.funores.proxy.CommonProxy;
 import net.silentchaos512.funores.registry.FunOresRegistry;
 import net.silentchaos512.funores.world.FunOresGenerator;
 import net.silentchaos512.lib.SilentLib;
+import net.silentchaos512.lib.creativetab.CreativeTabSL;
 import net.silentchaos512.lib.registry.MC10IdRemapper;
-import net.silentchaos512.lib.registry.SRegistry;
 import net.silentchaos512.lib.util.LocalizationHelper;
 import net.silentchaos512.lib.util.LogHelper;
 
@@ -247,10 +237,10 @@ public class FunOres {
     }
   }
 
-  public static CreativeTabs tabFunOres = new CreativeTabs("tabFunOres") {
+  public static CreativeTabSL tabFunOres = new CreativeTabSL("tabFunOres") {
 
     @Override
-    public ItemStack getTabIconItem() {
+    protected ItemStack getStack() {
 
       return new ItemStack(ModBlocks.meatOre);
     }
