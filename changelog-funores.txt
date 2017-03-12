@@ -1,3 +1,7 @@
+1.5.2b
+Fixed: Vanilla ores not respecting the "ReplaceExisting" config.
+Fixed: Vanilla ores not reporting vein counts in WIT.
+
 1.5.2
 Changed: Additional vanilla ore generation is now enabled by default (existing config files will not changed). It adds to some vanilla ores, but does not replace them.
 Fixed: The "ReplaceExisting" option for vanilla ores not being included on first config generation.

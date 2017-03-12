@@ -106,7 +106,9 @@ public class FunOres {
 
     Config.save();
 
-    GameRegistry.registerWorldGenerator(new FunOresGenerator(), 0);
+    FunOresGenerator worldGenerator = new FunOresGenerator();
+    GameRegistry.registerWorldGenerator(worldGenerator, 0);
+    MinecraftForge.ORE_GEN_BUS.register(worldGenerator);
 
     proxy.init(registry);
   }

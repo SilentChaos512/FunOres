@@ -10,7 +10,11 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.feature.WorldGenMinable;
+import net.minecraftforge.event.terraingen.OreGenEvent;
+import net.minecraftforge.event.terraingen.OreGenEvent.GenerateMinable.EventType;
 import net.minecraftforge.fml.common.IWorldGenerator;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.configuration.Config;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGen;
@@ -90,24 +94,8 @@ public class FunOresGenerator implements IWorldGenerator {
       return;
     }
 
-//    if (!(ore.ore instanceof IHasOre)) {
-//      FunOres.instance.logHelper.debug(ore.oreName + " is not an ore?");
-//      return;
-//    }
-
-    if (ore instanceof ConfigOptionOreGenReplace) {
-      ConfigOptionOreGenReplace oreGenReplace = (ConfigOptionOreGenReplace) ore;
-      if (oreGenReplace.replaceExisting) {
-        removeExistingOres(oreGenReplace, world, posX, posZ);
-      }
-    }
-
     Biome biome = getBiomeForPos(world, new BlockPos(posX, 64, posZ));
     if (ore.canSpawnInBiome(biome)) {
-      // Debug
-      // if (ore == EnumMetal.COPPER.getConfig()) {
-      // LogHelper.list(biome.biomeName, ore.oreName, ore.getClusterCountForBiome(biome));
-      // }
       float trueClusterCount = ore.getClusterCountForBiome(biome);
       int clusterCount = trueClusterCount > 0 && trueClusterCount < 1 ? 1 : (int) trueClusterCount;
       float bonusClusterChance = trueClusterCount - clusterCount;
@@ -148,31 +136,6 @@ public class FunOresGenerator implements IWorldGenerator {
     }
   }
 
-  private void removeExistingOres(ConfigOptionOreGenReplace ore, World world, int posX, int posZ) {
-
-    IBlockState state = ore.ore.getOre();
-    IBlockState stone = Blocks.STONE.getDefaultState();
-    BlockPos pos;
-
-    int maxHeight = 256;
-    if (ore.ore instanceof EnumVanillaOre) {
-      EnumVanillaOre vanilla = (EnumVanillaOre) ore.ore;
-      maxHeight = vanilla.dimension == -1 ? 128 : maxHeight;
-    }
-
-    for (int y = 0; y < maxHeight; ++y) {
-      for (int z = 0; z < 16; ++z) {
-        for (int x = 0; x < 16; ++x) {
-          pos = new BlockPos(posX + x, y, posZ + z);
-          if (world.getBlockState(pos) == state) {
-            world.setBlockState(pos, stone);
-            // LogHelper.debug(pos + ", " + state);
-          }
-        }
-      }
-    }
-  }
-
   private void canOreSpawnInDimension(int dim, int oreDim) {
 
   }
@@ -183,7 +146,21 @@ public class FunOresGenerator implements IWorldGenerator {
     int posX = (pos.getX() & 0xFFFFFFF0) + 8;
     int posZ = (pos.getZ() & 0xFFFFFFF0) + 8;
     BlockPos center = new BlockPos(posX, 64, posZ);
-    // LogHelper.debug(pos + " -> " + center);
     return world.getBiome(center);
+  }
+
+  @SubscribeEvent
+  public void onGenerateMinable(OreGenEvent.GenerateMinable event) {
+
+    if ((event.getType() == EventType.COAL && Config.coal.replaceExisting)
+        || (event.getType() == EventType.DIAMOND && Config.diamond.replaceExisting)
+        || (event.getType() == EventType.EMERALD && Config.emerald.replaceExisting)
+        || (event.getType() == EventType.GOLD && Config.gold.replaceExisting)
+        || (event.getType() == EventType.IRON && Config.iron.replaceExisting)
+        || (event.getType() == EventType.LAPIS && Config.lapis.replaceExisting)
+        || (event.getType() == EventType.QUARTZ && Config.quartz.replaceExisting)
+        || (event.getType() == EventType.REDSTONE && Config.redstone.replaceExisting))
+      event.setResult(Result.DENY);
+
   }
 }
