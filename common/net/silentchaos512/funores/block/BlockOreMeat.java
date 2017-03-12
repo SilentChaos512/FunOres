@@ -33,7 +33,7 @@ import net.silentchaos512.funores.lib.Names;
 import net.silentchaos512.funores.util.OreLootHelper;
 import net.silentchaos512.wit.api.IWitHudInfo;
 
-public class BlockOreMeat extends BlockFunOre implements IWitHudInfo {
+public class BlockOreMeat extends BlockFunOre {
 
   public static final PropertyEnum MEAT = PropertyEnum.create("meat", EnumMeat.class);
 
@@ -75,19 +75,6 @@ public class BlockOreMeat extends BlockFunOre implements IWitHudInfo {
       if (!FunOres.registry.isItemDisabled(stack))
         OreDictionary.registerOre("ore" + meat.getName(), stack);
     }
-  }
-
-  @Override
-  public List<String> getWitLines(IBlockState state, BlockPos pos, EntityPlayer player,
-      boolean advanced) {
-
-    if (!player.isSneaking() && !advanced) {
-      return null;
-    }
-
-    EnumMeat meat = EnumMeat.byMetadata(state.getBlock().getMetaFromState(state));
-    ConfigOptionOreGen config = meat.getConfig();
-    return ModBlocks.getWitInfoForOre(config, state, pos, player);
   }
 
   @Override

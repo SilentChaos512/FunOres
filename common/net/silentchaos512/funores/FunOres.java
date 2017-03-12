@@ -7,6 +7,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -26,6 +27,7 @@ import net.silentchaos512.funores.api.recipe.dryingrack.DryingRackRecipeObject;
 import net.silentchaos512.funores.configuration.Config;
 import net.silentchaos512.funores.configuration.ConfigItemDrop;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGenBonus;
+import net.silentchaos512.funores.event.FunOresWitEvents;
 import net.silentchaos512.funores.gui.GuiHandlerFunOres;
 import net.silentchaos512.funores.init.ModBlocks;
 import net.silentchaos512.funores.init.ModFluids;
@@ -57,7 +59,7 @@ public class FunOres {
   public static final String MOD_NAME = "Fun Ores";
   public static final String VERSION_NUMBER = "@VERSION@";
   public static final String VERSION_SILENTLIB = "SL_VERSION";
-  public static final String DEPENDENCIES = "required-after:silentlib@[" + VERSION_SILENTLIB + ",);";
+  public static final String DEPENDENCIES = "required-after:silentlib@[" + VERSION_SILENTLIB + ",);after:wit;after:WIT";
   //"required-after:forge@[13.19.0.2156,);required-after:silentlib;";
   public static final String ACCEPTED_MC_VERSIONS = "[1.10.2,1.11.2]";
   public static final String RESOURCE_PREFIX = MOD_ID.toLowerCase() + ":";
@@ -91,6 +93,8 @@ public class FunOres {
 
     NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandlerFunOres());
     MinecraftForge.EVENT_BUS.register(this);
+    if (Loader.isModLoaded("wit") || Loader.isModLoaded("WIT"))
+      MinecraftForge.EVENT_BUS.register(FunOresWitEvents.INSTANCE);
 
     proxy.preInit(registry);
   }

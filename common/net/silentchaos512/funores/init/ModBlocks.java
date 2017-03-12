@@ -50,36 +50,4 @@ public class ModBlocks {
     reg.registerBlock(alloySmelter, Names.ALLOY_SMELTER);
     reg.registerBlock(dryingRack, Names.DRYING_RACK);
   }
-
-  public static List<String> getWitInfoForOre(ConfigOptionOreGen config, IBlockState state,
-      BlockPos pos, EntityPlayer player) {
-
-    if (config == null) {
-      return null;
-    }
-
-    List<String> list = Lists.newArrayList();
-
-    // Show average veins per chunk (cluster count divided by rarity)
-    Biome biome = FunOresGenerator.getBiomeForPos(player.world, pos);
-    float veinsPerChunk = (float) config.getClusterCountForBiome(biome) / config.rarity;
-    String veinCountString = String.format("%.3f", veinsPerChunk);
-
-    char c = DecimalFormatSymbols.getInstance().getDecimalSeparator();
-    String decimalSep = c == '.' ? "\\." : Character.toString(c);
-    String regex = decimalSep + "?0+$";
-    veinCountString = veinCountString.replaceFirst(regex, "");
-
-    String line = String.format("%s veins per chunk (%s)", veinCountString, biome.getBiomeName());
-    line = line.replaceFirst(regex, "");
-    list.add(line);
-
-    // List biome types
-    line = "";
-    for (BiomeDictionary.Type biomeType : BiomeHelper.getTypes(biome))
-      line += biomeType.toString() + ", ";
-    list.add(line.replaceFirst(", $", ""));
-
-    return list;
-  }
 }

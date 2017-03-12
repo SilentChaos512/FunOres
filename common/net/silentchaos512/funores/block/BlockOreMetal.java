@@ -28,7 +28,7 @@ import net.silentchaos512.funores.registry.FunOresRegistry;
 import net.silentchaos512.funores.util.ModRecipeHelper;
 import net.silentchaos512.wit.api.IWitHudInfo;
 
-public class BlockOreMetal extends BlockFunOre implements IWitHudInfo {
+public class BlockOreMetal extends BlockFunOre {
 
   public static final PropertyEnum METAL = PropertyEnum.create("metal", EnumMetal.class);
 
@@ -106,19 +106,6 @@ public class BlockOreMetal extends BlockFunOre implements IWitHudInfo {
           OreDictionary.registerOre("oreAluminum", stack);
       }
     }
-  }
-
-  @Override
-  public List<String> getWitLines(IBlockState state, BlockPos pos, EntityPlayer player,
-      boolean advanced) {
-
-    if (!player.isSneaking() && !advanced) {
-      return null;
-    }
-
-    EnumMetal metal = EnumMetal.byMetadata(state.getBlock().getMetaFromState(state));
-    ConfigOptionOreGen config = metal.getConfig();
-    return ModBlocks.getWitInfoForOre(config, state, pos, player);
   }
 
   @Override
