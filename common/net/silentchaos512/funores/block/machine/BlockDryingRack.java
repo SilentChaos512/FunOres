@@ -4,8 +4,6 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.google.common.collect.Lists;
-
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -24,7 +22,6 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.lib.Names;
 import net.silentchaos512.funores.tile.TileDryingRack;
-import net.silentchaos512.lib.util.StackHelper;
 
 public class BlockDryingRack extends BlockMachine {
 
@@ -42,32 +39,6 @@ public class BlockDryingRack extends BlockMachine {
   public TileEntity createNewTileEntity(World world, int meta) {
 
     return new TileDryingRack();
-  }
-
-  @Override
-  public List<String> getWitLines(IBlockState state, BlockPos pos, EntityPlayer player,
-      boolean advanced) {
-
-    TileEntity tile = player.world.getTileEntity(pos);
-    if (tile != null && tile instanceof TileDryingRack) {
-      TileDryingRack rack = (TileDryingRack) tile;
-      List<String> list = Lists.newArrayList();
-
-      // Display item name
-      if (StackHelper.isValid(rack.getStack())) {
-        String itemName = rack.getStack().getDisplayName();
-        list.add(rack.getStack().getRarity().rarityColor + itemName);
-      }
-
-      // Debug info
-      if (advanced && FunOres.DEBUG_MODE)
-        list.addAll(rack.getDebugLines());
-
-      list.addAll(super.getWitLines(state, pos, player, advanced));
-      return list;
-    }
-    // Shouldn't happen, but...
-    return super.getWitLines(state, pos, player, advanced);
   }
 
   @Override

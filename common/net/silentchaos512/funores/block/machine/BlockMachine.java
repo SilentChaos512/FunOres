@@ -16,7 +16,6 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryHelper;
@@ -25,8 +24,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.silentchaos512.funores.FunOres;
@@ -35,10 +32,8 @@ import net.silentchaos512.funores.lib.EnumMachineState;
 import net.silentchaos512.funores.lib.IDisableable;
 import net.silentchaos512.funores.lib.ModDamageSources;
 import net.silentchaos512.lib.block.BlockContainerSL;
-import net.silentchaos512.lib.registry.IRegistryObject;
-import net.silentchaos512.wit.api.IWitHudInfo;
 
-public class BlockMachine extends BlockContainerSL implements IDisableable, IWitHudInfo {
+public class BlockMachine extends BlockContainerSL implements IDisableable {
 
   public static final PropertyEnum FACING = PropertyEnum.create("facing", EnumMachineState.class);
   protected static boolean keepInventory;
@@ -69,16 +64,6 @@ public class BlockMachine extends BlockContainerSL implements IDisableable, IWit
     ItemStack stack = new ItemStack(item);
     if (!FunOres.registry.isItemDisabled(stack))
       list.add(stack);
-  }
-
-  @Override
-  public List<String> getWitLines(IBlockState state, BlockPos pos, EntityPlayer player,
-      boolean advanced) {
-
-    if (!advanced) {
-      return Lists.newArrayList();
-    }
-    return Lists.newArrayList("State: " + ((EnumMachineState) state.getValue(FACING)));
   }
 
   public EnumMachineState getMachineState(World world, BlockPos pos) {
