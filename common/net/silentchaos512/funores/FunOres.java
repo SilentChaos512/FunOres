@@ -5,6 +5,7 @@ import java.util.Random;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Loader;
@@ -243,14 +244,7 @@ public class FunOres {
     }
   }
 
-  public static CreativeTabSL tabFunOres = new CreativeTabSL("tabFunOres") {
-
-    @Override
-    protected ItemStack getStack() {
-
-      return new ItemStack(ModBlocks.meatOre);
-    }
-  };
+  public static CreativeTabSL tabFunOres = new CreativeTabSL("tabFunOres", ModBlocks.meatOre, 0);
 
   @EventHandler
   public void onMissingMapping(FMLMissingMappingsEvent event) {
