@@ -96,4 +96,10 @@ public class DryingRackRecipeCategory implements IRecipeCategory {
     // TODO Auto-generated method stub
     return null;
   }
+
+  @Override
+  public String getModName() {
+
+    return FunOres.MOD_NAME;
+  }
 }

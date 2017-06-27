@@ -13,11 +13,11 @@ public class ItemBlockOreDrops extends ItemBlockOre {
     super(block);
   }
 
-  @Override
-  public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean advanced) {
-
-    super.addInformation(stack, player, list, advanced);
-
+//  @Override
+//  public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean advanced) {
+//
+//    super.addInformation(stack, player, list, advanced);
+//
 //    ConfigOptionOreGen config1 = getOreConfig(stack);
 //    if (config1 == null || !(config1 instanceof ConfigOptionOreGenBonus)) {
 //      return;
@@ -39,7 +39,7 @@ public class ItemBlockOreDrops extends ItemBlockOre {
 //      String str = FunOres.instance.localizationHelper.getMiscText("PressShift");
 //      list.add(TextFormatting.ITALIC + str);
 //    }
-  }
+//  }
 
 //  private TextFormatting getRarityColor(ConfigItemDrop drop) {
 //

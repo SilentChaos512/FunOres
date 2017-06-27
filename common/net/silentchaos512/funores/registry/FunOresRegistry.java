@@ -62,6 +62,8 @@ public class FunOresRegistry extends SRegistry {
   @Override
   public Block registerBlock(Block block, String key, ItemBlock itemBlock) {
 
+    super.registerBlock(block, key, itemBlock);
+
     if (block instanceof IDisableable) {
       // General disableable blocks.
       List<ItemStack> list = getSubItems((IDisableable) block, itemBlock);
@@ -89,7 +91,7 @@ public class FunOresRegistry extends SRegistry {
       }
     }
 
-    return super.registerBlock(block, key, itemBlock);
+    return block;
   }
 
   @Override

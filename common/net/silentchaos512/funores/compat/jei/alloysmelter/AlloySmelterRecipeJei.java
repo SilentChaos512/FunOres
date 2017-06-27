@@ -52,7 +52,7 @@ public class AlloySmelterRecipeJei extends BlankRecipeWrapper {
   public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX,
       int mouseY) {
 
-    FontRenderer fontRender = minecraft.fontRendererObj;
+    FontRenderer fontRender = minecraft.fontRenderer;
     String str = String.format("%.1f XP", recipe.getExperience());
     fontRender.drawStringWithShadow(str, 63, 0, 0xFFFFFF);
     str = recipe.getCookTime() + "t";

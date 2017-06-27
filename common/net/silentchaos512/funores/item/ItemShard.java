@@ -1,6 +1,7 @@
 package net.silentchaos512.funores.item;
 
 import java.util.List;
+import java.util.Map;
 
 import com.google.common.collect.Lists;
 
@@ -9,12 +10,12 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.lib.IDisableable;
 import net.silentchaos512.funores.lib.Names;
 import net.silentchaos512.lib.item.ItemNamedSubtypes;
+import net.silentchaos512.lib.registry.RecipeMaker;
 
 public class ItemShard extends ItemNamedSubtypes implements IDisableable {
 
@@ -26,24 +27,24 @@ public class ItemShard extends ItemNamedSubtypes implements IDisableable {
   }
 
   @Override
-  public void addRecipes() {
+  public void addRecipes(RecipeMaker recipes) {
 
     ItemStack enderShard = new ItemStack(this, 1, 0);
     if (!FunOres.registry.isItemDisabled(enderShard)) {
       ItemStack enderPearl = new ItemStack(Items.ENDER_PEARL);
-      GameRegistry.addShapedRecipe(enderPearl, "ss", "ss", 's', enderShard);
+      recipes.addShaped("ender_pearl", enderPearl, "ss", "ss", 's', enderShard);
     }
 
     ItemStack blazeShard = new ItemStack(this, 1, 1);
     if (!FunOres.registry.isItemDisabled(blazeShard)) {
       ItemStack blazeRod = new ItemStack(Items.BLAZE_ROD);
-      GameRegistry.addShapedRecipe(blazeRod, "ss", "ss", 's', blazeShard);
+      recipes.addShaped("blaze_rod", blazeRod, "ss", "ss", 's', blazeShard);
     }
 
     ItemStack ghastShard = new ItemStack(this, 1, 2);
     if (!FunOres.registry.isItemDisabled(ghastShard)) {
       ItemStack ghastTear = new ItemStack(Items.GHAST_TEAR);
-      GameRegistry.addShapedRecipe(ghastTear, "ss", "ss", 's', ghastShard);
+      recipes.addShaped("ghast_tear", ghastTear, "ss", "ss", 's', ghastShard);
     }
   }
 
@@ -59,21 +60,20 @@ public class ItemShard extends ItemNamedSubtypes implements IDisableable {
   @Override
   protected void clGetSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
 
+    if (!isInCreativeTab(tab))
+      return;
+
     for (ItemStack stack : getSubItems(item))
       if (!FunOres.registry.isItemDisabled(stack))
         list.add(stack);
   }
 
   @Override
-  public List<ModelResourceLocation> getVariants() {
+  public void getModels(Map<Integer, ModelResourceLocation> models) {
 
-    List<ModelResourceLocation> models = Lists.newArrayList();
     for (int i = 0; i < NAMES.length; ++i) {
       if (!FunOres.registry.isItemDisabled(new ItemStack(this, 1, i)))
-        models.add(new ModelResourceLocation((modId + ":" + NAMES[i]).toLowerCase(), "inventory"));
-      else
-        models.add(null);
+        models.put(i, new ModelResourceLocation((modId + ":" + NAMES[i]).toLowerCase(), "inventory"));
     }
-    return models;
   }
 }

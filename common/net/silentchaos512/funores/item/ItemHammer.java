@@ -1,6 +1,7 @@
 package net.silentchaos512.funores.item;
 
 import java.util.List;
+import java.util.Map;
 
 import com.google.common.collect.Lists;
 
@@ -19,6 +20,7 @@ import net.silentchaos512.funores.lib.IDisableable;
 import net.silentchaos512.funores.lib.IMetal;
 import net.silentchaos512.funores.lib.Names;
 import net.silentchaos512.lib.item.ItemSL;
+import net.silentchaos512.lib.registry.RecipeMaker;
 
 public class ItemHammer extends ItemSL implements IDisableable {
 
@@ -28,7 +30,7 @@ public class ItemHammer extends ItemSL implements IDisableable {
   }
 
   @Override
-  public void addRecipes() {
+  public void addRecipes(RecipeMaker recipes) {
 
     if (FunOres.registry.isItemDisabled(new ItemStack(this)))
       return;
@@ -36,9 +38,9 @@ public class ItemHammer extends ItemSL implements IDisableable {
     // Crafting the hammer.
     String wood = "plankWood";
 
-    for (String ingot : new String[] { "ingotAluminium", "ingotAluminum" }) {
-      GameRegistry.addRecipe(new ShapedOreRecipe(this, "ii ", " pi", " p ", 'i', ingot, 'p', wood));
-    }
+    ItemStack hammer = new ItemStack(this);
+    recipes.addShapedOre("hammer0", hammer, "ii ", " pi", " p ", 'i', "ingotAluminium", 'p', wood);
+    recipes.addShapedOre("hammer1", hammer, "ii ", " pi", " p ", 'i', "ingotAluminum", 'p', wood);
 
     // Hammer doesn't get consumed.
     setContainerItem(this);
@@ -54,9 +56,9 @@ public class ItemHammer extends ItemSL implements IDisableable {
           ? ((EnumVanillaExtended) metal).getMaterialOreDictKey() : "ingot" + metal.getMetalName();
       if (plate != null && !FunOres.registry.isItemDisabled(plate)) {
         if (Config.oneIngotPlates)
-          GameRegistry.addRecipe(new ShapedOreRecipe(plate, "h", "i", 'h', this, 'i', ingot));
+          recipes.addShapedOre("plate_" + metal.getMetalName(), plate, "h", "i", 'h', this, 'i', ingot);
         else
-          GameRegistry.addRecipe(new ShapedOreRecipe(plate, "h", "i", "i", 'h', this, 'i', ingot));
+          recipes.addShapedOre("plate_" + metal.getMetalName(), plate, "h", "i", "i", 'h', this, 'i', ingot);
       }
     }
 
@@ -67,19 +69,18 @@ public class ItemHammer extends ItemSL implements IDisableable {
       ingot = "ingot" + metal.getMetalName();
       if (!FunOres.registry.isItemDisabled(plate)) {
         if (Config.oneIngotPlates)
-          GameRegistry.addRecipe(new ShapedOreRecipe(plate, "h", "i", 'h', this, 'i', ingot));
+          recipes.addShapedOre("plate_" + metal.getMetalName(), plate, "h", "i", 'h', this, 'i', ingot);
         else
-          GameRegistry.addRecipe(new ShapedOreRecipe(plate, "h", "i", "i", 'h', this, 'i', ingot));
+          recipes.addShapedOre("plate_" + metal.getMetalName(), plate, "h", "i", "i", 'h', this, 'i', ingot);
       }
     }
   }
 
   @Override
-  public List<ModelResourceLocation> getVariants() {
+  public void getModels(Map<Integer, ModelResourceLocation> models) {
 
     if (!FunOres.registry.isItemDisabled(new ItemStack(this)))
-      return super.getVariants();
-    return Lists.newArrayList();
+      super.getModels(models);
   }
 
   @Override
@@ -90,6 +91,9 @@ public class ItemHammer extends ItemSL implements IDisableable {
 
   @Override
   protected void clGetSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
+
+    if (!isInCreativeTab(tab))
+      return;
 
     ItemStack hammer = new ItemStack(this);
     if (!FunOres.registry.isItemDisabled(hammer))

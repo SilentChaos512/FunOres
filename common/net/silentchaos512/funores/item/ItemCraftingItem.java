@@ -1,17 +1,14 @@
 package net.silentchaos512.funores.item;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import com.google.common.collect.Lists;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.lib.EnumAlloy;
 import net.silentchaos512.funores.lib.EnumMetal;
@@ -19,6 +16,7 @@ import net.silentchaos512.funores.lib.EnumVanillaExtended;
 import net.silentchaos512.funores.lib.EnumVanillaMetal;
 import net.silentchaos512.funores.lib.IMetal;
 import net.silentchaos512.funores.lib.Names;
+import net.silentchaos512.lib.registry.RecipeMaker;
 
 public class ItemCraftingItem extends ItemBaseMetal {
 
@@ -61,7 +59,7 @@ public class ItemCraftingItem extends ItemBaseMetal {
   }
 
   @Override
-  public void addRecipes() {
+  public void addRecipes(RecipeMaker recipes) {
 
     if (isGear) {
       for (IMetal metal : getMetals(this)) {
@@ -70,9 +68,9 @@ public class ItemCraftingItem extends ItemBaseMetal {
           String mat = metal instanceof EnumVanillaExtended
               ? ((EnumVanillaExtended) metal).getMaterialOreDictKey()
               : "ingot" + metal.getMetalName();
-          GameRegistry.addRecipe(new ShapedOreRecipe(gear, " m ", "mim", " m ", 'm', mat, 'i',
-              metal == EnumVanillaExtended.WOOD || metal == EnumVanillaExtended.STONE ? "stickWood"
-                  : "ingotIron"));
+          recipes.addShapedOre("gear_" + metal.getMetalName(), gear, " m ", "mim", " m ", 'm', mat,
+              'i', metal == EnumVanillaExtended.WOOD || metal == EnumVanillaExtended.STONE
+                  ? "stickWood" : "ingotIron");
         }
       }
     }
@@ -107,7 +105,7 @@ public class ItemCraftingItem extends ItemBaseMetal {
   }
 
   @Override
-  public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean advanced) {
+  public void clAddInformation(ItemStack stack, World world, List list, boolean advanced) {
 
     // TODO
   }

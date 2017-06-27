@@ -1,6 +1,7 @@
 package net.silentchaos512.funores.item;
 
 import java.util.List;
+import java.util.Map;
 
 import com.google.common.collect.Lists;
 
@@ -21,23 +22,21 @@ public class ItemBaseDisableable extends ItemSL implements IDisableable {
   }
 
   @Override
-  public List<ModelResourceLocation> getVariants() {
+  public void getModels(Map<Integer, ModelResourceLocation> models) {
 
-    List<ModelResourceLocation> models = Lists.newArrayList();
     String prefix = FunOres.MOD_ID + ":" + itemName;
 
     for (int i = 0; i < subItemCount; ++i) {
       if (!FunOres.registry.isItemDisabled(new ItemStack(this, 1, i)))
-        models.add(new ModelResourceLocation((prefix + i).toLowerCase(), "inventory"));
-      else
-        models.add(null);
+        models.put(i, new ModelResourceLocation((prefix + i).toLowerCase(), "inventory"));
     }
-
-    return models;
   }
 
   @Override
   protected void clGetSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
+
+    if (!isInCreativeTab(tab))
+      return;
 
     for (ItemStack stack : getSubItems(item))
       if (!FunOres.registry.isItemDisabled(stack))

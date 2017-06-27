@@ -63,19 +63,19 @@ public class ContainerMetalFurnace extends ContainerSL {
       IContainerListener icrafting = (IContainerListener) this.listeners.get(i);
 
       if (this.cookTime != this.tileFurnace.getField(2)) {
-        icrafting.sendProgressBarUpdate(this, 2, this.tileFurnace.getField(2));
+        icrafting.sendWindowProperty(this, 2, this.tileFurnace.getField(2));
       }
 
       if (this.furnaceBurnTime != this.tileFurnace.getField(0)) {
-        icrafting.sendProgressBarUpdate(this, 0, this.tileFurnace.getField(0));
+        icrafting.sendWindowProperty(this, 0, this.tileFurnace.getField(0));
       }
 
       if (this.currentItemBurnTime != this.tileFurnace.getField(1)) {
-        icrafting.sendProgressBarUpdate(this, 1, this.tileFurnace.getField(1));
+        icrafting.sendWindowProperty(this, 1, this.tileFurnace.getField(1));
       }
 
       if (this.totalCookTime != this.tileFurnace.getField(3)) {
-        icrafting.sendProgressBarUpdate(this, 3, this.tileFurnace.getField(3));
+        icrafting.sendWindowProperty(this, 3, this.tileFurnace.getField(3));
       }
     }
 

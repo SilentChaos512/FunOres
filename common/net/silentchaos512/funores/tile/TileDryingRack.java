@@ -94,7 +94,7 @@ public class TileDryingRack extends TileEntity implements ITickable, IInventoryS
         Vec3d lookVec = player.getLookVec();
         v = v.add(lookVec);
         StackHelper.setCount(stack, 1); // Not sure why this is necessary...
-        EntityItem entityItem = new EntityItem(player.world, v.xCoord, v.yCoord, v.zCoord,
+        EntityItem entityItem = new EntityItem(player.world, v.x, v.y, v.z,
             stack);
         // LogHelper.list(entityItem, entityItem.getEntityItem().stackSize);
         player.world.spawnEntity(entityItem);

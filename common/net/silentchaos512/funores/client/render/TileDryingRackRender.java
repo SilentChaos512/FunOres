@@ -5,22 +5,22 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.silentchaos512.funores.tile.TileDryingRack;
+import net.silentchaos512.lib.client.render.tileentity.TileEntitySpecialRendererSL;
 import net.silentchaos512.lib.util.StackHelper;
 
-public class TileDryingRackRender extends TileEntitySpecialRenderer<TileDryingRack> {
+public class TileDryingRackRender extends TileEntitySpecialRendererSL<TileDryingRack> {
 
   public static Minecraft mc = Minecraft.getMinecraft();
   private TileDryingRack tileDryingRack;
 
   @Override
-  public void renderTileEntityAt(TileDryingRack te, double x, double y, double z,
-      float partialTicks, int destroyStage) {
+  public void clRender(TileDryingRack te, double x, double y, double z, float partialTicks,
+      int destroyStage, float alpha) {
 
     ItemStack stack = te.getStack();
     tileDryingRack = te;
@@ -29,6 +29,8 @@ public class TileDryingRackRender extends TileEntitySpecialRenderer<TileDryingRa
     GlStateManager.translate(x, y, z);
     renderItem(te.getWorld(), stack, partialTicks);
     GlStateManager.popMatrix();
+
+    super.clRender(te, x, y, z, partialTicks, destroyStage, alpha);
   }
 
   // Mostly copied from Blood Magic...
@@ -38,7 +40,7 @@ public class TileDryingRackRender extends TileEntitySpecialRenderer<TileDryingRa
     if (StackHelper.isValid(stack)) {
       // GlStateManager.translate(0.5, 0.5, 0.5);
       EntityItem entityitem = new EntityItem(world, 0.0D, 0.0D, 0.0D, stack);
-      StackHelper.setCount(entityitem.getEntityItem(), 1);
+      StackHelper.setCount(entityitem.getItem(), 1);
       entityitem.hoverStart = 0.0F;
       GlStateManager.pushMatrix();
       GlStateManager.disableLighting();
@@ -46,14 +48,14 @@ public class TileDryingRackRender extends TileEntitySpecialRenderer<TileDryingRa
       // float rotation = (float) (720.0 * (System.currentTimeMillis() & 0x3FFFL) / 0x3FFFL);
       // GlStateManager.rotate(rotation, 0.0F, 1.0F, 0);
       Vec3d vec = getItemPosition();
-      GlStateManager.translate(vec.xCoord, vec.yCoord, vec.zCoord);
-      GlStateManager.rotate(getItemRotation(), 0f, 1f, 0f);
+      GlStateManager.translate(vec.x, vec.y, vec.z);
+      GlStateManager.rotate(getItemRotation() + 180, 0f, 1f, 0f);
 
       float scale = 0.75f;
       GlStateManager.scale(scale, scale, scale);
       GlStateManager.pushAttrib();
       RenderHelper.enableStandardItemLighting();
-      itemRenderer.renderItem(entityitem.getEntityItem(), ItemCameraTransforms.TransformType.FIXED);
+      itemRenderer.renderItem(entityitem.getItem(), ItemCameraTransforms.TransformType.FIXED);
       RenderHelper.disableStandardItemLighting();
       GlStateManager.popAttrib();
 

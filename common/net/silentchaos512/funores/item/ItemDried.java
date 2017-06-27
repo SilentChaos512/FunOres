@@ -1,6 +1,7 @@
 package net.silentchaos512.funores.item;
 
 import java.util.List;
+import java.util.Map;
 
 import org.lwjgl.input.Keyboard;
 
@@ -8,18 +9,17 @@ import com.google.common.collect.Lists;
 
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraft.world.World;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.lib.EnumDriedItem;
 import net.silentchaos512.funores.lib.IDisableable;
 import net.silentchaos512.funores.lib.Names;
 import net.silentchaos512.lib.item.ItemFoodSL;
+import net.silentchaos512.lib.registry.RecipeMaker;
 
 public class ItemDried extends ItemFoodSL implements IDisableable {
 
@@ -33,10 +33,9 @@ public class ItemDried extends ItemFoodSL implements IDisableable {
   }
 
   @Override
-  public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean advanced) {
+  public void clAddInformation(ItemStack stack, World world, List list, boolean advanced) {
 
-    boolean shifted = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)
-        || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT);
+    boolean shifted = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT);
 
     // Display flavor text when shift is held.
     if (shifted)
@@ -45,11 +44,11 @@ public class ItemDried extends ItemFoodSL implements IDisableable {
   }
 
   @Override
-  public void addRecipes() {
+  public void addRecipes(RecipeMaker recipes) {
 
     ItemStack driedFlesh = getStack(EnumDriedItem.DRIED_FLESH);
     if (!FunOres.registry.isItemDisabled(driedFlesh))
-      GameRegistry.addShapelessRecipe(new ItemStack(Items.LEATHER), driedFlesh, driedFlesh);
+      recipes.addShapeless("dried_flesh_leather", new ItemStack(Items.LEATHER), driedFlesh, driedFlesh);
   }
 
   @Override
@@ -72,6 +71,9 @@ public class ItemDried extends ItemFoodSL implements IDisableable {
 
   @Override
   protected void clGetSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
+
+    if (!isInCreativeTab(tab))
+      return;
 
     // Add only non-disabled items for display!
     for (ItemStack stack : getSubItems(item))
@@ -111,16 +113,11 @@ public class ItemDried extends ItemFoodSL implements IDisableable {
   }
 
   @Override
-  public List<ModelResourceLocation> getVariants() {
+  public void getModels(Map<Integer, ModelResourceLocation> models) {
 
-    List<ModelResourceLocation> models = Lists.newArrayList();
     for (EnumDriedItem item : EnumDriedItem.values()) {
       if (!FunOres.registry.isItemDisabled(item.getItem())) // Don't load disabled item models.
-        models.add(
-            new ModelResourceLocation((modId + ":" + item.textureName).toLowerCase(), "inventory"));
-      else
-        models.add(null);
+        models.put(item.meta, new ModelResourceLocation((modId + ":" + item.textureName).toLowerCase(), "inventory"));
     }
-    return models;
   }
 }

@@ -1,13 +1,10 @@
 buildscript {
     repositories {
         jcenter()
-        maven {
-            name = "forge"
-            url = "http://files.minecraftforge.net/maven"
-        }
+        maven { url = "http://files.minecraftforge.net/maven" }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
     }
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
@@ -17,23 +14,23 @@ plugins {
     id "net.minecraftforge.gradle.forge" version "2.0.2"
 }
 */
-version = "1.5.2"
-def silentlib_version = "2.0.2"
+version = "1.5.5"
+def silentlib_version = "2.2.3"
 def buildNum = 0
 group= "net.silentchaos512.funores" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "FunOres-1.11.x"
+archivesBaseName = "FunOres-1.12"
 
 sourceCompatibility = targetCompatibility = 1.8
 
 minecraft {
-    version = "1.11-13.19.1.2188"
+    version = "1.12-14.21.0.2373"
     runDir = "eclipse"
 
     replace "@VERSION@", project.version
     replace "SL_VERSION", silentlib_version
     replaceIn "FunOres.java"
     
-    mappings = "snapshot_20161122"
+    mappings = "snapshot_20170624"
 
     def versionFile = file('version.properties')
     if (versionFile.canRead()) {
@@ -67,7 +64,7 @@ artifacts {
 }
 
 dependencies {
-    deobfCompile "mezz.jei:jei_1.11:4.0.0.188"
+    deobfCompile "mezz.jei:jei_1.12:4.6.0.65"
 }
 
 processResources

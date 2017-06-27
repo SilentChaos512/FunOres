@@ -2,9 +2,11 @@ package net.silentchaos512.funores;
 
 import java.util.Random;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Loader;
@@ -13,7 +15,6 @@ import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLMissingMappingsEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -41,7 +42,6 @@ import net.silentchaos512.funores.registry.FunOresRegistry;
 import net.silentchaos512.funores.world.FunOresGenerator;
 import net.silentchaos512.lib.SilentLib;
 import net.silentchaos512.lib.creativetab.CreativeTabSL;
-import net.silentchaos512.lib.registry.MC10IdRemapper;
 import net.silentchaos512.lib.util.LocalizationHelper;
 import net.silentchaos512.lib.util.LogHelper;
 
@@ -61,7 +61,7 @@ public class FunOres {
   public static final String VERSION_SILENTLIB = "SL_VERSION";
   public static final String DEPENDENCIES = "required-after:silentlib@[" + VERSION_SILENTLIB + ",);after:wit;after:WIT";
   //"required-after:forge@[13.19.0.2156,);required-after:silentlib;";
-  public static final String ACCEPTED_MC_VERSIONS = "[1.10.2,1.11.2]";
+  public static final String ACCEPTED_MC_VERSIONS = "[1.10.2,1.12]";
   public static final String RESOURCE_PREFIX = MOD_ID.toLowerCase() + ":";
 
   public static final boolean DEBUG_MODE = true;
@@ -87,8 +87,8 @@ public class FunOres {
     Config.init(event.getSuggestedConfigurationFile());
 
     ModFluids.init();
-    ModBlocks.init();
-    ModItems.init();
+    registry.addRegistrationHandler(new ModBlocks(), Block.class);
+    registry.addRegistrationHandler(new ModItems(), Item.class);
     ModDamageSources.init();
 
     NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandlerFunOres());
@@ -243,20 +243,13 @@ public class FunOres {
     }
   }
 
-  public static CreativeTabSL tabFunOres = new CreativeTabSL("tabFunOres") {
+  public static CreativeTabSL tabFunOres = new CreativeTabSL("tabFunOres", ModBlocks.meatOre, 0);
 
-    @Override
-    protected ItemStack getStack() {
-
-      return new ItemStack(ModBlocks.meatOre);
-    }
-  };
-
-  @EventHandler
-  public void onMissingMapping(FMLMissingMappingsEvent event) {
-
-    for (FMLMissingMappingsEvent.MissingMapping mismap : event.get()) {
-      MC10IdRemapper.remap(mismap);
-    }
-  }
+//  @EventHandler
+//  public void onMissingMapping(FMLMissingMappingsEvent event) {
+//
+//    for (FMLMissingMappingsEvent.MissingMapping mismap : event.get()) {
+//      MC10IdRemapper.remap(mismap);
+//    }
+//  }
 }

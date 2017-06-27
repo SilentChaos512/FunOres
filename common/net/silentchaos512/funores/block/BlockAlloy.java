@@ -1,6 +1,7 @@
 package net.silentchaos512.funores.block;
 
 import java.util.List;
+import java.util.Map;
 
 import com.google.common.collect.Lists;
 
@@ -14,7 +15,6 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
 import net.minecraftforge.oredict.OreDictionary;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.lib.EnumAlloy;
@@ -48,18 +48,14 @@ public class BlockAlloy extends BlockSL implements IDisableable {
   }
 
   @Override
-  public List<ModelResourceLocation> getVariants() {
+  public void getModels(Map<Integer, ModelResourceLocation> models) {
 
-    List<ModelResourceLocation> models = Lists.newArrayList();
     for (EnumAlloy metal : EnumAlloy.values()) {
       if (!FunOres.registry.isItemDisabled(metal.getBlock())) {
         String name = FunOres.MOD_ID + ":Block" + metal.getMetalName();
-        models.add(new ModelResourceLocation(name.toLowerCase(), "inventory"));
-      } else {
-        models.add(null);
+        models.put(metal.ordinal(), new ModelResourceLocation(name.toLowerCase(), "inventory"));
       }
     }
-    return models;
   }
 
   @Override
@@ -85,6 +81,7 @@ public class BlockAlloy extends BlockSL implements IDisableable {
     return ret;
   }
 
+  @SuppressWarnings("deprecation")
   @Override
   public IBlockState getStateFromMeta(int meta) {
 

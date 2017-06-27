@@ -1,6 +1,7 @@
 package net.silentchaos512.funores.block.machine;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import com.google.common.collect.Lists;
@@ -32,6 +33,7 @@ import net.silentchaos512.funores.lib.EnumMachineState;
 import net.silentchaos512.funores.lib.IDisableable;
 import net.silentchaos512.funores.lib.ModDamageSources;
 import net.silentchaos512.lib.block.BlockContainerSL;
+import net.silentchaos512.lib.registry.RecipeMaker;
 
 public class BlockMachine extends BlockContainerSL implements IDisableable {
 
@@ -83,12 +85,10 @@ public class BlockMachine extends BlockContainerSL implements IDisableable {
   }
 
   @Override
-  public List<ModelResourceLocation> getVariants() {
+  public void getModels(Map<Integer, ModelResourceLocation> models) {
 
     if (!FunOres.registry.isItemDisabled(new ItemStack(this)))
-      return Lists.newArrayList(new ModelResourceLocation(getFullName().toLowerCase()));
-    else
-      return Lists.newArrayList();
+      models.put(0, new ModelResourceLocation(getFullName().toLowerCase()));
   }
 
   @Override
@@ -121,10 +121,11 @@ public class BlockMachine extends BlockContainerSL implements IDisableable {
   }
 
   @Override
-  public void addRecipes() {
+  public void addRecipes(RecipeMaker recipes) {
 
   }
 
+  @SuppressWarnings("deprecation")
   @Override
   public int getLightValue(IBlockState state) {
 
@@ -153,6 +154,7 @@ public class BlockMachine extends BlockContainerSL implements IDisableable {
     this.setDefaultFacing(worldIn, pos, state);
   }
 
+  @SuppressWarnings("deprecation")
   private void setDefaultFacing(World worldIn, BlockPos pos, IBlockState state) {
 
     if (!worldIn.isRemote) {
@@ -215,18 +217,21 @@ public class BlockMachine extends BlockContainerSL implements IDisableable {
     super.breakBlock(world, pos, state);
   }
 
+  @SuppressWarnings("deprecation")
   @Override
   public boolean hasComparatorInputOverride(IBlockState state) {
 
     return true;
   }
 
+  @SuppressWarnings("deprecation")
   @Override
   public int getComparatorInputOverride(IBlockState state, World world, BlockPos pos) {
 
     return Container.calcRedstone(world.getTileEntity(pos));
   }
 
+  @SuppressWarnings("deprecation")
   @Override
   public ItemStack getItem(World world, BlockPos pos, IBlockState state) {
 
@@ -246,6 +251,7 @@ public class BlockMachine extends BlockContainerSL implements IDisableable {
   // return this.getDefaultState().withProperty(FACING, EnumMachineState.SOUTH_OFF);
   // }
 
+  @SuppressWarnings("deprecation")
   public IBlockState getStateFromMeta(int meta) {
 
     EnumMachineState machineState = EnumMachineState.fromMeta(meta);

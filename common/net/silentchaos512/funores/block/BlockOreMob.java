@@ -1,6 +1,7 @@
 package net.silentchaos512.funores.block;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import com.google.common.collect.Lists;
@@ -14,10 +15,8 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityEndermite;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -27,11 +26,9 @@ import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.configuration.Config;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGen;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGenBonus;
-import net.silentchaos512.funores.init.ModBlocks;
 import net.silentchaos512.funores.lib.EnumMob;
 import net.silentchaos512.funores.lib.Names;
 import net.silentchaos512.funores.util.OreLootHelper;
-import net.silentchaos512.wit.api.IWitHudInfo;
 
 public class BlockOreMob extends BlockFunOre {
 
@@ -78,18 +75,14 @@ public class BlockOreMob extends BlockFunOre {
   }
 
   @Override
-  public List<ModelResourceLocation> getVariants() {
+  public void getModels(Map<Integer, ModelResourceLocation> models) {
 
-    List<ModelResourceLocation> models = Lists.newArrayList();
     for (EnumMob mob : EnumMob.values()) {
       if (!FunOres.registry.isItemDisabled(new ItemStack(this, 1, mob.meta))) {
         String name = FunOres.MOD_ID + ":Ore" + mob.getUnmodifiedName();
-        models.add(new ModelResourceLocation(name.toLowerCase(), "inventory"));
-      } else {
-        models.add(null);
+        models.put(mob.ordinal(), new ModelResourceLocation(name.toLowerCase(), "inventory"));
       }
     }
-    return models;
   }
 
   @Override
@@ -108,6 +101,7 @@ public class BlockOreMob extends BlockFunOre {
     }
   }
 
+  @SuppressWarnings("deprecation")
   @Override
   public IBlockState getStateFromMeta(int meta) {
 
@@ -156,7 +150,7 @@ public class BlockOreMob extends BlockFunOre {
   }
 
   @Override
-  public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state,
+  public List<ItemStack> clGetDrops(IBlockAccess world, BlockPos pos, IBlockState state,
       int fortune) {
 
     Random rand = world instanceof World ? ((World) world).rand : RANDOM;

@@ -37,7 +37,7 @@ public class DryingRackRecipeJei extends BlankRecipeWrapper {
   public void drawInfo(@Nonnull Minecraft mc, int recipeWidth, int recipeHeight, int mouseX,
       int mouseY) {
 
-    FontRenderer fontRender = mc.fontRendererObj;
+    FontRenderer fontRender = mc.fontRenderer;
     String str = String.format("%.1f XP", recipe.getExperience());
     fontRender.drawStringWithShadow(str, 46, 0, 0xFFFFFF);
     str = recipe.getDryTime() + "t";

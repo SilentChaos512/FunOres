@@ -22,6 +22,7 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.lib.Names;
 import net.silentchaos512.funores.tile.TileDryingRack;
+import net.silentchaos512.lib.registry.RecipeMaker;
 
 public class BlockDryingRack extends BlockMachine {
 
@@ -42,12 +43,11 @@ public class BlockDryingRack extends BlockMachine {
   }
 
   @Override
-  public void addRecipes() {
+  public void addRecipes(RecipeMaker recipes) {
 
     ItemStack stack = new ItemStack(this, 2);
     if (!FunOres.registry.isItemDisabled(stack))
-      GameRegistry
-          .addRecipe(new ShapedOreRecipe(stack, "www", "sss", 'w', "slabWood", 's', "stickWood"));
+      recipes.addShapedOre(getName(), stack, "www", "sss", 'w', "slabWood", 's', "stickWood");
   }
 
   @Override
@@ -77,6 +77,7 @@ public class BlockDryingRack extends BlockMachine {
   // return worldIn.getSelectedBoundingBox(pos, state);
   // }
 
+  @SuppressWarnings("deprecation")
   @Override
   public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 
@@ -136,24 +137,28 @@ public class BlockDryingRack extends BlockMachine {
   // }
   // }
 
+  @SuppressWarnings("deprecation")
   @Override
-  public boolean isFullyOpaque(IBlockState state) {
+  public boolean isTranslucent(IBlockState state) {
 
     return false;
   }
 
+  @SuppressWarnings("deprecation")
   @Override
   public boolean isOpaqueCube(IBlockState state) {
 
     return false;
   }
 
+  @SuppressWarnings("deprecation")
   @Override
   public boolean isFullBlock(IBlockState state) {
 
     return false;
   }
 
+  @SuppressWarnings("deprecation")
   @Override
   public boolean isFullCube(IBlockState state) {
 

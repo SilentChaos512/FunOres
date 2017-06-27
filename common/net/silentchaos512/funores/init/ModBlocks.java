@@ -1,16 +1,6 @@
 package net.silentchaos512.funores.init;
 
-import java.text.DecimalFormatSymbols;
-import java.util.List;
-
-import com.google.common.collect.Lists;
-
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.biome.Biome;
-import net.minecraftforge.common.BiomeDictionary;
-import net.silentchaos512.funores.FunOres;
+import net.minecraft.block.Block;
 import net.silentchaos512.funores.block.BlockAlloy;
 import net.silentchaos512.funores.block.BlockMetal;
 import net.silentchaos512.funores.block.BlockOreMeat;
@@ -19,15 +9,13 @@ import net.silentchaos512.funores.block.BlockOreMob;
 import net.silentchaos512.funores.block.machine.BlockAlloySmelter;
 import net.silentchaos512.funores.block.machine.BlockDryingRack;
 import net.silentchaos512.funores.block.machine.BlockMetalFurnace;
-import net.silentchaos512.funores.configuration.ConfigOptionOreGen;
 import net.silentchaos512.funores.item.block.ItemBlockOre;
 import net.silentchaos512.funores.item.block.ItemBlockOreDrops;
 import net.silentchaos512.funores.lib.Names;
-import net.silentchaos512.funores.world.FunOresGenerator;
+import net.silentchaos512.lib.registry.IRegistrationHandler;
 import net.silentchaos512.lib.registry.SRegistry;
-import net.silentchaos512.lib.util.BiomeHelper;
 
-public class ModBlocks {
+public class ModBlocks implements IRegistrationHandler<Block> {
 
   public static BlockOreMetal metalOre = new BlockOreMetal();
   public static BlockOreMeat meatOre = new BlockOreMeat();
@@ -38,9 +26,9 @@ public class ModBlocks {
   public static BlockAlloySmelter alloySmelter = new BlockAlloySmelter();
   public static BlockDryingRack dryingRack = new BlockDryingRack();
 
-  public static void init() {
+  @Override
+  public void registerAll(SRegistry reg) {
 
-    SRegistry reg = FunOres.instance.registry;
     reg.registerBlock(metalOre, new ItemBlockOre(metalOre));
     reg.registerBlock(meatOre, new ItemBlockOreDrops(meatOre));
     reg.registerBlock(mobOre, new ItemBlockOreDrops(mobOre));

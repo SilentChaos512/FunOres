@@ -6,13 +6,13 @@ import java.util.List;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.lib.EnumMetal;
 import net.silentchaos512.funores.lib.EnumVanillaMetal;
 import net.silentchaos512.funores.lib.IMetal;
 import net.silentchaos512.funores.lib.Names;
 import net.silentchaos512.funores.registry.FunOresRegistry;
+import net.silentchaos512.lib.registry.RecipeMaker;
 
 public class ItemDustMetal extends ItemBaseMetal {
 
@@ -30,14 +30,14 @@ public class ItemDustMetal extends ItemBaseMetal {
   }
 
   @Override
-  public void addRecipes() {
+  public void addRecipes(RecipeMaker recipes) {
 
     FunOresRegistry reg = FunOres.registry;
     for (IMetal metal : getMetals(this)) {
       ItemStack dust = metal.getDust();
       ItemStack ingot = metal.getIngot();
       if (!reg.isItemDisabled(dust) && !reg.isItemDisabled(ingot))
-        GameRegistry.addSmelting(dust, ingot, 0.6f);
+        recipes.addSmelting(dust, ingot, 0.6f);
     }
   }
 }

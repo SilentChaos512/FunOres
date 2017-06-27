@@ -3,45 +3,38 @@ package net.silentchaos512.funores.world;
 import java.util.Random;
 
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.chunk.IChunkGenerator;
-import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraftforge.event.terraingen.OreGenEvent;
 import net.minecraftforge.event.terraingen.OreGenEvent.GenerateMinable.EventType;
-import net.minecraftforge.fml.common.IWorldGenerator;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.configuration.Config;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGen;
-import net.silentchaos512.funores.configuration.ConfigOptionOreGenReplace;
 import net.silentchaos512.funores.lib.EnumMeat;
 import net.silentchaos512.funores.lib.EnumMetal;
 import net.silentchaos512.funores.lib.EnumMob;
 import net.silentchaos512.funores.lib.EnumVanillaOre;
+import net.silentchaos512.lib.world.WorldGeneratorSL;
 
-public class FunOresGenerator implements IWorldGenerator {
+public class FunOresGenerator extends WorldGeneratorSL {
 
   private double debugMinTime = 1000000d;
   private double debugMaxTime = 0d;
   private double debugTotalTime = 0d;
   private int debugChunkGenCount = 0;
   private final String DEBUG_LINE = "Chunk (%d, %d) took %f ms to generate (min = %f, max = %f, avg = %f)";
+  
+  public FunOresGenerator() {
 
-  @Override
-  public void generate(Random random, int chunkX, int chunkZ, World world,
-      IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
+    super(true, FunOres.MOD_ID + "_retrogen");
+  }
 
-    int dimension = world.provider.getDimension();
-    int x = 16 * chunkX;
-    int z = 16 * chunkZ;
+  private void printDebugInfo(int chunkX, int chunkZ, long timeStart) {
 
-    long timeStart = System.nanoTime();
-    generateForDimension(dimension, world, random, x, z);
     if (Config.printWorldGenTime) {
       double timeTaken = (double) (System.nanoTime() - timeStart) / 1000000;
       debugMinTime = timeTaken < debugMinTime ? timeTaken : debugMinTime;
@@ -54,7 +47,10 @@ public class FunOresGenerator implements IWorldGenerator {
     }
   }
 
-  private void generateForDimension(final int dim, World world, Random random, int posX, int posZ) {
+  @Override
+  protected boolean generateForDimension(final int dim, World world, Random random, int posX, int posZ) {
+
+    long timeStart = System.nanoTime();
 
     // Vanilla
     for (EnumVanillaOre vanilla : EnumVanillaOre.values()) {
@@ -86,6 +82,10 @@ public class FunOresGenerator implements IWorldGenerator {
         }
       }
     }
+
+    printDebugInfo(posX / 16, posZ / 16, timeStart);
+
+    return true;
   }
 
   public void generateOre(ConfigOptionOreGen ore, World world, Random random, int posX, int posZ) {
@@ -134,10 +134,6 @@ public class FunOresGenerator implements IWorldGenerator {
         }
       }
     }
-  }
-
-  private void canOreSpawnInDimension(int dim, int oreDim) {
-
   }
 
   public static Biome getBiomeForPos(World world, BlockPos pos) {

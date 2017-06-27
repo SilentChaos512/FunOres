@@ -21,13 +21,11 @@ public class GuiMetalFurnace extends GuiContainer {
 
   private static final ResourceLocation guiTextures = new ResourceLocation(FunOres.MOD_ID,
       "textures/gui/metalfurnace.png");
-  private final InventoryPlayer playerInventory;
   private IInventory tileFurnace;
 
   public GuiMetalFurnace(InventoryPlayer playerInventory, IInventory furnaceInventory) {
 
     super(new ContainerMetalFurnace(playerInventory, furnaceInventory));
-    this.playerInventory = playerInventory;
     this.tileFurnace = furnaceInventory;
   }
 
@@ -88,7 +86,7 @@ public class GuiMetalFurnace extends GuiContainer {
     }
 
     TileMetalFurnace tile = (TileMetalFurnace) tileFurnace;
-    FontRenderer fontRender = mc.fontRendererObj;
+    FontRenderer fontRender = mc.fontRenderer;
     int x = 5;
     int y = 5;
     int yIncrement = 10;

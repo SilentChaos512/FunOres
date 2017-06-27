@@ -4,6 +4,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.api.recipe.alloysmelter.AlloySmelterRecipe;
 import net.silentchaos512.funores.api.recipe.dryingrack.DryingRackRecipe;
 import net.silentchaos512.funores.api.recipe.dryingrack.DryingRackRecipeObject;
@@ -105,6 +106,6 @@ public class FunOresAPI {
    */
   public static void addPlateRecipe(ItemStack plate, String ingot) {
 
-    GameRegistry.addRecipe(new ShapedOreRecipe(plate, "h", "i", "i", 'h', HAMMER, 'i', ingot));
+    FunOres.registry.recipes.addShapedOre("plate_" + ingot.toLowerCase(), plate, "h", "i", "i", 'h', HAMMER, 'i', ingot);
   }
 }

@@ -1,6 +1,7 @@
 package net.silentchaos512.funores.item;
 
 import java.util.List;
+import java.util.Map;
 
 import com.google.common.collect.Lists;
 
@@ -39,28 +40,15 @@ public abstract class ItemBaseMetal extends ItemBaseDisableable {
   }
 
   @Override
-  public List<ModelResourceLocation> getVariants() {
+  public void getModels(Map<Integer, ModelResourceLocation> models) {
 
-    List<ModelResourceLocation> models = Lists.newArrayList();
     String prefix = FunOres.MOD_ID + ":" + modelName;
 
-    int lastMeta = -1;
     for (IMetal metal : getMetals(this)) {
-      // Pad list with nulls for unused metas.
-      if (metal.getMeta() > lastMeta + 1)
-        for (int i = lastMeta + 1; i < metal.getMeta(); ++i)
-          models.add(null);
-
       // Add the model, if it's not disabled.
       if (!FunOres.registry.isItemDisabled(new ItemStack(this, 1, metal.getMeta())))
-        models.add(new ModelResourceLocation((prefix + metal.getMetalName()).toLowerCase(), "inventory"));
-      else
-        models.add(null);
-
-      lastMeta = metal.getMeta();
+        models.put(metal.getMeta(), new ModelResourceLocation((prefix + metal.getMetalName()).toLowerCase(), "inventory"));
     }
-
-    return models;
   }
 
   @Override

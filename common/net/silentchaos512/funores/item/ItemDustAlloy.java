@@ -13,6 +13,7 @@ import net.silentchaos512.funores.lib.EnumAlloy;
 import net.silentchaos512.funores.lib.IMetal;
 import net.silentchaos512.funores.lib.Names;
 import net.silentchaos512.funores.registry.FunOresRegistry;
+import net.silentchaos512.lib.registry.RecipeMaker;
 
 public class ItemDustAlloy extends ItemBaseMetal {
 
@@ -29,7 +30,7 @@ public class ItemDustAlloy extends ItemBaseMetal {
   }
 
   @Override
-  public void addRecipes() {
+  public void addRecipes(RecipeMaker recipes) {
 
     // Crafting alloy dust from other dust
     String copper = "dustCopper";
@@ -50,22 +51,22 @@ public class ItemDustAlloy extends ItemBaseMetal {
     FunOresRegistry reg = FunOres.registry;
 
     if (!reg.isItemDisabled(bronze))
-      GameRegistry.addRecipe(new ShapelessOreRecipe(bronze, copper, copper, copper, tin));
+      recipes.addShapelessOre("bronze_dust", bronze, copper, copper, copper, tin);
     if (!reg.isItemDisabled(brass))
-      GameRegistry.addRecipe(new ShapelessOreRecipe(brass, copper, copper, copper, zinc));
+      recipes.addShapelessOre("brass_dust", brass, copper, copper, copper, zinc);
     if (!reg.isItemDisabled(steel))
-      GameRegistry.addRecipe(new ShapelessOreRecipe(steel, iron, coal, coal, coal));
+      recipes.addShapelessOre("steel_dust", steel, iron, coal, coal, coal);
     if (!reg.isItemDisabled(invar))
-      GameRegistry.addRecipe(new ShapelessOreRecipe(invar, iron, iron, nickel));
+      recipes.addShapelessOre("invar_dust", invar, iron, iron, nickel);
     if (!reg.isItemDisabled(electrum))
-      GameRegistry.addRecipe(new ShapelessOreRecipe(electrum, gold, silver));
+      recipes.addShapelessOre("electrum_dust", electrum, gold, silver);
 
     // Smelting dust to ingots
     for (EnumAlloy metal : EnumAlloy.values()) {
       ItemStack dust = metal.getDust();
       ItemStack ingot = metal.getIngot();
       if (!reg.isItemDisabled(dust) && !reg.isItemDisabled(ingot))
-        GameRegistry.addSmelting(dust, ingot, 0.6f);
+        recipes.addSmelting(dust, ingot, 0.6f);
     }
   }
 }

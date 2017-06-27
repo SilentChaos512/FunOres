@@ -1,20 +1,22 @@
 package net.silentchaos512.funores.init;
 
+import net.minecraft.item.Item;
 import net.silentchaos512.funores.FunOres;
-import net.silentchaos512.funores.item.ItemDustAlloy;
-import net.silentchaos512.funores.item.ItemIngotAlloy;
-import net.silentchaos512.funores.item.ItemNuggetAlloy;
 import net.silentchaos512.funores.item.ItemCraftingItem;
 import net.silentchaos512.funores.item.ItemDried;
-import net.silentchaos512.funores.item.ItemHammer;
+import net.silentchaos512.funores.item.ItemDustAlloy;
 import net.silentchaos512.funores.item.ItemDustMetal;
+import net.silentchaos512.funores.item.ItemHammer;
+import net.silentchaos512.funores.item.ItemIngotAlloy;
 import net.silentchaos512.funores.item.ItemIngotMetal;
+import net.silentchaos512.funores.item.ItemNuggetAlloy;
 import net.silentchaos512.funores.item.ItemNuggetMetal;
 import net.silentchaos512.funores.item.ItemShard;
 import net.silentchaos512.funores.lib.Names;
+import net.silentchaos512.lib.registry.IRegistrationHandler;
 import net.silentchaos512.lib.registry.SRegistry;
 
-public class ModItems {
+public class ModItems implements IRegistrationHandler<Item> {
 
   public static ItemIngotMetal metalIngot = new ItemIngotMetal();
   public static ItemNuggetMetal metalNugget = new ItemNuggetMetal();
@@ -30,9 +32,9 @@ public class ModItems {
   public static ItemDried driedItem = new ItemDried();
   public static ItemHammer hammer = new ItemHammer();
 
-  public static void init() {
+  @Override
+  public void registerAll(SRegistry reg) {
 
-    SRegistry reg = FunOres.instance.registry;
     reg.registerItem(metalIngot);
     reg.registerItem(metalNugget);
     reg.registerItem(metalDust);

@@ -3,13 +3,11 @@ package net.silentchaos512.funores.item.block;
 import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.World;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.configuration.Config;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGen;
-import net.silentchaos512.funores.configuration.ConfigOptionOreGenBonus;
 import net.silentchaos512.funores.init.ModBlocks;
 import net.silentchaos512.funores.lib.EnumMeat;
 import net.silentchaos512.funores.lib.EnumMetal;
@@ -24,7 +22,7 @@ public class ItemBlockOre extends ItemBlockSL {
   }
 
   @Override
-  public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean advanced) {
+  public void clAddInformation(ItemStack stack, World world, List list, boolean advanced) {
 
     ConfigOptionOreGen config = getOreConfig(stack);
 

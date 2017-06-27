@@ -10,11 +10,10 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.lib.Names;
 import net.silentchaos512.funores.tile.TileAlloySmelter;
+import net.silentchaos512.lib.registry.RecipeMaker;
 
 public class BlockAlloySmelter extends BlockMachine {
 
@@ -30,17 +29,18 @@ public class BlockAlloySmelter extends BlockMachine {
   }
 
   @Override
-  public void addRecipes() {
+  public void addRecipes(RecipeMaker recipes) {
 
-    if (!FunOres.registry.isItemDisabled(new ItemStack(this)))
-      for (String aluminium : new String[] { "plateAluminium", "plateAluminum" })
-        GameRegistry.addRecipe(new ShapedOreRecipe(this, "iii", "a a", "bab", 'i', "plateIron", 'a',
-            aluminium, 'b', Blocks.BRICK_BLOCK));
+    ItemStack result = new ItemStack(this);
+    if (!FunOres.registry.isItemDisabled(result)) {
+      recipes.addShapedOre(getName() + 0, result, "iii", "a a", "bab", 'i', "plateIron", 'a', "plateAluminium", 'b', Blocks.BRICK_BLOCK);
+      recipes.addShapedOre(getName() + 1, result, "iii", "a a", "bab", 'i', "plateIron", 'a', "plateAluminium", 'b', Blocks.BRICK_BLOCK);
+    }
   }
 
   @Override
-  protected boolean clOnBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player,
-      EnumHand hand, EnumFacing facing, float side, float hitX, float hitY) {
+  protected boolean clOnBlockActivated(World world, BlockPos pos, IBlockState state,
+      EntityPlayer player, EnumHand hand, EnumFacing facing, float side, float hitX, float hitY) {
 
     if (world.isRemote) {
       return true;

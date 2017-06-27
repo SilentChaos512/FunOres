@@ -6,6 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.silentchaos512.funores.FunOres;
 
 public class ExtraRecipes {
 
@@ -46,11 +47,12 @@ public class ExtraRecipes {
     add("Shears.Aluminum", comment, result, " a", "a ", 'a', "ingotAluminum");
   }
 
+  static int lastIndex = -1;
   public static void add(String configName, String comment, ItemStack result, Object... params) {
 
     boolean enabled = config.getBoolean(configName, CATEGORY, true, comment);
     if (enabled) {
-      GameRegistry.addRecipe(new ShapedOreRecipe(result, params));
+      FunOres.registry.recipes.addShapedOre("extra" + (++lastIndex), result, params);
     }
   }
 }

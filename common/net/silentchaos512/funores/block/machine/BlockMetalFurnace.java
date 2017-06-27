@@ -10,11 +10,10 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.lib.Names;
 import net.silentchaos512.funores.tile.TileMetalFurnace;
+import net.silentchaos512.lib.registry.RecipeMaker;
 
 public class BlockMetalFurnace extends BlockMachine {
 
@@ -30,12 +29,13 @@ public class BlockMetalFurnace extends BlockMachine {
   }
 
   @Override
-  public void addRecipes() {
+  public void addRecipes(RecipeMaker recipes) {
 
-    if (!FunOres.registry.isItemDisabled(new ItemStack(this)))
-      for (String alloy : new String[] { "plateBronze", "plateBrass" })
-        GameRegistry.addRecipe(new ShapedOreRecipe(this, "aaa", "afa", "bab", 'a', alloy, 'b',
-            Blocks.BRICK_BLOCK, 'f', Blocks.FURNACE));
+    ItemStack result = new ItemStack(this);
+    if (!FunOres.registry.isItemDisabled(result)) {
+      recipes.addShapedOre(getName() + 0, result, "aaa", "afa", "bab", 'a', "plateBronze", 'b', Blocks.BRICK_BLOCK, 'f', Blocks.FURNACE);
+      recipes.addShapedOre(getName() + 1, result, "aaa", "afa", "bab", 'a', "plateBrass", 'b', Blocks.BRICK_BLOCK, 'f', Blocks.FURNACE);
+    }
   }
 
   @Override

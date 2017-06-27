@@ -1,6 +1,7 @@
 package net.silentchaos512.funores.block;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import com.google.common.collect.Lists;
@@ -78,18 +79,14 @@ public class BlockOreMeat extends BlockFunOre {
   }
 
   @Override
-  public List<ModelResourceLocation> getVariants() {
+  public void getModels(Map<Integer, ModelResourceLocation> models) {
 
-    List<ModelResourceLocation> models = Lists.newArrayList();
     for (EnumMeat meat : EnumMeat.values()) {
       if (!FunOres.registry.isItemDisabled(new ItemStack(this, 1, meat.meta))) {
         String name = FunOres.MOD_ID + ":Ore" + meat.getUnmodifiedName();
-        models.add(new ModelResourceLocation(name.toLowerCase(), "inventory"));
-      } else {
-        models.add(null);
+        models.put(meat.ordinal(), new ModelResourceLocation(name.toLowerCase(), "inventory"));
       }
     }
-    return models;
   }
 
   @Override
@@ -108,6 +105,7 @@ public class BlockOreMeat extends BlockFunOre {
     }
   }
 
+  @SuppressWarnings("deprecation")
   @Override
   public IBlockState getStateFromMeta(int meta) {
 
@@ -156,7 +154,7 @@ public class BlockOreMeat extends BlockFunOre {
   }
 
   @Override
-  public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state,
+  public List<ItemStack> clGetDrops(IBlockAccess world, BlockPos pos, IBlockState state,
       int fortune) {
 
     Random rand = FunOres.random;

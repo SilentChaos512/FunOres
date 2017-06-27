@@ -17,13 +17,11 @@ public class GuiAlloySmelter extends GuiContainer {
 
   private static final ResourceLocation guiTextures = new ResourceLocation(FunOres.MOD_ID,
       "textures/gui/alloysmelter.png");
-  private final InventoryPlayer playerInventory;
   private IInventory tileAlloySmelter;
 
   public GuiAlloySmelter(InventoryPlayer playerInventory, IInventory smelterInventory) {
 
     super(new ContainerAlloySmelter(playerInventory, smelterInventory));
-    this.playerInventory = playerInventory;
     this.tileAlloySmelter = smelterInventory;
   }
 
@@ -74,7 +72,7 @@ public class GuiAlloySmelter extends GuiContainer {
     }
 
     TileAlloySmelter tile = (TileAlloySmelter) tileAlloySmelter;
-    FontRenderer fontRender = mc.fontRendererObj;
+    FontRenderer fontRender = mc.fontRenderer;
     int x = 5;
     int y = 5;
     int yIncrement = 10;

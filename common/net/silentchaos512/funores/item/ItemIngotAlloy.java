@@ -9,7 +9,7 @@ import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.lib.EnumAlloy;
 import net.silentchaos512.funores.lib.IMetal;
 import net.silentchaos512.funores.lib.Names;
-import net.silentchaos512.lib.util.RecipeHelper;
+import net.silentchaos512.lib.registry.RecipeMaker;
 
 public class ItemIngotAlloy extends ItemBaseMetal {
 
@@ -26,7 +26,7 @@ public class ItemIngotAlloy extends ItemBaseMetal {
   }
 
   @Override
-  public void addRecipes() {
+  public void addRecipes(RecipeMaker recipes) {
 
     for (EnumAlloy metal : EnumAlloy.values()) {
       boolean disabledNugget = FunOres.registry.isItemDisabled(metal.getNugget());
@@ -35,10 +35,10 @@ public class ItemIngotAlloy extends ItemBaseMetal {
 
       // Ingots <--> Blocks
       if (!disabledIngot && !disabledBlock)
-        RecipeHelper.addCompressionRecipe(metal.getIngot(), metal.getBlock(), 9);
+        recipes.addCompression("block_" + metal.getMetalName(), metal.getIngot(), metal.getBlock(), 9);
       // Nuggets <--> Ingots
       if (!disabledNugget && !disabledIngot)
-        RecipeHelper.addCompressionRecipe(metal.getNugget(), metal.getIngot(), 9);
+        recipes.addCompression("ingot_" + metal.getMetalName(), metal.getNugget(), metal.getIngot(), 9);
     }
   }
 }

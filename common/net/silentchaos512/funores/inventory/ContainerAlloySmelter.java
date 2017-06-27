@@ -68,19 +68,19 @@ public class ContainerAlloySmelter extends Container {
       IContainerListener icrafting = (IContainerListener) this.listeners.get(i);
 
       if (this.cookTime != this.tileAlloySmelter.getField(2)) {
-        icrafting.sendProgressBarUpdate(this, 2, this.tileAlloySmelter.getField(2));
+        icrafting.sendWindowProperty(this, 2, this.tileAlloySmelter.getField(2));
       }
 
       if (this.furnaceBurnTime != this.tileAlloySmelter.getField(0)) {
-        icrafting.sendProgressBarUpdate(this, 0, this.tileAlloySmelter.getField(0));
+        icrafting.sendWindowProperty(this, 0, this.tileAlloySmelter.getField(0));
       }
 
       if (this.currentItemBurnTime != this.tileAlloySmelter.getField(1)) {
-        icrafting.sendProgressBarUpdate(this, 1, this.tileAlloySmelter.getField(1));
+        icrafting.sendWindowProperty(this, 1, this.tileAlloySmelter.getField(1));
       }
 
       if (this.totalCookTime != this.tileAlloySmelter.getField(3)) {
-        icrafting.sendProgressBarUpdate(this, 3, this.tileAlloySmelter.getField(3));
+        icrafting.sendWindowProperty(this, 3, this.tileAlloySmelter.getField(3));
       }
     }
 

@@ -8,12 +8,11 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import net.silentchaos512.funores.FunOres;
-import net.silentchaos512.funores.lib.EnumAlloy;
 import net.silentchaos512.funores.lib.EnumMetal;
 import net.silentchaos512.funores.lib.EnumVanillaMetal;
 import net.silentchaos512.funores.lib.IMetal;
 import net.silentchaos512.funores.lib.Names;
-import net.silentchaos512.lib.util.RecipeHelper;
+import net.silentchaos512.lib.registry.RecipeMaker;
 
 public class ItemIngotMetal extends ItemBaseMetal {
 
@@ -30,7 +29,7 @@ public class ItemIngotMetal extends ItemBaseMetal {
   }
 
   @Override
-  public void addRecipes() {
+  public void addRecipes(RecipeMaker recipes) {
 
     for (EnumMetal metal : EnumMetal.values()) {
       boolean disabledNugget = FunOres.registry.isItemDisabled(metal.getNugget());
@@ -39,17 +38,17 @@ public class ItemIngotMetal extends ItemBaseMetal {
 
       // Ingots <--> Blocks
       if (!disabledIngot && !disabledBlock)
-        RecipeHelper.addCompressionRecipe(metal.getIngot(), metal.getBlock(), 9);
+        recipes.addCompression("block_" + metal.getMetalName(), metal.getIngot(), metal.getBlock(), 9);
       // Nuggets <--> Ingots
       if (!disabledNugget && !disabledIngot)
-        RecipeHelper.addCompressionRecipe(metal.getNugget(), metal.getIngot(), 9);
+        recipes.addCompression("ingot_" + metal.getMetalName(), metal.getNugget(), metal.getIngot(), 9);
     }
 
     // Iron
     if (!FunOres.registry.isItemDisabled(EnumVanillaMetal.IRON.getNugget())) {
       ItemStack nugget = EnumVanillaMetal.IRON.getNugget();
       ItemStack ingot = EnumVanillaMetal.IRON.getIngot();
-      RecipeHelper.addCompressionRecipe(nugget, ingot, 9);
+      recipes.addCompression("ingot_iron", nugget, ingot, 9);
     }
   }
 
