@@ -52,13 +52,14 @@ public class ItemHammer extends ItemSL implements IDisableable {
     ItemCraftingItem item = ModItems.plateBasic;
     for (IMetal metal : item.getMetals(item)) {
       plate = metal.getPlate();
-      ingot = metal instanceof EnumVanillaExtended
-          ? ((EnumVanillaExtended) metal).getMaterialOreDictKey() : "ingot" + metal.getMetalName();
-      if (plate != null && !FunOres.registry.isItemDisabled(plate)) {
-        if (Config.oneIngotPlates)
-          recipes.addShapedOre("plate_" + metal.getMetalName(), plate, "h", "i", 'h', this, 'i', ingot);
-        else
-          recipes.addShapedOre("plate_" + metal.getMetalName(), plate, "h", "i", "i", 'h', this, 'i', ingot);
+      for (String metalName : metal.getMetalNames()) {
+        ingot = metal instanceof EnumVanillaExtended ? ((EnumVanillaExtended) metal).getMaterialOreDictKey() : "ingot" + metalName;
+        if (plate != null && !FunOres.registry.isItemDisabled(plate)) {
+          if (Config.oneIngotPlates)
+            recipes.addShapedOre("plate_" + metalName, plate, "h", "i", 'h', this, 'i', ingot);
+          else
+            recipes.addShapedOre("plate_" + metalName, plate, "h", "i", "i", 'h', this, 'i', ingot);
+        }
       }
     }
 
@@ -66,12 +67,14 @@ public class ItemHammer extends ItemSL implements IDisableable {
     item = ModItems.plateAlloy;
     for (IMetal metal : item.getMetals(item)) {
       plate = new ItemStack(item, 1, metal.getMeta());
-      ingot = "ingot" + metal.getMetalName();
-      if (!FunOres.registry.isItemDisabled(plate)) {
-        if (Config.oneIngotPlates)
-          recipes.addShapedOre("plate_" + metal.getMetalName(), plate, "h", "i", 'h', this, 'i', ingot);
-        else
-          recipes.addShapedOre("plate_" + metal.getMetalName(), plate, "h", "i", "i", 'h', this, 'i', ingot);
+      for (String metalName : metal.getMetalNames()) {
+        ingot = "ingot" + metalName;
+        if (!FunOres.registry.isItemDisabled(plate)) {
+          if (Config.oneIngotPlates)
+            recipes.addShapedOre("plate_" + metalName, plate, "h", "i", 'h', this, 'i', ingot);
+          else
+            recipes.addShapedOre("plate_" + metalName, plate, "h", "i", "i", 'h', this, 'i', ingot);
+        }
       }
     }
   }

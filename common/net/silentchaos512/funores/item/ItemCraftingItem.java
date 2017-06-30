@@ -65,12 +65,11 @@ public class ItemCraftingItem extends ItemBaseMetal {
       for (IMetal metal : getMetals(this)) {
         ItemStack gear = metal.getGear();
         if (gear != null && !FunOres.registry.isItemDisabled(gear)) {
-          String mat = metal instanceof EnumVanillaExtended
-              ? ((EnumVanillaExtended) metal).getMaterialOreDictKey()
-              : "ingot" + metal.getMetalName();
-          recipes.addShapedOre("gear_" + metal.getMetalName(), gear, " m ", "mim", " m ", 'm', mat,
-              'i', metal == EnumVanillaExtended.WOOD || metal == EnumVanillaExtended.STONE
-                  ? "stickWood" : "ingotIron");
+          for (String metalName : metal.getMetalNames()) {
+            String mat = metal instanceof EnumVanillaExtended ? ((EnumVanillaExtended) metal).getMaterialOreDictKey() : "ingot" + metalName;
+            recipes.addShapedOre("gear_" + metalName, gear, " m ", "mim", " m ", 'm', mat, 'i',
+                metal == EnumVanillaExtended.WOOD || metal == EnumVanillaExtended.STONE ? "stickWood" : "ingotIron");
+          }
         }
       }
     }
@@ -82,8 +81,7 @@ public class ItemCraftingItem extends ItemBaseMetal {
     super.addOreDict();
 
     if (!isAlloy)
-      OreDictionary.registerOre(oreDictPrefix + "Aluminum",
-          new ItemStack(this, 1, EnumMetal.ALUMINIUM.meta));
+      OreDictionary.registerOre(oreDictPrefix + "Aluminum", new ItemStack(this, 1, EnumMetal.ALUMINIUM.meta));
   }
 
   @Override

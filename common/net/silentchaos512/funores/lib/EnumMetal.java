@@ -52,6 +52,14 @@ public enum EnumMetal implements IHasOre, IMetal {
   }
 
   @Override
+  public String[] getMetalNames() {
+
+    if (this == ALUMINIUM)
+      return new String[] { "Aluminium", "Aluminum" };
+    return new String[] { getMetalName() };
+  }
+
+  @Override
   public String getName() {
 
     return name.toLowerCase();
