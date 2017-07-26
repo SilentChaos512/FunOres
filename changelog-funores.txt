@@ -1,3 +1,7 @@
+1.5.6
+Fixed: [1.12] Container GUIs not rendering tooltips.
+Fixed: [1.10.2] Crash when removing items from the alloy smelter's output slot.
+
 1.5.2b
 Fixed: Vanilla ores not respecting the "ReplaceExisting" config.
 Fixed: Vanilla ores not reporting vein counts in WIT.

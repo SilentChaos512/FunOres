@@ -15,6 +15,7 @@ import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.inventory.ContainerMetalFurnace;
 import net.silentchaos512.funores.tile.TileAlloySmelter;
 import net.silentchaos512.funores.tile.TileMetalFurnace;
+import net.silentchaos512.lib.SilentLib;
 
 @SideOnly(Side.CLIENT)
 public class GuiMetalFurnace extends GuiContainer {
@@ -27,6 +28,17 @@ public class GuiMetalFurnace extends GuiContainer {
 
     super(new ContainerMetalFurnace(playerInventory, furnaceInventory));
     this.tileFurnace = furnaceInventory;
+  }
+
+  public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+
+    if (SilentLib.getMCVersion() < 12) {
+      super.drawScreen(mouseX, mouseY, partialTicks);
+    } else {
+      this.drawDefaultBackground();
+      super.drawScreen(mouseX, mouseY, partialTicks);
+      this.renderHoveredToolTip(mouseX, mouseY);
+    }
   }
 
 //  @Override

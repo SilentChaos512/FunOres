@@ -20,6 +20,7 @@ import net.silentchaos512.funores.lib.IDisableable;
 import net.silentchaos512.funores.lib.Names;
 import net.silentchaos512.lib.item.ItemFoodSL;
 import net.silentchaos512.lib.registry.RecipeMaker;
+import net.silentchaos512.lib.util.ItemHelper;
 
 public class ItemDried extends ItemFoodSL implements IDisableable {
 
@@ -72,7 +73,7 @@ public class ItemDried extends ItemFoodSL implements IDisableable {
   @Override
   protected void clGetSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
 
-    if (!isInCreativeTab(tab))
+    if (!ItemHelper.isInCreativeTab(item, tab))
       return;
 
     // Add only non-disabled items for display!

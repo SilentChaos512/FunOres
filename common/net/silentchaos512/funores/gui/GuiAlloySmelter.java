@@ -12,6 +12,7 @@ import net.minecraft.util.ResourceLocation;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.inventory.ContainerAlloySmelter;
 import net.silentchaos512.funores.tile.TileAlloySmelter;
+import net.silentchaos512.lib.SilentLib;
 
 public class GuiAlloySmelter extends GuiContainer {
 
@@ -23,6 +24,17 @@ public class GuiAlloySmelter extends GuiContainer {
 
     super(new ContainerAlloySmelter(playerInventory, smelterInventory));
     this.tileAlloySmelter = smelterInventory;
+  }
+
+  public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+
+    if (SilentLib.getMCVersion() < 12) {
+      super.drawScreen(mouseX, mouseY, partialTicks);
+    } else {
+      this.drawDefaultBackground();
+      super.drawScreen(mouseX, mouseY, partialTicks);
+      this.renderHoveredToolTip(mouseX, mouseY);
+    }
   }
 
   @Override

@@ -13,6 +13,7 @@ import net.minecraft.util.NonNullList;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.lib.IDisableable;
 import net.silentchaos512.lib.item.ItemSL;
+import net.silentchaos512.lib.util.ItemHelper;
 
 public class ItemBaseDisableable extends ItemSL implements IDisableable {
 
@@ -35,7 +36,7 @@ public class ItemBaseDisableable extends ItemSL implements IDisableable {
   @Override
   protected void clGetSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
 
-    if (!isInCreativeTab(tab))
+    if (!ItemHelper.isInCreativeTab(item, tab))
       return;
 
     for (ItemStack stack : getSubItems(item))

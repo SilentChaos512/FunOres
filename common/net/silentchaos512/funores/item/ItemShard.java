@@ -16,6 +16,7 @@ import net.silentchaos512.funores.lib.IDisableable;
 import net.silentchaos512.funores.lib.Names;
 import net.silentchaos512.lib.item.ItemNamedSubtypes;
 import net.silentchaos512.lib.registry.RecipeMaker;
+import net.silentchaos512.lib.util.ItemHelper;
 
 public class ItemShard extends ItemNamedSubtypes implements IDisableable {
 
@@ -60,7 +61,7 @@ public class ItemShard extends ItemNamedSubtypes implements IDisableable {
   @Override
   protected void clGetSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
 
-    if (!isInCreativeTab(tab))
+    if (!ItemHelper.isInCreativeTab(item, tab))
       return;
 
     for (ItemStack stack : getSubItems(item))

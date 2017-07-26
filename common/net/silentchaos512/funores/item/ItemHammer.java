@@ -21,6 +21,7 @@ import net.silentchaos512.funores.lib.IMetal;
 import net.silentchaos512.funores.lib.Names;
 import net.silentchaos512.lib.item.ItemSL;
 import net.silentchaos512.lib.registry.RecipeMaker;
+import net.silentchaos512.lib.util.ItemHelper;
 
 public class ItemHammer extends ItemSL implements IDisableable {
 
@@ -95,7 +96,7 @@ public class ItemHammer extends ItemSL implements IDisableable {
   @Override
   protected void clGetSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
 
-    if (!isInCreativeTab(tab))
+    if (!ItemHelper.isInCreativeTab(item, tab))
       return;
 
     ItemStack hammer = new ItemStack(this);
