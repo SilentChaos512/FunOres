@@ -61,10 +61,10 @@ public class FunOres {
   public static final String VERSION_SILENTLIB = "SL_VERSION";
   public static final String DEPENDENCIES = "required-after:silentlib@[" + VERSION_SILENTLIB + ",);after:wit;after:WIT";
   //"required-after:forge@[13.19.0.2156,);required-after:silentlib;";
-  public static final String ACCEPTED_MC_VERSIONS = "[1.10.2,1.12]";
+  public static final String ACCEPTED_MC_VERSIONS = "[1.10.2,1.12.1]";
   public static final String RESOURCE_PREFIX = MOD_ID.toLowerCase() + ":";
 
-  public static final boolean DEBUG_MODE = true;
+  public static final boolean DEBUG_MODE = false;
 
   public static Random random = new Random();
   public static LogHelper logHelper = new LogHelper(MOD_NAME);
