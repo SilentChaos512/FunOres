@@ -1,0 +1,244 @@
+{
+    "_comment": "Default oregen file.",
+    "copper": {
+        "block": "funores:metalore",
+        "state": "metal=copper",
+        "vein_count": 10,
+        "vein_size": 8,
+        "vein_type": "default",
+        "height_min": 40,
+        "height_max": 75,
+        "height_favor": "uniform",
+        "predicate": "stone",
+        "biomes": {
+        }
+    },
+    "tin": {
+        "block": "funores:metalore",
+        "state": "metal=tin",
+        "vein_count": 10,
+        "vein_size": 8,
+        "vein_type": "default",
+        "height_min": 20,
+        "height_max": 55,
+        "height_favor": "uniform",
+        "predicate": "stone",
+        "biomes": {
+        }
+    },
+    "silver": {
+        "block": "funores:metalore",
+        "state": "metal=silver",
+        "vein_count": 6,
+        "vein_size": 8,
+        "vein_type": "default",
+        "height_min": 5,
+        "height_max": 30,
+        "height_favor": "uniform",
+        "predicate": "stone",
+        "biomes": {
+        }
+    },
+    "lead": {
+        "block": "funores:metalore",
+        "state": "metal=lead",
+        "vein_count": 4,
+        "vein_size": 8,
+        "vein_type": "default",
+        "height_min": 10,
+        "height_max": 35,
+        "height_favor": "uniform",
+        "predicate": "stone",
+        "biomes": {
+        }
+    },
+    "nickel": {
+        "block": "funores:metalore",
+        "state": "metal=nickel",
+        "vein_count": 2,
+        "vein_size": 4,
+        "vein_type": "default",
+        "height_min": 5,
+        "height_max": 20,
+        "height_favor": "uniform",
+        "predicate": "stone",
+        "biomes": {
+        }
+    },
+    "platinum": {
+        "block": "funores:metalore",
+        "state": "metal=platinum",
+        "vein_count": 0.4,
+        "vein_size": 6,
+        "vein_type": "default",
+        "height_min": 5,
+        "height_max": 15,
+        "height_favor": "uniform",
+        "predicate": "stone",
+        "biomes": {
+        }
+    },
+    "aluminium": {
+        "block": "funores:metalore",
+        "state": "metal=aluminium",
+        "vein_count": 6.5,
+        "vein_size": 7,
+        "vein_type": "default",
+        "height_min": 10,
+        "height_max": 50,
+        "height_favor": "uniform",
+        "predicate": "stone",
+        "biomes": {
+        }
+    },
+    "zinc": {
+        "block": "funores:metalore",
+        "state": "metal=zinc",
+        "vein_count": 4,
+        "vein_size": 8,
+        "vein_type": "default",
+        "height_min": 20,
+        "height_max": 70,
+        "height_favor": "uniform",
+        "predicate": "stone",
+        "biomes": {
+        }
+    },
+    "titanium": {
+        "block": "funores:metalore",
+        "state": "metal=titanium",
+        "vein_count": 0.3,
+        "vein_size": 6,
+        "vein_type": "default",
+        "height_min": 5,
+        "height_max": 20,
+        "height_favor": "uniform",
+        "predicate": "stone",
+        "biomes": {
+        }
+    },
+    "osmium": {
+        "block": "funores:metalore",
+        "state": "metal=osmium",
+        "vein_count": 7,
+        "vein_size": 8,
+        "vein_type": "default",
+        "height_min": 8,
+        "height_max": 64,
+        "height_favor": "uniform",
+        "predicate": "stone",
+        "biomes": {
+        }
+    },
+    "pig": {
+        "block": "funores:meatore",
+        "state": "meat=pig",
+        "vein_count": 0.071429,
+        "vein_size": 15,
+        "vein_type": "default",
+        "height_min": 32,
+        "height_max": 96,
+        "height_favor": "high",
+        "predicate": "stone",
+        "biomes": {
+        }
+    },
+    "fish": {
+        "block": "funores:meatore",
+        "state": "meat=fish",
+        "vein_count": 0.071429,
+        "vein_size": 15,
+        "vein_type": "default",
+        "height_min": 32,
+        "height_max": 96,
+        "height_favor": "high",
+        "predicate": "stone",
+        "biomes": {
+        }
+    },
+    "cow": {
+        "block": "funores:meatore",
+        "state": "meat=cow",
+        "vein_count": 0.071429,
+        "vein_size": 15,
+        "vein_type": "default",
+        "height_min": 32,
+        "height_max": 96,
+        "height_favor": "high",
+        "predicate": "stone",
+        "biomes": {
+        }
+    },
+    "chicken": {
+        "block": "funores:meatore",
+        "state": "meat=chicken",
+        "vein_count": 0.071429,
+        "vein_size": 15,
+        "vein_type": "default",
+        "height_min": 32,
+        "height_max": 96,
+        "height_favor": "high",
+        "predicate": "stone",
+        "biomes": {
+        }
+    },
+    "rabbit": {
+        "block": "funores:meatore",
+        "state": "meat=rabbit",
+        "vein_count": 0.071429,
+        "vein_size": 15,
+        "vein_type": "default",
+        "height_min": 32,
+        "height_max": 96,
+        "height_favor": "high",
+        "predicate": "stone",
+        "biomes": {
+        }
+    },
+    "sheep": {
+        "block": "funores:meatore",
+        "state": "meat=sheep",
+        "vein_count": 0.071429,
+        "vein_size": 15,
+        "vein_type": "default",
+        "height_min": 32,
+        "height_max": 96,
+        "height_favor": "high",
+        "predicate": "stone",
+        "biomes": {
+        }
+    },
+    "squid": {
+        "block": "funores:meatore",
+        "state": "meat=squid",
+        "vein_count": 0.071429,
+        "vein_size": 15,
+        "vein_type": "default",
+        "height_min": 32,
+        "height_max": 96,
+        "height_favor": "high",
+        "predicate": "stone",
+        "biomes": [
+            {
+                "type": "favors",
+                "multiplier": 2.0,
+                "list": [
+                    { "type": "dictionary", "key": "OCEAN" }
+                ]
+            }
+        ]
+    },
+    "bat": {
+        "block": "funores:meatore",
+        "state": "meat=bat",
+        "vein_count": 0.071429,
+        "vein_size": 15,
+        "vein_type": "default",
+        "height_min": 32,
+        "height_max": 96,
+        "height_favor": "high",
+        "predicate": "stone",
+        "biomes": {
+        }
+    }
+}

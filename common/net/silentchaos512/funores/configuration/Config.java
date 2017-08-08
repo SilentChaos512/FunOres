@@ -186,8 +186,6 @@ public class Config {
       disableShards = c.getBoolean("Disable Shards", CATEGORY_QUICK_TWEAKS, disableShards,
           "Disable all shards.");
 
-      ;
-
       /*
        * Misc configs
        */

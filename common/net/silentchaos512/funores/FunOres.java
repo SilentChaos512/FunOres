@@ -28,6 +28,7 @@ import net.silentchaos512.funores.api.recipe.dryingrack.DryingRackRecipeObject;
 import net.silentchaos512.funores.configuration.Config;
 import net.silentchaos512.funores.configuration.ConfigItemDrop;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGenBonus;
+import net.silentchaos512.funores.configuration.OreConfigJsonReader;
 import net.silentchaos512.funores.event.FunOresWitEvents;
 import net.silentchaos512.funores.gui.GuiHandlerFunOres;
 import net.silentchaos512.funores.init.ModBlocks;
@@ -64,7 +65,7 @@ public class FunOres {
   public static final String ACCEPTED_MC_VERSIONS = "[1.10.2,1.12]";
   public static final String RESOURCE_PREFIX = MOD_ID.toLowerCase() + ":";
 
-  public static final boolean DEBUG_MODE = true;
+  public static final boolean DEBUG_MODE = false;
 
   public static Random random = new Random();
   public static LogHelper logHelper = new LogHelper(MOD_NAME);
@@ -118,6 +119,8 @@ public class FunOres {
 
     initAlloySmelterRecipes();
     initDryingRackRecipes();
+
+    OreConfigJsonReader.readOreEntries();
 
     ConfigOptionOreGenBonus.initItemKeys();
     ConfigItemDrop.listErrorsInLog();
