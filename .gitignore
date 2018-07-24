@@ -1,48 +1,38 @@
-build/
-image/
-libs/
-.gradle/
+# eclipse
+bin
+*.launch
+.settings
+.settings/*
+.metadata
+.classpath
+.project
 
-# Windows image file caches
-Thumbs.db
-ehthumbs.db
+# idea
+out
+*.ipr
+*.iws
+*.iml
+.idea
 
-# Folder config file
-Desktop.ini
+# gradle
+build
+.gradle
 
-# Recycle Bin used on file shares
-$RECYCLE.BIN/
+# other
+eclipse
+run
+classes
 
-# Windows Installer files
-*.cab
-*.msi
-*.msm
-*.msp
+/README.txt
+/forge-*-changelog.txt
 
-# Windows shortcuts
-*.lnk
-
-# =========================
-# Operating System Files
-# =========================
-
-# OSX
-# =========================
+secret.json
+libs/*
+!/libs/README.txt
+curse_logo.png
+CurseLogo.*
+image_test/
 
 .DS_Store
-.AppleDouble
-.LSOverride
 
-# Thumbnails
-._*
-
-# Files that might appear on external disk
-.Spotlight-V100
-.Trashes
-
-# Directories potentially created on remote AFP share
-.AppleDB
-.AppleDesktop
-Network Trash Folder
-Temporary Items
-.apdisk
+version.properties
