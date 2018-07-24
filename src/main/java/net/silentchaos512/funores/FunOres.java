@@ -1,6 +1,22 @@
-package net.silentchaos512.funores;
+/*
+ * Fun Ores -- FunOres
+ * Copyright (C) 2018 SilentChaos512
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation version 3
+ * of the License.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
-import java.util.Random;
+package net.silentchaos512.funores;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -45,211 +61,179 @@ import net.silentchaos512.lib.creativetab.CreativeTabSL;
 import net.silentchaos512.lib.util.LocalizationHelper;
 import net.silentchaos512.lib.util.LogHelper;
 
-//@formatter:off
+import java.util.Random;
+
 @Mod(modid = FunOres.MOD_ID,
-    name = FunOres.MOD_NAME,
-    version = FunOres.VERSION_NUMBER,
-    dependencies = FunOres.DEPENDENCIES,
-    acceptedMinecraftVersions = FunOres.ACCEPTED_MC_VERSIONS,
-    updateJSON = "https://raw.githubusercontent.com/SilentChaos512/FunOres/master/update.json")
-//@formatter:on
+        name = FunOres.MOD_NAME,
+        version = FunOres.VERSION_NUMBER,
+        dependencies = FunOres.DEPENDENCIES,
+        acceptedMinecraftVersions = FunOres.ACCEPTED_MC_VERSIONS)
 public class FunOres {
 
-  public static final String MOD_ID = "funores";
-  public static final String MOD_NAME = "Fun Ores";
-  public static final String VERSION_NUMBER = "@VERSION@";
-  public static final String VERSION_SILENTLIB = "SL_VERSION";
-  public static final String DEPENDENCIES = "required-after:silentlib@[" + VERSION_SILENTLIB + ",);after:wit;after:WIT";
-  //"required-after:forge@[13.19.0.2156,);required-after:silentlib;";
-  public static final String ACCEPTED_MC_VERSIONS = "[1.10.2,1.12.1]";
-  public static final String RESOURCE_PREFIX = MOD_ID.toLowerCase() + ":";
+    public static final String MOD_ID = "funores";
+    public static final String MOD_NAME = "Fun Ores";
+    public static final String VERSION_NUMBER = "@VERSION@";
+    public static final String VERSION_SILENTLIB = "SL_VERSION";
+    public static final String DEPENDENCIES = "required-after:silentlib@[" + VERSION_SILENTLIB + ",);after:wit;after:WIT";
+    public static final String ACCEPTED_MC_VERSIONS = "[1.10.2,1.12.1]";
+    public static final String RESOURCE_PREFIX = MOD_ID.toLowerCase() + ":";
 
-  public static final boolean DEBUG_MODE = false;
+    public static final boolean DEBUG_MODE = false;
 
-  public static Random random = new Random();
-  public static LogHelper logHelper = new LogHelper(MOD_NAME);
-  public static LocalizationHelper localizationHelper;
+    public static Random random = new Random();
+    public static LogHelper logHelper = new LogHelper(MOD_NAME);
+    @Deprecated
+    public static LocalizationHelper localizationHelper;
 
-  public static FunOresRegistry registry = new FunOresRegistry(MOD_ID, logHelper);
+    public static FunOresRegistry registry = new FunOresRegistry(MOD_ID, logHelper);
+    public static CreativeTabSL tabFunOres = new CreativeTabSL("tabFunOres", ModBlocks.meatOre, 0);
 
-  @Instance(MOD_ID)
-  public static FunOres instance;
+    @Instance(MOD_ID)
+    public static FunOres instance;
 
-  @SidedProxy(clientSide = "net.silentchaos512.funores.proxy.ClientProxy", serverSide = "net.silentchaos512.funores.proxy.CommonProxy")
-  public static CommonProxy proxy;
+    @SidedProxy(clientSide = "net.silentchaos512.funores.proxy.ClientProxy", serverSide = "net.silentchaos512.funores.proxy.CommonProxy")
+    public static CommonProxy proxy;
 
-  @EventHandler
-  public void preInit(FMLPreInitializationEvent event) {
+    @EventHandler
+    public void preInit(FMLPreInitializationEvent event) {
+        localizationHelper = new LocalizationHelper(MOD_ID).setReplaceAmpersand(true);
+        SilentLib.instance.registerLocalizationHelperForMod(MOD_ID, localizationHelper);
 
-    localizationHelper = new LocalizationHelper(MOD_ID).setReplaceAmpersand(true);
-    SilentLib.instance.registerLocalizationHelperForMod(MOD_ID, localizationHelper);
+        Config.init(event.getSuggestedConfigurationFile());
 
-    Config.init(event.getSuggestedConfigurationFile());
+        ModFluids.init();
+        registry.addRegistrationHandler(new ModBlocks(), Block.class);
+        registry.addRegistrationHandler(new ModItems(), Item.class);
+        ModDamageSources.init();
 
-    ModFluids.init();
-    registry.addRegistrationHandler(new ModBlocks(), Block.class);
-    registry.addRegistrationHandler(new ModItems(), Item.class);
-    ModDamageSources.init();
+        NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandlerFunOres());
+        MinecraftForge.EVENT_BUS.register(this);
+        if (Loader.isModLoaded("wit") || Loader.isModLoaded("WIT"))
+            MinecraftForge.EVENT_BUS.register(FunOresWitEvents.INSTANCE);
 
-    NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandlerFunOres());
-    MinecraftForge.EVENT_BUS.register(this);
-    if (Loader.isModLoaded("wit") || Loader.isModLoaded("WIT"))
-      MinecraftForge.EVENT_BUS.register(FunOresWitEvents.INSTANCE);
-
-    proxy.preInit(registry);
-  }
-
-  @EventHandler
-  public void load(FMLInitializationEvent event) {
-
-    ExtraRecipes.init();
-
-    Config.save();
-
-    FunOresGenerator worldGenerator = new FunOresGenerator();
-    GameRegistry.registerWorldGenerator(worldGenerator, 0);
-    MinecraftForge.ORE_GEN_BUS.register(worldGenerator);
-
-    proxy.init(registry);
-  }
-
-  @EventHandler
-  public void postInit(FMLPostInitializationEvent event) {
-
-    initAlloySmelterRecipes();
-    initDryingRackRecipes();
-
-    ConfigOptionOreGenBonus.initItemKeys();
-    ConfigItemDrop.listErrorsInLog();
-
-    proxy.postInit(registry);
-  }
-
-  @SubscribeEvent
-  public void onPlayerLoggedIn(PlayerLoggedInEvent event) {
-
-    EntityPlayer player = event.player;
-    if (player != null) {
-      ConfigItemDrop.listErrorsInChat(player);
+        proxy.preInit(registry);
     }
-  }
 
-  /*
-   * Alloy Smelter recipe stuff.
-   */
+    @EventHandler
+    public void load(FMLInitializationEvent event) {
+        ExtraRecipes.init();
 
-  private void initAlloySmelterRecipes() {
+        Config.save();
 
-    //@formatter:off
+        FunOresGenerator worldGenerator = new FunOresGenerator();
+        GameRegistry.registerWorldGenerator(worldGenerator, 0);
+        MinecraftForge.ORE_GEN_BUS.register(worldGenerator);
 
-    addAlloySmelterRecipe(
-        EnumAlloy.BRONZE.getMetalName(), EnumAlloy.BRONZE.getIngot(), 4,
-        200, 1.2f,
-        "ingotCopper*3", "ingotTin*1");
-
-    addAlloySmelterRecipe(
-        EnumAlloy.BRASS.getMetalName(), EnumAlloy.BRASS.getIngot(), 4,
-        200, 1.0f,
-        "ingotCopper*3", "ingotZinc*1");
-
-    ItemStack coal = new ItemStack(Items.COAL, 2);
-    addAlloySmelterRecipe(
-        EnumAlloy.STEEL.getMetalName(), EnumAlloy.STEEL.getIngot(), 1,
-        800, 2.5f,
-        "ingotIron*1", coal);
-
-    addAlloySmelterRecipe(
-        EnumAlloy.INVAR.getMetalName(), EnumAlloy.INVAR.getIngot(), 3,
-        400, 2.0f,
-        "ingotIron*2", "ingotNickel*1");
-
-    addAlloySmelterRecipe(
-        EnumAlloy.ELECTRUM.getMetalName(), EnumAlloy.ELECTRUM.getIngot(), 2,
-        400, 2.0f,
-        "ingotGold*1", "ingotSilver*1");
-
-    ItemStack enderEyes = new ItemStack(Items.ENDER_EYE, 4);
-    addAlloySmelterRecipe(
-        EnumAlloy.ENDERIUM.getMetalName(), EnumAlloy.ENDERIUM.getIngot(), 4,
-        800, 4.0f,
-        "ingotTin*2", "ingotSilver*1", "ingotPlatinum*1", enderEyes);
-
-    ItemStack prismarineCrystals = new ItemStack(Items.PRISMARINE_CRYSTALS, 12);
-    AlloySmelterRecipeObject gemsForPrismarine =
-        new AlloySmelterRecipeObject("gemSapphire*2", "gemDiamond*1");
-    addAlloySmelterRecipe(
-        EnumAlloy.PRISMARIINIUM.getMetalName(), EnumAlloy.PRISMARIINIUM.getIngot(), 4,
-        800, 5.0f,
-        "ingotSilver*2", gemsForPrismarine, "ingotTitanium*1", prismarineCrystals);
-
-    //@formatter:on
-  }
-
-  private void addAlloySmelterRecipe(String recipeName, ItemStack output, int outputCount,
-      int cookTime, float experience, Object... inputs) {
-
-    // Make sure the output is not disabled...
-    if (FunOres.registry.isItemDisabled(output))
-      return;
-
-    boolean enabled = Config.getConfiguration()
-        .get(Config.CATEGORY_RECIPE_ALLOY_SMELTER, recipeName, true).getBoolean();
-    if (enabled) {
-      FunOresAPI.addAlloySmelterRecipe(output, outputCount, cookTime, experience, inputs);
+        proxy.init(registry);
     }
-  }
 
-  private void initDryingRackRecipes() {
+    @EventHandler
+    public void postInit(FMLPostInitializationEvent event) {
+        initAlloySmelterRecipes();
+        initDryingRackRecipes();
 
-    int jerkyDryTime = 9000;
-    float jerkyXp = 0.8f;
-    addDryingRackRecipe("Dried Flesh", EnumDriedItem.DRIED_FLESH.getItem(),
-        new ItemStack(Items.ROTTEN_FLESH), jerkyDryTime, jerkyXp);
-    addDryingRackRecipe("Beef Jerky", EnumDriedItem.BEEF_JERKY.getItem(), new ItemStack(Items.BEEF),
-        jerkyDryTime, jerkyXp);
-    addDryingRackRecipe("Chicken Jerky", EnumDriedItem.CHICKEN_JERKY.getItem(),
-        new ItemStack(Items.CHICKEN), jerkyDryTime, jerkyXp);
-    addDryingRackRecipe("Pork Jerky", EnumDriedItem.PORK_JERKY.getItem(),
-        new ItemStack(Items.PORKCHOP), jerkyDryTime, jerkyXp);
-    addDryingRackRecipe("Mutton Jerky", EnumDriedItem.MUTTON_JERKY.getItem(),
-        new ItemStack(Items.MUTTON), jerkyDryTime, jerkyXp);
-    addDryingRackRecipe("Rabbit Jerky", EnumDriedItem.RABBIT_JERKY.getItem(),
-        new ItemStack(Items.RABBIT), jerkyDryTime, jerkyXp);
-    addDryingRackRecipe("Cod Jerky", EnumDriedItem.COD_JERKY.getItem(), new ItemStack(Items.FISH),
-        jerkyDryTime, jerkyXp);
-    addDryingRackRecipe("Salmon Jerky", EnumDriedItem.SALMON_JERKY.getItem(),
-        new ItemStack(Items.FISH, 1, 1), jerkyDryTime, jerkyXp);
+        ConfigOptionOreGenBonus.initItemKeys();
+        ConfigItemDrop.listErrorsInLog();
 
-    addDryingRackRecipe("Sponge Drying", new ItemStack(Blocks.SPONGE),
-        new ItemStack(Blocks.SPONGE, 1, 1), 2400, 0.4f);
-  }
-
-  private void addDryingRackRecipe(String recipeName, ItemStack output, Object input, int dryTime,
-      float experience) {
-
-    // Make sure the output is not disabled...
-    if (FunOres.registry.isItemDisabled(output))
-      return;
-
-    if (input instanceof String) {
-      DryingRackRecipeObject recipeObject = new DryingRackRecipeObject((String) input);
-      DryingRackRecipe.addRecipe(output, recipeObject, dryTime, experience);
-    } else if (input instanceof ItemStack) {
-      DryingRackRecipeObject recipeObject = new DryingRackRecipeObject((ItemStack) input);
-      DryingRackRecipe.addRecipe(output, recipeObject, dryTime, experience);
-    } else {
-      logHelper.warning("FunOres.addDryingRackRecipe: Don't know how to handle object of type "
-          + input.getClass());
+        proxy.postInit(registry);
     }
-  }
 
-  public static CreativeTabSL tabFunOres = new CreativeTabSL("tabFunOres", ModBlocks.meatOre, 0);
+    @SubscribeEvent
+    public void onPlayerLoggedIn(PlayerLoggedInEvent event) {
+        EntityPlayer player = event.player;
+        if (player != null) {
+            ConfigItemDrop.listErrorsInChat(player);
+        }
+    }
+    /*
+     * Alloy Smelter recipe stuff.
+     */
 
-//  @EventHandler
-//  public void onMissingMapping(FMLMissingMappingsEvent event) {
-//
-//    for (FMLMissingMappingsEvent.MissingMapping mismap : event.get()) {
-//      MC10IdRemapper.remap(mismap);
-//    }
-//  }
+
+    private void initAlloySmelterRecipes() {
+        addAlloySmelterRecipe(
+                EnumAlloy.BRONZE.getMetalName(), EnumAlloy.BRONZE.getIngot(), 4,
+                200, 1.2f, "ingotCopper*3", "ingotTin*1");
+
+        addAlloySmelterRecipe(
+                EnumAlloy.BRASS.getMetalName(), EnumAlloy.BRASS.getIngot(), 4,
+                200, 1.0f, "ingotCopper*3", "ingotZinc*1");
+
+        ItemStack coal = new ItemStack(Items.COAL, 2);
+        addAlloySmelterRecipe(
+                EnumAlloy.STEEL.getMetalName(), EnumAlloy.STEEL.getIngot(), 1,
+                800, 2.5f, "ingotIron*1", coal);
+
+        addAlloySmelterRecipe(
+                EnumAlloy.INVAR.getMetalName(), EnumAlloy.INVAR.getIngot(), 3,
+                400, 2.0f, "ingotIron*2", "ingotNickel*1");
+
+        addAlloySmelterRecipe(
+                EnumAlloy.ELECTRUM.getMetalName(), EnumAlloy.ELECTRUM.getIngot(), 2,
+                400, 2.0f, "ingotGold*1", "ingotSilver*1");
+
+        ItemStack enderEyes = new ItemStack(Items.ENDER_EYE, 4);
+        addAlloySmelterRecipe(
+                EnumAlloy.ENDERIUM.getMetalName(), EnumAlloy.ENDERIUM.getIngot(), 4,
+                800, 4.0f, "ingotTin*2", "ingotSilver*1", "ingotPlatinum*1", enderEyes);
+
+        ItemStack prismarineCrystals = new ItemStack(Items.PRISMARINE_CRYSTALS, 12);
+        AlloySmelterRecipeObject gemsForPrismarine =
+                new AlloySmelterRecipeObject("gemSapphire*2", "gemDiamond*1");
+        addAlloySmelterRecipe(
+                EnumAlloy.PRISMARIINIUM.getMetalName(), EnumAlloy.PRISMARIINIUM.getIngot(), 4,
+                800, 5.0f, "ingotSilver*2", gemsForPrismarine, "ingotTitanium*1", prismarineCrystals);
+    }
+
+    private void addAlloySmelterRecipe(String recipeName, ItemStack output, int outputCount, int cookTime, float experience, Object... inputs) {
+        // Make sure the output is not disabled...
+        if (FunOres.registry.isItemDisabled(output))
+            return;
+
+        boolean enabled = Config.getConfiguration()
+                .get(Config.CATEGORY_RECIPE_ALLOY_SMELTER, recipeName, true).getBoolean();
+        if (enabled) {
+            FunOresAPI.addAlloySmelterRecipe(output, outputCount, cookTime, experience, inputs);
+        }
+    }
+
+    private void initDryingRackRecipes() {
+        int jerkyDryTime = 9000;
+        float jerkyXp = 0.8f;
+        addDryingRackRecipe("Dried Flesh", EnumDriedItem.DRIED_FLESH.getItem(),
+                new ItemStack(Items.ROTTEN_FLESH), jerkyDryTime, jerkyXp);
+        addDryingRackRecipe("Beef Jerky", EnumDriedItem.BEEF_JERKY.getItem(), new ItemStack(Items.BEEF),
+                jerkyDryTime, jerkyXp);
+        addDryingRackRecipe("Chicken Jerky", EnumDriedItem.CHICKEN_JERKY.getItem(),
+                new ItemStack(Items.CHICKEN), jerkyDryTime, jerkyXp);
+        addDryingRackRecipe("Pork Jerky", EnumDriedItem.PORK_JERKY.getItem(),
+                new ItemStack(Items.PORKCHOP), jerkyDryTime, jerkyXp);
+        addDryingRackRecipe("Mutton Jerky", EnumDriedItem.MUTTON_JERKY.getItem(),
+                new ItemStack(Items.MUTTON), jerkyDryTime, jerkyXp);
+        addDryingRackRecipe("Rabbit Jerky", EnumDriedItem.RABBIT_JERKY.getItem(),
+                new ItemStack(Items.RABBIT), jerkyDryTime, jerkyXp);
+        addDryingRackRecipe("Cod Jerky", EnumDriedItem.COD_JERKY.getItem(), new ItemStack(Items.FISH),
+                jerkyDryTime, jerkyXp);
+        addDryingRackRecipe("Salmon Jerky", EnumDriedItem.SALMON_JERKY.getItem(),
+                new ItemStack(Items.FISH, 1, 1), jerkyDryTime, jerkyXp);
+
+        addDryingRackRecipe("Sponge Drying", new ItemStack(Blocks.SPONGE),
+                new ItemStack(Blocks.SPONGE, 1, 1), 2400, 0.4f);
+    }
+
+    private void addDryingRackRecipe(String recipeName, ItemStack output, Object input, int dryTime, float experience) {
+        // Make sure the output is not disabled...
+        if (FunOres.registry.isItemDisabled(output))
+            return;
+
+        if (input instanceof String) {
+            DryingRackRecipeObject recipeObject = new DryingRackRecipeObject((String) input);
+            DryingRackRecipe.addRecipe(output, recipeObject, dryTime, experience);
+        } else if (input instanceof ItemStack) {
+            DryingRackRecipeObject recipeObject = new DryingRackRecipeObject((ItemStack) input);
+            DryingRackRecipe.addRecipe(output, recipeObject, dryTime, experience);
+        } else {
+            logHelper.warning("FunOres.addDryingRackRecipe: Don't know how to handle object of type " + input.getClass());
+        }
+    }
 }

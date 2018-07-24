@@ -1,3 +1,21 @@
+/*
+ * Fun Ores -- BlockDryingRack
+ * Copyright (C) 2018 SilentChaos512
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation version 3
+ * of the License.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package net.silentchaos512.funores.block.machine;
 
 import java.util.List;
@@ -26,149 +44,90 @@ import net.silentchaos512.lib.registry.RecipeMaker;
 
 public class BlockDryingRack extends BlockMachine {
 
-  public BlockDryingRack() {
-
-    super(Material.WOOD, Names.DRYING_RACK);
-    fullBlock = false;
-    setHardness(1.5f);
-    setResistance(3.0f);
-    setSoundType(SoundType.WOOD);
-    setUnlocalizedName(Names.DRYING_RACK);
-  }
-
-  @Override
-  public TileEntity createNewTileEntity(World world, int meta) {
-
-    return new TileDryingRack();
-  }
-
-  @Override
-  public void addRecipes(RecipeMaker recipes) {
-
-    ItemStack stack = new ItemStack(this, 2);
-    if (!FunOres.registry.isItemDisabled(stack))
-      recipes.addShapedOre(getName(), stack, "www", "sss", 'w', "slabWood", 's', "stickWood");
-  }
-
-  @Override
-  protected boolean clOnBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player,
-      EnumHand hand, EnumFacing facing, float side, float hitX, float hitY) {
-
-    TileEntity tile = world.getTileEntity(pos);
-    if (tile != null && tile instanceof TileDryingRack) {
-      TileDryingRack tileDryingRack = (TileDryingRack) tile;
-      ItemStack heldItem = player.getHeldItem(hand);
-      return tileDryingRack.interact(player, hand, heldItem);
+    public BlockDryingRack() {
+        super(Material.WOOD, Names.DRYING_RACK);
+        fullBlock = false;
+        setHardness(1.5f);
+        setResistance(3.0f);
+        setSoundType(SoundType.WOOD);
+        setUnlocalizedName(Names.DRYING_RACK);
     }
-    return true;
-  }
 
-  @Override
-  protected void clAddCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos,
-      AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn) {
-
-    state = state.getActualState(worldIn, pos);
-    addCollisionBoxToList(pos, entityBox, collidingBoxes, getBoundingBox(state, worldIn, pos));
-  }
-
-  // @Override
-  // public AxisAlignedBB getCollisionBoundingBox(IBlockState worldIn, World pos, BlockPos state) {
-  //
-  // return worldIn.getSelectedBoundingBox(pos, state);
-  // }
-
-  @SuppressWarnings("deprecation")
-  @Override
-  public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-
-    final float f = 0.25f;
-    final float minY = 1f - f;
-    final float maxY = 1f;
-    switch (getMachineState(state)) {
-      case EAST_OFF:
-      case EAST_ON:
-        return new AxisAlignedBB(0f, minY, 0f, f, maxY, 1f);
-      case NORTH_OFF:
-      case NORTH_ON:
-        return new AxisAlignedBB(0f, minY, 1f - f, 1f, maxY, 1f);
-      case SOUTH_OFF:
-      case SOUTH_ON:
-        return new AxisAlignedBB(0f, minY, 0f, 1f, maxY, f);
-      case WEST_OFF:
-      case WEST_ON:
-        return new AxisAlignedBB(1f - f, minY, 0f, 1f, maxY, 1f);
-      default:
-        return super.getBoundingBox(state, source, pos);
+    @Override
+    public TileEntity createNewTileEntity(World world, int meta) {
+        return new TileDryingRack();
     }
-  }
 
-  // @Override
-  // public void setBlockBoundsForItemRender() {
-  //
-  // // TODO
-  // super.setBlockBoundsForItemRender();
-  // }
+    @Override
+    public void addRecipes(RecipeMaker recipes) {
+        ItemStack stack = new ItemStack(this, 2);
+        if (!FunOres.registry.isItemDisabled(stack))
+            recipes.addShapedOre(getName(), stack, "www", "sss", 'w', "slabWood", 's', "stickWood");
+    }
 
-  // @Override
-  // public void setBlockBoundsBasedOnState(IBlockAccess worldIn, BlockPos pos) {
-  //
-  // final float f = 0.25f;
-  // final float minY = 1f - f;
-  // final float maxY = 1f;
-  // switch ((EnumMachineState) worldIn.getBlockState(pos).getValue(FACING)) {
-  // case EAST_OFF:
-  // case EAST_ON:
-  // setBlockBounds(0f, minY, 0f, f, maxY, 1f);
-  // break;
-  // case NORTH_OFF:
-  // case NORTH_ON:
-  // setBlockBounds(0f, minY, 1f - f, 1f, maxY, 1f);
-  // break;
-  // case SOUTH_OFF:
-  // case SOUTH_ON:
-  // setBlockBounds(0f, minY, 0f, 1f, maxY, f);
-  // break;
-  // case WEST_OFF:
-  // case WEST_ON:
-  // setBlockBounds(1f - f, minY, 0f, 1f, maxY, 1f);
-  // break;
-  // default:
-  // setBlockBounds(1f, 1f, 1f, 1f, 1f, 1f);
-  // }
-  // }
+    @Override
+    protected boolean clOnBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float side, float hitX, float hitY) {
+        TileEntity tile = world.getTileEntity(pos);
+        if (tile != null && tile instanceof TileDryingRack) {
+            TileDryingRack tileDryingRack = (TileDryingRack) tile;
+            ItemStack heldItem = player.getHeldItem(hand);
+            return tileDryingRack.interact(player, hand, heldItem);
+        }
+        return true;
+    }
 
-  @SuppressWarnings("deprecation")
-  @Override
-  public boolean isTranslucent(IBlockState state) {
+    @Override
+    protected void clAddCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn) {
+        state = state.getActualState(worldIn, pos);
+        addCollisionBoxToList(pos, entityBox, collidingBoxes, getBoundingBox(state, worldIn, pos));
+    }
 
-    return false;
-  }
+    @SuppressWarnings("deprecation")
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+        final float f = 0.25f;
+        final float minY = 1f - f;
+        final float maxY = 1f;
+        switch (getMachineState(state)) {
+            case EAST_OFF:
+            case EAST_ON:
+                return new AxisAlignedBB(0f, minY, 0f, f, maxY, 1f);
+            case NORTH_OFF:
+            case NORTH_ON:
+                return new AxisAlignedBB(0f, minY, 1f - f, 1f, maxY, 1f);
+            case SOUTH_OFF:
+            case SOUTH_ON:
+                return new AxisAlignedBB(0f, minY, 0f, 1f, maxY, f);
+            case WEST_OFF:
+            case WEST_ON:
+                return new AxisAlignedBB(1f - f, minY, 0f, 1f, maxY, 1f);
+            default:
+                return super.getBoundingBox(state, source, pos);
+        }
+    }
 
-  @SuppressWarnings("deprecation")
-  @Override
-  public boolean isOpaqueCube(IBlockState state) {
+    @Override
+    public boolean isTranslucent(IBlockState state) {
+        return false;
+    }
 
-    return false;
-  }
+    @Override
+    public boolean isOpaqueCube(IBlockState state) {
+        return false;
+    }
 
-  @SuppressWarnings("deprecation")
-  @Override
-  public boolean isFullBlock(IBlockState state) {
+    @Override
+    public boolean isFullBlock(IBlockState state) {
+        return false;
+    }
 
-    return false;
-  }
+    @Override
+    public boolean isFullCube(IBlockState state) {
+        return false;
+    }
 
-  @SuppressWarnings("deprecation")
-  @Override
-  public boolean isFullCube(IBlockState state) {
-
-    return false;
-  }
-
-  @Override
-  public boolean doesSideBlockRendering(IBlockState state, IBlockAccess world, BlockPos pos,
-      EnumFacing face) {
-
-    return false;
-  }
+    @Override
+    public boolean doesSideBlockRendering(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing face) {
+        return false;
+    }
 }

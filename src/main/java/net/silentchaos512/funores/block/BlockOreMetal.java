@@ -1,3 +1,21 @@
+/*
+ * Fun Ores -- BlockOreMetal
+ * Copyright (C) 2018 SilentChaos512
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation version 3
+ * of the License.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package net.silentchaos512.funores.block;
 
 import java.util.List;
@@ -24,127 +42,127 @@ import net.silentchaos512.lib.registry.RecipeMaker;
 
 public class BlockOreMetal extends BlockFunOre {
 
-  public static final PropertyEnum METAL = PropertyEnum.create("metal", EnumMetal.class);
+    public static final PropertyEnum METAL = PropertyEnum.create("metal", EnumMetal.class);
 
-  public BlockOreMetal() {
+    public BlockOreMetal() {
 
-    super(EnumMetal.count(), Names.METAL_ORE);
+        super(EnumMetal.count(), Names.METAL_ORE);
 
-    setHardness(3.0f);
-    setResistance(15.0f);
-    setSoundType(SoundType.STONE);
+        setHardness(3.0f);
+        setResistance(15.0f);
+        setSoundType(SoundType.STONE);
 
-    for (EnumMetal metal : EnumMetal.values()) {
-      if (metal == EnumMetal.COPPER || metal == EnumMetal.TIN || metal == EnumMetal.ALUMINIUM
-          || metal == EnumMetal.ZINC) {
-        setHarvestLevel("pickaxe", 1, getDefaultState().withProperty(METAL, metal));
-      } else {
-        setHarvestLevel("pickaxe", 2, getDefaultState().withProperty(METAL, metal));
-      }
+        for (EnumMetal metal : EnumMetal.values()) {
+            if (metal == EnumMetal.COPPER || metal == EnumMetal.TIN || metal == EnumMetal.ALUMINIUM
+                    || metal == EnumMetal.ZINC) {
+                setHarvestLevel("pickaxe", 1, getDefaultState().withProperty(METAL, metal));
+            } else {
+                setHarvestLevel("pickaxe", 2, getDefaultState().withProperty(METAL, metal));
+            }
+        }
+
+        setUnlocalizedName(Names.METAL_ORE);
     }
 
-    setUnlocalizedName(Names.METAL_ORE);
-  }
+    @Override
+    public ConfigOptionOreGen getConfig(int meta) {
 
-  @Override
-  public ConfigOptionOreGen getConfig(int meta) {
-
-    if (meta < 0 || meta >= EnumMetal.values().length)
-      return null;
-    return EnumMetal.byMetadata(meta).getConfig();
-  }
-
-  @Override
-  public boolean isEnabled(int meta) {
-
-    if (Config.disableMetalOres)
-      return false;
-
-    ConfigOptionOreGen config = getConfig(meta);
-    return config == null ? false : config.isEnabled();
-  }
-
-  @Override
-  public void addRecipes(RecipeMaker recipes) {
-
-    FunOresRegistry reg = FunOres.registry;
-    for (EnumMetal metal : EnumMetal.values()) {
-      ItemStack ore = new ItemStack(this, 1, metal.meta);
-      // No recipes for disabled ores!
-      if (!reg.isItemDisabled(ore)) {
-        ItemStack ingot = metal.getIngot();
-
-        // Vanilla smelting
-        if (!reg.isItemDisabled(ingot))
-          recipes.addSmelting(ore, ingot, 0.5f);
-
-        // Ender IO Sag Mill
-        ItemStack dust = metal.getDust();
-        ItemStack bonus = metal.getBonus();
-        if (!reg.isItemDisabled(dust) && !reg.isItemDisabled(bonus))
-          ModRecipeHelper.addSagMillRecipe(metal.getMetalName(), ore, dust, bonus, "cobblestone",
-              3000);
-      }
+        if (meta < 0 || meta >= EnumMetal.values().length)
+            return null;
+        return EnumMetal.byMetadata(meta).getConfig();
     }
-  }
 
-  @Override
-  public void addOreDict() {
+    @Override
+    public boolean isEnabled(int meta) {
 
-    for (EnumMetal metal : EnumMetal.values()) {
-      ItemStack stack = new ItemStack(this, 1, metal.getMeta());
-      if (!FunOres.registry.isItemDisabled(stack)) {
-        OreDictionary.registerOre("ore" + metal.getMetalName(), stack);
-        // Alternative spelling of aluminium
-        if (metal == EnumMetal.ALUMINIUM)
-          OreDictionary.registerOre("oreAluminum", stack);
-      }
+        if (Config.disableMetalOres)
+            return false;
+
+        ConfigOptionOreGen config = getConfig(meta);
+        return config == null ? false : config.isEnabled();
     }
-  }
 
-  @Override
-  public void getModels(Map<Integer, ModelResourceLocation> models) {
+    @Override
+    public void addRecipes(RecipeMaker recipes) {
 
-    for (EnumMetal metal : EnumMetal.values()) {
-      if (!FunOres.registry.isItemDisabled(new ItemStack(this, 1, metal.meta))) {
-        String name = FunOres.MOD_ID + ":Ore" + metal.getMetalName();
-        models.put(metal.ordinal(), new ModelResourceLocation(name.toLowerCase(), "inventory"));
-      }
+        FunOresRegistry reg = FunOres.registry;
+        for (EnumMetal metal : EnumMetal.values()) {
+            ItemStack ore = new ItemStack(this, 1, metal.meta);
+            // No recipes for disabled ores!
+            if (!reg.isItemDisabled(ore)) {
+                ItemStack ingot = metal.getIngot();
+
+                // Vanilla smelting
+                if (!reg.isItemDisabled(ingot))
+                    recipes.addSmelting(ore, ingot, 0.5f);
+
+                // Ender IO Sag Mill
+                ItemStack dust = metal.getDust();
+                ItemStack bonus = metal.getBonus();
+                if (!reg.isItemDisabled(dust) && !reg.isItemDisabled(bonus))
+                    ModRecipeHelper.addSagMillRecipe(metal.getMetalName(), ore, dust, bonus, "cobblestone",
+                            3000);
+            }
+        }
     }
-  }
 
-  @Override
-  public int damageDropped(IBlockState state) {
+    @Override
+    public void addOreDict() {
 
-    return ((EnumMetal) state.getValue(METAL)).getMeta();
-  }
-
-  @Override
-  public void clGetSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
-
-    for (EnumMetal metal : EnumMetal.values()) {
-      ItemStack stack = new ItemStack(item, 1, metal.meta);
-      if (!FunOres.registry.isItemDisabled(stack))
-        list.add(stack);
+        for (EnumMetal metal : EnumMetal.values()) {
+            ItemStack stack = new ItemStack(this, 1, metal.getMeta());
+            if (!FunOres.registry.isItemDisabled(stack)) {
+                OreDictionary.registerOre("ore" + metal.getMetalName(), stack);
+                // Alternative spelling of aluminium
+                if (metal == EnumMetal.ALUMINIUM)
+                    OreDictionary.registerOre("oreAluminum", stack);
+            }
+        }
     }
-  }
 
-  @SuppressWarnings("deprecation")
-  @Override
-  public IBlockState getStateFromMeta(int meta) {
+    @Override
+    public void getModels(Map<Integer, ModelResourceLocation> models) {
 
-    return this.getDefaultState().withProperty(METAL, EnumMetal.byMetadata(meta));
-  }
+        for (EnumMetal metal : EnumMetal.values()) {
+            if (!FunOres.registry.isItemDisabled(new ItemStack(this, 1, metal.meta))) {
+                String name = FunOres.MOD_ID + ":Ore" + metal.getMetalName();
+                models.put(metal.ordinal(), new ModelResourceLocation(name.toLowerCase(), "inventory"));
+            }
+        }
+    }
 
-  @Override
-  public int getMetaFromState(IBlockState state) {
+    @Override
+    public int damageDropped(IBlockState state) {
 
-    return ((EnumMetal) state.getValue(METAL)).getMeta();
-  }
+        return ((EnumMetal) state.getValue(METAL)).getMeta();
+    }
 
-  @Override
-  protected BlockStateContainer createBlockState() {
+    @Override
+    public void clGetSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
 
-    return new BlockStateContainer(this, new IProperty[] { METAL });
-  }
+        for (EnumMetal metal : EnumMetal.values()) {
+            ItemStack stack = new ItemStack(item, 1, metal.meta);
+            if (!FunOres.registry.isItemDisabled(stack))
+                list.add(stack);
+        }
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public IBlockState getStateFromMeta(int meta) {
+
+        return this.getDefaultState().withProperty(METAL, EnumMetal.byMetadata(meta));
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state) {
+
+        return ((EnumMetal) state.getValue(METAL)).getMeta();
+    }
+
+    @Override
+    protected BlockStateContainer createBlockState() {
+
+        return new BlockStateContainer(this, new IProperty[]{METAL});
+    }
 }

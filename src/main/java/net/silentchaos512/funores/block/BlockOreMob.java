@@ -1,3 +1,21 @@
+/*
+ * Fun Ores -- BlockOreMob
+ * Copyright (C) 2018 SilentChaos512
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation version 3
+ * of the License.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package net.silentchaos512.funores.block;
 
 import java.util.List;
@@ -32,138 +50,138 @@ import net.silentchaos512.funores.util.OreLootHelper;
 
 public class BlockOreMob extends BlockFunOre {
 
-  public static final PropertyEnum MOB = PropertyEnum.create("mob", EnumMob.class);
+    public static final PropertyEnum MOB = PropertyEnum.create("mob", EnumMob.class);
 
-  public BlockOreMob() {
+    public BlockOreMob() {
 
-    super(EnumMob.count(), Names.MOB_ORE);
+        super(EnumMob.count(), Names.MOB_ORE);
 
-    setHardness(1.5f);
-    setResistance(10.0f);
-    setSoundType(SoundType.STONE);
-    setHarvestLevel("pickaxe", 0);
+        setHardness(1.5f);
+        setResistance(10.0f);
+        setSoundType(SoundType.STONE);
+        setHarvestLevel("pickaxe", 0);
 
-    setUnlocalizedName(Names.MOB_ORE);
-  }
-
-  @Override
-  public ConfigOptionOreGen getConfig(int meta) {
-
-    if (meta < 0 || meta >= EnumMob.values().length)
-      return null;
-    return EnumMob.byMetadata(meta).getConfig();
-  }
-
-  @Override
-  public boolean isEnabled(int meta) {
-
-    if (Config.disableMobOres)
-      return false;
-
-    ConfigOptionOreGen config = getConfig(meta);
-    return config == null ? false : config.isEnabled();
-  }
-
-  @Override
-  public void addOreDict() {
-
-    for (EnumMob mob : EnumMob.values()) {
-      ItemStack stack = new ItemStack(this, 1, mob.getMeta());
-      if (!FunOres.registry.isItemDisabled(stack))
-        OreDictionary.registerOre("ore" + mob.getName(), stack);
-    }
-  }
-
-  @Override
-  public void getModels(Map<Integer, ModelResourceLocation> models) {
-
-    for (EnumMob mob : EnumMob.values()) {
-      if (!FunOres.registry.isItemDisabled(new ItemStack(this, 1, mob.meta))) {
-        String name = FunOres.MOD_ID + ":Ore" + mob.getUnmodifiedName();
-        models.put(mob.ordinal(), new ModelResourceLocation(name.toLowerCase(), "inventory"));
-      }
-    }
-  }
-
-  @Override
-  public int damageDropped(IBlockState state) {
-
-    return ((EnumMob) state.getValue(MOB)).getMeta();
-  }
-
-  @Override
-  public void clGetSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
-
-    for (EnumMob mob : EnumMob.values()) {
-      ItemStack stack = new ItemStack(item, 1, mob.meta);
-      if (!FunOres.registry.isItemDisabled(stack))
-        list.add(stack);
-    }
-  }
-
-  @SuppressWarnings("deprecation")
-  @Override
-  public IBlockState getStateFromMeta(int meta) {
-
-    return this.getDefaultState().withProperty(MOB, EnumMob.byMetadata(meta));
-  }
-
-  @Override
-  public int getMetaFromState(IBlockState state) {
-
-    return ((EnumMob) state.getValue(MOB)).getMeta();
-  }
-
-  @Override
-  protected BlockStateContainer createBlockState() {
-
-    return new BlockStateContainer(this, new IProperty[] { MOB });
-  }
-
-  @Override
-  public int getExpDrop(IBlockState state, IBlockAccess world, BlockPos pos, int fortune) {
-
-    Item drop = this.getItemDropped(world.getBlockState(pos), RANDOM, fortune);
-    if (drop != Item.getItemFromBlock(this)) {
-      return 1 + RANDOM.nextInt(3);
-    }
-    return 0;
-  }
-
-  @Override
-  public void dropBlockAsItemWithChance(World world, BlockPos pos, IBlockState state, float chance,
-      int fortune) {
-
-    super.dropBlockAsItemWithChance(world, pos, state, chance, fortune);
-
-    // Spawn Endermites?
-    if ((EnumMob) state.getValue(MOB) == EnumMob.ENDERMAN
-        && FunOres.instance.random.nextFloat() < Config.spawnEndermiteChance) {
-      if (!world.isRemote && world.getGameRules().getBoolean("doTileDrops")) {
-        EntityEndermite entity = new EntityEndermite(world);
-        entity.setLocationAndAngles((double) pos.getX() + 0.5, (double) pos.getY(),
-            (double) pos.getZ() + 0.5, 0.0f, 0.0f);
-        world.spawnEntity(entity);
-        entity.spawnExplosionParticle();
-      }
-    }
-  }
-
-  @Override
-  public List<ItemStack> clGetDrops(IBlockAccess world, BlockPos pos, IBlockState state,
-      int fortune) {
-
-    Random rand = world instanceof World ? ((World) world).rand : RANDOM;
-
-    if (world instanceof WorldServer) {
-      WorldServer worldServer = (WorldServer) world;
-      EnumMob mob = ((EnumMob) state.getValue(MOB));
-      EntityLivingBase entityLiving = mob.getEntityLiving(worldServer);
-      int tryCount = 1;
-      ConfigOptionOreGenBonus config = ((EnumMob) state.getValue(MOB)).getConfig();
-      return OreLootHelper.getDrops(worldServer, fortune, mob, tryCount, config);
+        setUnlocalizedName(Names.MOB_ORE);
     }
 
-    return Lists.newArrayList();
-  }
+    @Override
+    public ConfigOptionOreGen getConfig(int meta) {
+
+        if (meta < 0 || meta >= EnumMob.values().length)
+            return null;
+        return EnumMob.byMetadata(meta).getConfig();
+    }
+
+    @Override
+    public boolean isEnabled(int meta) {
+
+        if (Config.disableMobOres)
+            return false;
+
+        ConfigOptionOreGen config = getConfig(meta);
+        return config == null ? false : config.isEnabled();
+    }
+
+    @Override
+    public void addOreDict() {
+
+        for (EnumMob mob : EnumMob.values()) {
+            ItemStack stack = new ItemStack(this, 1, mob.getMeta());
+            if (!FunOres.registry.isItemDisabled(stack))
+                OreDictionary.registerOre("ore" + mob.getName(), stack);
+        }
+    }
+
+    @Override
+    public void getModels(Map<Integer, ModelResourceLocation> models) {
+
+        for (EnumMob mob : EnumMob.values()) {
+            if (!FunOres.registry.isItemDisabled(new ItemStack(this, 1, mob.meta))) {
+                String name = FunOres.MOD_ID + ":Ore" + mob.getUnmodifiedName();
+                models.put(mob.ordinal(), new ModelResourceLocation(name.toLowerCase(), "inventory"));
+            }
+        }
+    }
+
+    @Override
+    public int damageDropped(IBlockState state) {
+
+        return ((EnumMob) state.getValue(MOB)).getMeta();
+    }
+
+    @Override
+    public void clGetSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
+
+        for (EnumMob mob : EnumMob.values()) {
+            ItemStack stack = new ItemStack(item, 1, mob.meta);
+            if (!FunOres.registry.isItemDisabled(stack))
+                list.add(stack);
+        }
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public IBlockState getStateFromMeta(int meta) {
+
+        return this.getDefaultState().withProperty(MOB, EnumMob.byMetadata(meta));
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state) {
+
+        return ((EnumMob) state.getValue(MOB)).getMeta();
+    }
+
+    @Override
+    protected BlockStateContainer createBlockState() {
+
+        return new BlockStateContainer(this, new IProperty[]{MOB});
+    }
+
+    @Override
+    public int getExpDrop(IBlockState state, IBlockAccess world, BlockPos pos, int fortune) {
+
+        Item drop = this.getItemDropped(world.getBlockState(pos), RANDOM, fortune);
+        if (drop != Item.getItemFromBlock(this)) {
+            return 1 + RANDOM.nextInt(3);
+        }
+        return 0;
+    }
+
+    @Override
+    public void dropBlockAsItemWithChance(World world, BlockPos pos, IBlockState state, float chance,
+                                          int fortune) {
+
+        super.dropBlockAsItemWithChance(world, pos, state, chance, fortune);
+
+        // Spawn Endermites?
+        if ((EnumMob) state.getValue(MOB) == EnumMob.ENDERMAN
+                && FunOres.instance.random.nextFloat() < Config.spawnEndermiteChance) {
+            if (!world.isRemote && world.getGameRules().getBoolean("doTileDrops")) {
+                EntityEndermite entity = new EntityEndermite(world);
+                entity.setLocationAndAngles((double) pos.getX() + 0.5, (double) pos.getY(),
+                        (double) pos.getZ() + 0.5, 0.0f, 0.0f);
+                world.spawnEntity(entity);
+                entity.spawnExplosionParticle();
+            }
+        }
+    }
+
+    @Override
+    public List<ItemStack> clGetDrops(IBlockAccess world, BlockPos pos, IBlockState state,
+                                      int fortune) {
+
+        Random rand = world instanceof World ? ((World) world).rand : RANDOM;
+
+        if (world instanceof WorldServer) {
+            WorldServer worldServer = (WorldServer) world;
+            EnumMob mob = ((EnumMob) state.getValue(MOB));
+            EntityLivingBase entityLiving = mob.getEntityLiving(worldServer);
+            int tryCount = 1;
+            ConfigOptionOreGenBonus config = ((EnumMob) state.getValue(MOB)).getConfig();
+            return OreLootHelper.getDrops(worldServer, fortune, mob, tryCount, config);
+        }
+
+        return Lists.newArrayList();
+    }
 }

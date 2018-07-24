@@ -1,3 +1,21 @@
+/*
+ * Fun Ores -- BlockOreMeat
+ * Copyright (C) 2018 SilentChaos512
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation version 3
+ * of the License.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package net.silentchaos512.funores.block;
 
 import java.util.List;
@@ -36,154 +54,154 @@ import net.silentchaos512.wit.api.IWitHudInfo;
 
 public class BlockOreMeat extends BlockFunOre {
 
-  public static final PropertyEnum MEAT = PropertyEnum.create("meat", EnumMeat.class);
+    public static final PropertyEnum MEAT = PropertyEnum.create("meat", EnumMeat.class);
 
-  public BlockOreMeat() {
+    public BlockOreMeat() {
 
-    super(EnumMeat.count(), Names.MEAT_ORE);
+        super(EnumMeat.count(), Names.MEAT_ORE);
 
-    setHardness(1.5f);
-    setResistance(10.0f);
-    setSoundType(SoundType.STONE);
-    setHarvestLevel("pickaxe", 0);
+        setHardness(1.5f);
+        setResistance(10.0f);
+        setSoundType(SoundType.STONE);
+        setHarvestLevel("pickaxe", 0);
 
-    setUnlocalizedName(Names.MEAT_ORE);
-  }
-
-  @Override
-  public ConfigOptionOreGen getConfig(int meta) {
-
-    if (meta < 0 || meta >= EnumMeat.values().length)
-      return null;
-    return EnumMeat.byMetadata(meta).getConfig();
-  }
-
-  @Override
-  public boolean isEnabled(int meta) {
-
-    if (Config.disableMeatOres)
-      return false;
-
-    ConfigOptionOreGen config = getConfig(meta);
-    return config == null ? false : config.isEnabled();
-  }
-
-  @Override
-  public void addOreDict() {
-
-    for (EnumMeat meat : EnumMeat.values()) {
-      ItemStack stack = new ItemStack(this, 1, meat.meta);
-      if (!FunOres.registry.isItemDisabled(stack))
-        OreDictionary.registerOre("ore" + meat.getName(), stack);
-    }
-  }
-
-  @Override
-  public void getModels(Map<Integer, ModelResourceLocation> models) {
-
-    for (EnumMeat meat : EnumMeat.values()) {
-      if (!FunOres.registry.isItemDisabled(new ItemStack(this, 1, meat.meta))) {
-        String name = FunOres.MOD_ID + ":Ore" + meat.getUnmodifiedName();
-        models.put(meat.ordinal(), new ModelResourceLocation(name.toLowerCase(), "inventory"));
-      }
-    }
-  }
-
-  @Override
-  public int damageDropped(IBlockState state) {
-
-    return ((EnumMeat) state.getValue(MEAT)).getMeta();
-  }
-
-  @Override
-  public void clGetSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
-
-    for (EnumMeat meat : EnumMeat.values()) {
-      ItemStack stack = new ItemStack(item, 1, meat.meta);
-      if (!FunOres.registry.isItemDisabled(stack))
-        list.add(stack);
-    }
-  }
-
-  @SuppressWarnings("deprecation")
-  @Override
-  public IBlockState getStateFromMeta(int meta) {
-
-    return this.getDefaultState().withProperty(MEAT, EnumMeat.byMetadata(meta));
-  }
-
-  @Override
-  public int getMetaFromState(IBlockState state) {
-
-    return ((EnumMeat) state.getValue(MEAT)).getMeta();
-  }
-
-  @Override
-  protected BlockStateContainer createBlockState() {
-
-    return new BlockStateContainer(this, new IProperty[] { MEAT });
-  }
-
-  @Override
-  public int getExpDrop(IBlockState state, IBlockAccess world, BlockPos pos, int fortune) {
-
-    Item drop = this.getItemDropped(world.getBlockState(pos), RANDOM, fortune);
-    if (drop != Item.getItemFromBlock(this)) {
-      return 1 + RANDOM.nextInt(3);
-    }
-    return 0;
-  }
-
-  @Override
-  public void dropBlockAsItemWithChance(World world, BlockPos pos, IBlockState state, float chance,
-      int fortune) {
-
-    super.dropBlockAsItemWithChance(world, pos, state, chance, fortune);
-
-    // Spawn bats?
-    if ((EnumMeat) state.getValue(MEAT) == EnumMeat.BAT
-        && FunOres.instance.random.nextFloat() < Config.spawnBatChance) {
-      if (!world.isRemote && world.getGameRules().getBoolean("doTileDrops")) {
-        EntityBat entity = new EntityBat(world);
-        entity.setLocationAndAngles((double) pos.getX() + 0.5, (double) pos.getY(),
-            (double) pos.getZ() + 0.5, 0.0f, 0.0f);
-        world.spawnEntity(entity);
-        entity.spawnExplosionParticle();
-      }
-    }
-  }
-
-  @Override
-  public List<ItemStack> clGetDrops(IBlockAccess world, BlockPos pos, IBlockState state,
-      int fortune) {
-
-    Random rand = FunOres.random;
-
-    if (world instanceof WorldServer) {
-      WorldServer worldServer = (WorldServer) world;
-      EnumMeat meat = ((EnumMeat) state.getValue(MEAT));
-      EntityLivingBase entityLiving = meat.getEntityLiving(worldServer);
-      int tryCount = meat == EnumMeat.FISH ? 2 + rand.nextInt(3) : 1;
-      ConfigOptionOreGenBonus config = ((EnumMeat) state.getValue(MEAT)).getConfig();
-      return OreLootHelper.getDrops(worldServer, fortune, meat, tryCount, config);
+        setUnlocalizedName(Names.MEAT_ORE);
     }
 
-    return Lists.newArrayList();
-  }
+    @Override
+    public ConfigOptionOreGen getConfig(int meta) {
 
-  @Override
-  public int quantityDroppedWithBonus(int fortune, Random random) {
-
-    if (fortune > 0) {
-      int j = random.nextInt(fortune + 2) - 1;
-
-      if (j < 0) {
-        j = 0;
-      }
-
-      return quantityDropped(random) * (j + 1);
-    } else {
-      return quantityDropped(random);
+        if (meta < 0 || meta >= EnumMeat.values().length)
+            return null;
+        return EnumMeat.byMetadata(meta).getConfig();
     }
-  }
+
+    @Override
+    public boolean isEnabled(int meta) {
+
+        if (Config.disableMeatOres)
+            return false;
+
+        ConfigOptionOreGen config = getConfig(meta);
+        return config == null ? false : config.isEnabled();
+    }
+
+    @Override
+    public void addOreDict() {
+
+        for (EnumMeat meat : EnumMeat.values()) {
+            ItemStack stack = new ItemStack(this, 1, meat.meta);
+            if (!FunOres.registry.isItemDisabled(stack))
+                OreDictionary.registerOre("ore" + meat.getName(), stack);
+        }
+    }
+
+    @Override
+    public void getModels(Map<Integer, ModelResourceLocation> models) {
+
+        for (EnumMeat meat : EnumMeat.values()) {
+            if (!FunOres.registry.isItemDisabled(new ItemStack(this, 1, meat.meta))) {
+                String name = FunOres.MOD_ID + ":Ore" + meat.getUnmodifiedName();
+                models.put(meat.ordinal(), new ModelResourceLocation(name.toLowerCase(), "inventory"));
+            }
+        }
+    }
+
+    @Override
+    public int damageDropped(IBlockState state) {
+
+        return ((EnumMeat) state.getValue(MEAT)).getMeta();
+    }
+
+    @Override
+    public void clGetSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
+
+        for (EnumMeat meat : EnumMeat.values()) {
+            ItemStack stack = new ItemStack(item, 1, meat.meta);
+            if (!FunOres.registry.isItemDisabled(stack))
+                list.add(stack);
+        }
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public IBlockState getStateFromMeta(int meta) {
+
+        return this.getDefaultState().withProperty(MEAT, EnumMeat.byMetadata(meta));
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state) {
+
+        return ((EnumMeat) state.getValue(MEAT)).getMeta();
+    }
+
+    @Override
+    protected BlockStateContainer createBlockState() {
+
+        return new BlockStateContainer(this, new IProperty[]{MEAT});
+    }
+
+    @Override
+    public int getExpDrop(IBlockState state, IBlockAccess world, BlockPos pos, int fortune) {
+
+        Item drop = this.getItemDropped(world.getBlockState(pos), RANDOM, fortune);
+        if (drop != Item.getItemFromBlock(this)) {
+            return 1 + RANDOM.nextInt(3);
+        }
+        return 0;
+    }
+
+    @Override
+    public void dropBlockAsItemWithChance(World world, BlockPos pos, IBlockState state, float chance,
+                                          int fortune) {
+
+        super.dropBlockAsItemWithChance(world, pos, state, chance, fortune);
+
+        // Spawn bats?
+        if ((EnumMeat) state.getValue(MEAT) == EnumMeat.BAT
+                && FunOres.instance.random.nextFloat() < Config.spawnBatChance) {
+            if (!world.isRemote && world.getGameRules().getBoolean("doTileDrops")) {
+                EntityBat entity = new EntityBat(world);
+                entity.setLocationAndAngles((double) pos.getX() + 0.5, (double) pos.getY(),
+                        (double) pos.getZ() + 0.5, 0.0f, 0.0f);
+                world.spawnEntity(entity);
+                entity.spawnExplosionParticle();
+            }
+        }
+    }
+
+    @Override
+    public List<ItemStack> clGetDrops(IBlockAccess world, BlockPos pos, IBlockState state,
+                                      int fortune) {
+
+        Random rand = FunOres.random;
+
+        if (world instanceof WorldServer) {
+            WorldServer worldServer = (WorldServer) world;
+            EnumMeat meat = ((EnumMeat) state.getValue(MEAT));
+            EntityLivingBase entityLiving = meat.getEntityLiving(worldServer);
+            int tryCount = meat == EnumMeat.FISH ? 2 + rand.nextInt(3) : 1;
+            ConfigOptionOreGenBonus config = ((EnumMeat) state.getValue(MEAT)).getConfig();
+            return OreLootHelper.getDrops(worldServer, fortune, meat, tryCount, config);
+        }
+
+        return Lists.newArrayList();
+    }
+
+    @Override
+    public int quantityDroppedWithBonus(int fortune, Random random) {
+
+        if (fortune > 0) {
+            int j = random.nextInt(fortune + 2) - 1;
+
+            if (j < 0) {
+                j = 0;
+            }
+
+            return quantityDropped(random) * (j + 1);
+        } else {
+            return quantityDropped(random);
+        }
+    }
 }

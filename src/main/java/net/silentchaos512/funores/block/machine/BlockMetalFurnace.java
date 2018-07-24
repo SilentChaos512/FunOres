@@ -1,3 +1,21 @@
+/*
+ * Fun Ores -- BlockMetalFurnace
+ * Copyright (C) 2018 SilentChaos512
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation version 3
+ * of the License.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package net.silentchaos512.funores.block.machine;
 
 import net.minecraft.block.material.Material;
@@ -17,41 +35,36 @@ import net.silentchaos512.lib.registry.RecipeMaker;
 
 public class BlockMetalFurnace extends BlockMachine {
 
-  public BlockMetalFurnace() {
-
-    super(Material.IRON, Names.METAL_FURNACE);
-  }
-
-  @Override
-  public TileEntity createNewTileEntity(World worldIn, int meta) {
-
-    return new TileMetalFurnace();
-  }
-
-  @Override
-  public void addRecipes(RecipeMaker recipes) {
-
-    ItemStack result = new ItemStack(this);
-    if (!FunOres.registry.isItemDisabled(result)) {
-      recipes.addShapedOre(getName() + 0, result, "aaa", "afa", "bab", 'a', "plateBronze", 'b', Blocks.BRICK_BLOCK, 'f', Blocks.FURNACE);
-      recipes.addShapedOre(getName() + 1, result, "aaa", "afa", "bab", 'a', "plateBrass", 'b', Blocks.BRICK_BLOCK, 'f', Blocks.FURNACE);
+    public BlockMetalFurnace() {
+        super(Material.IRON, Names.METAL_FURNACE);
     }
-  }
 
-  @Override
-  protected boolean clOnBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player,
-      EnumHand hand, EnumFacing facing, float side, float hitX, float hitY) {
-
-    if (world.isRemote) {
-      return true;
-    } else {
-      TileEntity tile = world.getTileEntity(pos);
-
-      if (tile instanceof TileMetalFurnace) {
-        player.openGui(FunOres.instance, 0, world, pos.getX(), pos.getY(), pos.getZ());
-      }
-
-      return true;
+    @Override
+    public TileEntity createNewTileEntity(World worldIn, int meta) {
+        return new TileMetalFurnace();
     }
-  }
+
+    @Override
+    public void addRecipes(RecipeMaker recipes) {
+        ItemStack result = new ItemStack(this);
+        if (!FunOres.registry.isItemDisabled(result)) {
+            recipes.addShapedOre(getName() + 0, result, "aaa", "afa", "bab", 'a', "plateBronze", 'b', Blocks.BRICK_BLOCK, 'f', Blocks.FURNACE);
+            recipes.addShapedOre(getName() + 1, result, "aaa", "afa", "bab", 'a', "plateBrass", 'b', Blocks.BRICK_BLOCK, 'f', Blocks.FURNACE);
+        }
+    }
+
+    @Override
+    protected boolean clOnBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float side, float hitX, float hitY) {
+        if (world.isRemote) {
+            return true;
+        } else {
+            TileEntity tile = world.getTileEntity(pos);
+
+            if (tile instanceof TileMetalFurnace) {
+                player.openGui(FunOres.instance, 0, world, pos.getX(), pos.getY(), pos.getZ());
+            }
+
+            return true;
+        }
+    }
 }

@@ -1,9 +1,7 @@
-@API(owner = "FunOres", apiVersion = "3", provides = "FunOresAPI")
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-package net.silentchaos512.funores.api;
+package net.silentchaos512.funores.api.recipe.alloysmelter;
 
 import mcp.MethodsReturnNonnullByDefault;
-import net.minecraftforge.fml.common.API;
 
 import javax.annotation.ParametersAreNonnullByDefault;

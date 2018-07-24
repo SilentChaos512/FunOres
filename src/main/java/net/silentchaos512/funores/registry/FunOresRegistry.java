@@ -1,3 +1,21 @@
+/*
+ * Fun Ores -- FunOresRegistry
+ * Copyright (C) 2018 SilentChaos512
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation version 3
+ * of the License.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package net.silentchaos512.funores.registry;
 
 import java.util.HashSet;
@@ -20,96 +38,89 @@ import net.silentchaos512.lib.util.StackHelper;
 
 /**
  * Modified SRegistry that automatically loads configs for disableable (IDisableable) items.
- * 
- * @author Silent
  *
+ * @author Silent
  */
 public class FunOresRegistry extends SRegistry {
 
-  public FunOresRegistry(String modId, LogHelper logHelper) {
-
-    super(modId, logHelper);
-  }
-
-  /**
-   * Set of disabled items (contains values returned by getStackKey)
-   */
-  Set<String> disabledItems = new HashSet<>();
-
-  private List<ItemStack> getSubItems(IDisableable disableable, Item item) {
-
-    return disableable.getSubItems(item);
-  }
-
-  /**
-   * Check that the item is disabled in the config file.
-   */
-  public boolean isItemDisabled(ItemStack stack) {
-
-    return disabledItems.contains(getStackKey(stack));
-  }
-
-  /**
-   * Gets a String to use for the disabledItems set.
-   */
-  private String getStackKey(ItemStack stack) {
-
-    if (stack == null || StackHelper.isEmpty(stack))
-      return "null";
-    return stack.getUnlocalizedName() + ":" + stack.getItemDamage();
-  }
-
-  @Override
-  public Block registerBlock(Block block, String key, ItemBlock itemBlock) {
-
-    super.registerBlock(block, key, itemBlock);
-
-    if (block instanceof IDisableable) {
-      // General disableable blocks.
-      List<ItemStack> list = getSubItems((IDisableable) block, itemBlock);
-      for (ItemStack stack : list) {
-        if (!Config.isItemDisabled(stack)) {
-          block.setCreativeTab(FunOres.tabFunOres);
-        } else {
-          disabledItems.add(getStackKey(stack));
-          if (Loader.isModLoaded("jei"))
-            FunOresPlugin.disabledItems.add(stack);
-        }
-      }
-    } else if (block instanceof BlockFunOre) {
-      // Ores are not IDisableable, so we check the ore configs.
-      BlockFunOre ore = (BlockFunOre) block;
-      for (int i = 0; i < ore.maxMeta; ++i) {
-        if (!ore.isEnabled(i)) {
-          ItemStack stack = new ItemStack(itemBlock, 1, i);
-          disabledItems.add(getStackKey(stack));
-          if (Loader.isModLoaded("jei"))
-            FunOresPlugin.disabledItems.add(stack);
-        } else {
-          block.setCreativeTab(FunOres.tabFunOres);
-        }
-      }
+    public FunOresRegistry(String modId, LogHelper logHelper) {
+        super(modId, logHelper);
     }
 
-    return block;
-  }
+    /**
+     * Set of disabled items (contains values returned by getStackKey)
+     */
+    Set<String> disabledItems = new HashSet<>();
 
-  @Override
-  public Item registerItem(Item item, String key) {
-
-    if (item instanceof IDisableable) {
-      List<ItemStack> list = getSubItems((IDisableable) item, item);
-      for (ItemStack stack : list) {
-        if (!Config.isItemDisabled(stack)) {
-          item.setCreativeTab(FunOres.tabFunOres);
-        } else {
-          disabledItems.add(getStackKey(stack));
-          if (Loader.isModLoaded("jei"))
-            FunOresPlugin.disabledItems.add(stack);
-        }
-      }
+    private List<ItemStack> getSubItems(IDisableable disableable, Item item) {
+        return disableable.getSubItems(item);
     }
 
-    return super.registerItem(item, key);
-  }
+    /**
+     * Check that the item is disabled in the config file.
+     */
+    public boolean isItemDisabled(ItemStack stack) {
+        return disabledItems.contains(getStackKey(stack));
+    }
+
+    /**
+     * Gets a String to use for the disabledItems set.
+     */
+    private String getStackKey(ItemStack stack) {
+        if (stack == null || StackHelper.isEmpty(stack))
+            return "null";
+        return stack.getUnlocalizedName() + ":" + stack.getItemDamage();
+    }
+
+    @Override
+    public Block registerBlock(Block block, String key, ItemBlock itemBlock) {
+        super.registerBlock(block, key, itemBlock);
+
+        if (block instanceof IDisableable) {
+            // General disableable blocks.
+            List<ItemStack> list = getSubItems((IDisableable) block, itemBlock);
+            for (ItemStack stack : list) {
+                if (!Config.isItemDisabled(stack)) {
+                    block.setCreativeTab(FunOres.tabFunOres);
+                } else {
+                    disabledItems.add(getStackKey(stack));
+                    if (Loader.isModLoaded("jei"))
+                        FunOresPlugin.disabledItems.add(stack);
+                }
+            }
+        } else if (block instanceof BlockFunOre) {
+            // Ores are not IDisableable, so we check the ore configs.
+            BlockFunOre ore = (BlockFunOre) block;
+            for (int i = 0; i < ore.maxMeta; ++i) {
+                if (!ore.isEnabled(i)) {
+                    ItemStack stack = new ItemStack(itemBlock, 1, i);
+                    disabledItems.add(getStackKey(stack));
+                    if (Loader.isModLoaded("jei"))
+                        FunOresPlugin.disabledItems.add(stack);
+                } else {
+                    block.setCreativeTab(FunOres.tabFunOres);
+                }
+            }
+        }
+
+        return block;
+    }
+
+    @Override
+    public Item registerItem(Item item, String key) {
+        if (item instanceof IDisableable) {
+            List<ItemStack> list = getSubItems((IDisableable) item, item);
+            for (ItemStack stack : list) {
+                if (!Config.isItemDisabled(stack)) {
+                    item.setCreativeTab(FunOres.tabFunOres);
+                } else {
+                    disabledItems.add(getStackKey(stack));
+                    if (Loader.isModLoaded("jei"))
+                        FunOresPlugin.disabledItems.add(stack);
+                }
+            }
+        }
+
+        return super.registerItem(item, key);
+    }
 }

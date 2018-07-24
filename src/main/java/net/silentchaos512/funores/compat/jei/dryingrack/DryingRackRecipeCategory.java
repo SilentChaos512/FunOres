@@ -1,6 +1,22 @@
-package net.silentchaos512.funores.compat.jei.dryingrack;
+/*
+ * Fun Ores -- DryingRackRecipeCategory
+ * Copyright (C) 2018 SilentChaos512
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation version 3
+ * of the License.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
-import javax.annotation.Nonnull;
+package net.silentchaos512.funores.compat.jei.dryingrack;
 
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawable;
@@ -15,61 +31,63 @@ import net.minecraft.util.ResourceLocation;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.compat.jei.FunOresPlugin;
 
+import javax.annotation.Nonnull;
+
 public class DryingRackRecipeCategory implements IRecipeCategory {
 
-  public static final String CATEGORY = FunOres.MOD_ID + ":DryingRack";
+    public static final String CATEGORY = FunOres.MOD_ID + ":DryingRack";
 
-  @Nonnull
-  protected final IDrawable background;
-  @Nonnull
-  protected final IDrawableAnimated arrow;
-  @Nonnull
-  private final String localizedName = FunOres.instance.localizationHelper
-      .getLocalizedString(("jei.funores.recipe.DryingRack"));
+    @Nonnull
+    protected final IDrawable background;
+    @Nonnull
+    protected final IDrawableAnimated arrow;
+    @Nonnull
+    private final String localizedName = FunOres.instance.localizationHelper
+            .getLocalizedString(("jei.funores.recipe.DryingRack"));
 
-  public DryingRackRecipeCategory(IGuiHelper guiHelper) {
+    public DryingRackRecipeCategory(IGuiHelper guiHelper) {
 
-    ResourceLocation backgroundLocation = new ResourceLocation(
-        FunOres.RESOURCE_PREFIX + "textures/gui/jei/DryingRack.png");
+        ResourceLocation backgroundLocation = new ResourceLocation(
+                FunOres.RESOURCE_PREFIX + "textures/gui/jei/DryingRack.png");
 
-    background = FunOresPlugin.jeiHelper.getGuiHelper().createDrawable(backgroundLocation, 0, 0,
-        120, 40);
+        background = FunOresPlugin.jeiHelper.getGuiHelper().createDrawable(backgroundLocation, 0, 0,
+                120, 40);
 
-    ResourceLocation furnaceLocation = new ResourceLocation("minecraft",
-        "textures/gui/container/furnace.png");
-    IDrawableStatic arrowDrawable = guiHelper.createDrawable(furnaceLocation, 176, 14, 24, 17);
-    this.arrow = guiHelper.createAnimatedDrawable(arrowDrawable, 200,
-        IDrawableAnimated.StartDirection.LEFT, false);
-  }
+        ResourceLocation furnaceLocation = new ResourceLocation("minecraft",
+                "textures/gui/container/furnace.png");
+        IDrawableStatic arrowDrawable = guiHelper.createDrawable(furnaceLocation, 176, 14, 24, 17);
+        this.arrow = guiHelper.createAnimatedDrawable(arrowDrawable, 200,
+                IDrawableAnimated.StartDirection.LEFT, false);
+    }
 
-  //@Override
-  public void drawAnimations(Minecraft mc) {
+    //@Override
+    public void drawAnimations(Minecraft mc) {
 
-    arrow.draw(mc, 47, 10);
-  }
+        arrow.draw(mc, 47, 10);
+    }
 
-  @Override
-  public void drawExtras(Minecraft mc) {
+    @Override
+    public void drawExtras(Minecraft mc) {
 
-  }
+    }
 
-  @Override
-  public IDrawable getBackground() {
+    @Override
+    public IDrawable getBackground() {
 
-    return background;
-  }
+        return background;
+    }
 
-  @Override
-  public String getTitle() {
+    @Override
+    public String getTitle() {
 
-    return localizedName;
-  }
+        return localizedName;
+    }
 
-  @Override
-  public String getUid() {
+    @Override
+    public String getUid() {
 
-    return CATEGORY;
-  }
+        return CATEGORY;
+    }
 
 //  @Override
 //  public void setRecipe(IRecipeLayout recipeLayout, IRecipeWrapper recipeWrapper) {
@@ -77,29 +95,29 @@ public class DryingRackRecipeCategory implements IRecipeCategory {
 //    setRecipe(recipeLayout, recipeWrapper, null);
 //  }
 
-  @Override
-  public void setRecipe(IRecipeLayout recipeLayout, IRecipeWrapper recipeWrapper, IIngredients ingredients) {
+    @Override
+    public void setRecipe(IRecipeLayout recipeLayout, IRecipeWrapper recipeWrapper, IIngredients ingredients) {
 
-    recipeLayout.getItemStacks().init(0, true, 26, 11);
-    recipeLayout.getItemStacks().init(1, false, 77, 11);
+        recipeLayout.getItemStacks().init(0, true, 26, 11);
+        recipeLayout.getItemStacks().init(1, false, 77, 11);
 
-    if (recipeWrapper instanceof DryingRackRecipeJei) {
-      DryingRackRecipeJei wrapper = (DryingRackRecipeJei) recipeWrapper;
-      recipeLayout.getItemStacks().set(0, wrapper.getInputs());
-      recipeLayout.getItemStacks().set(1, wrapper.getOutputs());
+        if (recipeWrapper instanceof DryingRackRecipeJei) {
+            DryingRackRecipeJei wrapper = (DryingRackRecipeJei) recipeWrapper;
+            recipeLayout.getItemStacks().set(0, wrapper.getInputs());
+            recipeLayout.getItemStacks().set(1, wrapper.getOutputs());
+        }
     }
-  }
 
-  @Override
-  public IDrawable getIcon() {
+    @Override
+    public IDrawable getIcon() {
 
-    // TODO Auto-generated method stub
-    return null;
-  }
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-  @Override
-  public String getModName() {
+    @Override
+    public String getModName() {
 
-    return FunOres.MOD_NAME;
-  }
+        return FunOres.MOD_NAME;
+    }
 }
