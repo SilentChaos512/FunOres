@@ -19,16 +19,16 @@
 package net.silentchaos512.funores.block;
 
 import net.minecraft.block.material.Material;
-import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGen;
-import net.silentchaos512.lib.block.BlockSL;
+import net.silentchaos512.lib.block.BlockMetaSubtypes;
+import net.silentchaos512.lib.registry.IAddRecipes;
 
-public abstract class BlockFunOre extends BlockSL {
+public abstract class BlockFunOre extends BlockMetaSubtypes implements IAddRecipes {
 
     public final int maxMeta;
 
-    public BlockFunOre(int subBlockCount, String name) {
-        super(subBlockCount, FunOres.MOD_ID, name, Material.ROCK);
+    public BlockFunOre(int subBlockCount) {
+        super(Material.ROCK, subBlockCount);
         this.maxMeta = subBlockCount;
     }
 

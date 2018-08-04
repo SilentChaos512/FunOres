@@ -18,30 +18,24 @@
 
 package net.silentchaos512.funores.init;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fluids.BlockFluidBase;
-import net.minecraftforge.fluids.BlockFluidClassic;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.*;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.block.BlockMoltenFluid;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ModFluids {
 
@@ -76,10 +70,8 @@ public class ModFluids {
             fluidPlatinum = newFluid("platinum", 2000, 10000, 800, 10, 0xFF81A3F0);
             fluidTitanium = newFluid("titanium", 2000, 10000, 800, 10, 0xFF4845B4);
 
-            fluidBlockPlatinum = registerFluidBlock(fluidPlatinum, new BlockMoltenFluid(fluidPlatinum),
-                    "platinum");
-            fluidBlockTitanium = registerFluidBlock(fluidTitanium, new BlockMoltenFluid(fluidTitanium),
-                    "titanium");
+            fluidBlockPlatinum = registerFluidBlock(fluidPlatinum, new BlockMoltenFluid(fluidPlatinum), "platinum");
+            fluidBlockTitanium = registerFluidBlock(fluidTitanium, new BlockMoltenFluid(fluidTitanium), "titanium");
 
             registerFluidWithTCon(fluidPlatinum, true);
             registerFluidWithTCon(fluidTitanium, true);
@@ -87,18 +79,14 @@ public class ModFluids {
     }
 
     private static Fluid newFluid(String name, int density, int viscosity, int temperature, int luminosity, final int tintColor) {
-        Fluid fluid = new Fluid(name, new ResourceLocation(FunOres.MOD_ID + ":blocks/molten_metal"),
-                new ResourceLocation(FunOres.MOD_ID + ":blocks/molten_metal_flow")) {
-
+        Fluid fluid = new Fluid(name, new ResourceLocation(FunOres.MOD_ID + ":blocks/molten_metal"), new ResourceLocation(FunOres.MOD_ID + ":blocks/molten_metal_flow")) {
             @Override
             public int getColor() {
-
                 return tintColor;
             }
 
             @Override
             public String getLocalizedName(FluidStack stack) {
-
                 return FunOres.localizationHelper.getLocalizedString(unlocalizedName);
             }
         };
@@ -129,7 +117,7 @@ public class ModFluids {
     private static BlockFluidClassic registerFluidBlock(Fluid fluid, BlockFluidClassic block, String name) {
         String blockName = "Molten" + Character.toUpperCase(name.charAt(0)) + name.substring(1);
         FunOres.registry.registerBlock(block, blockName);
-        block.setUnlocalizedName(FunOres.RESOURCE_PREFIX + blockName);
+        block.setTranslationKey(FunOres.RESOURCE_PREFIX + blockName);
         fluidBlocks.put(fluid, block);
         fluidBlockNames.put(block, name);
         return block;
@@ -145,16 +133,8 @@ public class ModFluids {
             final ModelResourceLocation fluidModelLocation = new ModelResourceLocation(
                     FunOres.RESOURCE_PREFIX + name, "fluid");
             ModelBakery.registerItemVariants(item);
-            ModelLoader.setCustomMeshDefinition(item, new ItemMeshDefinition() {
-
-                @Override
-                public ModelResourceLocation getModelLocation(ItemStack stack) {
-
-                    return fluidModelLocation;
-                }
-            });
+            ModelLoader.setCustomMeshDefinition(item, stack -> fluidModelLocation);
             ModelLoader.setCustomStateMapper(block, new StateMapperBase() {
-
                 @Override
                 protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
 

@@ -26,8 +26,8 @@ import javax.annotation.Nullable;
 import java.util.*;
 
 public class AlloySmelterRecipe {
-    private static final List<AlloySmelterRecipe> allRecipes = new ArrayList<>();
-    private static final Set<AlloySmelterRecipeObject> allIngredients = new HashSet<>();
+    public static final List<AlloySmelterRecipe> ALL_RECIPES = new ArrayList<>();
+    private static final Set<AlloySmelterRecipeObject> ALL_INGREDIENTS = new HashSet<>();
 
     private static final int MAX_INPUTS = 4;
 
@@ -53,8 +53,8 @@ public class AlloySmelterRecipe {
     public static void addRecipe(ItemStack output, int cookTime, float experience, Object... inputs) {
         if (FunOres.registry.isItemDisabled(new ItemStack(ModBlocks.alloySmelter))) return;
         AlloySmelterRecipe newRecipe = new AlloySmelterRecipe(output, cookTime, experience, inputs);
-        Collections.addAll(allIngredients, newRecipe.getInputs());
-        allRecipes.add(newRecipe);
+        Collections.addAll(ALL_INGREDIENTS, newRecipe.getInputs());
+        ALL_RECIPES.add(newRecipe);
     }
 
     /**
@@ -65,7 +65,7 @@ public class AlloySmelterRecipe {
      */
     @Nullable
     public static AlloySmelterRecipe getMatchingRecipe(List<ItemStack> inputList) {
-        for (AlloySmelterRecipe recipe : allRecipes) {
+        for (AlloySmelterRecipe recipe : ALL_RECIPES) {
             if (recipe.matches(inputList)) {
                 return recipe;
             }
@@ -75,7 +75,7 @@ public class AlloySmelterRecipe {
 
     @Nullable
     public static AlloySmelterRecipe getRecipeByOutput(ItemStack stack) {
-        for (AlloySmelterRecipe recipe : allRecipes) {
+        for (AlloySmelterRecipe recipe : ALL_RECIPES) {
             if (recipe.getOutput().isItemEqual(stack)) {
                 return recipe;
             }
@@ -87,7 +87,7 @@ public class AlloySmelterRecipe {
         if (stack.isEmpty()) return false;
         ItemStack copy = stack.copy();
         copy.setCount(64);
-        for (AlloySmelterRecipeObject recipeObject : allIngredients) {
+        for (AlloySmelterRecipeObject recipeObject : ALL_INGREDIENTS) {
             if (recipeObject.matches(copy)) {
                 return true;
             }

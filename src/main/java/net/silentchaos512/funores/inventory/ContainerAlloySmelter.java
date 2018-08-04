@@ -55,7 +55,7 @@ public class ContainerAlloySmelter extends Container {
         super.detectAndSendChanges();
 
         for (int i = 0; i < this.listeners.size(); ++i) {
-            IContainerListener icrafting = (IContainerListener) this.listeners.get(i);
+            IContainerListener icrafting = this.listeners.get(i);
 
             if (this.cookTime != this.tileAlloySmelter.getField(2)) {
                 icrafting.sendWindowProperty(this, 2, this.tileAlloySmelter.getField(2));

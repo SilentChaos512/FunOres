@@ -40,13 +40,13 @@ public class ModRecipeHelper {
     public static void addSagMillRecipe(String key, ItemStack input, ItemStack outputPrimary, ItemStack outputSecondary, String stoneName, int energy) {
         String inputName = input.getItem() instanceof IRegistryObject
                 ? ((IRegistryObject) input.getItem()).getName()
-                : input.getItem().getUnlocalizedName().replaceFirst("(item\\.FunOres:|tile\\.)", "");
+                : input.getItem().getTranslationKey().replaceFirst("(item\\.FunOres:|tile\\.)", "");
         String outputName = outputPrimary.getItem() instanceof IRegistryObject
                 ? ((IRegistryObject) outputPrimary.getItem()).getName()
-                : outputPrimary.getItem().getUnlocalizedName().replaceFirst("(item\\.FunOres:|tile\\.)", "");
+                : outputPrimary.getItem().getTranslationKey().replaceFirst("(item\\.FunOres:|tile\\.)", "");
         String extraName = outputSecondary.getItem() instanceof IRegistryObject
                 ? ((IRegistryObject) outputSecondary.getItem()).getName()
-                : outputSecondary.getItem().getUnlocalizedName().replaceFirst("(item\\.FunOres:|tile\\.)", "");
+                : outputSecondary.getItem().getTranslationKey().replaceFirst("(item\\.FunOres:|tile\\.)", "");
 
         int inputMeta = input.getItemDamage();
         int outputMeta = outputPrimary.getItemDamage();

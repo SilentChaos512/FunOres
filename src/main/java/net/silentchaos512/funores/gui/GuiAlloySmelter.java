@@ -18,8 +18,6 @@
 
 package net.silentchaos512.funores.gui;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -30,11 +28,10 @@ import net.minecraft.util.ResourceLocation;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.inventory.ContainerAlloySmelter;
 import net.silentchaos512.funores.tile.TileAlloySmelter;
-import net.silentchaos512.lib.SilentLib;
+import org.lwjgl.opengl.GL11;
 
 public class GuiAlloySmelter extends GuiContainer {
-    private static final ResourceLocation guiTextures = new ResourceLocation(FunOres.MOD_ID,
-            "textures/gui/alloysmelter.png");
+    private static final ResourceLocation guiTextures = new ResourceLocation(FunOres.MOD_ID, "textures/gui/alloysmelter.png");
     private IInventory tileAlloySmelter;
 
     public GuiAlloySmelter(InventoryPlayer playerInventory, IInventory smelterInventory) {
@@ -43,13 +40,9 @@ public class GuiAlloySmelter extends GuiContainer {
     }
 
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        if (SilentLib.getMCVersion() < 12) {
-            super.drawScreen(mouseX, mouseY, partialTicks);
-        } else {
-            this.drawDefaultBackground();
-            super.drawScreen(mouseX, mouseY, partialTicks);
-            this.renderHoveredToolTip(mouseX, mouseY);
-        }
+        this.drawDefaultBackground();
+        super.drawScreen(mouseX, mouseY, partialTicks);
+        this.renderHoveredToolTip(mouseX, mouseY);
     }
 
     @Override
@@ -80,19 +73,14 @@ public class GuiAlloySmelter extends GuiContainer {
     }
 
     private int getBurnLeftScaled(int pixels) {
-        int j = this.tileAlloySmelter.getField(1);
-
-        if (j == 0) {
-            j = 200;
-        }
-
-        return this.tileAlloySmelter.getField(0) * pixels / j;
+        int currentItemBurnTime = this.tileAlloySmelter.getField(1);
+        if (currentItemBurnTime == 0)
+            currentItemBurnTime = 200;
+        return this.tileAlloySmelter.getField(0) * pixels / currentItemBurnTime;
     }
 
     private void drawDebugInfo() {
-        if (!(tileAlloySmelter instanceof TileAlloySmelter)) {
-            return;
-        }
+        if (!(tileAlloySmelter instanceof TileAlloySmelter)) return;
 
         TileAlloySmelter tile = (TileAlloySmelter) tileAlloySmelter;
         FontRenderer fontRender = mc.fontRenderer;

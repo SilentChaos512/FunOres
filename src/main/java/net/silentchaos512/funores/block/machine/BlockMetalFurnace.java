@@ -29,14 +29,14 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.silentchaos512.funores.FunOres;
-import net.silentchaos512.funores.lib.Names;
 import net.silentchaos512.funores.tile.TileMetalFurnace;
+import net.silentchaos512.lib.registry.IAddRecipes;
 import net.silentchaos512.lib.registry.RecipeMaker;
 
-public class BlockMetalFurnace extends BlockMachine {
+public class BlockMetalFurnace extends BlockMachine implements IAddRecipes {
 
     public BlockMetalFurnace() {
-        super(Material.IRON, Names.METAL_FURNACE);
+        super(Material.IRON);
     }
 
     @Override
@@ -48,23 +48,19 @@ public class BlockMetalFurnace extends BlockMachine {
     public void addRecipes(RecipeMaker recipes) {
         ItemStack result = new ItemStack(this);
         if (!FunOres.registry.isItemDisabled(result)) {
-            recipes.addShapedOre(getName() + 0, result, "aaa", "afa", "bab", 'a', "plateBronze", 'b', Blocks.BRICK_BLOCK, 'f', Blocks.FURNACE);
-            recipes.addShapedOre(getName() + 1, result, "aaa", "afa", "bab", 'a', "plateBrass", 'b', Blocks.BRICK_BLOCK, 'f', Blocks.FURNACE);
+            recipes.addShapedOre("metal_furnace_bronze", result, "aaa", "afa", "bab", 'a', "plateBronze", 'b', Blocks.BRICK_BLOCK, 'f', Blocks.FURNACE);
+            recipes.addShapedOre("metal_furnace_brass", result, "aaa", "afa", "bab", 'a', "plateBrass", 'b', Blocks.BRICK_BLOCK, 'f', Blocks.FURNACE);
         }
     }
 
     @Override
-    protected boolean clOnBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float side, float hitX, float hitY) {
-        if (world.isRemote) {
-            return true;
-        } else {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float side, float hitX, float hitY) {
+        if (!world.isRemote) {
             TileEntity tile = world.getTileEntity(pos);
-
             if (tile instanceof TileMetalFurnace) {
                 player.openGui(FunOres.instance, 0, world, pos.getX(), pos.getY(), pos.getZ());
             }
-
-            return true;
         }
+        return true;
     }
 }

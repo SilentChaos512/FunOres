@@ -23,10 +23,8 @@ public class ContainerMetalFurnace extends ContainerSL {
         this.tileFurnace = furnaceInventory;
         this.addSlotToContainer(new Slot(furnaceInventory, 0, 56, 17));
         this.addSlotToContainer(new SlotFurnaceFuel(furnaceInventory, 1, 56, 53));
-        this.addSlotToContainer(new SlotFurnaceOutput(playerInventory.player, furnaceInventory, 2, 116,
-                17));
-        this.addSlotToContainer(new SlotFurnaceOutput(playerInventory.player, furnaceInventory, 3, 116,
-                52));
+        this.addSlotToContainer(new SlotFurnaceOutput(playerInventory.player, furnaceInventory, 2, 116, 17));
+        this.addSlotToContainer(new SlotFurnaceOutput(playerInventory.player, furnaceInventory, 3, 116, 52));
 
         int i;
         for (i = 0; i < 3; ++i) {
@@ -44,9 +42,7 @@ public class ContainerMetalFurnace extends ContainerSL {
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
 
-        for (int i = 0; i < this.listeners.size(); ++i) {
-            IContainerListener icrafting = (IContainerListener) this.listeners.get(i);
-
+        for (IContainerListener icrafting : this.listeners) {
             if (this.cookTime != this.tileFurnace.getField(2)) {
                 icrafting.sendWindowProperty(this, 2, this.tileFurnace.getField(2));
             }
@@ -97,7 +93,7 @@ public class ContainerMetalFurnace extends ContainerSL {
 
                 slot.onSlotChange(itemstack1, itemstack);
             } else if (index != 1 && index != 0) {
-                if (FurnaceRecipes.instance().getSmeltingResult(itemstack1) != null) {
+                if (!FurnaceRecipes.instance().getSmeltingResult(itemstack1).isEmpty()) {
                     if (!this.mergeItemStack(itemstack1, 0, 1, false)) {
                         return StackHelper.empty();
                     }

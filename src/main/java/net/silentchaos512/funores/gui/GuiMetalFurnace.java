@@ -30,7 +30,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.inventory.ContainerMetalFurnace;
 import net.silentchaos512.funores.tile.TileMetalFurnace;
-import net.silentchaos512.lib.SilentLib;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
@@ -45,13 +44,9 @@ public class GuiMetalFurnace extends GuiContainer {
     }
 
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        if (SilentLib.getMCVersion() < 12) {
-            super.drawScreen(mouseX, mouseY, partialTicks);
-        } else {
-            this.drawDefaultBackground();
-            super.drawScreen(mouseX, mouseY, partialTicks);
-            this.renderHoveredToolTip(mouseX, mouseY);
-        }
+        this.drawDefaultBackground();
+        super.drawScreen(mouseX, mouseY, partialTicks);
+        this.renderHoveredToolTip(mouseX, mouseY);
     }
 
     @Override
@@ -82,19 +77,14 @@ public class GuiMetalFurnace extends GuiContainer {
     }
 
     private int getBurnLeftScaled(int pixels) {
-        int j = this.tileFurnace.getField(1);
-
-        if (j == 0) {
-            j = 200;
-        }
-
-        return this.tileFurnace.getField(0) * pixels / j;
+        int currentItemBurnTime = this.tileFurnace.getField(1);
+        if (currentItemBurnTime == 0)
+            currentItemBurnTime = 200;
+        return this.tileFurnace.getField(0) * pixels / currentItemBurnTime;
     }
 
     private void drawDebugInfo() {
-        if (!(tileFurnace instanceof TileMetalFurnace)) {
-            return;
-        }
+        if (!(tileFurnace instanceof TileMetalFurnace)) return;
 
         TileMetalFurnace tile = (TileMetalFurnace) tileFurnace;
         FontRenderer fontRender = mc.fontRenderer;

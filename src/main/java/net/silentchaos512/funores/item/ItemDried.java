@@ -18,13 +18,7 @@
 
 package net.silentchaos512.funores.item;
 
-import java.util.List;
-import java.util.Map;
-
-import org.lwjgl.input.Keyboard;
-
 import com.google.common.collect.Lists;
-
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
@@ -39,6 +33,10 @@ import net.silentchaos512.funores.lib.Names;
 import net.silentchaos512.lib.item.ItemFoodSL;
 import net.silentchaos512.lib.registry.RecipeMaker;
 import net.silentchaos512.lib.util.ItemHelper;
+import org.lwjgl.input.Keyboard;
+
+import java.util.List;
+import java.util.Map;
 
 public class ItemDried extends ItemFoodSL implements IDisableable {
 
@@ -47,7 +45,7 @@ public class ItemDried extends ItemFoodSL implements IDisableable {
         setMaxStackSize(64);
         setHasSubtypes(true);
         setMaxDamage(0);
-        setUnlocalizedName(Names.DRIED_ITEM);
+        setTranslationKey(Names.DRIED_ITEM);
     }
 
     @Override
@@ -116,7 +114,7 @@ public class ItemDried extends ItemFoodSL implements IDisableable {
     }
 
     @Override
-    public String getUnlocalizedName(ItemStack stack) {
+    public String getTranslationKey(ItemStack stack) {
         EnumDriedItem e = getEnum(stack);
         return "item.funores:" + (e == null ? Names.DRIED_ITEM : e.name);
     }

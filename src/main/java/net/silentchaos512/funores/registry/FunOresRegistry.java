@@ -18,10 +18,6 @@
 
 package net.silentchaos512.funores.registry;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -35,6 +31,10 @@ import net.silentchaos512.funores.lib.IDisableable;
 import net.silentchaos512.lib.registry.SRegistry;
 import net.silentchaos512.lib.util.LogHelper;
 import net.silentchaos512.lib.util.StackHelper;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Modified SRegistry that automatically loads configs for disableable (IDisableable) items.
@@ -50,7 +50,7 @@ public class FunOresRegistry extends SRegistry {
     /**
      * Set of disabled items (contains values returned by getStackKey)
      */
-    Set<String> disabledItems = new HashSet<>();
+    private Set<String> disabledItems = new HashSet<>();
 
     private List<ItemStack> getSubItems(IDisableable disableable, Item item) {
         return disableable.getSubItems(item);
@@ -69,7 +69,7 @@ public class FunOresRegistry extends SRegistry {
     private String getStackKey(ItemStack stack) {
         if (stack == null || StackHelper.isEmpty(stack))
             return "null";
-        return stack.getUnlocalizedName() + ":" + stack.getItemDamage();
+        return stack.getTranslationKey() + ":" + stack.getItemDamage();
     }
 
     @Override

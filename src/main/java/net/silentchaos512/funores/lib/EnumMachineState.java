@@ -3,6 +3,8 @@ package net.silentchaos512.funores.lib;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
 
+import javax.annotation.Nonnull;
+
 public enum EnumMachineState implements IStringSerializable {
     NORTH_OFF(2, "north_off", false),
     SOUTH_OFF(3, "south_off", false),
@@ -29,6 +31,7 @@ public enum EnumMachineState implements IStringSerializable {
         return name;
     }
 
+    @Nonnull
     public static EnumMachineState fromEnumFacing(EnumFacing facing) {
         switch (facing) {
             case EAST:
@@ -40,8 +43,7 @@ public enum EnumMachineState implements IStringSerializable {
             case WEST:
                 return WEST_OFF;
             default:
-                return null;
-
+                return SOUTH_OFF;
         }
     }
 

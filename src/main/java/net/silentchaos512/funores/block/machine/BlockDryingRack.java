@@ -18,10 +18,6 @@
 
 package net.silentchaos512.funores.block.machine;
 
-import java.util.List;
-
-import javax.annotation.Nullable;
-
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -35,22 +31,22 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.silentchaos512.funores.FunOres;
-import net.silentchaos512.funores.lib.Names;
 import net.silentchaos512.funores.tile.TileDryingRack;
+import net.silentchaos512.lib.registry.IAddRecipes;
 import net.silentchaos512.lib.registry.RecipeMaker;
 
-public class BlockDryingRack extends BlockMachine {
+import javax.annotation.Nullable;
+import java.util.List;
+
+public class BlockDryingRack extends BlockMachine implements IAddRecipes {
 
     public BlockDryingRack() {
-        super(Material.WOOD, Names.DRYING_RACK);
+        super(Material.WOOD);
         fullBlock = false;
         setHardness(1.5f);
         setResistance(3.0f);
         setSoundType(SoundType.WOOD);
-        setUnlocalizedName(Names.DRYING_RACK);
     }
 
     @Override
@@ -62,13 +58,13 @@ public class BlockDryingRack extends BlockMachine {
     public void addRecipes(RecipeMaker recipes) {
         ItemStack stack = new ItemStack(this, 2);
         if (!FunOres.registry.isItemDisabled(stack))
-            recipes.addShapedOre(getName(), stack, "www", "sss", 'w', "slabWood", 's', "stickWood");
+            recipes.addShapedOre("drying_rack", stack, "www", "sss", 'w', "slabWood", 's', "stickWood");
     }
 
     @Override
-    protected boolean clOnBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float side, float hitX, float hitY) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float side, float hitX, float hitY) {
         TileEntity tile = world.getTileEntity(pos);
-        if (tile != null && tile instanceof TileDryingRack) {
+        if (tile instanceof TileDryingRack) {
             TileDryingRack tileDryingRack = (TileDryingRack) tile;
             ItemStack heldItem = player.getHeldItem(hand);
             return tileDryingRack.interact(player, hand, heldItem);
@@ -77,12 +73,11 @@ public class BlockDryingRack extends BlockMachine {
     }
 
     @Override
-    protected void clAddCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn) {
+    public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean isActualState) {
         state = state.getActualState(worldIn, pos);
         addCollisionBoxToList(pos, entityBox, collidingBoxes, getBoundingBox(state, worldIn, pos));
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
         final float f = 0.25f;

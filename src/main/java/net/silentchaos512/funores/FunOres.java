@@ -74,8 +74,8 @@ public class FunOres {
     public static final String MOD_NAME = "Fun Ores";
     public static final String VERSION_NUMBER = "@VERSION@";
     public static final String VERSION_SILENTLIB = "SL_VERSION";
-    public static final String DEPENDENCIES = "required-after:silentlib@[" + VERSION_SILENTLIB + ",);after:wit;after:WIT";
-    public static final String ACCEPTED_MC_VERSIONS = "[1.10.2,1.12.1]";
+    public static final String DEPENDENCIES = "required-after:silentlib@[" + VERSION_SILENTLIB + ",)";
+    public static final String ACCEPTED_MC_VERSIONS = "[1.10.2,1.12.2]";
     public static final String RESOURCE_PREFIX = MOD_ID.toLowerCase() + ":";
 
     public static final boolean DEBUG_MODE = false;
@@ -98,6 +98,9 @@ public class FunOres {
     public void preInit(FMLPreInitializationEvent event) {
         localizationHelper = new LocalizationHelper(MOD_ID).setReplaceAmpersand(true);
         SilentLib.instance.registerLocalizationHelperForMod(MOD_ID, localizationHelper);
+
+        registry.setMod(this);
+        registry.recipes.setJsonHellMode(true);
 
         Config.init(event.getSuggestedConfigurationFile());
 

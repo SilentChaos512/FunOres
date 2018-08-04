@@ -117,7 +117,7 @@ public enum EnumMeat implements IHasOre, ILootTableDrops {
                 return new EntityRabbit(worldIn);
             case SHEEP:
                 EntitySheep sheep = new EntitySheep(worldIn);
-                sheep.setFleeceColor(sheep.getRandomSheepColor(FunOres.random));
+                sheep.setFleeceColor(EntitySheep.getRandomSheepColor(FunOres.random));
                 return sheep;
             case SQUID:
                 return new EntitySquid(worldIn);

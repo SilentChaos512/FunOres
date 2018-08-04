@@ -23,23 +23,20 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.silentchaos512.funores.tile.TileDryingRack;
-import net.silentchaos512.lib.client.render.tileentity.TileEntitySpecialRendererSL;
 import net.silentchaos512.lib.util.StackHelper;
 
-public class TileDryingRackRender extends TileEntitySpecialRendererSL<TileDryingRack> {
-
-    public static Minecraft mc = Minecraft.getMinecraft();
+public class TileDryingRackRender extends TileEntitySpecialRenderer<TileDryingRack> {
+    private static Minecraft mc = Minecraft.getMinecraft();
     private TileDryingRack tileDryingRack;
 
     @Override
-    public void clRender(TileDryingRack te, double x, double y, double z, float partialTicks,
-                         int destroyStage, float alpha) {
-
+    public void render(TileDryingRack te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         ItemStack stack = te.getStack();
         tileDryingRack = te;
 
@@ -48,12 +45,11 @@ public class TileDryingRackRender extends TileEntitySpecialRendererSL<TileDrying
         renderItem(te.getWorld(), stack, partialTicks);
         GlStateManager.popMatrix();
 
-        super.clRender(te, x, y, z, partialTicks, destroyStage, alpha);
+        super.render(te, x, y, z, partialTicks, destroyStage, alpha);
     }
 
     // Mostly copied from Blood Magic...
     private void renderItem(World world, ItemStack stack, float partialTicks) {
-
         RenderItem itemRenderer = mc.getRenderItem();
         if (StackHelper.isValid(stack)) {
             // GlStateManager.translate(0.5, 0.5, 0.5);
@@ -83,7 +79,6 @@ public class TileDryingRackRender extends TileEntitySpecialRendererSL<TileDrying
     }
 
     private Vec3d getItemPosition() {
-
         final double x = 0.5;
         final double y = 0.5;
         final double z = 0.15;
@@ -106,7 +101,6 @@ public class TileDryingRackRender extends TileEntitySpecialRendererSL<TileDrying
     }
 
     private float getItemRotation() {
-
         switch (tileDryingRack.getMachineState()) {
             case EAST_OFF:
             case EAST_ON:

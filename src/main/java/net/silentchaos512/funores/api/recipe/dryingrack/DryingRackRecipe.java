@@ -30,8 +30,8 @@ import java.util.List;
 import java.util.Set;
 
 public class DryingRackRecipe {
-    private static final List<DryingRackRecipe> allRecipes = new ArrayList<>();
-    private static final Set<DryingRackRecipeObject> allIngredients = new HashSet<>();
+    public static final List<DryingRackRecipe> ALL_RECIPES = new ArrayList<>();
+    private static final Set<DryingRackRecipeObject> ALL_INGREDIENTS = new HashSet<>();
 
     private final DryingRackRecipeObject input;
     private final ItemStack output;
@@ -48,14 +48,14 @@ public class DryingRackRecipe {
     public static void addRecipe(ItemStack output, DryingRackRecipeObject input, int dryTime, float experience) {
         if (FunOres.registry.isItemDisabled(new ItemStack(ModBlocks.dryingRack))) return;
         DryingRackRecipe newRecipe = new DryingRackRecipe(output, input, dryTime, experience);
-        allIngredients.add(newRecipe.input);
-        allRecipes.add(newRecipe);
+        ALL_INGREDIENTS.add(newRecipe.input);
+        ALL_RECIPES.add(newRecipe);
     }
 
     @Nullable
     public static DryingRackRecipe getMatchingRecipe(ItemStack inputStack) {
         if (inputStack.isEmpty()) return null;
-        for (DryingRackRecipe recipe : allRecipes) {
+        for (DryingRackRecipe recipe : ALL_RECIPES) {
             if (recipe.matches(inputStack)) {
                 return recipe;
             }

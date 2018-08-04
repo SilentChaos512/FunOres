@@ -18,25 +18,20 @@
 
 package net.silentchaos512.funores.compat.jei.dryingrack;
 
-import java.util.List;
+import com.google.common.collect.Lists;
+import net.silentchaos512.funores.api.recipe.dryingrack.DryingRackRecipe;
 
 import javax.annotation.Nonnull;
-
-import com.google.common.collect.Lists;
-
-import net.silentchaos512.funores.api.recipe.dryingrack.DryingRackRecipe;
+import java.util.List;
 
 public class DryingRackRecipeMaker {
 
     @Nonnull
     public static List<DryingRackRecipeJei> getRecipes() {
-
         List<DryingRackRecipeJei> recipes = Lists.newArrayList();
-
-        for (DryingRackRecipe rackRecipe : DryingRackRecipe.allRecipes) {
+        for (DryingRackRecipe rackRecipe : DryingRackRecipe.ALL_RECIPES) {
             recipes.add(new DryingRackRecipeJei(rackRecipe));
         }
-
         return recipes;
     }
 }

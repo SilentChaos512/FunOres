@@ -5,7 +5,7 @@
   "description": "You might need them eventually!",
   "version": "${version}",
   "mcversion": "${mcversion}",
-  "url": "",
+  "url": "https://minecraft.curseforge.com/projects/fun-ores",
   "updateUrl": "",
   "authorList": ["SilentChaos512"],
   "credits": "",

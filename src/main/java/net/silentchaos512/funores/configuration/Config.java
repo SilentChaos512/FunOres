@@ -18,10 +18,6 @@
 
 package net.silentchaos512.funores.configuration;
 
-import java.io.File;
-
-import javax.annotation.Nonnull;
-
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -30,11 +26,10 @@ import net.minecraftforge.common.config.Configuration;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.init.ModBlocks;
 import net.silentchaos512.funores.init.ModItems;
-import net.silentchaos512.funores.lib.EnumMeat;
-import net.silentchaos512.funores.lib.EnumMetal;
-import net.silentchaos512.funores.lib.EnumMob;
-import net.silentchaos512.funores.lib.EnumVanillaOre;
-import net.silentchaos512.funores.lib.ExtraRecipes;
+import net.silentchaos512.funores.lib.*;
+
+import javax.annotation.Nonnull;
+import java.io.File;
 
 public class Config {
     // Quick tweaks
@@ -546,33 +541,33 @@ public class Config {
             c.setCategoryComment(CATEGORY_ITEM_DISABLE, COMMENT_ITEM_DISABLE);
 
         } catch (Exception e) {
-            FunOres.instance.logHelper.severe("Oh noes!!! Couldn't load configuration file properly!");
-            FunOres.instance.logHelper.severe(e);
+            FunOres.logHelper.error("Oh noes!!! Couldn't load configuration file properly!");
+            FunOres.logHelper.catching(e);
         }
     }
 
     public static boolean isItemDisabled(ItemStack stack) {
         // Should translate as en_US on servers...
-        String name = FunOres.localizationHelper.getLocalizedString(stack.getUnlocalizedName() + ".name");
+        String name = FunOres.localizationHelper.getLocalizedString(stack.getTranslationKey() + ".name");
 
         // Check for quick tweaks disabled items...
-        Item item = stack.getItem(); //@formatter:off
-    if (checkItemQuickDisable(item, disableMachines, ModBlocks.metalFurnace, ModBlocks.alloySmelter, ModBlocks.dryingRack)
-        || checkItemQuickDisable(item, disableMetalBlocks, ModBlocks.metalBlock)
-        || checkItemQuickDisable(item, disableMetalIngots, ModItems.metalIngot)
-        || checkItemQuickDisable(item, disableMetalNuggets, ModItems.metalNugget)
-        || checkItemQuickDisable(item, disableMetalDusts, ModItems.metalDust)
-        || checkItemQuickDisable(item, disableMetalGears, ModItems.gearBasic)
-        || checkItemQuickDisable(item, disableMetalPlates, ModItems.plateBasic)
-        || checkItemQuickDisable(item, disableAlloyBlocks, ModBlocks.alloyBlock)
-        || checkItemQuickDisable(item, disableAlloyIngots, ModItems.alloyIngot)
-        || checkItemQuickDisable(item, disableAlloyNuggets, ModItems.alloyNugget)
-        || checkItemQuickDisable(item, disableAlloyDusts, ModItems.alloyDust)
-        || checkItemQuickDisable(item, disableAlloyGears, ModItems.gearAlloy)
-        || checkItemQuickDisable(item, disableAlloyPlates, ModItems.plateAlloy)
-        || checkItemQuickDisable(item, disableFoods, ModItems.driedItem)
-        || checkItemQuickDisable(item, disableShards, ModItems.shard))
-      return true; //@formatter:on
+        Item item = stack.getItem();
+        if (checkItemQuickDisable(item, disableMachines, ModBlocks.metalFurnace, ModBlocks.alloySmelter, ModBlocks.dryingRack)
+                || checkItemQuickDisable(item, disableMetalBlocks, ModBlocks.metalBlock)
+                || checkItemQuickDisable(item, disableMetalIngots, ModItems.metalIngot)
+                || checkItemQuickDisable(item, disableMetalNuggets, ModItems.metalNugget)
+                || checkItemQuickDisable(item, disableMetalDusts, ModItems.metalDust)
+                || checkItemQuickDisable(item, disableMetalGears, ModItems.gearBasic)
+                || checkItemQuickDisable(item, disableMetalPlates, ModItems.plateBasic)
+                || checkItemQuickDisable(item, disableAlloyBlocks, ModBlocks.alloyBlock)
+                || checkItemQuickDisable(item, disableAlloyIngots, ModItems.alloyIngot)
+                || checkItemQuickDisable(item, disableAlloyNuggets, ModItems.alloyNugget)
+                || checkItemQuickDisable(item, disableAlloyDusts, ModItems.alloyDust)
+                || checkItemQuickDisable(item, disableAlloyGears, ModItems.gearAlloy)
+                || checkItemQuickDisable(item, disableAlloyPlates, ModItems.plateAlloy)
+                || checkItemQuickDisable(item, disableFoods, ModItems.driedItem)
+                || checkItemQuickDisable(item, disableShards, ModItems.shard))
+            return true;
 
         // Use item-specific config.
         return c.get(CATEGORY_ITEM_DISABLE, "Disable " + name, false).getBoolean();

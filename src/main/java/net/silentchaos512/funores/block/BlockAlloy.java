@@ -18,41 +18,35 @@
 
 package net.silentchaos512.funores.block;
 
-import java.util.List;
-import java.util.Map;
-
-import com.google.common.collect.Lists;
-
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.oredict.OreDictionary;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.lib.EnumAlloy;
 import net.silentchaos512.funores.lib.IDisableable;
 import net.silentchaos512.funores.lib.IMetal;
-import net.silentchaos512.funores.lib.Names;
-import net.silentchaos512.lib.block.BlockSL;
+import net.silentchaos512.lib.block.BlockMetaSubtypes;
+import net.silentchaos512.lib.registry.IAddRecipes;
 
-public class BlockAlloy extends BlockSL implements IDisableable {
-    public static final PropertyEnum ALLOY = PropertyEnum.create("alloy", EnumAlloy.class);
+import java.util.ArrayList;
+import java.util.List;
+
+public class BlockAlloy extends BlockMetaSubtypes implements IDisableable, IAddRecipes {
+    private static final PropertyEnum<EnumAlloy> ALLOY = PropertyEnum.create("alloy", EnumAlloy.class);
 
     public BlockAlloy() {
-        super(EnumAlloy.count(), FunOres.MOD_ID, Names.ALLOY_BLOCK, Material.IRON);
-
+        super(Material.IRON, EnumAlloy.values().length);
         setHardness(3.0f);
         setResistance(30.0f);
         setSoundType(SoundType.METAL);
         setHarvestLevel("pickaxe", 1);
-
-        setUnlocalizedName(Names.ALLOY_BLOCK);
     }
 
     @Override
@@ -63,30 +57,20 @@ public class BlockAlloy extends BlockSL implements IDisableable {
     }
 
     @Override
-    public void getModels(Map<Integer, ModelResourceLocation> models) {
-        for (EnumAlloy metal : EnumAlloy.values()) {
-            if (!FunOres.registry.isItemDisabled(metal.getBlock())) {
-                String name = FunOres.MOD_ID + ":Block" + metal.getMetalName();
-                models.put(metal.ordinal(), new ModelResourceLocation(name.toLowerCase(), "inventory"));
-            }
-        }
-    }
-
-    @Override
     public int damageDropped(IBlockState state) {
-        return ((EnumAlloy) state.getValue(ALLOY)).getMeta();
+        return state.getValue(ALLOY).getMeta();
     }
 
     @Override
-    public void clGetSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
-        for (ItemStack stack : getSubItems(item))
+    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list) {
+        for (ItemStack stack : getSubItems(Item.getItemFromBlock(this)))
             if (!FunOres.registry.isItemDisabled(stack))
                 list.add(stack);
     }
 
     @Override
     public List<ItemStack> getSubItems(Item item) {
-        List<ItemStack> ret = Lists.newArrayList();
+        List<ItemStack> ret = new ArrayList<>();
         for (IMetal metal : EnumAlloy.values())
             ret.add(new ItemStack(item, 1, metal.getMeta()));
         return ret;
@@ -99,11 +83,11 @@ public class BlockAlloy extends BlockSL implements IDisableable {
 
     @Override
     public int getMetaFromState(IBlockState state) {
-        return ((EnumAlloy) state.getValue(ALLOY)).getMeta();
+        return state.getValue(ALLOY).getMeta();
     }
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, new IProperty[]{ALLOY});
+        return new BlockStateContainer(this, ALLOY);
     }
 }
