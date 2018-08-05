@@ -21,7 +21,6 @@ package net.silentchaos512.funores.item;
 import com.google.common.collect.Lists;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.lib.*;
@@ -31,19 +30,17 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ItemCraftingItem extends ItemBaseMetal {
-    public static final int BASE_METALS_COUNT = 18;
+    private final String craftingItemName;
+    private final boolean isAlloy;
+    private final boolean isGear;
+    private final boolean isPlate;
 
-    public final String craftingItemName;
-    public final boolean isAlloy;
-    public final boolean isGear;
-    public final boolean isPlate;
-
-    public ItemCraftingItem(String name, boolean isAlloy) {
-        super(Names.CRAFTING_ITEM, name, name.toLowerCase());
-        this.craftingItemName = name;
+    public ItemCraftingItem(String type, boolean isAlloy) {
+        super(type, type);
+        this.craftingItemName = type;
         this.isAlloy = isAlloy;
-        this.isGear = craftingItemName.equals(Names.GEAR);
-        this.isPlate = craftingItemName.equals(Names.PLATE);
+        this.isGear = "gear".equals(type);
+        this.isPlate = "plate".equals(type);
     }
 
     @Override
@@ -92,24 +89,27 @@ public class ItemCraftingItem extends ItemBaseMetal {
     }
 
     @Override
-    public String getNameForStack(ItemStack stack) {
-        String metalName = null;
-        int meta = stack.getItemDamage();
-        List<IMetal> metals = getMetals(this);
-        if (meta >= 0 && meta < metals.size() && metals.get(meta) != null) {
-            metalName = metals.get(meta).getMetalName();
-        } else {
-            for (IMetal metal : Lists.reverse(metals)) {
-                if (metal.getMeta() == meta) {
-                    metalName = metal.getMetalName();
-                }
-            }
-        }
-        return craftingItemName + metalName;
+    public String getTranslationKey(ItemStack stack) {
+        for (IMetal metal : getMetals(this))
+            if (metal.getMeta() == stack.getItemDamage())
+                return super.getTranslationKey().replaceFirst("metal|alloy", "") + metal.getName();
+        return super.getTranslationKey(stack);
     }
 
-    @Override
-    public void clAddInformation(ItemStack stack, World world, List list, boolean advanced) {
-        // TODO
-    }
+    //    @Override
+//    public String getNameForStack(ItemStack stack) {
+//        String metalName = null;
+//        int meta = stack.getItemDamage();
+//        List<IMetal> metals = getMetals(this);
+//        if (meta >= 0 && meta < metals.size() && metals.get(meta) != null) {
+//            metalName = metals.get(meta).getMetalName();
+//        } else {
+//            for (IMetal metal : Lists.reverse(metals)) {
+//                if (metal.getMeta() == meta) {
+//                    metalName = metal.getMetalName();
+//                }
+//            }
+//        }
+//        return craftingItemName + metalName;
+//    }
 }

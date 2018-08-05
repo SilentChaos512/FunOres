@@ -20,7 +20,6 @@ package net.silentchaos512.funores.init;
 
 import net.minecraft.item.Item;
 import net.silentchaos512.funores.item.*;
-import net.silentchaos512.funores.lib.Names;
 import net.silentchaos512.lib.registry.IRegistrationHandler;
 import net.silentchaos512.lib.registry.SRegistry;
 
@@ -31,28 +30,28 @@ public class ModItems implements IRegistrationHandler<Item> {
     public static ItemIngotAlloy alloyIngot = new ItemIngotAlloy();
     public static ItemNuggetAlloy alloyNugget = new ItemNuggetAlloy();
     public static ItemDustAlloy alloyDust = new ItemDustAlloy();
-    public static ItemCraftingItem plateBasic = new ItemCraftingItem(Names.PLATE, false);
-    public static ItemCraftingItem plateAlloy = new ItemCraftingItem(Names.PLATE, true);
-    public static ItemCraftingItem gearBasic = new ItemCraftingItem(Names.GEAR, false);
-    public static ItemCraftingItem gearAlloy = new ItemCraftingItem(Names.GEAR, true);
+    public static ItemCraftingItem plateBasic = new ItemCraftingItem("plate", false);
+    public static ItemCraftingItem plateAlloy = new ItemCraftingItem("plate", true);
+    public static ItemCraftingItem gearBasic = new ItemCraftingItem("gear", false);
+    public static ItemCraftingItem gearAlloy = new ItemCraftingItem("gear", true);
     public static ItemShard shard = new ItemShard();
     public static ItemDried driedItem = new ItemDried();
     public static ItemHammer hammer = new ItemHammer();
 
     @Override
     public void registerAll(SRegistry reg) {
-        reg.registerItem(metalIngot);
-        reg.registerItem(metalNugget);
-        reg.registerItem(metalDust);
-        reg.registerItem(alloyIngot);
-        reg.registerItem(alloyNugget);
-        reg.registerItem(alloyDust);
-        reg.registerItem(plateBasic, "Metal" + Names.PLATE);
-        reg.registerItem(plateAlloy, "Alloy" + Names.PLATE);
-        reg.registerItem(gearBasic, "Metal" + Names.GEAR);
-        reg.registerItem(gearAlloy, "Alloy" + Names.GEAR);
-        reg.registerItem(shard);
-        reg.registerItem(driedItem, Names.DRIED_ITEM);
-        reg.registerItem(hammer);
+        reg.registerItem(metalIngot, "metalingot");
+        reg.registerItem(metalNugget, "metalnugget");
+        reg.registerItem(metalDust, "metaldust");
+        reg.registerItem(alloyIngot, "alloyingot");
+        reg.registerItem(alloyNugget, "alloynugget");
+        reg.registerItem(alloyDust, "alloydust");
+        reg.registerItem(plateBasic, "metalplate");
+        reg.registerItem(plateAlloy, "alloyplate");
+        reg.registerItem(gearBasic, "metalgear");
+        reg.registerItem(gearAlloy, "alloygear");
+        reg.registerItem(shard, "shard");
+        reg.registerItem(driedItem, "drieditem");
+        reg.registerItem(hammer, "hammer");
     }
 }

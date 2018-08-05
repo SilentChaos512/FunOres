@@ -20,7 +20,6 @@ public enum EnumMachineState implements IStringSerializable {
     public final boolean isOn;
 
     EnumMachineState(int meta, String name, boolean isOn) {
-
         this.meta = meta;
         this.name = name;
         this.isOn = isOn;

@@ -19,28 +19,24 @@
 package net.silentchaos512.funores.item;
 
 import com.google.common.collect.Lists;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.configuration.Config;
 import net.silentchaos512.funores.init.ModItems;
 import net.silentchaos512.funores.lib.EnumVanillaExtended;
 import net.silentchaos512.funores.lib.IDisableable;
 import net.silentchaos512.funores.lib.IMetal;
-import net.silentchaos512.funores.lib.Names;
-import net.silentchaos512.lib.item.ItemSL;
+import net.silentchaos512.lib.registry.IAddRecipes;
 import net.silentchaos512.lib.registry.RecipeMaker;
-import net.silentchaos512.lib.util.ItemHelper;
 
 import java.util.List;
-import java.util.Map;
 
-public class ItemHammer extends ItemSL implements IDisableable {
-
+public class ItemHammer extends Item implements IDisableable, IAddRecipes {
     public ItemHammer() {
-        super(1, FunOres.MOD_ID, Names.HAMMER);
+        setContainerItem(this);
     }
 
     @Override
@@ -54,9 +50,6 @@ public class ItemHammer extends ItemSL implements IDisableable {
         ItemStack hammer = new ItemStack(this);
         recipes.addShapedOre("hammer0", hammer, "ii ", " pi", " p ", 'i', "ingotAluminium", 'p', wood);
         recipes.addShapedOre("hammer1", hammer, "ii ", " pi", " p ", 'i', "ingotAluminum", 'p', wood);
-
-        // Hammer doesn't get consumed.
-        setContainerItem(this);
 
         ItemStack plate;
         String ingot;
@@ -93,20 +86,13 @@ public class ItemHammer extends ItemSL implements IDisableable {
     }
 
     @Override
-    public void getModels(Map<Integer, ModelResourceLocation> models) {
-        if (!FunOres.registry.isItemDisabled(new ItemStack(this)))
-            super.getModels(models);
-    }
-
-    @Override
     public List<ItemStack> getSubItems(Item item) {
         return Lists.newArrayList(new ItemStack(this));
     }
 
     @Override
-    protected void clGetSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
-        if (!ItemHelper.isInCreativeTab(item, tab))
-            return;
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list) {
+        if (!isInCreativeTab(tab)) return;
 
         ItemStack hammer = new ItemStack(this);
         if (!FunOres.registry.isItemDisabled(hammer))

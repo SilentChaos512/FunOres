@@ -19,8 +19,9 @@
 package net.silentchaos512.funores.lib;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IStringSerializable;
 
-public interface IMetal {
+public interface IMetal extends IStringSerializable {
 
     int getMeta();
 

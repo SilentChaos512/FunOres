@@ -24,22 +24,19 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.client.model.ModelLoader;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.lib.IDisableable;
-import net.silentchaos512.funores.lib.Names;
-import net.silentchaos512.lib.item.ItemNamedSubtypes;
+import net.silentchaos512.lib.registry.IAddRecipes;
+import net.silentchaos512.lib.registry.ICustomModel;
 import net.silentchaos512.lib.registry.RecipeMaker;
-import net.silentchaos512.lib.util.ItemHelper;
 
 import java.util.List;
-import java.util.Map;
 
-public class ItemShard extends ItemNamedSubtypes implements IDisableable {
-    public static final String[] NAMES = {"ShardEnder", "ShardBlaze", "ShardGhast"};
-
-    public ItemShard() {
-        super(NAMES, FunOres.MOD_ID, Names.SHARD);
-    }
+public class ItemShard extends Item implements IDisableable, IAddRecipes, ICustomModel {
+    private static final String[] NAMES = {"ender", "blaze", "ghast"};
 
     @Override
     public void addRecipes(RecipeMaker recipes) {
@@ -65,26 +62,32 @@ public class ItemShard extends ItemNamedSubtypes implements IDisableable {
     @Override
     public List<ItemStack> getSubItems(Item item) {
         List<ItemStack> ret = Lists.newArrayList();
-        for (int i = 0; i < subItemCount; ++i)
+        for (int i = 0; i < NAMES.length; ++i)
             ret.add(new ItemStack(item, 1, i));
         return ret;
     }
 
     @Override
-    protected void clGetSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
-        if (!ItemHelper.isInCreativeTab(item, tab))
-            return;
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list) {
+        if (!isInCreativeTab(tab)) return;
 
-        for (ItemStack stack : getSubItems(item))
+        for (ItemStack stack : getSubItems(this))
             if (!FunOres.registry.isItemDisabled(stack))
                 list.add(stack);
     }
 
     @Override
-    public void getModels(Map<Integer, ModelResourceLocation> models) {
+    public String getTranslationKey(ItemStack stack) {
+        return super.getTranslationKey(stack) + NAMES[MathHelper.clamp(stack.getItemDamage(), 0, NAMES.length - 1)];
+    }
+
+    @Override
+    public void registerModels() {
         for (int i = 0; i < NAMES.length; ++i) {
-            if (!FunOres.registry.isItemDisabled(new ItemStack(this, 1, i)))
-                models.put(i, new ModelResourceLocation((modId + ":" + NAMES[i]).toLowerCase(), "inventory"));
+            if (!FunOres.registry.isItemDisabled(new ItemStack(this, 1, i))) {
+                ModelResourceLocation model = new ModelResourceLocation(FunOres.RESOURCE_PREFIX + "shard" + NAMES[i], "inventory");
+                ModelLoader.setCustomModelResourceLocation(this, i, model);
+            }
         }
     }
 }

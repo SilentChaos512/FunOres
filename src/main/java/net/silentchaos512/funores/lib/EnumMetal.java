@@ -27,6 +27,8 @@ import net.silentchaos512.funores.configuration.ConfigOptionOreGen;
 import net.silentchaos512.funores.init.ModBlocks;
 import net.silentchaos512.funores.init.ModItems;
 
+import java.util.Locale;
+
 public enum EnumMetal implements IHasOre, IMetal {
     COPPER(0, "Copper"),
     TIN(1, "Tin"),
@@ -72,7 +74,7 @@ public enum EnumMetal implements IHasOre, IMetal {
 
     @Override
     public String getName() {
-        return name.toLowerCase();
+        return name.toLowerCase(Locale.ROOT);
     }
 
     public static EnumMetal byMetadata(int meta) {

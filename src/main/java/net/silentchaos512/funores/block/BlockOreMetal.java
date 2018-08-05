@@ -22,10 +22,12 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.oredict.OreDictionary;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.configuration.Config;
@@ -33,9 +35,10 @@ import net.silentchaos512.funores.configuration.ConfigOptionOreGen;
 import net.silentchaos512.funores.lib.EnumMetal;
 import net.silentchaos512.funores.registry.FunOresRegistry;
 import net.silentchaos512.funores.util.ModRecipeHelper;
+import net.silentchaos512.lib.registry.ICustomModel;
 import net.silentchaos512.lib.registry.RecipeMaker;
 
-public class BlockOreMetal extends BlockFunOre {
+public class BlockOreMetal extends BlockFunOre implements ICustomModel {
     public static final PropertyEnum<EnumMetal> METAL = PropertyEnum.create("metal", EnumMetal.class);
 
     public BlockOreMetal() {
@@ -131,5 +134,14 @@ public class BlockOreMetal extends BlockFunOre {
     @Override
     protected BlockStateContainer createBlockState() {
         return new BlockStateContainer(this, METAL);
+    }
+
+    @Override
+    public void registerModels() {
+        Item item = Item.getItemFromBlock(this);
+        for (EnumMetal metal : EnumMetal.values()) {
+            ModelResourceLocation model = new ModelResourceLocation(FunOres.RESOURCE_PREFIX + "metalore", "metal=" + metal.getName());
+            ModelLoader.setCustomModelResourceLocation(item, metal.getMeta(), model);
+        }
     }
 }

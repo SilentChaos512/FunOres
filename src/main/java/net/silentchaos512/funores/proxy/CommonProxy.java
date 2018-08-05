@@ -19,31 +19,34 @@
 package net.silentchaos512.funores.proxy;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.silentchaos512.funores.lib.Names;
-import net.silentchaos512.funores.tile.TileAlloySmelter;
-import net.silentchaos512.funores.tile.TileDryingRack;
-import net.silentchaos512.funores.tile.TileMetalFurnace;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.silentchaos512.lib.proxy.IProxy;
 import net.silentchaos512.lib.registry.SRegistry;
 
-public class CommonProxy extends net.silentchaos512.lib.proxy.CommonProxy {
+public class CommonProxy implements IProxy {
+    @Override
+    public void preInit(SRegistry registry, FMLPreInitializationEvent event) {
+        registry.preInit(event);
+    }
 
     @Override
-    public void init(SRegistry reg) {
-        super.init(reg);
-        registerTileEntities(reg);
-        registerRenderers();
+    public void init(SRegistry registry, FMLInitializationEvent event) {
+        registry.init(event);
     }
 
-    public void registerTileEntities(SRegistry reg) {
-        reg.registerTileEntity(TileMetalFurnace.class, Names.METAL_FURNACE);
-        reg.registerTileEntity(TileAlloySmelter.class, Names.ALLOY_SMELTER);
-        reg.registerTileEntity(TileDryingRack.class, Names.DRYING_RACK);
-    }
-
-    public void registerRenderers() {
+    @Override
+    public void postInit(SRegistry registry, FMLPostInitializationEvent event) {
+        registry.postInit(event);
     }
 
     public EntityPlayer getClientPlayer() {
         return null;
+    }
+
+    @Override
+    public int getParticleSettings() {
+        return 0;
     }
 }

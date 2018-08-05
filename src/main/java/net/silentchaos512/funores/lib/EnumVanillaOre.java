@@ -24,6 +24,8 @@ import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.configuration.Config;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGenReplace;
 
+import java.util.Locale;
+
 public enum EnumVanillaOre implements IHasOre {
     IRON(0, "Iron", Blocks.IRON_ORE.getDefaultState()),
     GOLD(1, "Gold", Blocks.GOLD_ORE.getDefaultState()),
@@ -52,7 +54,7 @@ public enum EnumVanillaOre implements IHasOre {
 
     @Override
     public String getName() {
-        return name;
+        return name.toLowerCase(Locale.ROOT);
     }
 
     @Override

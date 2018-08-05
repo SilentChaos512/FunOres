@@ -30,6 +30,8 @@ import net.silentchaos512.funores.configuration.Config;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGenBonus;
 import net.silentchaos512.funores.init.ModBlocks;
 
+import java.util.Locale;
+
 public enum EnumMeat implements IHasOre, ILootTableDrops {
     PIG(0, "Pig"),
     FISH(1, "Fish"),
@@ -60,11 +62,7 @@ public enum EnumMeat implements IHasOre, ILootTableDrops {
 
     @Override
     public String getName() {
-        return name.toLowerCase();
-    }
-
-    public String getUnmodifiedName() {
-        return name;
+        return name.toLowerCase(Locale.ROOT);
     }
 
     @Override

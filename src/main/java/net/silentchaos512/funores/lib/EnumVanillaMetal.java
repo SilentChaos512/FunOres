@@ -25,6 +25,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.silentchaos512.funores.init.ModItems;
 
+import java.util.Locale;
+
 public enum EnumVanillaMetal implements IMetal {
     IRON(16, "Iron"),
     GOLD(17, "Gold");
@@ -40,6 +42,11 @@ public enum EnumVanillaMetal implements IMetal {
     @Override
     public int getMeta() {
         return meta;
+    }
+
+    @Override
+    public String getName() {
+        return name.toLowerCase(Locale.ROOT);
     }
 
     @Override

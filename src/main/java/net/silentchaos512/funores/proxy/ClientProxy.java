@@ -20,40 +20,39 @@ package net.silentchaos512.funores.proxy;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.silentchaos512.funores.client.render.TileDryingRackRender;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.silentchaos512.funores.init.ModFluids;
-import net.silentchaos512.funores.tile.TileDryingRack;
 import net.silentchaos512.lib.registry.SRegistry;
 
 public class ClientProxy extends CommonProxy {
-
     @Override
-    public void preInit(SRegistry reg) {
-        super.preInit(reg);
-        reg.clientPreInit();
+    public void preInit(SRegistry reg, FMLPreInitializationEvent event) {
+        super.preInit(reg, event);
+        reg.clientPreInit(event);
         ModFluids.bakeModels();
     }
 
     @Override
-    public void init(SRegistry reg) {
-        super.init(reg);
-        reg.clientInit();
+    public void init(SRegistry reg, FMLInitializationEvent event) {
+        super.init(reg, event);
+        reg.clientInit(event);
     }
 
     @Override
-    public void postInit(SRegistry reg) {
-        super.postInit(reg);
-        reg.clientPostInit();
-    }
-
-    @Override
-    public void registerRenderers() {
-        ClientRegistry.bindTileEntitySpecialRenderer(TileDryingRack.class, new TileDryingRackRender());
+    public void postInit(SRegistry reg, FMLPostInitializationEvent event) {
+        super.postInit(reg, event);
+        reg.clientPostInit(event);
     }
 
     @Override
     public EntityPlayer getClientPlayer() {
         return Minecraft.getMinecraft().player;
+    }
+
+    @Override
+    public int getParticleSettings() {
+        return Minecraft.getMinecraft().gameSettings.particleSetting;
     }
 }

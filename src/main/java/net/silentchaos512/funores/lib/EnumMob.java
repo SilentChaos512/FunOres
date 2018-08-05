@@ -31,6 +31,8 @@ import net.silentchaos512.funores.configuration.Config;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGenBonus;
 import net.silentchaos512.funores.init.ModBlocks;
 
+import java.util.Locale;
+
 public enum EnumMob implements IHasOre, ILootTableDrops {
     ZOMBIE(0, "Zombie"),
     SKELETON(1, "Skeleton"),
@@ -66,11 +68,7 @@ public enum EnumMob implements IHasOre, ILootTableDrops {
 
     @Override
     public String getName() {
-        return name.toLowerCase();
-    }
-
-    public String getUnmodifiedName() {
-        return name;
+        return name.toLowerCase(Locale.ROOT);
     }
 
     @Override

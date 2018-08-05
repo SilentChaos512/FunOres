@@ -18,10 +18,11 @@
 
 package net.silentchaos512.funores.lib;
 
-import org.apache.commons.lang3.NotImplementedException;
-
 import net.minecraft.item.ItemStack;
 import net.silentchaos512.funores.init.ModItems;
+import org.apache.commons.lang3.NotImplementedException;
+
+import java.util.Locale;
 
 public enum EnumVanillaExtended implements IMetal {
     WOOD(18, true, false, "Wood"),
@@ -63,6 +64,11 @@ public enum EnumVanillaExtended implements IMetal {
     @Override
     public int getMeta() {
         return meta;
+    }
+
+    @Override
+    public String getName() {
+        return name.toLowerCase(Locale.ROOT);
     }
 
     @Override

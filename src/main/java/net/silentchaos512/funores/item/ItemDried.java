@@ -20,36 +20,36 @@ package net.silentchaos512.funores.item;
 
 import com.google.common.collect.Lists;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.lib.EnumDriedItem;
 import net.silentchaos512.funores.lib.IDisableable;
 import net.silentchaos512.funores.lib.Names;
-import net.silentchaos512.lib.item.ItemFoodSL;
+import net.silentchaos512.lib.registry.IAddRecipes;
+import net.silentchaos512.lib.registry.ICustomModel;
 import net.silentchaos512.lib.registry.RecipeMaker;
-import net.silentchaos512.lib.util.ItemHelper;
 import org.lwjgl.input.Keyboard;
 
 import java.util.List;
-import java.util.Map;
 
-public class ItemDried extends ItemFoodSL implements IDisableable {
-
+public class ItemDried extends ItemFood implements IDisableable, IAddRecipes, ICustomModel {
     public ItemDried() {
-        super(EnumDriedItem.values().length, FunOres.MOD_ID, Names.DRIED_ITEM, 1, 0.1f, true);
-        setMaxStackSize(64);
+        super(1, 0.1f, true);
         setHasSubtypes(true);
         setMaxDamage(0);
-        setTranslationKey(Names.DRIED_ITEM);
     }
 
     @Override
-    public void clAddInformation(ItemStack stack, World world, List list, boolean advanced) {
+    public void addInformation(ItemStack stack, World world, List list, ITooltipFlag flag) {
         boolean shifted = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT);
 
         // Display flavor text when shift is held.
@@ -82,12 +82,11 @@ public class ItemDried extends ItemFoodSL implements IDisableable {
     }
 
     @Override
-    protected void clGetSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
-        if (!ItemHelper.isInCreativeTab(item, tab))
-            return;
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list) {
+        if (!isInCreativeTab(tab)) return;
 
         // Add only non-disabled items for display!
-        for (ItemStack stack : getSubItems(item))
+        for (ItemStack stack : getSubItems(this))
             if (!FunOres.registry.isItemDisabled(stack))
                 list.add(stack);
     }
@@ -109,21 +108,23 @@ public class ItemDried extends ItemFoodSL implements IDisableable {
         for (EnumDriedItem e : EnumDriedItem.values())
             if (e.meta == stack.getItemDamage())
                 return e;
-
         return null;
     }
 
     @Override
     public String getTranslationKey(ItemStack stack) {
         EnumDriedItem e = getEnum(stack);
-        return "item.funores:" + (e == null ? Names.DRIED_ITEM : e.name);
+        return "item." + FunOres.MOD_ID + "." + (e == null ? Names.DRIED_ITEM : e.getName());
     }
 
     @Override
-    public void getModels(Map<Integer, ModelResourceLocation> models) {
+    public void registerModels() {
         for (EnumDriedItem item : EnumDriedItem.values()) {
-            if (!FunOres.registry.isItemDisabled(item.getItem())) // Don't load disabled item models.
-                models.put(item.meta, new ModelResourceLocation((modId + ":" + item.textureName).toLowerCase(), "inventory"));
+            // Don't load disabled item models.
+            if (!FunOres.registry.isItemDisabled(item.getItem())) {
+                ModelResourceLocation model = new ModelResourceLocation(FunOres.RESOURCE_PREFIX + item.textureName, "inventory");
+                ModelLoader.setCustomModelResourceLocation(this, item.ordinal(), model);
+            }
         }
     }
 }

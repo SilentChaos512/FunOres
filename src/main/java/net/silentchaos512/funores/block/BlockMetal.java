@@ -24,12 +24,14 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.oredict.OreDictionary;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.lib.EnumMetal;
@@ -37,10 +39,11 @@ import net.silentchaos512.funores.lib.IDisableable;
 import net.silentchaos512.funores.lib.IMetal;
 import net.silentchaos512.lib.block.BlockMetaSubtypes;
 import net.silentchaos512.lib.registry.IAddRecipes;
+import net.silentchaos512.lib.registry.ICustomModel;
 
 import java.util.List;
 
-public class BlockMetal extends BlockMetaSubtypes implements IDisableable, IAddRecipes {
+public class BlockMetal extends BlockMetaSubtypes implements IDisableable, IAddRecipes, ICustomModel {
     private static final PropertyEnum<EnumMetal> METAL = PropertyEnum.create("metal", EnumMetal.class);
 
     public BlockMetal() {
@@ -100,5 +103,14 @@ public class BlockMetal extends BlockMetaSubtypes implements IDisableable, IAddR
     @Override
     public boolean isBeaconBase(IBlockAccess worldObj, BlockPos pos, BlockPos beacon) {
         return true;
+    }
+
+    @Override
+    public void registerModels() {
+        Item item = Item.getItemFromBlock(this);
+        for (EnumMetal metal : EnumMetal.values()) {
+            ModelResourceLocation model = new ModelResourceLocation(FunOres.RESOURCE_PREFIX + "metalblock", "metal=" + metal.getName());
+            ModelLoader.setCustomModelResourceLocation(item, metal.getMeta(), model);
+        }
     }
 }

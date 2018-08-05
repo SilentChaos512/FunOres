@@ -23,6 +23,8 @@ import net.minecraft.util.IStringSerializable;
 import net.silentchaos512.funores.init.ModBlocks;
 import net.silentchaos512.funores.init.ModItems;
 
+import java.util.Locale;
+
 public enum EnumAlloy implements IStringSerializable, IMetal {
     BRONZE(0, "Bronze"),
     BRASS(1, "Brass"),
@@ -51,7 +53,7 @@ public enum EnumAlloy implements IStringSerializable, IMetal {
 
     @Override
     public String getName() {
-        return name.toLowerCase();
+        return name.toLowerCase(Locale.ROOT);
     }
 
     public static EnumAlloy byMetadata(int meta) {

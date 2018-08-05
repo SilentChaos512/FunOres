@@ -22,23 +22,22 @@ import net.minecraft.item.Item;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.lib.EnumAlloy;
 import net.silentchaos512.funores.lib.IMetal;
-import net.silentchaos512.funores.lib.Names;
 import net.silentchaos512.lib.registry.RecipeMaker;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class ItemIngotAlloy extends ItemBaseMetal {
 
     public ItemIngotAlloy() {
-        super(Names.ALLOY_INGOT, "Ingot", "ingot");
+        super("ingot", "ingot");
     }
 
     @Override
     public List<IMetal> getMetals(Item item) {
-        List<IMetal> list = new ArrayList<IMetal>(Arrays.asList(EnumAlloy.values()));
-        return list; // Build fails if not assigned to a variable?
+//        List<IMetal> list = new ArrayList<>(Arrays.asList(EnumAlloy.values()));
+//        return list; // Build fails if not assigned to a variable?
+        return Arrays.asList(EnumAlloy.values());
     }
 
     @Override

@@ -57,6 +57,7 @@ import net.silentchaos512.funores.proxy.CommonProxy;
 import net.silentchaos512.funores.registry.FunOresRegistry;
 import net.silentchaos512.funores.world.FunOresGenerator;
 import net.silentchaos512.lib.SilentLib;
+import net.silentchaos512.lib.base.IModBase;
 import net.silentchaos512.lib.creativetab.CreativeTabSL;
 import net.silentchaos512.lib.util.LocalizationHelper;
 import net.silentchaos512.lib.util.LogHelper;
@@ -65,23 +66,21 @@ import java.util.Random;
 
 @Mod(modid = FunOres.MOD_ID,
         name = FunOres.MOD_NAME,
-        version = FunOres.VERSION_NUMBER,
-        dependencies = FunOres.DEPENDENCIES,
-        acceptedMinecraftVersions = FunOres.ACCEPTED_MC_VERSIONS)
-public class FunOres {
-
+        version = FunOres.VERSION,
+        dependencies = FunOres.DEPENDENCIES)
+public class FunOres implements IModBase {
     public static final String MOD_ID = "funores";
     public static final String MOD_NAME = "Fun Ores";
-    public static final String VERSION_NUMBER = "@VERSION@";
-    public static final String VERSION_SILENTLIB = "SL_VERSION";
+    public static final String VERSION = "1.6.0";
+    public static final String VERSION_SILENTLIB = "2.3.15";
+    public static int BUILD_NUM = 0;
     public static final String DEPENDENCIES = "required-after:silentlib@[" + VERSION_SILENTLIB + ",)";
-    public static final String ACCEPTED_MC_VERSIONS = "[1.10.2,1.12.2]";
     public static final String RESOURCE_PREFIX = MOD_ID.toLowerCase() + ":";
 
     public static final boolean DEBUG_MODE = false;
 
     public static Random random = new Random();
-    public static LogHelper logHelper = new LogHelper(MOD_NAME);
+    public static LogHelper logHelper = new LogHelper(MOD_NAME, BUILD_NUM);
     @Deprecated
     public static LocalizationHelper localizationHelper;
 
@@ -100,7 +99,7 @@ public class FunOres {
         SilentLib.instance.registerLocalizationHelperForMod(MOD_ID, localizationHelper);
 
         registry.setMod(this);
-        registry.recipes.setJsonHellMode(true);
+        registry.recipes.setJsonHellMode(0 == getBuildNum());
 
         Config.init(event.getSuggestedConfigurationFile());
 
@@ -111,10 +110,10 @@ public class FunOres {
 
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandlerFunOres());
         MinecraftForge.EVENT_BUS.register(this);
-        if (Loader.isModLoaded("wit") || Loader.isModLoaded("WIT"))
+        if (Loader.isModLoaded("wit"))
             MinecraftForge.EVENT_BUS.register(FunOresWitEvents.INSTANCE);
 
-        proxy.preInit(registry);
+        proxy.preInit(registry, event);
     }
 
     @EventHandler
@@ -127,7 +126,7 @@ public class FunOres {
         GameRegistry.registerWorldGenerator(worldGenerator, 0);
         MinecraftForge.ORE_GEN_BUS.register(worldGenerator);
 
-        proxy.init(registry);
+        proxy.init(registry, event);
     }
 
     @EventHandler
@@ -138,7 +137,7 @@ public class FunOres {
         ConfigOptionOreGenBonus.initItemKeys();
         ConfigItemDrop.listErrorsInLog();
 
-        proxy.postInit(registry);
+        proxy.postInit(registry, event);
     }
 
     @SubscribeEvent
@@ -193,8 +192,7 @@ public class FunOres {
         if (FunOres.registry.isItemDisabled(output))
             return;
 
-        boolean enabled = Config.getConfiguration()
-                .get(Config.CATEGORY_RECIPE_ALLOY_SMELTER, recipeName, true).getBoolean();
+        boolean enabled = Config.getConfiguration().get(Config.CATEGORY_RECIPE_ALLOY_SMELTER, recipeName, true).getBoolean();
         if (enabled) {
             FunOresAPI.addAlloySmelterRecipe(output, outputCount, cookTime, experience, inputs);
         }
@@ -238,5 +236,25 @@ public class FunOres {
         } else {
             logHelper.warning("FunOres.addDryingRackRecipe: Don't know how to handle object of type " + input.getClass());
         }
+    }
+
+    @Override
+    public String getModId() {
+        return MOD_ID;
+    }
+
+    @Override
+    public String getModName() {
+        return MOD_NAME;
+    }
+
+    @Override
+    public String getVersion() {
+        return VERSION;
+    }
+
+    @Override
+    public int getBuildNum() {
+        return BUILD_NUM;
     }
 }

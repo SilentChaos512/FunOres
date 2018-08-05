@@ -23,24 +23,23 @@ import net.minecraft.item.ItemStack;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.lib.EnumAlloy;
 import net.silentchaos512.funores.lib.IMetal;
-import net.silentchaos512.funores.lib.Names;
 import net.silentchaos512.funores.registry.FunOresRegistry;
 import net.silentchaos512.lib.registry.RecipeMaker;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class ItemDustAlloy extends ItemBaseMetal {
 
     public ItemDustAlloy() {
-        super(Names.ALLOY_DUST, "Dust", "dust");
+        super("dust", "dust");
     }
 
     @Override
     public List<IMetal> getMetals(Item item) {
-        List<IMetal> list = new ArrayList<IMetal>(Arrays.asList(EnumAlloy.values()));
-        return list; // Build fails if not assigned to a variable?
+//        List<IMetal> list = new ArrayList<>(Arrays.asList(EnumAlloy.values()));
+//        return list; // Build fails if not assigned to a variable?
+        return Arrays.asList(EnumAlloy.values());
     }
 
     @Override

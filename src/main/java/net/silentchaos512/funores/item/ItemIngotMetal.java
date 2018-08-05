@@ -25,23 +25,22 @@ import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.lib.EnumMetal;
 import net.silentchaos512.funores.lib.EnumVanillaMetal;
 import net.silentchaos512.funores.lib.IMetal;
-import net.silentchaos512.funores.lib.Names;
 import net.silentchaos512.lib.registry.RecipeMaker;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class ItemIngotMetal extends ItemBaseMetal {
 
     public ItemIngotMetal() {
-        super(Names.METAL_INGOT, "Ingot", "ingot");
+        super("ingot", "ingot");
     }
 
     @Override
     public List<IMetal> getMetals(Item item) {
-        List<IMetal> list = new ArrayList(Arrays.asList(EnumMetal.values())); // No vanilla metals for ingots!
-        return list; // Build fails if not assigned to a variable?
+//        List<IMetal> list = new ArrayList<>(Arrays.asList(EnumMetal.values())); // No vanilla metals for ingots!
+//        return list; // Build fails if not assigned to a variable?
+        return Arrays.asList(EnumMetal.values());
     }
 
     @Override

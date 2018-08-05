@@ -24,7 +24,6 @@ import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.lib.EnumMetal;
 import net.silentchaos512.funores.lib.EnumVanillaMetal;
 import net.silentchaos512.funores.lib.IMetal;
-import net.silentchaos512.funores.lib.Names;
 import net.silentchaos512.funores.registry.FunOresRegistry;
 import net.silentchaos512.lib.registry.RecipeMaker;
 
@@ -35,12 +34,12 @@ import java.util.List;
 public class ItemDustMetal extends ItemBaseMetal {
 
     public ItemDustMetal() {
-        super(Names.METAL_DUST, "Dust", "dust");
+        super("dust", "dust");
     }
 
     @Override
     public List<IMetal> getMetals(Item item) {
-        List<IMetal> list = new ArrayList<IMetal>(Arrays.asList(EnumMetal.values()));
+        List<IMetal> list = new ArrayList<>(Arrays.asList(EnumMetal.values()));
         list.addAll(Arrays.asList(EnumVanillaMetal.values()));
         return list;
     }

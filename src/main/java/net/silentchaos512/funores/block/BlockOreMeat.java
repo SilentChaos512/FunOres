@@ -22,6 +22,7 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.passive.EntityBat;
 import net.minecraft.item.Item;
@@ -31,6 +32,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.oredict.OreDictionary;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.configuration.Config;
@@ -38,10 +40,11 @@ import net.silentchaos512.funores.configuration.ConfigOptionOreGen;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGenBonus;
 import net.silentchaos512.funores.lib.EnumMeat;
 import net.silentchaos512.funores.util.OreLootHelper;
+import net.silentchaos512.lib.registry.ICustomModel;
 
 import java.util.Random;
 
-public class BlockOreMeat extends BlockFunOre {
+public class BlockOreMeat extends BlockFunOre implements ICustomModel {
 
     public static final PropertyEnum<EnumMeat> MEAT = PropertyEnum.create("meat", EnumMeat.class);
 
@@ -158,6 +161,15 @@ public class BlockOreMeat extends BlockFunOre {
             return quantityDropped(random) * (j + 1);
         } else {
             return quantityDropped(random);
+        }
+    }
+
+    @Override
+    public void registerModels() {
+        Item item = Item.getItemFromBlock(this);
+        for (EnumMeat meat : EnumMeat.values()) {
+            ModelResourceLocation model = new ModelResourceLocation(FunOres.RESOURCE_PREFIX + "meatore", "meat=" + meat.getName());
+            ModelLoader.setCustomModelResourceLocation(item, meat.getMeta(), model);
         }
     }
 }

@@ -22,6 +22,7 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.monster.EntityEndermite;
 import net.minecraft.item.Item;
@@ -31,6 +32,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.oredict.OreDictionary;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.configuration.Config;
@@ -38,8 +40,9 @@ import net.silentchaos512.funores.configuration.ConfigOptionOreGen;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGenBonus;
 import net.silentchaos512.funores.lib.EnumMob;
 import net.silentchaos512.funores.util.OreLootHelper;
+import net.silentchaos512.lib.registry.ICustomModel;
 
-public class BlockOreMob extends BlockFunOre {
+public class BlockOreMob extends BlockFunOre implements ICustomModel {
     public static final PropertyEnum<EnumMob> MOB = PropertyEnum.create("mob", EnumMob.class);
 
     public BlockOreMob() {
@@ -138,6 +141,15 @@ public class BlockOreMob extends BlockFunOre {
             int tryCount = 1;
             ConfigOptionOreGenBonus config = state.getValue(MOB).getConfig();
             drops.addAll(OreLootHelper.getDrops(worldServer, fortune, mob, tryCount, config));
+        }
+    }
+
+    @Override
+    public void registerModels() {
+        Item item = Item.getItemFromBlock(this);
+        for (EnumMob mob : EnumMob.values()) {
+            ModelResourceLocation model = new ModelResourceLocation(FunOres.RESOURCE_PREFIX + "mobore", "mob=" + mob.getName());
+            ModelLoader.setCustomModelResourceLocation(item, mob.getMeta(), model);
         }
     }
 }
