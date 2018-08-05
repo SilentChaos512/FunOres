@@ -25,12 +25,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AlloySmelterRecipeMaker {
-
     @Nonnull
-    public static List<AlloySmelterRecipeJei> getRecipes() {
-        List<AlloySmelterRecipeJei> recipes = new ArrayList<>();
+    public static List<AlloySmelterRecipeWrapper> getRecipes() {
+        List<AlloySmelterRecipeWrapper> recipes = new ArrayList<>();
         for (AlloySmelterRecipe smelterRecipe : AlloySmelterRecipe.ALL_RECIPES) {
-            recipes.add(new AlloySmelterRecipeJei(smelterRecipe));
+            recipes.add(new AlloySmelterRecipeWrapper(smelterRecipe));
         }
         return recipes;
     }

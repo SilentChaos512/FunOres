@@ -19,52 +19,43 @@
 package net.silentchaos512.funores.compat.jei.dryingrack;
 
 import mezz.jei.api.ingredients.IIngredients;
-import mezz.jei.api.recipe.BlankRecipeWrapper;
+import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.item.ItemStack;
 import net.silentchaos512.funores.api.recipe.dryingrack.DryingRackRecipe;
 
 import javax.annotation.Nonnull;
 import java.util.Collections;
 import java.util.List;
 
-public class DryingRackRecipeJei extends BlankRecipeWrapper {
-
-    @Nonnull
+public class DryingRackRecipeWrapper implements IRecipeWrapper {
     private final DryingRackRecipe recipe;
 
-    public DryingRackRecipeJei(@Nonnull DryingRackRecipe recipe) {
-
+    public DryingRackRecipeWrapper(DryingRackRecipe recipe) {
         this.recipe = recipe;
     }
 
-    //@Override
-    public List getInputs() {
-
+    List<ItemStack> getInputs() {
         return recipe.getInput().getStacks();
     }
 
-    //@Override
-    public List getOutputs() {
-
+    List<ItemStack> getOutputs() {
         return Collections.singletonList(recipe.getOutput());
     }
 
     @Override
-    public void drawInfo(@Nonnull Minecraft mc, int recipeWidth, int recipeHeight, int mouseX,
-                         int mouseY) {
-
+    public void drawInfo(@Nonnull Minecraft mc, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
         FontRenderer fontRender = mc.fontRenderer;
         String str = String.format("%.1f XP", recipe.getExperience());
         fontRender.drawStringWithShadow(str, 46, 0, 0xFFFFFF);
-        str = recipe.getDryTime() + "t";
+        str = (recipe.getDryTime() / 20) + "s";
         fontRender.drawStringWithShadow(str, 46, 28, 0xFFFFFF);
     }
 
     @Override
-    public void getIngredients(IIngredients arg0) {
-
-        // TODO Auto-generated method stub
-
+    public void getIngredients(IIngredients ingredients) {
+        ingredients.setInputs(ItemStack.class, this.getInputs());
+        ingredients.setOutput(ItemStack.class, this.recipe.getOutput());
     }
 }

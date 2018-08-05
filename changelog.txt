@@ -1,3 +1,9 @@
+1.6.0
+No longer compatible with older Minecraft versions, 1.12.2 only!
+Updated for latest Silent Lib 2.3.15 (major code cleanup)
+Fixed: Updated JEI plugin, removed deprecated method calls
+Fixed: Drying rack item model
+
 1.5.6
 Fixed: [1.12] Container GUIs not rendering tooltips.
 Fixed: [1.10.2] Crash when removing items from the alloy smelter's output slot.

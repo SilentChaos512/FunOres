@@ -19,76 +19,65 @@
 package net.silentchaos512.funores.compat.jei;
 
 import com.google.common.collect.Lists;
-import mezz.jei.api.*;
-import mezz.jei.api.ingredients.IModIngredientRegistration;
+import mezz.jei.api.IGuiHelper;
+import mezz.jei.api.IModPlugin;
+import mezz.jei.api.IModRegistry;
+import mezz.jei.api.JEIPlugin;
+import mezz.jei.api.ingredients.IIngredientBlacklist;
+import mezz.jei.api.recipe.IRecipeCategoryRegistration;
+import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
 import net.minecraft.item.ItemStack;
+import net.silentchaos512.funores.api.recipe.alloysmelter.AlloySmelterRecipe;
+import net.silentchaos512.funores.api.recipe.dryingrack.DryingRackRecipe;
 import net.silentchaos512.funores.compat.jei.alloysmelter.AlloySmelterRecipeCategory;
-import net.silentchaos512.funores.compat.jei.alloysmelter.AlloySmelterRecipeHandler;
 import net.silentchaos512.funores.compat.jei.alloysmelter.AlloySmelterRecipeMaker;
+import net.silentchaos512.funores.compat.jei.alloysmelter.AlloySmelterRecipeWrapper;
 import net.silentchaos512.funores.compat.jei.dryingrack.DryingRackRecipeCategory;
-import net.silentchaos512.funores.compat.jei.dryingrack.DryingRackRecipeHandler;
 import net.silentchaos512.funores.compat.jei.dryingrack.DryingRackRecipeMaker;
+import net.silentchaos512.funores.compat.jei.dryingrack.DryingRackRecipeWrapper;
 import net.silentchaos512.funores.gui.GuiAlloySmelter;
 import net.silentchaos512.funores.init.ModBlocks;
-import net.silentchaos512.funores.lib.Names;
 
 import java.util.List;
 
 @JEIPlugin
 public class FunOresPlugin implements IModPlugin {
-
-    public static IJeiHelpers jeiHelper;
     public static List<ItemStack> disabledItems = Lists.newArrayList();
 
     @Override
     public void register(IModRegistry reg) {
+        // Blacklist disabled items
+        IIngredientBlacklist ingredientBlacklist = reg.getJeiHelpers().getIngredientBlacklist();
+        disabledItems.forEach(ingredientBlacklist::addIngredientToBlacklist);
 
-        jeiHelper = reg.getJeiHelpers();
-        IGuiHelper guiHelper = jeiHelper.getGuiHelper();
+        reg.handleRecipes(AlloySmelterRecipe.class, AlloySmelterRecipeWrapper::new, AlloySmelterRecipeCategory.UID);
+        reg.handleRecipes(DryingRackRecipe.class, DryingRackRecipeWrapper::new, DryingRackRecipeCategory.UID);
 
-        for (ItemStack stack : disabledItems)
-            jeiHelper.getItemBlacklist().addItemToBlacklist(stack);
+        reg.addRecipes(AlloySmelterRecipeMaker.getRecipes(), AlloySmelterRecipeCategory.UID);
+        reg.addRecipes(DryingRackRecipeMaker.getRecipes(), DryingRackRecipeCategory.UID);
 
-        reg.addRecipeCategories(new AlloySmelterRecipeCategory(guiHelper));
-        reg.addRecipeCategories(new DryingRackRecipeCategory(guiHelper));
+        reg.addRecipeClickArea(GuiAlloySmelter.class, 80, 34, 25, 16, AlloySmelterRecipeCategory.UID);
 
-        reg.addRecipeHandlers(new AlloySmelterRecipeHandler());
-        reg.addRecipeHandlers(new DryingRackRecipeHandler());
+        ItemStack metalFurnace = new ItemStack(ModBlocks.metalFurnace);
+        ItemStack alloySmelter = new ItemStack(ModBlocks.alloySmelter);
+        ItemStack dryingRack = new ItemStack(ModBlocks.dryingRack);
 
-        reg.addRecipes(AlloySmelterRecipeMaker.getRecipes());
-        reg.addRecipes(DryingRackRecipeMaker.getRecipes());
+        // Recipe catalysts
+        reg.addRecipeCatalyst(metalFurnace, VanillaRecipeCategoryUid.FUEL, VanillaRecipeCategoryUid.SMELTING);
+        reg.addRecipeCatalyst(alloySmelter, AlloySmelterRecipeCategory.UID);
+        reg.addRecipeCatalyst(dryingRack, DryingRackRecipeCategory.UID);
 
-        reg.addRecipeClickArea(GuiAlloySmelter.class, 80, 34, 25, 16,
-                AlloySmelterRecipeCategory.CATEGORY);
-
-        reg.addRecipeCategoryCraftingItem(new ItemStack(ModBlocks.alloySmelter),
-                AlloySmelterRecipeCategory.CATEGORY);
-        reg.addRecipeCategoryCraftingItem(new ItemStack(ModBlocks.dryingRack),
-                DryingRackRecipeCategory.CATEGORY);
-
+        // Description pages
         String descPrefix = "jei.funores.desc.";
-        reg.addDescription(new ItemStack(ModBlocks.metalFurnace), descPrefix + Names.METAL_FURNACE);
-        reg.addDescription(new ItemStack(ModBlocks.alloySmelter), descPrefix + Names.ALLOY_SMELTER);
-        reg.addDescription(new ItemStack(ModBlocks.dryingRack), descPrefix + Names.DRYING_RACK);
+        reg.addIngredientInfo(metalFurnace, ItemStack.class, descPrefix + "metal_furnace");
+        reg.addIngredientInfo(alloySmelter, ItemStack.class, descPrefix + "alloy_smelter");
+        reg.addIngredientInfo(dryingRack, ItemStack.class, descPrefix + "drying_rack");
     }
 
     @Override
-    public void onRuntimeAvailable(IJeiRuntime runtime) {
-
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    public void registerIngredients(IModIngredientRegistration arg0) {
-
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void registerItemSubtypes(ISubtypeRegistry arg0) {
-
-        // TODO Auto-generated method stub
-
+    public void registerCategories(IRecipeCategoryRegistration registry) {
+        IGuiHelper guiHelper = registry.getJeiHelpers().getGuiHelper();
+        registry.addRecipeCategories(new AlloySmelterRecipeCategory(guiHelper));
+        registry.addRecipeCategories(new DryingRackRecipeCategory(guiHelper));
     }
 }

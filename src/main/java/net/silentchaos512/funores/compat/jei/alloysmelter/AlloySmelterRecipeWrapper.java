@@ -20,7 +20,7 @@ package net.silentchaos512.funores.compat.jei.alloysmelter;
 
 import com.google.common.collect.Lists;
 import mezz.jei.api.ingredients.IIngredients;
-import mezz.jei.api.recipe.BlankRecipeWrapper;
+import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.item.ItemStack;
@@ -32,24 +32,18 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class AlloySmelterRecipeJei extends BlankRecipeWrapper {
-
-    @Nonnull
+public class AlloySmelterRecipeWrapper implements IRecipeWrapper {
     private final AlloySmelterRecipe recipe;
 
-    public AlloySmelterRecipeJei(@Nonnull AlloySmelterRecipe recipe) {
-
+    public AlloySmelterRecipeWrapper(@Nonnull AlloySmelterRecipe recipe) {
         this.recipe = recipe;
     }
 
-    public List<AlloySmelterRecipeObject> getInputObjects() {
-
+    List<AlloySmelterRecipeObject> getInputObjects() {
         return Arrays.asList(recipe.getInputs());
     }
 
-    //@Override
-    public List getInputs() {
-
+    private List<ItemStack> getInputs() {
         List<ItemStack> list = Lists.newArrayList();
         for (AlloySmelterRecipeObject recipeObject : recipe.getInputs()) {
             list.addAll(recipeObject.getPossibleItemStacks());
@@ -57,27 +51,22 @@ public class AlloySmelterRecipeJei extends BlankRecipeWrapper {
         return list;
     }
 
-    //@Override
-    public List getOutputs() {
-
+    List<ItemStack> getOutputs() {
         return Collections.singletonList(recipe.getOutput());
     }
 
     @Override
-    public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX,
-                         int mouseY) {
-
-        FontRenderer fontRender = minecraft.fontRenderer;
-        String str = String.format("%.1f XP", recipe.getExperience());
-        fontRender.drawStringWithShadow(str, 63, 0, 0xFFFFFF);
-        str = recipe.getCookTime() + "t";
-        fontRender.drawStringWithShadow(str, 66, 28, 0xFFFFFF);
+    public void getIngredients(IIngredients ingredients) {
+        ingredients.setInputs(ItemStack.class, this.getInputs());
+        ingredients.setOutput(ItemStack.class, this.recipe.getOutput());
     }
 
     @Override
-    public void getIngredients(IIngredients arg0) {
-
-        // TODO Auto-generated method stub
-
+    public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
+        FontRenderer fontRender = minecraft.fontRenderer;
+        String str = String.format("%.1f XP", recipe.getExperience());
+        fontRender.drawStringWithShadow(str, 63, 0, 0xFFFFFF);
+        str = (recipe.getCookTime() / 20) + "s";
+        fontRender.drawStringWithShadow(str, 66, 28, 0xFFFFFF);
     }
 }

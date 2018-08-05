@@ -25,12 +25,11 @@ import javax.annotation.Nonnull;
 import java.util.List;
 
 public class DryingRackRecipeMaker {
-
     @Nonnull
-    public static List<DryingRackRecipeJei> getRecipes() {
-        List<DryingRackRecipeJei> recipes = Lists.newArrayList();
+    public static List<DryingRackRecipeWrapper> getRecipes() {
+        List<DryingRackRecipeWrapper> recipes = Lists.newArrayList();
         for (DryingRackRecipe rackRecipe : DryingRackRecipe.ALL_RECIPES) {
-            recipes.add(new DryingRackRecipeJei(rackRecipe));
+            recipes.add(new DryingRackRecipeWrapper(rackRecipe));
         }
         return recipes;
     }

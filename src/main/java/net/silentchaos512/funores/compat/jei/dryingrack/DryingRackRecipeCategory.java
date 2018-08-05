@@ -29,95 +29,57 @@ import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 import net.silentchaos512.funores.FunOres;
-import net.silentchaos512.funores.compat.jei.FunOresPlugin;
-
-import javax.annotation.Nonnull;
 
 public class DryingRackRecipeCategory implements IRecipeCategory {
+    public static final String UID = FunOres.RESOURCE_PREFIX + "drying_rack";
 
-    public static final String CATEGORY = FunOres.MOD_ID + ":DryingRack";
-
-    @Nonnull
-    protected final IDrawable background;
-    @Nonnull
-    protected final IDrawableAnimated arrow;
-    @Nonnull
-    private final String localizedName = FunOres.instance.localizationHelper
-            .getLocalizedString(("jei.funores.recipe.DryingRack"));
+    private final IDrawable background;
+    private final IDrawableAnimated arrow;
+    private final String localizedName = FunOres.localizationHelper.getLocalizedString("jei.funores.recipe.drying_rack");
 
     public DryingRackRecipeCategory(IGuiHelper guiHelper) {
+        ResourceLocation backgroundLocation = new ResourceLocation(FunOres.RESOURCE_PREFIX + "textures/gui/jei/DryingRack.png");
+        background = guiHelper.createDrawable(backgroundLocation, 0, 0, 120, 40);
 
-        ResourceLocation backgroundLocation = new ResourceLocation(
-                FunOres.RESOURCE_PREFIX + "textures/gui/jei/DryingRack.png");
-
-        background = FunOresPlugin.jeiHelper.getGuiHelper().createDrawable(backgroundLocation, 0, 0,
-                120, 40);
-
-        ResourceLocation furnaceLocation = new ResourceLocation("minecraft",
-                "textures/gui/container/furnace.png");
+        ResourceLocation furnaceLocation = new ResourceLocation("minecraft", "textures/gui/container/furnace.png");
         IDrawableStatic arrowDrawable = guiHelper.createDrawable(furnaceLocation, 176, 14, 24, 17);
-        this.arrow = guiHelper.createAnimatedDrawable(arrowDrawable, 200,
-                IDrawableAnimated.StartDirection.LEFT, false);
-    }
-
-    //@Override
-    public void drawAnimations(Minecraft mc) {
-
-        arrow.draw(mc, 47, 10);
+        this.arrow = guiHelper.createAnimatedDrawable(arrowDrawable, 200, IDrawableAnimated.StartDirection.LEFT, false);
     }
 
     @Override
     public void drawExtras(Minecraft mc) {
-
+        arrow.draw(mc, 47, 10);
     }
 
     @Override
     public IDrawable getBackground() {
-
         return background;
     }
 
     @Override
     public String getTitle() {
-
         return localizedName;
     }
 
     @Override
     public String getUid() {
-
-        return CATEGORY;
+        return UID;
     }
-
-//  @Override
-//  public void setRecipe(IRecipeLayout recipeLayout, IRecipeWrapper recipeWrapper) {
-//
-//    setRecipe(recipeLayout, recipeWrapper, null);
-//  }
 
     @Override
     public void setRecipe(IRecipeLayout recipeLayout, IRecipeWrapper recipeWrapper, IIngredients ingredients) {
-
         recipeLayout.getItemStacks().init(0, true, 26, 11);
         recipeLayout.getItemStacks().init(1, false, 77, 11);
 
-        if (recipeWrapper instanceof DryingRackRecipeJei) {
-            DryingRackRecipeJei wrapper = (DryingRackRecipeJei) recipeWrapper;
+        if (recipeWrapper instanceof DryingRackRecipeWrapper) {
+            DryingRackRecipeWrapper wrapper = (DryingRackRecipeWrapper) recipeWrapper;
             recipeLayout.getItemStacks().set(0, wrapper.getInputs());
             recipeLayout.getItemStacks().set(1, wrapper.getOutputs());
         }
     }
 
     @Override
-    public IDrawable getIcon() {
-
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
     public String getModName() {
-
         return FunOres.MOD_NAME;
     }
 }
