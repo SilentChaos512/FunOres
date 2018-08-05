@@ -547,8 +547,7 @@ public class Config {
     }
 
     public static boolean isItemDisabled(ItemStack stack) {
-        // Should translate as en_US on servers...
-        String name = FunOres.localizationHelper.getLocalizedString(stack.getTranslationKey() + ".name");
+        String name = stack.getTranslationKey();
 
         // Check for quick tweaks disabled items...
         Item item = stack.getItem();

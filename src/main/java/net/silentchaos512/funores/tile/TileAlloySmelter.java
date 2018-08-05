@@ -114,11 +114,8 @@ public class TileAlloySmelter extends TileSidedInventorySL implements ITickable 
             return false;
 
         // Enough room?
-        int newOutputSize = StackHelper.getCount(outputSlot) + StackHelper.getCount(result);
-        if (newOutputSize > getInventoryStackLimit() || newOutputSize > result.getMaxStackSize())
-            return false;
-
-        return true;
+        int newOutputSize = outputSlot.getCount() + result.getCount();
+        return newOutputSize <= getInventoryStackLimit() && newOutputSize <= result.getMaxStackSize();
     }
 
     public void smeltItem() {
@@ -131,18 +128,19 @@ public class TileAlloySmelter extends TileSidedInventorySL implements ITickable 
             if (StackHelper.isEmpty(slotOutput))
                 setInventorySlotContents(SLOT_OUTPUT, output); // No need to copy, since output is a copy, right?
             else if (slotOutput.isItemEqual(output))
-                StackHelper.grow(slotOutput, StackHelper.getCount(output));
+                slotOutput.grow(output.getCount());
 
             // Consume ingredients
             AlloySmelterRecipe recipe = AlloySmelterRecipe.getMatchingRecipe(getInputStacks());
+            if (recipe == null) return;
             AlloySmelterRecipeObject[] inputList = recipe.getInputs();
             for (AlloySmelterRecipeObject recipeObject : inputList) {
                 for (int i = 0; i < SLOTS_INPUT.length; ++i) {
                     ItemStack stack = getStackInSlot(i);
                     if (StackHelper.isValid(stack)) {
                         if (recipeObject.matches(stack)) {
-                            StackHelper.shrink(stack, StackHelper.getCount(recipeObject.getMatchingStack(stack)));
-                            if (StackHelper.isEmpty(stack))
+                            stack.shrink(recipeObject.getMatchingStack(stack).getCount());
+                            if (stack.isEmpty())
                                 stack = stack.getItem().getContainerItem(stack);
                             break;
                         }
@@ -158,7 +156,7 @@ public class TileAlloySmelter extends TileSidedInventorySL implements ITickable 
 
     public ItemStack getSmeltingResult() {
         AlloySmelterRecipe recipe = AlloySmelterRecipe.getMatchingRecipe(getInputStacks());
-        return recipe == null ? StackHelper.empty() : recipe.getOutput();
+        return recipe == null ? ItemStack.EMPTY : recipe.getOutput();
     }
 
     public ItemStackList getInputStacks() {
@@ -277,7 +275,7 @@ public class TileAlloySmelter extends TileSidedInventorySL implements ITickable 
         if (!world.isRemote) {
             ItemStack slotFuel = getStackInSlot(SLOT_FUEL);
 
-            if (!isBurning() && (StackHelper.isEmpty(slotFuel) /* || stacks[SLOT_INPUT] == null */)) {
+            if (!isBurning() && slotFuel.isEmpty()) {
                 if (!isBurning() && cookTime > 0) {
                     cookTime = MathHelper.clamp(cookTime - 2, 0, totalCookTime);
                 }
@@ -289,7 +287,7 @@ public class TileAlloySmelter extends TileSidedInventorySL implements ITickable 
                         flag1 = true;
 
                         if (StackHelper.isValid(slotFuel)) {
-                            StackHelper.shrink(slotFuel, 1);
+                            slotFuel.shrink(1);
 
                             if (StackHelper.isEmpty(slotFuel)) {
                                 slotFuel = slotFuel.getItem().getContainerItem(slotFuel);

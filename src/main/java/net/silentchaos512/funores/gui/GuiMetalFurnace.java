@@ -34,7 +34,6 @@ import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public class GuiMetalFurnace extends GuiContainer {
-
     private static final ResourceLocation guiTextures = new ResourceLocation(FunOres.MOD_ID, "textures/gui/metalfurnace.png");
     private IInventory tileFurnace;
 

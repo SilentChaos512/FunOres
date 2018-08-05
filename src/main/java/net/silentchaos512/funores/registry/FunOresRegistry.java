@@ -30,7 +30,6 @@ import net.silentchaos512.funores.configuration.Config;
 import net.silentchaos512.funores.lib.IDisableable;
 import net.silentchaos512.lib.registry.SRegistry;
 import net.silentchaos512.lib.util.LogHelper;
-import net.silentchaos512.lib.util.StackHelper;
 
 import java.util.HashSet;
 import java.util.List;
@@ -42,7 +41,6 @@ import java.util.Set;
  * @author Silent
  */
 public class FunOresRegistry extends SRegistry {
-
     public FunOresRegistry(String modId, LogHelper logHelper) {
         super(modId, logHelper);
     }
@@ -67,13 +65,11 @@ public class FunOresRegistry extends SRegistry {
      * Gets a String to use for the disabledItems set.
      */
     private String getStackKey(ItemStack stack) {
-        if (stack == null || StackHelper.isEmpty(stack))
-            return "null";
-        return stack.getTranslationKey() + ":" + stack.getItemDamage();
+        return stack.isEmpty() ? "null" : stack.getTranslationKey() + ":" + stack.getItemDamage();
     }
 
     @Override
-    public Block registerBlock(Block block, String key, ItemBlock itemBlock) {
+    public <T extends Block> T registerBlock(T block, String key, ItemBlock itemBlock) {
         super.registerBlock(block, key, itemBlock);
 
         if (block instanceof IDisableable) {
@@ -107,7 +103,7 @@ public class FunOresRegistry extends SRegistry {
     }
 
     @Override
-    public Item registerItem(Item item, String key) {
+    public <T extends Item> T registerItem(T item, String key) {
         if (item instanceof IDisableable) {
             List<ItemStack> list = getSubItems((IDisableable) item, item);
             for (ItemStack stack : list) {

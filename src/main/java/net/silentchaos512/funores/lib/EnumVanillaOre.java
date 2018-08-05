@@ -86,7 +86,7 @@ public enum EnumVanillaOre implements IHasOre {
             case REDSTONE:
                 return Config.redstone;
             default:
-                FunOres.instance.logHelper.warning("Don't know config for vanilla ore: " + name);
+                FunOres.logHelper.warn("Don't know config for vanilla ore: " + name);
                 return null;
         }
     }

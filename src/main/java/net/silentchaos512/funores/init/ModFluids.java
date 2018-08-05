@@ -87,7 +87,7 @@ public class ModFluids {
 
             @Override
             public String getLocalizedName(FluidStack stack) {
-                return FunOres.localizationHelper.getLocalizedString(unlocalizedName);
+                return FunOres.i18n.translate(unlocalizedName);
             }
         };
 

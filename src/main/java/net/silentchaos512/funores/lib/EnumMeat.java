@@ -94,7 +94,7 @@ public enum EnumMeat implements IHasOre, ILootTableDrops {
             case BAT:
                 return Config.bat;
             default:
-                FunOres.logHelper.severe("Don't know config for ore " + name + "!");
+                FunOres.logHelper.error("Don't know config for ore " + name + "!");
                 return null;
         }
     }
@@ -122,7 +122,7 @@ public enum EnumMeat implements IHasOre, ILootTableDrops {
             case BAT:
                 return new EntityBat(worldIn);
             default:
-                FunOres.logHelper.severe("Don't know entity for ore " + name + "!");
+                FunOres.logHelper.error("Don't know entity for ore " + name + "!");
                 return null;
         }
     }
@@ -184,7 +184,7 @@ public enum EnumMeat implements IHasOre, ILootTableDrops {
             case BAT:
                 return LootTableList.ENTITIES_BAT;
             default:
-                FunOres.logHelper.severe("Don't know loot table for ore " + name + "!");
+                FunOres.logHelper.error("Don't know loot table for ore " + name + "!");
                 return null;
         }
     }

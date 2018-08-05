@@ -110,7 +110,7 @@ public enum EnumMob implements IHasOre, ILootTableDrops {
             case GUARDIAN:
                 return Config.guardian;
             default:
-                FunOres.instance.logHelper.severe("Don't know config for ore " + name + "!");
+                FunOres.logHelper.error("Don't know config for ore " + name + "!");
                 return null;
         }
     }
@@ -146,7 +146,7 @@ public enum EnumMob implements IHasOre, ILootTableDrops {
                 return new EntityGuardian(worldIn);
             //@formatter:on
             default:
-                FunOres.instance.logHelper.severe("Don't know config for ore " + name + "!");
+                FunOres.logHelper.error("Don't know config for ore " + name + "!");
                 return null;
         }
     }
@@ -184,7 +184,7 @@ public enum EnumMob implements IHasOre, ILootTableDrops {
             case GUARDIAN:
                 return LootTableList.ENTITIES_GUARDIAN;
             default:
-                FunOres.instance.logHelper.severe("Don't know config for ore " + name + "!");
+                FunOres.logHelper.error("Don't know config for ore " + name + "!");
                 return null;
         }
     }

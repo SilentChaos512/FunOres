@@ -38,7 +38,7 @@ public class AlloySmelterRecipeCategory implements IRecipeCategory {
     private final IDrawable background;
     private final IDrawableAnimated flame;
     private final IDrawableAnimated arrow;
-    private final String localizedName = FunOres.localizationHelper.getLocalizedString("jei.funores.recipe.alloy_smelter");
+    private final String localizedName = FunOres.i18n.translate("jei.funores.recipe.alloy_smelter");
 
     public AlloySmelterRecipeCategory(IGuiHelper guiHelper) {
         ResourceLocation backgroundLocation = new ResourceLocation(FunOres.RESOURCE_PREFIX + "textures/gui/jei/AlloySmelter.png");

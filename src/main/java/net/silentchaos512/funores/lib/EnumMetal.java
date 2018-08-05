@@ -152,7 +152,7 @@ public enum EnumMetal implements IHasOre, IMetal {
             case 9:
                 return Config.osmium;
             default:
-                FunOres.instance.logHelper.debug("EnumMetal: Don't know config for ore with meta " + meta);
+                FunOres.logHelper.debug("EnumMetal: Don't know config for ore with meta " + meta);
                 return null;
         }
     }

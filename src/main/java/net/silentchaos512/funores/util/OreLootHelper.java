@@ -18,7 +18,6 @@
 
 package net.silentchaos512.funores.util;
 
-import com.google.common.collect.Lists;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Enchantments;
@@ -39,24 +38,26 @@ import net.silentchaos512.funores.lib.ILootTableDrops;
 import net.silentchaos512.lib.util.StackHelper;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class OreLootHelper {
 
     public static List<ItemStack> getDrops(WorldServer world, int fortune, ILootTableDrops ore, int tryCount, ConfigOptionOreGenBonus config) {
-        List<ItemStack> ret = Lists.newArrayList();
+        List<ItemStack> ret = new ArrayList<>();
         Random rand = FunOres.random;
 
         EntityLivingBase entityLiving = ore.getEntityLiving(world);
+        if (entityLiving == null) return ret;
 
         // Get the loot table.
         ResourceLocation resource = ore.getLootTable(entityLiving);
+        if (resource == null) return ret;
         LootTable lootTable = world.getLootTableManager().getLootTableFromLocation(resource);
 
         // Create a fake player, wielding a sword with looting level equivalent to pickaxe's fortune.
-        WeakReference<FakePlayer> fakePlayer = new WeakReference<>(
-                FakePlayerFactory.get((WorldServer) world, new GameProfile(null, "FakePlayerFO")));
+        WeakReference<FakePlayer> fakePlayer = new WeakReference<>(FakePlayerFactory.get(world, new GameProfile(null, "FakePlayerFO")));
         ItemStack fakeSword = new ItemStack(Items.DIAMOND_SWORD);
         if (fortune > 0)
             fakeSword.addEnchantment(Enchantments.LOOTING, fortune);

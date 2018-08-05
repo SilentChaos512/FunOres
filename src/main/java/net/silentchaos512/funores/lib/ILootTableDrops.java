@@ -25,7 +25,6 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 
 public interface ILootTableDrops {
-
     @Nullable
     EntityLivingBase getEntityLiving(World worldIn);
 

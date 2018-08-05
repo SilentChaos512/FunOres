@@ -25,7 +25,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.lib.util.ChatHelper;
-import net.silentchaos512.lib.util.StackHelper;
 
 import java.util.List;
 import java.util.Locale;
@@ -55,7 +54,7 @@ public class ConfigItemDrop {
         if (bonus > 0) {
             bonus = random.nextInt(bonus + 1);
         }
-        return StackHelper.getCount(stack) + bonus;
+        return stack.getCount() + bonus;
     }
 
     public ItemStack getStack() {
@@ -63,7 +62,6 @@ public class ConfigItemDrop {
     }
 
     public static String getKey(String itemName, int count, int meta, float baseChance, float fortuneChanceBonus, float fortuneCountBonus) {
-        // LogHelper.debug(Item.getByNameOrId(itemName).getUnlocalizedName());
         return String.format(Locale.US, "%s %d %d %.3f %.3f %.3f", itemName, count, meta, baseChance,
                 fortuneChanceBonus, fortuneCountBonus);
     }

@@ -33,7 +33,6 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.lib.EnumDriedItem;
 import net.silentchaos512.funores.lib.IDisableable;
-import net.silentchaos512.funores.lib.Names;
 import net.silentchaos512.lib.registry.IAddRecipes;
 import net.silentchaos512.lib.registry.ICustomModel;
 import net.silentchaos512.lib.registry.RecipeMaker;
@@ -49,13 +48,12 @@ public class ItemDried extends ItemFood implements IDisableable, IAddRecipes, IC
     }
 
     @Override
-    public void addInformation(ItemStack stack, World world, List list, ITooltipFlag flag) {
+    public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flag) {
         boolean shifted = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT);
 
         // Display flavor text when shift is held.
         if (shifted)
-            for (String line : FunOres.localizationHelper.getItemDescriptionLines(getEnum(stack).name))
-                list.add(TextFormatting.ITALIC + line);
+            list.add(TextFormatting.ITALIC + FunOres.i18n.translate(getTranslationKey(stack) + ".desc"));
     }
 
     @Override
@@ -114,7 +112,7 @@ public class ItemDried extends ItemFood implements IDisableable, IAddRecipes, IC
     @Override
     public String getTranslationKey(ItemStack stack) {
         EnumDriedItem e = getEnum(stack);
-        return "item." + FunOres.MOD_ID + "." + (e == null ? Names.DRIED_ITEM : e.getName());
+        return "item." + FunOres.MOD_ID + "." + (e == null ? "drieditem" : e.getName());
     }
 
     @Override

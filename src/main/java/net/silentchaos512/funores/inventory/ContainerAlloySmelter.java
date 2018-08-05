@@ -92,7 +92,7 @@ public class ContainerAlloySmelter extends Container {
 
     @Override
     public ItemStack transferStackInSlot(EntityPlayer playerIn, int index) {
-        ItemStack itemstack = StackHelper.empty();
+        ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.inventorySlots.get(index);
 
         if (slot != null && slot.getHasStack()) {
@@ -101,11 +101,11 @@ public class ContainerAlloySmelter extends Container {
             final int slotCount = TileAlloySmelter.NUMBER_OF_SLOTS;         // 6
 
             ItemStack itemstack1 = slot.getStack();
-            itemstack = StackHelper.safeCopy(itemstack1);
+            itemstack = itemstack1.copy();
 
             if (index == TileAlloySmelter.SLOT_OUTPUT) {
                 if (!this.mergeItemStack(itemstack1, slotCount, slotCount + 36, true)) {
-                    return StackHelper.empty();
+                    return ItemStack.EMPTY;
                 }
 
                 slot.onSlotChange(itemstack1, itemstack);
@@ -113,32 +113,32 @@ public class ContainerAlloySmelter extends Container {
                 if (TileEntityFurnace.isItemFuel(itemstack1)) {
                     // Insert fuel?
                     if (!this.mergeItemStack(itemstack1, slotFuel, slotFuel + 1, false)) {
-                        return StackHelper.empty();
+                        return ItemStack.EMPTY;
                     }
                 } else if (AlloySmelterRecipe.isValidIngredient(itemstack1)) {
                     // Insert ingredients?
                     if (!this.mergeItemStack(itemstack1, 0, inputSlotCount, false)) {
-                        return StackHelper.empty();
+                        return ItemStack.EMPTY;
                     }
                 } else if (index >= 4 && index < 31) {
                     if (!this.mergeItemStack(itemstack1, 31, 40, false)) {
-                        return StackHelper.empty();
+                        return ItemStack.EMPTY;
                     }
                 } else if (index >= 31 && index < 40 && !this.mergeItemStack(itemstack1, 4, 31, false)) {
-                    return StackHelper.empty();
+                    return ItemStack.EMPTY;
                 }
             } else if (!this.mergeItemStack(itemstack1, slotCount, slotCount + 36, false)) {
-                return StackHelper.empty();
+                return ItemStack.EMPTY;
             }
 
             if (StackHelper.isValid(itemstack1)) {
-                slot.putStack(StackHelper.empty());
+                slot.putStack(ItemStack.EMPTY);
             } else {
                 slot.onSlotChanged();
             }
 
-            if (StackHelper.getCount(itemstack1) == StackHelper.getCount(itemstack)) {
-                return StackHelper.empty();
+            if (itemstack1.getCount() == itemstack.getCount()) {
+                return ItemStack.EMPTY;
             }
 
             slot.onTake(playerIn, itemstack1);

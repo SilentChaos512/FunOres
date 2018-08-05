@@ -1,6 +1,7 @@
 1.6.0
 No longer compatible with older Minecraft versions, 1.12.2 only!
 Updated for latest Silent Lib 2.3.15 (major code cleanup)
+Changed: Item disable configs now use translation keys instead of translated names (you may need to update your config file)
 Fixed: Updated JEI plugin, removed deprecated method calls
 Fixed: Drying rack item model
 

@@ -24,6 +24,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
 import net.silentchaos512.funores.FunOres;
 
+@Deprecated
 public class ExtraRecipes {
     public static final String CATEGORY = "recipe_extra";
 
@@ -50,10 +51,8 @@ public class ExtraRecipes {
         // Hoppers
         comment = "Hopper recipe using an ingot other than iron.";
         result = new ItemStack(Blocks.HOPPER);
-        add("Hopper.Aluminium", comment, result, "a a", "aca", " a ", 'a', "ingotAluminium", 'c',
-                Blocks.CHEST);
-        add("Hopper.Aluminum", comment, result, "a a", "aca", " a ", 'a', "ingotAluminum", 'c',
-                Blocks.CHEST);
+        add("Hopper.Aluminium", comment, result, "a a", "aca", " a ", 'a', "ingotAluminium", 'c', "chestWood");
+        add("Hopper.Aluminum", comment, result, "a a", "aca", " a ", 'a', "ingotAluminum", 'c', "chestWood");
         // Shears
         comment = "Shears recipe using an ingot other than iron.";
         result = new ItemStack(Items.SHEARS);

@@ -22,7 +22,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
 
 public interface IMetal extends IStringSerializable {
-
     int getMeta();
 
     String getMetalName();

@@ -95,21 +95,4 @@ public class ItemCraftingItem extends ItemBaseMetal {
                 return super.getTranslationKey().replaceFirst("metal|alloy", "") + metal.getName();
         return super.getTranslationKey(stack);
     }
-
-    //    @Override
-//    public String getNameForStack(ItemStack stack) {
-//        String metalName = null;
-//        int meta = stack.getItemDamage();
-//        List<IMetal> metals = getMetals(this);
-//        if (meta >= 0 && meta < metals.size() && metals.get(meta) != null) {
-//            metalName = metals.get(meta).getMetalName();
-//        } else {
-//            for (IMetal metal : Lists.reverse(metals)) {
-//                if (metal.getMeta() == meta) {
-//                    metalName = metal.getMetalName();
-//                }
-//            }
-//        }
-//        return craftingItemName + metalName;
-//    }
 }

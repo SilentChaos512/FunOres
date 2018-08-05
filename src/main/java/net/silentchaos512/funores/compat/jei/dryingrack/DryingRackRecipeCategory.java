@@ -35,7 +35,7 @@ public class DryingRackRecipeCategory implements IRecipeCategory {
 
     private final IDrawable background;
     private final IDrawableAnimated arrow;
-    private final String localizedName = FunOres.localizationHelper.getLocalizedString("jei.funores.recipe.drying_rack");
+    private final String localizedName = FunOres.i18n.translate("jei.funores.recipe.drying_rack");
 
     public DryingRackRecipeCategory(IGuiHelper guiHelper) {
         ResourceLocation backgroundLocation = new ResourceLocation(FunOres.RESOURCE_PREFIX + "textures/gui/jei/DryingRack.png");

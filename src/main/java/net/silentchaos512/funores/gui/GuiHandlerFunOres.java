@@ -53,7 +53,7 @@ public class GuiHandlerFunOres implements IGuiHandler {
                 }
                 return null;
             default:
-                FunOres.logHelper.warning("No GUI with ID {}!", ID);
+                FunOres.logHelper.warn("No GUI with ID {}!", ID);
                 return null;
         }
     }
@@ -77,7 +77,7 @@ public class GuiHandlerFunOres implements IGuiHandler {
                 }
                 return null;
             default:
-                FunOres.logHelper.warning("No GUI with ID {}!",ID);
+                FunOres.logHelper.warn("No GUI with ID {}!",ID);
                 return null;
         }
     }

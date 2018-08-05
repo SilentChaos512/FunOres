@@ -38,6 +38,7 @@ public class ModRecipeHelper {
                     "</recipeGroup>";
 
     public static void addSagMillRecipe(String key, ItemStack input, ItemStack outputPrimary, ItemStack outputSecondary, String stoneName, int energy) {
+        // FIXME
         String inputName = input.getItem() instanceof IRegistryObject
                 ? ((IRegistryObject) input.getItem()).getName()
                 : input.getItem().getTranslationKey().replaceFirst("(item\\.FunOres:|tile\\.)", "");

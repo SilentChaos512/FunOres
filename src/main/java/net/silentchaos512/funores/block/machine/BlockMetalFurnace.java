@@ -30,10 +30,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.tile.TileMetalFurnace;
+import net.silentchaos512.lib.block.ITileEntityBlock;
 import net.silentchaos512.lib.registry.IAddRecipes;
 import net.silentchaos512.lib.registry.RecipeMaker;
 
-public class BlockMetalFurnace extends BlockMachine implements IAddRecipes {
+public class BlockMetalFurnace extends BlockMachine implements IAddRecipes, ITileEntityBlock {
 
     public BlockMetalFurnace() {
         super(Material.IRON);
@@ -42,6 +43,11 @@ public class BlockMetalFurnace extends BlockMachine implements IAddRecipes {
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
         return new TileMetalFurnace();
+    }
+
+    @Override
+    public Class<? extends TileEntity> getTileEntityClass() {
+        return TileMetalFurnace.class;
     }
 
     @Override

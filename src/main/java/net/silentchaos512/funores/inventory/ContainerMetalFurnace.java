@@ -79,50 +79,50 @@ public class ContainerMetalFurnace extends ContainerSL {
     @Override
     public @Nonnull
     ItemStack transferStackInSlot(EntityPlayer playerIn, int index) {
-        ItemStack itemstack = StackHelper.empty();
+        ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.inventorySlots.get(index);
 
         if (slot != null && slot.getHasStack()) {
             ItemStack itemstack1 = slot.getStack();
-            itemstack = StackHelper.safeCopy(itemstack1);
+            itemstack = itemstack1.copy();
 
             if (index == 2 || index == 3) { // TODO: Does this need to be changed?
                 if (!this.mergeItemStack(itemstack1, 4, 40, true)) {
-                    return StackHelper.empty();
+                    return ItemStack.EMPTY;
                 }
 
                 slot.onSlotChange(itemstack1, itemstack);
             } else if (index != 1 && index != 0) {
                 if (!FurnaceRecipes.instance().getSmeltingResult(itemstack1).isEmpty()) {
                     if (!this.mergeItemStack(itemstack1, 0, 1, false)) {
-                        return StackHelper.empty();
+                        return ItemStack.EMPTY;
                     }
                 } else if (TileEntityFurnace.isItemFuel(itemstack1)) {
                     if (!this.mergeItemStack(itemstack1, 1, 2, false)) {
-                        return StackHelper.empty();
+                        return ItemStack.EMPTY;
                     }
                 } else if (index >= 4 && index < 31) {
                     if (!this.mergeItemStack(itemstack1, 31, 40, false)) {
-                        return StackHelper.empty();
+                        return ItemStack.EMPTY;
                     }
                 } else if (index >= 31 && index < 40 && !this.mergeItemStack(itemstack1, 4, 31, false)) {
-                    return StackHelper.empty();
+                    return ItemStack.EMPTY;
                 }
             } else if (!this.mergeItemStack(itemstack1, 4, 40, false)) {
-                return StackHelper.empty();
+                return ItemStack.EMPTY;
             }
 
             if (StackHelper.isEmpty(itemstack1)) {
-                slot.putStack(StackHelper.empty());
+                slot.putStack(ItemStack.EMPTY);
             } else {
                 slot.onSlotChanged();
             }
 
-            if (StackHelper.getCount(itemstack1) == StackHelper.getCount(itemstack)) {
-                return StackHelper.empty();
+            if (itemstack1.getCount() == itemstack.getCount()) {
+                return ItemStack.EMPTY;
             }
 
-            ContainerSL.onTakeFromSlot(slot, playerIn, itemstack1);
+            slot.onTake(playerIn, itemstack1);
         }
 
         return itemstack;

@@ -47,7 +47,7 @@ public class TileDryingRack extends TileEntity implements ITickable, IInventoryS
     public static final int BASE_DRY_SPEED = 1;
 
     private @Nonnull
-    ItemStack stack = StackHelper.empty();
+    ItemStack stack = ItemStack.EMPTY;
     private int dryTime = 0;
     private int totalDryTime = 0;
     private float xp = 0;
@@ -63,8 +63,8 @@ public class TileDryingRack extends TileEntity implements ITickable, IInventoryS
         list.add("drySpeed = " + getDrySpeed());
         list.add("xp = " + xp);
         ItemStack output = getOutput();
-        list.add("stack = " + (StackHelper.isEmpty(stack) ? "null" : stack.getDisplayName()));
-        list.add("output = " + (StackHelper.isEmpty(output) ? "null" : output.getDisplayName()));
+        list.add("stack = " + (stack.isEmpty() ? "null" : stack.getDisplayName()));
+        list.add("output = " + (output.isEmpty() ? "null" : output.getDisplayName()));
         list.add(sep);
         // constants
         return list;
@@ -73,8 +73,8 @@ public class TileDryingRack extends TileEntity implements ITickable, IInventoryS
     @Override
     public void update() {
         DryingRackRecipe recipe = DryingRackRecipe.getMatchingRecipe(stack);
-        ItemStack output = recipe == null ? StackHelper.empty() : recipe.getOutput();
-        if (recipe != null && output != null) {
+        ItemStack output = recipe == null ? ItemStack.EMPTY : recipe.getOutput();
+        if (recipe != null && !output.isEmpty()) {
             dryTime += getDrySpeed();
             if (dryTime >= totalDryTime) {
                 stack = output;
@@ -93,9 +93,9 @@ public class TileDryingRack extends TileEntity implements ITickable, IInventoryS
 
         if (StackHelper.isEmpty(stack) && StackHelper.isValid(heldItem)) {
             // Add to rack.
-            stack = StackHelper.safeCopy(heldItem);
-            StackHelper.setCount(stack, 1);
-            StackHelper.shrink(heldItem, 1);
+            stack = heldItem.copy();
+            stack.setCount(1);
+            heldItem.shrink(1);
 
             dryTime = 0;
             totalDryTime = getTotalDryTime();
@@ -106,14 +106,12 @@ public class TileDryingRack extends TileEntity implements ITickable, IInventoryS
                 Vec3d v = new Vec3d(player.posX, player.posY + 1.1, player.posZ);
                 Vec3d lookVec = player.getLookVec();
                 v = v.add(lookVec);
-                StackHelper.setCount(stack, 1); // Not sure why this is necessary...
-                EntityItem entityItem = new EntityItem(player.world, v.x, v.y, v.z,
-                        stack);
-                // LogHelper.list(entityItem, entityItem.getEntityItem().stackSize);
+                stack.setCount(1); // Not sure why this is necessary...
+                EntityItem entityItem = new EntityItem(player.world, v.x, v.y, v.z, stack);
                 player.world.spawnEntity(entityItem);
             }
             givePlayerXp(player);
-            stack = StackHelper.empty();
+            stack = ItemStack.EMPTY;
             dryTime = 0;
             totalDryTime = getTotalDryTime();
             markForUpdate = true;
@@ -237,7 +235,7 @@ public class TileDryingRack extends TileEntity implements ITickable, IInventoryS
     public EnumMachineState getMachineState() {
         IBlockState state = world.getBlockState(pos);
         if (state != null && state.getBlock() == ModBlocks.dryingRack)
-            return (EnumMachineState) world.getBlockState(pos).getValue(BlockMachine.FACING);
+            return world.getBlockState(pos).getValue(BlockMachine.FACING);
         return EnumMachineState.NORTH_OFF;
     }
 
@@ -282,7 +280,7 @@ public class TileDryingRack extends TileEntity implements ITickable, IInventoryS
     @Override
     public ItemStack removeStackFromSlot(int index) {
         ItemStack copy = stack;
-        stack = StackHelper.empty();
+        stack = ItemStack.EMPTY;
         return copy;
     }
 
@@ -346,11 +344,11 @@ public class TileDryingRack extends TileEntity implements ITickable, IInventoryS
 
     @Override
     public void clear() {
-        stack = StackHelper.empty();
+        stack = ItemStack.EMPTY;
     }
 
     @Override
     public boolean isEmpty() {
-        return StackHelper.isEmpty(stack);
+        return stack.isEmpty();
     }
 }

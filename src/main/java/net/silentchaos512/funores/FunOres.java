@@ -19,6 +19,7 @@
 package net.silentchaos512.funores;
 
 import net.minecraft.block.Block;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -49,17 +50,12 @@ import net.silentchaos512.funores.gui.GuiHandlerFunOres;
 import net.silentchaos512.funores.init.ModBlocks;
 import net.silentchaos512.funores.init.ModFluids;
 import net.silentchaos512.funores.init.ModItems;
-import net.silentchaos512.funores.lib.EnumAlloy;
-import net.silentchaos512.funores.lib.EnumDriedItem;
-import net.silentchaos512.funores.lib.ExtraRecipes;
-import net.silentchaos512.funores.lib.ModDamageSources;
+import net.silentchaos512.funores.lib.*;
 import net.silentchaos512.funores.proxy.CommonProxy;
 import net.silentchaos512.funores.registry.FunOresRegistry;
 import net.silentchaos512.funores.world.FunOresGenerator;
-import net.silentchaos512.lib.SilentLib;
 import net.silentchaos512.lib.base.IModBase;
-import net.silentchaos512.lib.creativetab.CreativeTabSL;
-import net.silentchaos512.lib.util.LocalizationHelper;
+import net.silentchaos512.lib.util.I18nHelper;
 import net.silentchaos512.lib.util.LogHelper;
 
 import java.util.Random;
@@ -81,11 +77,11 @@ public class FunOres implements IModBase {
 
     public static Random random = new Random();
     public static LogHelper logHelper = new LogHelper(MOD_NAME, BUILD_NUM);
-    @Deprecated
-    public static LocalizationHelper localizationHelper;
+    public static I18nHelper i18n = new I18nHelper(MOD_ID, logHelper, true);
 
     public static FunOresRegistry registry = new FunOresRegistry(MOD_ID, logHelper);
-    public static CreativeTabSL tabFunOres = new CreativeTabSL("tabFunOres", ModBlocks.meatOre, 0);
+    public static CreativeTabs tabFunOres = registry.makeCreativeTab("tabFunOres", () ->
+            new ItemStack(ModBlocks.meatOre, 1, random.nextInt(EnumMeat.values().length)));
 
     @Instance(MOD_ID)
     public static FunOres instance;
@@ -95,9 +91,6 @@ public class FunOres implements IModBase {
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        localizationHelper = new LocalizationHelper(MOD_ID).setReplaceAmpersand(true);
-        SilentLib.instance.registerLocalizationHelperForMod(MOD_ID, localizationHelper);
-
         registry.setMod(this);
         registry.recipes.setJsonHellMode(0 == getBuildNum());
 

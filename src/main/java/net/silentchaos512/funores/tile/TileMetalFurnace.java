@@ -91,13 +91,13 @@ public class TileMetalFurnace extends TileSidedInventorySL implements ITickable 
     }
 
     public int getCookTime() {
-        return StackHelper.isEmpty(getSecondaryOutput()) ? COOK_TIME_NO_SECONDARY : COOK_TIME_WITH_SECONDARY;
+        return getSecondaryOutput().isEmpty() ? COOK_TIME_NO_SECONDARY : COOK_TIME_WITH_SECONDARY;
     }
 
     @Override
     public void setInventorySlotContents(int index, ItemStack stack) {
         ItemStack current = getStackInSlot(index);
-        boolean flag = StackHelper.isValid(current) && StackHelper.isValid(stack)
+        boolean flag = !current.isEmpty() && !stack.isEmpty()
                 && stack.isItemEqual(current) && ItemStack.areItemStacksEqual(stack, current);
 
         super.setInventorySlotContents(index, stack);
@@ -193,7 +193,7 @@ public class TileMetalFurnace extends TileSidedInventorySL implements ITickable 
         if (!world.isRemote) {
             ItemStack fuel = getStackInSlot(SLOT_FUEL);
             ItemStack input = getStackInSlot(SLOT_INPUT);
-            if (!isBurning() && (StackHelper.isEmpty(fuel) || StackHelper.isEmpty(input))) {
+            if (!isBurning() && (fuel.isEmpty() || input.isEmpty())) {
                 if (!isBurning() && cookTime > 0) {
                     cookTime = MathHelper.clamp(cookTime - 2, 0, totalCookTime);
                 }
@@ -204,10 +204,10 @@ public class TileMetalFurnace extends TileSidedInventorySL implements ITickable 
                     if (isBurning()) {
                         flag1 = true;
 
-                        if (StackHelper.isValid(fuel)) {
-                            StackHelper.shrink(fuel, 1);
+                        if (!fuel.isEmpty()) {
+                            fuel.shrink(1);
 
-                            if (StackHelper.isEmpty(fuel)) {
+                            if (fuel.isEmpty()) {
                                 fuel = fuel.getItem().getContainerItem(fuel);
                             }
                         }
@@ -279,20 +279,20 @@ public class TileMetalFurnace extends TileSidedInventorySL implements ITickable 
 
     public ItemStack getPrimaryOutput() {
         ItemStack inputStack = getStackInSlot(SLOT_INPUT);
-        if (StackHelper.isEmpty(inputStack))
-            return StackHelper.empty();
+        if (inputStack.isEmpty())
+            return ItemStack.EMPTY;
         return FurnaceRecipes.instance().getSmeltingResult(inputStack);
     }
 
     public ItemStack getSecondaryOutput() {
         ItemStack inputStack = getStackInSlot(SLOT_INPUT);
-        if (StackHelper.isEmpty(inputStack)) {
-            return StackHelper.empty();
+        if (inputStack.isEmpty()) {
+            return ItemStack.EMPTY;
         }
 
         ItemStack outputPrimary = FurnaceRecipes.instance().getSmeltingResult(inputStack);
-        if (StackHelper.isEmpty(outputPrimary)) {
-            return StackHelper.empty();
+        if (outputPrimary.isEmpty()) {
+            return ItemStack.EMPTY;
         }
 
         String inputName, outputName;
@@ -308,59 +308,53 @@ public class TileMetalFurnace extends TileSidedInventorySL implements ITickable 
                         // Same ore, can we find a nugget?
                         List<ItemStack> nuggets = StackHelper.getOres("nugget" + inputName);
                         if (!nuggets.isEmpty()) {
-                            ItemStack result = StackHelper.safeCopy(nuggets.get(0));
-                            StackHelper.setCount(result, BONUS_NUGGETS_MIN
-                                    + FunOres.random.nextInt(BONUS_NUGGETS_MAX - BONUS_NUGGETS_MIN + 1));
+                            ItemStack result = nuggets.get(0).copy();
+                            result.setCount(BONUS_NUGGETS_MIN + FunOres.random.nextInt(BONUS_NUGGETS_MAX - BONUS_NUGGETS_MIN + 1));
                             return result;
                         } else {
-                            return StackHelper.empty();
+                            return ItemStack.EMPTY;
                         }
                     }
                 }
             }
         }
 
-        return StackHelper.empty();
+        return ItemStack.EMPTY;
     }
 
     private boolean canSmelt() {
         ItemStack inputStack = getStackInSlot(SLOT_INPUT);
-        if (StackHelper.isEmpty(inputStack)) {
+        if (inputStack.isEmpty()) {
             return false;
         } else {
             ItemStack outputPrimary = getPrimaryOutput();
             ItemStack outputSecondary = getSecondaryOutput();
-            if (StackHelper.isValid(outputSecondary)) {
-                StackHelper.setCount(outputSecondary, BONUS_NUGGETS_MAX);
+            if (!outputSecondary.isEmpty()) {
+                outputSecondary.setCount(BONUS_NUGGETS_MAX);
             }
             ItemStack outputSlot1 = getStackInSlot(SLOT_OUTPUT_1);
             ItemStack outputSlot2 = getStackInSlot(SLOT_OUTPUT_2);
 
-            if (StackHelper.isEmpty(outputPrimary)) {
+            if (outputPrimary.isEmpty()) {
                 return false;
             }
 
-            if (StackHelper.isEmpty(outputSlot1) && StackHelper.isEmpty(outputSlot2)) {
+            if (outputSlot1.isEmpty() && outputSlot2.isEmpty()) {
                 return true;
             }
 
-            boolean output1ClearOrSame = StackHelper.isEmpty(outputSlot1)
-                    || (StackHelper.isValid(outputSlot1) && outputSlot1.isItemEqual(outputPrimary));
-            boolean output2ClearOrSame = StackHelper.isEmpty(outputSecondary)
-                    || StackHelper.isEmpty(outputSlot2)
-                    || (StackHelper.isValid(outputSlot2) && outputSlot2.isItemEqual(outputSecondary));
+            boolean output1ClearOrSame = outputSlot1.isEmpty() || outputSlot1.isItemEqual(outputPrimary);
+            boolean output2ClearOrSame = outputSecondary.isEmpty() || outputSlot2.isEmpty() || outputSlot2.isItemEqual(outputSecondary);
             if (!output1ClearOrSame || !output2ClearOrSame) {
                 return false;
             }
 
-            int newSize1 = StackHelper.isEmpty(outputSlot1) ? 0
-                    : StackHelper.getCount(outputSlot1) + StackHelper.getCount(outputPrimary);
+            int newSize1 = outputSlot1.isEmpty() ? 0 : outputSlot1.getCount() + outputPrimary.getCount();
             int maxSize1 = outputPrimary.getMaxStackSize();
             int newSize2 = 0;
-            int maxSize2 = StackHelper.isEmpty(outputSecondary) ? 64 : outputSecondary.getMaxStackSize();
-            if (StackHelper.isValid(outputSecondary)) {
-                newSize2 = (StackHelper.isEmpty(outputSlot2) ? 0 : StackHelper.getCount(outputSlot2))
-                        + StackHelper.getCount(outputSecondary);
+            int maxSize2 = outputSecondary.isEmpty() ? 64 : outputSecondary.getMaxStackSize();
+            if (!outputSecondary.isEmpty()) {
+                newSize2 = (outputSlot2.isEmpty() ? 0 : outputSlot2.getCount()) + outputSecondary.getCount();
             }
             boolean flag1 = newSize1 <= getInventoryStackLimit() && newSize1 <= maxSize1;
             boolean flag2 = newSize2 <= getInventoryStackLimit() && newSize2 <= maxSize2;
@@ -375,18 +369,18 @@ public class TileMetalFurnace extends TileSidedInventorySL implements ITickable 
             ItemStack output1 = getStackInSlot(SLOT_OUTPUT_1);
             ItemStack output2 = getStackInSlot(SLOT_OUTPUT_2);
 
-            if (StackHelper.isEmpty(output1)) {
-                output1 = StackHelper.safeCopy(outputPrimary);
+            if (output1.isEmpty()) {
+                output1 = outputPrimary.copy();
             } else if (output1.getItem() == outputPrimary.getItem()) {
-                StackHelper.grow(output1, StackHelper.getCount(outputPrimary));
+                output1.grow(outputPrimary.getCount());
             }
             setInventorySlotContents(SLOT_OUTPUT_1, output1);
 
-            if (StackHelper.isValid(outputSecondary)) {
-                if (StackHelper.isEmpty(output2)) {
-                    output2 = StackHelper.safeCopy(outputSecondary);
+            if (!outputSecondary.isEmpty()) {
+                if (output2.isEmpty()) {
+                    output2 = outputSecondary.copy();
                 } else if (output2.getItem() == outputSecondary.getItem()) {
-                    StackHelper.grow(output2, StackHelper.getCount(outputSecondary));
+                    output2.grow(outputSecondary.getCount());
                 }
                 setInventorySlotContents(SLOT_OUTPUT_2, output2);
             }
@@ -398,7 +392,7 @@ public class TileMetalFurnace extends TileSidedInventorySL implements ITickable 
                 setInventorySlotContents(SLOT_FUEL, new ItemStack(Items.WATER_BUCKET));
             }
 
-            input = StackHelper.shrink(input, 1);
+            input.shrink(1);
             setInventorySlotContents(SLOT_INPUT, input);
         }
     }

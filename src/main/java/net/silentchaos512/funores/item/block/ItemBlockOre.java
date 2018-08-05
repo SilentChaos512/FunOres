@@ -42,7 +42,7 @@ public class ItemBlockOre extends ItemBlockMetaSubtypes {
     public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flag) {
         ConfigOptionOreGen config = getOreConfig(stack);
         if (!isOreEnabled(config))
-            list.add(FunOres.localizationHelper.getMiscText("Disabled"));
+            list.add(FunOres.i18n.miscText("Disabled"));
     }
 
     private ConfigOptionOreGen getOreConfig(ItemStack stack) {
