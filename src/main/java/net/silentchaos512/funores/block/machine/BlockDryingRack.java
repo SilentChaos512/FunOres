@@ -32,6 +32,8 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.client.render.TileDryingRackRender;
 import net.silentchaos512.funores.tile.TileDryingRack;
@@ -62,6 +64,7 @@ public class BlockDryingRack extends BlockMachine implements ITileEntityBlock, I
         return TileDryingRack.class;
     }
 
+    @SideOnly(Side.CLIENT)
     @Nullable
     @Override
     public TileEntitySpecialRenderer<?> getTileRenderer() {

@@ -67,7 +67,7 @@ import java.util.Random;
 public class FunOres implements IModBase {
     public static final String MOD_ID = "funores";
     public static final String MOD_NAME = "Fun Ores";
-    public static final String VERSION = "1.6.0";
+    public static final String VERSION = "1.6.1";
     public static final String VERSION_SILENTLIB = "2.3.15";
     public static int BUILD_NUM = 0;
     public static final String DEPENDENCIES = "required-after:silentlib@[" + VERSION_SILENTLIB + ",)";

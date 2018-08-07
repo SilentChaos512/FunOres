@@ -1,3 +1,6 @@
+1.6.1
+Fixed: Server crash (#43)
+
 1.6.0
 No longer compatible with older Minecraft versions, 1.12.2 only!
 Updated for latest Silent Lib 2.3.15 (major code cleanup)
