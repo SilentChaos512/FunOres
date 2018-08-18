@@ -21,7 +21,6 @@ package net.silentchaos512.funores.api.recipe.dryingrack;
 import net.minecraft.item.ItemStack;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.init.ModBlocks;
-import net.silentchaos512.lib.util.StackHelper;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -64,7 +63,7 @@ public class DryingRackRecipe {
     }
 
     public boolean matches(ItemStack inputStack) {
-        return StackHelper.isValid(inputStack) && StackHelper.isValid(output) && input.matches(inputStack);
+        return !inputStack.isEmpty() && !output.isEmpty() && input.matches(inputStack);
     }
 
     public int getDryTime() {

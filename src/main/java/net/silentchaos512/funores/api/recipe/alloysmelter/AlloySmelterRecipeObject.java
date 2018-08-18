@@ -1,25 +1,23 @@
 package net.silentchaos512.funores.api.recipe.alloysmelter;
 
+import com.google.common.collect.Lists;
+import net.minecraft.item.ItemStack;
+import net.silentchaos512.lib.util.StackHelper;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.google.common.collect.Lists;
-
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
-import net.silentchaos512.lib.util.StackHelper;
-
 /**
  * Represents an object in an alloy smelter recipe. Unlike an ItemStack, this represents all possibilities (everything
  * with the same ore dictionary key, or a custom list).
- * 
+ *
  * Typically, you will not construct this object directly. I recommend passing it an "item key" whenever possible. An
  * item key is a String consisting of the ore dictionary key, followed by an asterisk (*), then the stack size (item
  * count).
- * 
+ *
  * Example item key: "ingotCopper*3" (minus quotes) for a stack of three copper ingots from any mod.
- * 
+ *
  * @author SilentChaos512
  *
  */
@@ -50,7 +48,7 @@ public class AlloySmelterRecipeObject {
   /**
    * Construct a recipe object with one or more item keys. Typically, you will only use one key. Item keys must be in
    * the format "oreName:count" (minus the quotes).
-   * 
+   *
    * @param itemKeys
    */
   public AlloySmelterRecipeObject(String... itemKeys) {
@@ -64,7 +62,7 @@ public class AlloySmelterRecipeObject {
   /**
    * Construct a recipe object with a specific item stack or stacks. Use this for items not in the ore dictionary, for
    * example. Don't forget to set the stack size! You may also want to copy the stack before you do that though...
-   * 
+   *
    * @param stacks
    */
   public AlloySmelterRecipeObject(ItemStack... stacks) {
@@ -88,7 +86,7 @@ public class AlloySmelterRecipeObject {
 
   /**
    * Determines if the input stack matches for the recipe object.
-   * 
+   *
    * @param inputStack
    * @return True if the stack matches, false otherwise.
    */
@@ -99,18 +97,18 @@ public class AlloySmelterRecipeObject {
 
   /**
    * Gets the first stack in possible stacks list that matches the input stack.
-   * 
+   *
    * @param inputStack
    * @return First matching stack, or null if there is no match.
    */
   public ItemStack getMatchingStack(ItemStack inputStack) {
 
-    if (StackHelper.isEmpty(inputStack))
+    if (inputStack.isEmpty())
       return null;
 
     for (ItemStack recipeStack : possibleStacks) {
-      if (StackHelper.isValid(recipeStack) && inputStack.isItemEqual(recipeStack) && StackHelper.getCount(inputStack) >= StackHelper.getCount(recipeStack)) {
-        return StackHelper.safeCopy(recipeStack);
+      if (!recipeStack.isEmpty() && inputStack.isItemEqual(recipeStack) && inputStack.getCount() >= recipeStack.getCount()) {
+        return recipeStack.copy();
       }
     }
     return null;
@@ -118,7 +116,7 @@ public class AlloySmelterRecipeObject {
 
   /**
    * Gets a copy of the item keys list.
-   * 
+   *
    * @return
    */
   public List<String> getItemKeys() {
@@ -128,7 +126,7 @@ public class AlloySmelterRecipeObject {
 
   /**
    * Gets a copy of the possible item stacks list.
-   * 
+   *
    * @return
    */
   public List<ItemStack> getPossibleItemStacks() {
@@ -139,7 +137,7 @@ public class AlloySmelterRecipeObject {
   /**
    * Gets all possible stacks from the ore dictionary that match the item key. It copies the original stack and sets the
    * stack size as well.
-   * 
+   *
    * @param key
    * @return
    */
@@ -160,12 +158,12 @@ public class AlloySmelterRecipeObject {
 
     ItemStack copy;
     for (ItemStack stack : StackHelper.getOres(oreName)) {
-      copy = StackHelper.safeCopy(stack);
+      copy = stack.copy();
       // Should stack size be checked? Probably not...
 //      if (stackSize > copy.getMaxStackSize()) {
 //        throw new IllegalArgumentException("Item count for stack " + copy + " is too big!");
 //      }
-      StackHelper.setCount(copy, stackSize);
+      copy.setCount(stackSize);
       result.add(copy);
     }
 

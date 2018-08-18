@@ -73,10 +73,10 @@ public class ConfigItemDrop {
             return;
         }
 
-        FunOres.logHelper.warning(String.format(ERROR_WARNING_MESSAGE, errorList.size()));
+        FunOres.logHelper.warn(String.format(ERROR_WARNING_MESSAGE, errorList.size()));
 
         for (String error : errorList) {
-            FunOres.logHelper.warning(error);
+            FunOres.logHelper.warn(error);
         }
     }
 

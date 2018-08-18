@@ -19,8 +19,6 @@
 package net.silentchaos512.funores.util;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.event.FMLInterModComms;
-import net.silentchaos512.lib.registry.IRegistryObject;
 
 public class ModRecipeHelper {
     private static final String SAG_MILL_MSG =
@@ -39,23 +37,23 @@ public class ModRecipeHelper {
 
     public static void addSagMillRecipe(String key, ItemStack input, ItemStack outputPrimary, ItemStack outputSecondary, String stoneName, int energy) {
         // FIXME
-        String inputName = input.getItem() instanceof IRegistryObject
-                ? ((IRegistryObject) input.getItem()).getName()
-                : input.getItem().getTranslationKey().replaceFirst("(item\\.FunOres:|tile\\.)", "");
-        String outputName = outputPrimary.getItem() instanceof IRegistryObject
-                ? ((IRegistryObject) outputPrimary.getItem()).getName()
-                : outputPrimary.getItem().getTranslationKey().replaceFirst("(item\\.FunOres:|tile\\.)", "");
-        String extraName = outputSecondary.getItem() instanceof IRegistryObject
-                ? ((IRegistryObject) outputSecondary.getItem()).getName()
-                : outputSecondary.getItem().getTranslationKey().replaceFirst("(item\\.FunOres:|tile\\.)", "");
-
-        int inputMeta = input.getItemDamage();
-        int outputMeta = outputPrimary.getItemDamage();
-        int extraMeta = outputSecondary.getItemDamage();
-
-        String str = String.format(SAG_MILL_MSG, key, energy, inputName, inputMeta, outputName,
-                outputMeta, extraName, extraMeta, stoneName);
-        // FunOres.instance.logHelper.debug(str);
-        FMLInterModComms.sendMessage("EnderIO", "recipe:sagmill", str);
+//        String inputName = input.getItem() instanceof IRegistryObject
+//                ? ((IRegistryObject) input.getItem()).getName()
+//                : input.getItem().getTranslationKey().replaceFirst("(item\\.FunOres:|tile\\.)", "");
+//        String outputName = outputPrimary.getItem() instanceof IRegistryObject
+//                ? ((IRegistryObject) outputPrimary.getItem()).getName()
+//                : outputPrimary.getItem().getTranslationKey().replaceFirst("(item\\.FunOres:|tile\\.)", "");
+//        String extraName = outputSecondary.getItem() instanceof IRegistryObject
+//                ? ((IRegistryObject) outputSecondary.getItem()).getName()
+//                : outputSecondary.getItem().getTranslationKey().replaceFirst("(item\\.FunOres:|tile\\.)", "");
+//
+//        int inputMeta = input.getItemDamage();
+//        int outputMeta = outputPrimary.getItemDamage();
+//        int extraMeta = outputSecondary.getItemDamage();
+//
+//        String str = String.format(SAG_MILL_MSG, key, energy, inputName, inputMeta, outputName,
+//                outputMeta, extraName, extraMeta, stoneName);
+//        // FunOres.instance.logHelper.debug(str);
+//        FMLInterModComms.sendMessage("EnderIO", "recipe:sagmill", str);
     }
 }

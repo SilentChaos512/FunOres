@@ -31,15 +31,14 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.silentchaos512.funores.api.recipe.alloysmelter.AlloySmelterRecipe;
 import net.silentchaos512.funores.api.recipe.alloysmelter.AlloySmelterRecipeObject;
 import net.silentchaos512.funores.inventory.ContainerAlloySmelter;
-import net.silentchaos512.lib.collection.ItemStackList;
 import net.silentchaos512.lib.tile.TileSidedInventorySL;
-import net.silentchaos512.lib.util.StackHelper;
 
 import java.util.List;
 
@@ -72,7 +71,7 @@ public class TileAlloySmelter extends TileSidedInventorySL implements ITickable 
         list.add("cookTime = " + cookTime);
         list.add("totalCookTime = " + totalCookTime);
         ItemStack result = getSmeltingResult();
-        list.add("result = " + (StackHelper.isEmpty(result) ? "null" : result.getDisplayName()));
+        list.add("result = " + (result.isEmpty() ? "null" : result.getDisplayName()));
         list.add("canSmelt = " + canSmelt());
         list.add(sep);
         list.add("BURN_TIME_MULTI = " + BURN_TIME_MULTI);
@@ -102,11 +101,11 @@ public class TileAlloySmelter extends TileSidedInventorySL implements ITickable 
 
     public boolean canSmelt() {
         ItemStack result = getSmeltingResult();
-        if (StackHelper.isEmpty(result))
+        if (result.isEmpty())
             return false;
 
         ItemStack outputSlot = getStackInSlot(SLOT_OUTPUT);
-        if (StackHelper.isEmpty(outputSlot))
+        if (outputSlot.isEmpty())
             return true; // Output slot free.
 
         // Output slot not free. Same item?
@@ -125,7 +124,7 @@ public class TileAlloySmelter extends TileSidedInventorySL implements ITickable 
             ItemStack slotOutput = getStackInSlot(SLOT_OUTPUT);
 
             // Set output
-            if (StackHelper.isEmpty(slotOutput))
+            if (slotOutput.isEmpty())
                 setInventorySlotContents(SLOT_OUTPUT, output); // No need to copy, since output is a copy, right?
             else if (slotOutput.isItemEqual(output))
                 slotOutput.grow(output.getCount());
@@ -137,7 +136,7 @@ public class TileAlloySmelter extends TileSidedInventorySL implements ITickable 
             for (AlloySmelterRecipeObject recipeObject : inputList) {
                 for (int i = 0; i < SLOTS_INPUT.length; ++i) {
                     ItemStack stack = getStackInSlot(i);
-                    if (StackHelper.isValid(stack)) {
+                    if (!stack.isEmpty()) {
                         if (recipeObject.matches(stack)) {
                             stack.shrink(recipeObject.getMatchingStack(stack).getCount());
                             if (stack.isEmpty())
@@ -159,8 +158,8 @@ public class TileAlloySmelter extends TileSidedInventorySL implements ITickable 
         return recipe == null ? ItemStack.EMPTY : recipe.getOutput();
     }
 
-    public ItemStackList getInputStacks() {
-        ItemStackList result = ItemStackList.create();
+    public NonNullList<ItemStack> getInputStacks() {
+        NonNullList<ItemStack> result = NonNullList.create();
         for (int i = 0; i < SLOTS_INPUT.length; ++i)
             result.add(getStackInSlot(i));
         return result;
@@ -168,7 +167,7 @@ public class TileAlloySmelter extends TileSidedInventorySL implements ITickable 
 
     @Override
     public void setInventorySlotContents(int index, ItemStack stack) {
-        boolean flag = StackHelper.isValid(stack) && stack.isItemEqual(getStackInSlot(index))
+        boolean flag = !stack.isEmpty() && stack.isItemEqual(getStackInSlot(index))
                 && ItemStack.areItemStacksEqual(stack, getStackInSlot(index));
 
         super.setInventorySlotContents(index, stack);
@@ -286,10 +285,10 @@ public class TileAlloySmelter extends TileSidedInventorySL implements ITickable 
                     if (isBurning()) {
                         flag1 = true;
 
-                        if (StackHelper.isValid(slotFuel)) {
+                        if (!slotFuel.isEmpty()) {
                             slotFuel.shrink(1);
 
-                            if (StackHelper.isEmpty(slotFuel)) {
+                            if (slotFuel.isEmpty()) {
                                 slotFuel = slotFuel.getItem().getContainerItem(slotFuel);
                             }
                         }

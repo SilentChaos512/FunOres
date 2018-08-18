@@ -35,7 +35,6 @@ import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.configuration.ConfigItemDrop;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGenBonus;
 import net.silentchaos512.funores.lib.ILootTableDrops;
-import net.silentchaos512.lib.util.StackHelper;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -98,10 +97,10 @@ public class OreLootHelper {
                 // Should we do the drop?
                 if (rand.nextFloat() < drop.getDropChance(fortune)) {
                     // How many to drop?
-                    ItemStack stack = StackHelper.safeCopy(drop.getStack());
-                    StackHelper.setCount(stack, drop.getDropCount(fortune, rand));
+                    ItemStack stack = drop.getStack().copy();
+                    stack.setCount(drop.getDropCount(fortune, rand));
                     // Drop stuff.
-                    for (int i = 0; i < StackHelper.getCount(stack); ++i) {
+                    for (int i = 0; i < stack.getCount(); ++i) {
                         list.add(new ItemStack(stack.getItem(), 1, stack.getItemDamage()));
                     }
                 }

@@ -18,12 +18,10 @@
 
 package net.silentchaos512.funores.init;
 
-import net.minecraft.item.Item;
 import net.silentchaos512.funores.item.*;
-import net.silentchaos512.lib.registry.IRegistrationHandler;
 import net.silentchaos512.lib.registry.SRegistry;
 
-public class ModItems implements IRegistrationHandler<Item> {
+public class ModItems {
     public static ItemIngotMetal metalIngot = new ItemIngotMetal();
     public static ItemNuggetMetal metalNugget = new ItemNuggetMetal();
     public static ItemDustMetal metalDust = new ItemDustMetal();
@@ -38,8 +36,7 @@ public class ModItems implements IRegistrationHandler<Item> {
     public static ItemDried driedItem = new ItemDried();
     public static ItemHammer hammer = new ItemHammer();
 
-    @Override
-    public void registerAll(SRegistry reg) {
+    public static void registerAll(SRegistry reg) {
         reg.registerItem(metalIngot, "metalingot");
         reg.registerItem(metalNugget, "metalnugget");
         reg.registerItem(metalDust, "metaldust");

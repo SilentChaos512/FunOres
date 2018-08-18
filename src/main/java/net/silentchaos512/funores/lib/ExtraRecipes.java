@@ -65,7 +65,7 @@ public class ExtraRecipes {
     public static void add(String configName, String comment, ItemStack result, Object... params) {
         boolean enabled = config.getBoolean(configName, CATEGORY, true, comment);
         if (enabled) {
-            FunOres.registry.recipes.addShapedOre("extra" + (++lastIndex), result, params);
+            FunOres.registry.getRecipeMaker().addShapedOre("extra" + (++lastIndex), result, params);
         }
     }
 }

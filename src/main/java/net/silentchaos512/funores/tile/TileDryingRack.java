@@ -91,7 +91,7 @@ public class TileDryingRack extends TileEntity implements ITickable, IInventoryS
 
         boolean markForUpdate = false;
 
-        if (StackHelper.isEmpty(stack) && StackHelper.isValid(heldItem)) {
+        if (stack.isEmpty() && !heldItem.isEmpty()) {
             // Add to rack.
             stack = heldItem.copy();
             stack.setCount(1);
@@ -100,16 +100,14 @@ public class TileDryingRack extends TileEntity implements ITickable, IInventoryS
             dryTime = 0;
             totalDryTime = getTotalDryTime();
             markForUpdate = true;
-        } else if (StackHelper.isValid(stack)) {
+        } else if (!stack.isEmpty()) {
             // Remove from rack.
-            if (!player.world.isRemote) {
-                Vec3d v = new Vec3d(player.posX, player.posY + 1.1, player.posZ);
-                Vec3d lookVec = player.getLookVec();
-                v = v.add(lookVec);
-                stack.setCount(1); // Not sure why this is necessary...
-                EntityItem entityItem = new EntityItem(player.world, v.x, v.y, v.z, stack);
-                player.world.spawnEntity(entityItem);
-            }
+            Vec3d v = new Vec3d(player.posX, player.posY + 1.1, player.posZ);
+            Vec3d lookVec = player.getLookVec();
+            v = v.add(lookVec);
+            stack.setCount(1); // Not sure why this is necessary...
+            EntityItem entityItem = new EntityItem(player.world, v.x, v.y, v.z, stack);
+            player.world.spawnEntity(entityItem);
             givePlayerXp(player);
             stack = ItemStack.EMPTY;
             dryTime = 0;
@@ -173,7 +171,7 @@ public class TileDryingRack extends TileEntity implements ITickable, IInventoryS
         tags.setInteger("DryTime", dryTime);
         tags.setInteger("TotalDryTime", totalDryTime);
         tags.setFloat("XP", xp);
-        if (StackHelper.isValid(stack))
+        if (!stack.isEmpty())
             tags.setTag("ItemStack", stack.writeToNBT(new NBTTagCompound()));
         return tags;
     }
@@ -187,7 +185,7 @@ public class TileDryingRack extends TileEntity implements ITickable, IInventoryS
         if (tags.hasKey("ItemStack")) {
             stack = StackHelper.loadFromNBT(tags.getCompoundTag("ItemStack"));
         } else {
-            stack = StackHelper.empty();
+            stack = ItemStack.EMPTY;
         }
 
         if (getWorld().isRemote) {
@@ -209,7 +207,7 @@ public class TileDryingRack extends TileEntity implements ITickable, IInventoryS
         super.writeToNBT(compound);
         compound.setShort("DryTime", (short) dryTime);
         NBTTagCompound tagCompound = new NBTTagCompound();
-        if (StackHelper.isValid(stack)) {
+        if (!stack.isEmpty()) {
             stack.writeToNBT(tagCompound);
         }
         compound.setTag("ItemStack", tagCompound);
@@ -221,7 +219,7 @@ public class TileDryingRack extends TileEntity implements ITickable, IInventoryS
         if (recipe != null) {
             return recipe.getOutput();
         }
-        return StackHelper.empty();
+        return ItemStack.EMPTY;
     }
 
     public ItemStack getStack() {

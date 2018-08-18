@@ -2,17 +2,12 @@ package net.silentchaos512.funores.inventory;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IContainerListener;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Slot;
-import net.minecraft.inventory.SlotFurnaceFuel;
+import net.minecraft.inventory.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.silentchaos512.funores.api.recipe.alloysmelter.AlloySmelterRecipe;
 import net.silentchaos512.funores.inventory.slot.SlotAlloySmelterOutput;
 import net.silentchaos512.funores.tile.TileAlloySmelter;
-import net.silentchaos512.lib.util.StackHelper;
 
 public class ContainerAlloySmelter extends Container {
     private final IInventory tileAlloySmelter;
@@ -131,7 +126,7 @@ public class ContainerAlloySmelter extends Container {
                 return ItemStack.EMPTY;
             }
 
-            if (StackHelper.isValid(itemstack1)) {
+            if (!itemstack1.isEmpty()) {
                 slot.putStack(ItemStack.EMPTY);
             } else {
                 slot.onSlotChanged();

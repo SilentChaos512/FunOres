@@ -25,7 +25,6 @@ import net.minecraft.inventory.SlotFurnaceOutput;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
 import net.silentchaos512.funores.api.recipe.alloysmelter.AlloySmelterRecipe;
-import net.silentchaos512.lib.util.StackHelper;
 
 public class SlotAlloySmelterOutput extends SlotFurnaceOutput {
     private EntityPlayer thePlayer;
@@ -38,7 +37,7 @@ public class SlotAlloySmelterOutput extends SlotFurnaceOutput {
 
     public ItemStack decrStackSize(int amount) {
         if (this.getHasStack()) {
-            this.removeCount += Math.min(amount, StackHelper.getCount(getStack()));
+            this.removeCount += Math.min(amount, getStack().getCount());
         }
 
         return super.decrStackSize(amount);

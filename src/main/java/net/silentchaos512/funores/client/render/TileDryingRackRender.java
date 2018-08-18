@@ -29,7 +29,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.silentchaos512.funores.tile.TileDryingRack;
-import net.silentchaos512.lib.util.StackHelper;
 
 public class TileDryingRackRender extends TileEntitySpecialRenderer<TileDryingRack> {
     private static Minecraft mc = Minecraft.getMinecraft();
@@ -51,7 +50,7 @@ public class TileDryingRackRender extends TileEntitySpecialRenderer<TileDryingRa
     // Mostly copied from Blood Magic...
     private void renderItem(World world, ItemStack stack, float partialTicks) {
         RenderItem itemRenderer = mc.getRenderItem();
-        if (StackHelper.isValid(stack)) {
+        if (!stack.isEmpty()) {
             // GlStateManager.translate(0.5, 0.5, 0.5);
             EntityItem entityitem = new EntityItem(world, 0.0D, 0.0D, 0.0D, stack);
             entityitem.getItem().setCount(1);

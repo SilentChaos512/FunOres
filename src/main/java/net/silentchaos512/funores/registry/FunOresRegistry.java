@@ -29,7 +29,6 @@ import net.silentchaos512.funores.compat.jei.FunOresPlugin;
 import net.silentchaos512.funores.configuration.Config;
 import net.silentchaos512.funores.lib.IDisableable;
 import net.silentchaos512.lib.registry.SRegistry;
-import net.silentchaos512.lib.util.LogHelper;
 
 import java.util.HashSet;
 import java.util.List;
@@ -41,10 +40,6 @@ import java.util.Set;
  * @author Silent
  */
 public class FunOresRegistry extends SRegistry {
-    public FunOresRegistry(String modId, LogHelper logHelper) {
-        super(modId, logHelper);
-    }
-
     /**
      * Set of disabled items (contains values returned by getStackKey)
      */

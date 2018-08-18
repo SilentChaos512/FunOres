@@ -79,8 +79,8 @@ public class TileMetalFurnace extends TileSidedInventorySL implements ITickable 
         list.add("totalCookTime = " + totalCookTime);
         ItemStack output1 = getPrimaryOutput();
         ItemStack output2 = getSecondaryOutput();
-        list.add("output1 = " + (StackHelper.isEmpty(output1) ? "null" : output1.getDisplayName()));
-        list.add("output2 = " + (StackHelper.isEmpty(output2) ? "null" : output2.getDisplayName()));
+        list.add("output1 = " + (output1.isEmpty() ? "null" : output1.getDisplayName()));
+        list.add("output2 = " + (output2.isEmpty() ? "null" : output2.getDisplayName()));
         list.add("canSmelt = " + canSmelt());
         list.add(sep);
         list.add("COOK_TIME_NO_SECONDARY = " + COOK_TIME_NO_SECONDARY);

@@ -7,7 +7,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.silentchaos512.lib.inventory.ContainerSL;
-import net.silentchaos512.lib.util.StackHelper;
 
 import javax.annotation.Nonnull;
 
@@ -112,7 +111,7 @@ public class ContainerMetalFurnace extends ContainerSL {
                 return ItemStack.EMPTY;
             }
 
-            if (StackHelper.isEmpty(itemstack1)) {
+            if (itemstack1.isEmpty()) {
                 slot.putStack(ItemStack.EMPTY);
             } else {
                 slot.onSlotChanged();

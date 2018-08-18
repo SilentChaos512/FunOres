@@ -18,16 +18,14 @@
 
 package net.silentchaos512.funores.init;
 
-import net.minecraft.block.Block;
 import net.silentchaos512.funores.block.*;
 import net.silentchaos512.funores.block.machine.BlockAlloySmelter;
 import net.silentchaos512.funores.block.machine.BlockDryingRack;
 import net.silentchaos512.funores.block.machine.BlockMetalFurnace;
 import net.silentchaos512.funores.item.block.ItemBlockOre;
-import net.silentchaos512.lib.registry.IRegistrationHandler;
 import net.silentchaos512.lib.registry.SRegistry;
 
-public class ModBlocks implements IRegistrationHandler<Block> {
+public class ModBlocks {
     public static BlockOreMetal metalOre = new BlockOreMetal();
     public static BlockOreMeat meatOre = new BlockOreMeat();
     public static BlockOreMob mobOre = new BlockOreMob();
@@ -37,8 +35,7 @@ public class ModBlocks implements IRegistrationHandler<Block> {
     public static BlockAlloySmelter alloySmelter = new BlockAlloySmelter();
     public static BlockDryingRack dryingRack = new BlockDryingRack();
 
-    @Override
-    public void registerAll(SRegistry reg) {
+    public static void registerAll(SRegistry reg) {
         reg.registerBlock(metalOre, "metalore", new ItemBlockOre(metalOre));
         reg.registerBlock(meatOre, "meatore", new ItemBlockOre(meatOre));
         reg.registerBlock(mobOre, "mobore", new ItemBlockOre(mobOre));
