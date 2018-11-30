@@ -57,6 +57,7 @@ public class Config {
     public static boolean disableShards = false;
 
     // Misc
+    public static boolean fishOreDropFishOnly = false;
     public static boolean machinesCanBurn = true;
     public static boolean oneIngotPlates = false;
     public static float oreGenBiomeFavorsMultiplier = 1.5f;
@@ -212,6 +213,9 @@ public class Config {
             spawnBatChance = c.getFloat("BatSpawnChance",
                     CATEGORY_MEAT_ORE + Configuration.CATEGORY_SPLITTER + "bat", spawnBatChance, 0f, 1f,
                     "The chance that bat ore will spawn a bat when mined.");
+            // Fish filter config
+            fishOreDropFishOnly = c.getBoolean("DropFishOnly", CATEGORY_MEAT_ORE + Configuration.CATEGORY_SPLITTER + "fish",
+                    false, "Fish ore will attempt to drop only fish (results with some mods or customized loot table may vary)");
 
             // Debug
             printWorldGenTime = c.getBoolean("PrintWorldGenTime", CATEGORY_DEBUG, printWorldGenTime,

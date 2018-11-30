@@ -4,6 +4,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- Config to make fish ore drop only fish. _This may not work with all mod items_. But it should remove most non-fish items (junk and treasure).
 ### Fixed
 - Shards ignoring metadata when shift-clicking into containers [#47]
 - Fish ore not dropping anything [#45]

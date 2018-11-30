@@ -22,6 +22,7 @@ import com.mojang.authlib.GameProfile;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
+import net.minecraft.item.ItemFishFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
@@ -32,6 +33,7 @@ import net.minecraft.world.storage.loot.LootTable;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
 import net.silentchaos512.funores.FunOres;
+import net.silentchaos512.funores.configuration.Config;
 import net.silentchaos512.funores.configuration.ConfigItemDrop;
 import net.silentchaos512.funores.configuration.ConfigOptionOreGenBonus;
 import net.silentchaos512.funores.lib.ILootTableDrops;
@@ -39,6 +41,7 @@ import net.silentchaos512.funores.lib.ILootTableDrops;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 public class OreLootHelper {
@@ -72,10 +75,16 @@ public class OreLootHelper {
         }
 
         // Add drops from mob loot table
-        for (int i = 0; i < tryCount; ++i)
-            for (ItemStack stack : lootTable.generateLootForPools(rand, lootContextBuilder.build()))
-                if (!config.shouldRemoveDrop(stack))
+        for (int i = 0; i < tryCount; ++i) {
+            for (ItemStack stack : lootTable.generateLootForPools(rand, lootContextBuilder.build())) {
+                final boolean isFishOre = entityLiving == null; // FIXME: This is fine for now, but it's a potential time bomb.
+                final boolean isFish = isFish(stack);
+                final boolean mayDropNonFish = !isFishOre || isFish || !Config.fishOreDropFishOnly;
+
+                if (!config.shouldRemoveDrop(stack) && mayDropNonFish)
                     ret.add(stack);
+            }
+        }
 
         addBonusDrops(ret, fortune, config);
 
@@ -111,5 +120,11 @@ public class OreLootHelper {
                 }
             }
         }
+    }
+
+    private static boolean isFish(ItemStack stack) {
+        String name = Objects.requireNonNull(stack.getItem().getRegistryName()).getPath();
+        return stack.getItem() instanceof ItemFishFood
+                || (name.contains("fish") && !name.contains("fishing") && !name.contains("rod"));
     }
 }
