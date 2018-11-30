@@ -56,13 +56,12 @@ import net.silentchaos512.funores.proxy.CommonProxy;
 import net.silentchaos512.funores.registry.FunOresRegistry;
 import net.silentchaos512.funores.world.FunOresGenerator;
 import net.silentchaos512.lib.base.IModBase;
-import net.silentchaos512.lib.registry.SRegistry;
 import net.silentchaos512.lib.util.I18nHelper;
 import net.silentchaos512.lib.util.LogHelper;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.Locale;
 import java.util.Random;
-import java.util.function.Consumer;
 
 @Mod(modid = FunOres.MOD_ID,
         name = FunOres.MOD_NAME,
@@ -74,11 +73,11 @@ import java.util.function.Consumer;
 public class FunOres implements IModBase {
     public static final String MOD_ID = "funores";
     public static final String MOD_NAME = "Fun Ores";
-    public static final String VERSION = "1.6.1";
-    public static final String VERSION_SILENTLIB = "2.3.15";
+    public static final String VERSION = "1.6.3";
+    public static final String VERSION_SILENTLIB = "3.0.9";
     public static int BUILD_NUM = 0;
     public static final String DEPENDENCIES = "required-after:silentlib@[" + VERSION_SILENTLIB + ",)";
-    public static final String RESOURCE_PREFIX = MOD_ID.toLowerCase() + ":";
+    public static final String RESOURCE_PREFIX = MOD_ID.toLowerCase(Locale.ROOT) + ":";
 
     public static final boolean DEBUG_MODE = false;
 
@@ -104,8 +103,8 @@ public class FunOres implements IModBase {
         Config.init(event.getSuggestedConfigurationFile());
 
         ModFluids.init();
-        registry.addRegistrationHandler((Consumer<SRegistry>) ModBlocks::registerAll, Block.class);
-        registry.addRegistrationHandler((Consumer<SRegistry>) ModItems::registerAll, Item.class);
+        registry.addRegistrationHandler(ModBlocks::registerAll, Block.class);
+        registry.addRegistrationHandler(ModItems::registerAll, Item.class);
         ModDamageSources.init();
 
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandlerFunOres());

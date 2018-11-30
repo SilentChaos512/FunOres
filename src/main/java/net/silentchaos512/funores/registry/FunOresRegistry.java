@@ -18,6 +18,7 @@
 
 package net.silentchaos512.funores.registry;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -30,6 +31,7 @@ import net.silentchaos512.funores.configuration.Config;
 import net.silentchaos512.funores.lib.IDisableable;
 import net.silentchaos512.lib.registry.SRegistry;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -39,6 +41,8 @@ import java.util.Set;
  *
  * @author Silent
  */
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public class FunOresRegistry extends SRegistry {
     /**
      * Set of disabled items (contains values returned by getStackKey)
