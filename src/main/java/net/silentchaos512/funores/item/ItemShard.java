@@ -38,6 +38,10 @@ import java.util.List;
 public class ItemShard extends Item implements IDisableable, IAddRecipes, ICustomModel {
     private static final String[] NAMES = {"ender", "blaze", "ghast"};
 
+    public ItemShard() {
+        setHasSubtypes(true);
+    }
+
     @Override
     public void addRecipes(RecipeMaker recipes) {
         ItemStack enderShard = new ItemStack(this, 1, 0);
