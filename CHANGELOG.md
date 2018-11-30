@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Fixed
 - Shards ignoring metadata when shift-clicking into containers [#47]
+- Fish ore not dropping anything [#45]
 - Hot machines not hurting anything
 
 Below is the old changelog format (prior to 2018-11-30):

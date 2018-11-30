@@ -48,7 +48,6 @@ public class OreLootHelper {
         Random rand = FunOres.random;
 
         EntityLivingBase entityLiving = ore.getEntityLiving(world);
-        if (entityLiving == null) return ret;
 
         // Get the loot table.
         ResourceLocation resource = ore.getLootTable(entityLiving);
@@ -58,13 +57,19 @@ public class OreLootHelper {
         // Create a fake player, wielding a sword with looting level equivalent to pickaxe's fortune.
         WeakReference<FakePlayer> fakePlayer = new WeakReference<>(FakePlayerFactory.get(world, new GameProfile(null, "FakePlayerFO")));
         ItemStack fakeSword = new ItemStack(Items.DIAMOND_SWORD);
-        if (fortune > 0)
+        if (fortune > 0) {
+            // Neither seem to do anything for fish drops
             fakeSword.addEnchantment(Enchantments.LOOTING, fortune);
+            fakeSword.addEnchantment(Enchantments.LUCK_OF_THE_SEA, fortune);
+        }
         fakePlayer.get().setHeldItem(EnumHand.MAIN_HAND, fakeSword);
 
-        LootContext.Builder lootContextBuilder = (new LootContext.Builder(world))
-                .withLootedEntity(entityLiving).withPlayer(fakePlayer.get())
-                .withDamageSource(DamageSource.causePlayerDamage(fakePlayer.get()));
+        LootContext.Builder lootContextBuilder = new LootContext.Builder(world).withPlayer(fakePlayer.get());
+        if (entityLiving != null) {
+            lootContextBuilder
+                    .withLootedEntity(entityLiving)
+                    .withDamageSource(DamageSource.causePlayerDamage(fakePlayer.get()));
+        }
 
         // Add drops from mob loot table
         for (int i = 0; i < tryCount; ++i)
@@ -82,7 +87,7 @@ public class OreLootHelper {
 
         ConfigItemDrop[] dropsToTry;
         // Pick a certain number from the list, or try them all?
-        if (config.pick != 0 && config.bonusDrops.size() > 0) {
+        if (config.pick != 0 && !config.bonusDrops.isEmpty()) {
             dropsToTry = new ConfigItemDrop[config.pick];
             for (int i = 0; i < config.pick; ++i) {
                 dropsToTry[i] = config.bonusDrops.get(rand.nextInt(config.bonusDrops.size()));
