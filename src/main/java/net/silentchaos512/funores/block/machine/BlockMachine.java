@@ -81,12 +81,20 @@ public class BlockMachine extends BlockContainer implements IDisableable {
         return getMachineState(state).isOn ? 15 : 0;
     }
 
+//    @Override
+//    public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
+//        if (Config.machinesCanBurn && getMachineState(world, pos).isOn) {
+//            entity.attackEntityFrom(ModDamageSources.hotMachine, 0.5f);
+//        }
+//        super.onEntityCollision(world, pos, state, entity);
+//    }
+
     @Override
-    public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
+    public void onEntityWalk(World world, BlockPos pos, Entity entity) {
         if (Config.machinesCanBurn && getMachineState(world, pos).isOn) {
             entity.attackEntityFrom(ModDamageSources.hotMachine, 0.5f);
         }
-        super.onEntityCollision(world, pos, state, entity);
+        super.onEntityWalk(world, pos, entity);
     }
 
     @Override
