@@ -1,6 +1,6 @@
 {
   "parent": "block/cube_all",
   "textures": {
-    "all": "funores:blocks/cow_ore"
+    "all": "funores:blocks/zombie_ore"
   }
 }

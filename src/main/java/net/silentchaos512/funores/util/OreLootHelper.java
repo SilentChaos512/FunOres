@@ -18,30 +18,6 @@
 
 package net.silentchaos512.funores.util;
 
-import com.mojang.authlib.GameProfile;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.init.Enchantments;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemFishFood;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.WorldServer;
-import net.minecraft.world.storage.loot.LootContext;
-import net.minecraft.world.storage.loot.LootTable;
-import net.minecraftforge.common.util.FakePlayer;
-import net.minecraftforge.common.util.FakePlayerFactory;
-import net.silentchaos512.funores.FunOres;
-import net.silentchaos512.funores.configuration.Config;
-import net.silentchaos512.funores.lib.ILootTableDrops;
-
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Random;
-
 public class OreLootHelper {
 
 //    public static List<ItemStack> getDrops(WorldServer world, int fortune, ILootTableDrops ore, int tryCount, ConfigOptionOreGenBonus config) {

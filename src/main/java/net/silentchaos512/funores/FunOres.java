@@ -21,8 +21,6 @@ package net.silentchaos512.funores;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -32,13 +30,13 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.javafmlmod.FMLModLoadingContext;
-import net.minecraftforge.registries.ObjectHolder;
 import net.silentchaos512.funores.init.ModBlocks;
 import net.silentchaos512.funores.init.ModItems;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Locale;
-import java.util.Random;
 
 @Mod(FunOres.MOD_ID)
 @ParametersAreNonnullByDefault
@@ -54,16 +52,13 @@ public class FunOres {
     public static FunOres INSTANCE;
     private static SideProxy PROXY;
 
-//    public static LogHelper logHelper = new LogHelper(MOD_NAME, BUILD_NUM);
-//    public static I18nHelper i18n = new I18nHelper(MOD_ID, logHelper, true);
+    public static Logger LOGGER = LogManager.getLogger(MOD_NAME);
 
-//    public static FunOresRegistry registry = new FunOresRegistry();
 //    public static CreativeTabs tabFunOres = registry.makeCreativeTab("tabFunOres", () ->
 //            new ItemStack(ModBlocks.meatOre, 1, random.nextInt(EnumMeat.values().length)));
 
     public FunOres() {
         INSTANCE = this;
-        //noinspection Convert2MethodRef
         PROXY = DistExecutor.runForDist(() -> () -> new SideProxy.Client(), () -> () -> new SideProxy.Server());
 
         FMLModLoadingContext.get().getModEventBus().addListener(this::preInit);
