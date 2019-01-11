@@ -1,6 +1,0 @@
-{
-  "parent": "funores:block/blocktitanium",
-  "textures": {
-    "layer0": "funores:blocks/blocktitanium"
-  }
-}

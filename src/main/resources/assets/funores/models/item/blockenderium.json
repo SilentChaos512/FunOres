@@ -1,6 +1,0 @@
-{
-  "parent": "funores:block/blockenderium",
-  "textures": {
-    "layer0": "funores:blocks/blockenderium"
-  }
-}

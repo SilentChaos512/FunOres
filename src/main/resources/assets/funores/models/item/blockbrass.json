@@ -1,6 +1,0 @@
-{
-  "parent": "funores:block/blockbrass",
-  "textures": {
-    "layer0": "funores:blocks/blockbrass"
-  }
-}

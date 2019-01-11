@@ -1,6 +1,0 @@
-{
-  "parent": "funores:block/orenickel",
-  "textures": {
-    "layer0": "funores:blocks/orenickel"
-  }
-}

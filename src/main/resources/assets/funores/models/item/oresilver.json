@@ -1,6 +1,0 @@
-{
-  "parent": "funores:block/oresilver",
-  "textures": {
-    "layer0": "funores:blocks/oresilver"
-  }
-}

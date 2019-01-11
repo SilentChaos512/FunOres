@@ -1,6 +1,0 @@
-{
-  "parent": "funores:block/orepigman",
-  "textures": {
-    "layer0": "funores:blocks/orepigman"
-  }
-}

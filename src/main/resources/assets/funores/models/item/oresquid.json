@@ -1,6 +1,0 @@
-{
-  "parent": "funores:block/oresquid",
-  "textures": {
-    "layer0": "funores:blocks/oresquid"
-  }
-}

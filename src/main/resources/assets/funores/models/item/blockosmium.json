@@ -1,6 +1,0 @@
-{
-  "parent": "funores:block/blockosmium",
-  "textures": {
-    "layer0": "funores:blocks/blockosmium"
-  }
-}

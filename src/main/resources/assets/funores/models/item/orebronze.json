@@ -1,6 +1,0 @@
-{
-  "parent": "funores:block/orebronze",
-  "textures": {
-    "layer0": "funores:blocks/orebronze"
-  }
-}

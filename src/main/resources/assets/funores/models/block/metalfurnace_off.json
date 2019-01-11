@@ -1,8 +1,0 @@
-{
-  "parent": "block/orientable",
-  "textures": {
-    "top": "funores:blocks/blockbronze",
-    "front": "funores:blocks/metalfurnace_front",
-    "side": "funores:blocks/metalfurnace_side"
-  }
-}

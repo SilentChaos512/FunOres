@@ -1,6 +1,0 @@
-{
-  "parent": "funores:block/blockelectrum",
-  "textures": {
-    "layer0": "funores:blocks/blockelectrum"
-  }
-}

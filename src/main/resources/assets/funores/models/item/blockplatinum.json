@@ -1,6 +1,0 @@
-{
-  "parent": "funores:block/blockplatinum",
-  "textures": {
-    "layer0": "funores:blocks/blockplatinum"
-  }
-}

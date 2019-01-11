@@ -18,37 +18,33 @@
 
 package net.silentchaos512.funores.init;
 
-import net.silentchaos512.funores.item.*;
-import net.silentchaos512.lib.registry.SRegistry;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.registries.IForgeRegistry;
+import net.silentchaos512.funores.FunOres;
 
-public class ModItems {
-    public static ItemIngotMetal metalIngot = new ItemIngotMetal();
-    public static ItemNuggetMetal metalNugget = new ItemNuggetMetal();
-    public static ItemDustMetal metalDust = new ItemDustMetal();
-    public static ItemIngotAlloy alloyIngot = new ItemIngotAlloy();
-    public static ItemNuggetAlloy alloyNugget = new ItemNuggetAlloy();
-    public static ItemDustAlloy alloyDust = new ItemDustAlloy();
-    public static ItemCraftingItem plateBasic = new ItemCraftingItem("plate", false);
-    public static ItemCraftingItem plateAlloy = new ItemCraftingItem("plate", true);
-    public static ItemCraftingItem gearBasic = new ItemCraftingItem("gear", false);
-    public static ItemCraftingItem gearAlloy = new ItemCraftingItem("gear", true);
-    public static ItemShard shard = new ItemShard();
-    public static ItemDried driedItem = new ItemDried();
-    public static ItemHammer hammer = new ItemHammer();
+import java.util.ArrayList;
+import java.util.List;
 
-    public static void registerAll(SRegistry reg) {
-        reg.registerItem(metalIngot, "metalingot");
-        reg.registerItem(metalNugget, "metalnugget");
-        reg.registerItem(metalDust, "metaldust");
-        reg.registerItem(alloyIngot, "alloyingot");
-        reg.registerItem(alloyNugget, "alloynugget");
-        reg.registerItem(alloyDust, "alloydust");
-        reg.registerItem(plateBasic, "metalplate");
-        reg.registerItem(plateAlloy, "alloyplate");
-        reg.registerItem(gearBasic, "metalgear");
-        reg.registerItem(gearAlloy, "alloygear");
-        reg.registerItem(shard, "shard");
-        reg.registerItem(driedItem, "drieditem");
-        reg.registerItem(hammer, "hammer");
+public final class ModItems {
+    static List<ItemBlock> itemBlocks = new ArrayList<>();
+
+    private ModItems() {}
+
+    public static void registerAll(RegistryEvent.Register<Item> event) {
+        IForgeRegistry<Item> registry = event.getRegistry();
+
+        final Item.Builder properties = new Item.Builder().group(ItemGroup.MATERIALS);
+        register(registry, "ender_shard", new Item(properties));
+        register(registry, "blaze_shard", new Item(properties));
+        register(registry, "ghast_shard", new Item(properties));
+    }
+
+    private static void register(IForgeRegistry<Item> registry, String name, Item item) {
+        item.setRegistryName(new ResourceLocation(FunOres.MOD_ID, name));
+        registry.register(item);
     }
 }

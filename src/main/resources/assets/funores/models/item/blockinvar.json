@@ -1,6 +1,0 @@
-{
-  "parent": "funores:block/blockinvar",
-  "textures": {
-    "layer0": "funores:blocks/blockinvar"
-  }
-}

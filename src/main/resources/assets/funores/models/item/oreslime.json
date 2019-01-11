@@ -1,6 +1,0 @@
-{
-  "parent": "funores:block/oreslime",
-  "textures": {
-    "layer0": "funores:blocks/oreslime"
-  }
-}

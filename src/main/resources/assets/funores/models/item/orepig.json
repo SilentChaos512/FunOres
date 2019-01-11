@@ -1,6 +1,0 @@
-{
-  "parent": "funores:block/orepig",
-  "textures": {
-    "layer0": "funores:blocks/orepig"
-  }
-}

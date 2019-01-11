@@ -1,6 +1,0 @@
-{
-  "parent": "funores:block/orelead",
-  "textures": {
-    "layer0": "funores:blocks/orelead"
-  }
-}

@@ -1,6 +1,0 @@
-{
-  "parent": "funores:block/oreplatinum",
-  "textures": {
-    "layer0": "funores:blocks/oreplatinum"
-  }
-}

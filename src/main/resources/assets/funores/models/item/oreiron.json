@@ -1,6 +1,0 @@
-{
-  "parent": "funores:block/oreiron",
-  "textures": {
-    "layer0": "funores:blocks/oreiron"
-  }
-}

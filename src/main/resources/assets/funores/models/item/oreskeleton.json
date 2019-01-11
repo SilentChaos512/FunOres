@@ -1,6 +1,0 @@
-{
-  "parent": "funores:block/oreskeleton",
-  "textures": {
-    "layer0": "funores:blocks/oreskeleton"
-  }
-}
