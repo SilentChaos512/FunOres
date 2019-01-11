@@ -33,6 +33,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.block.BlockLootDropOre;
+import net.silentchaos512.funores.util.ModelGenerator;
 
 import javax.annotation.Nullable;
 
@@ -141,6 +142,8 @@ public final class ModBlocks {
         ItemBlock itemBlock = new ItemBlock(block, new Item.Builder().group(ItemGroup.BUILDING_BLOCKS));
         itemBlock.setRegistryName(registryName);
         ForgeRegistries.ITEMS.register(itemBlock);
+
+//        ModelGenerator.createFor(block);
     }
 
     private static ResourceLocation getSheepLootTable(EntitySheep sheep) {

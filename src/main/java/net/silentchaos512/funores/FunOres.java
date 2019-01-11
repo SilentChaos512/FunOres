@@ -35,6 +35,8 @@ import net.minecraftforge.fml.javafmlmod.FMLModLoadingContext;
 import net.minecraftforge.registries.ObjectHolder;
 import net.silentchaos512.funores.init.ModBlocks;
 import net.silentchaos512.funores.init.ModItems;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Locale;
@@ -53,6 +55,8 @@ public class FunOres {
 
     public static FunOres INSTANCE;
     private static SideProxy PROXY;
+
+    public static Logger LOGGER = LogManager.getLogger();
 
 //    public static LogHelper logHelper = new LogHelper(MOD_NAME, BUILD_NUM);
 //    public static I18nHelper i18n = new I18nHelper(MOD_ID, logHelper, true);
