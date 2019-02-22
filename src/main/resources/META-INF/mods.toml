@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[24,)"
+loaderVersion="[25,)"
 #updateJSONURL="http://myurl.me/" #optional
 issueTrackerURL="https://github.com/SilentChaos512/FunOres/issues"
 displayURL="https://minecraft.curseforge.com/projects/fun-ores"
@@ -9,7 +9,7 @@ authors="SilentChaos512"
 
 [[mods]]
 modId="funores"
-version="${version}"
+version="${file.jarVersion}"
 displayName="Fun Ores"
 description='''
 Adds ores which drop items from certain mobs.
@@ -20,7 +20,7 @@ Former versions also added metals. This is no longer a feature of the mod.
 [[dependencies.funores]]
     modId="forge"
     mandatory=true
-    versionRange="[24,)"
+    versionRange="[25,)"
     # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
     ordering="NONE"
     # Side this dependency is applied on - BOTH, CLIENT or SERVER
@@ -29,6 +29,6 @@ Former versions also added metals. This is no longer a feature of the mod.
 [[dependencies.funores]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.13]"
+    versionRange="[1.13.2]"
     ordering="NONE"
     side="BOTH"

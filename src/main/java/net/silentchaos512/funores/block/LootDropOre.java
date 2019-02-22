@@ -1,7 +1,6 @@
 package net.silentchaos512.funores.block;
 
 import com.mojang.authlib.GameProfile;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockOre;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -23,21 +22,21 @@ import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
 
 import javax.annotation.Nullable;
-import java.util.function.BiFunction;
+import java.util.function.Function;
 
-public class BlockLootDropOre extends BlockOre {
+public class LootDropOre extends BlockOre {
     private final ResourceLocation lootTableName;
-    private final BiFunction<IBlockState, World, EntityLivingBase> entityConstructor;
+    private final Function<World, EntityLivingBase> entityConstructor;
 
-    public BlockLootDropOre(ResourceLocation lootTableName, BiFunction<IBlockState, World, EntityLivingBase> entityConstructor) {
-        super(Block.Builder.create(Material.ROCK).hardnessAndResistance(1.5f, 10f));
+    public LootDropOre(ResourceLocation lootTableName, Function<World, EntityLivingBase> entityConstructor) {
+        super(Properties.create(Material.ROCK).hardnessAndResistance(1.5f, 10f));
         this.lootTableName = lootTableName;
         this.entityConstructor = entityConstructor;
     }
 
     @Nullable
     public EntityLivingBase getEntityLiving(IBlockState state, World world) {
-        return entityConstructor.apply(state, world);
+        return entityConstructor.apply(world);
     }
 
     @Nullable
@@ -79,9 +78,7 @@ public class BlockLootDropOre extends BlockOre {
 
         final int tryCount = getLootTryCount(state, entity);
         for (int i = 0; i < tryCount; ++i) {
-            // TODO: Fish ore fix
-            // TODO: Config remove drops?
-            lootTable.generateLootForPools(RANDOM, lootContextBuilder.build()).forEach(s -> drops.add(s));
+            drops.addAll(lootTable.generateLootForPools(RANDOM, lootContextBuilder.build()));
         }
     }
 }

@@ -164,9 +164,9 @@ curseforge {
             addGameVersion(project.mc_version)
             mainArtifact(jar) {
 //                displayName = "$project.description $display_version"
-                relations {
-                    requiredLibrary 'silent-lib'
-                }
+//                relations {
+//                    requiredLibrary 'silent-lib'
+//                }
             }
 //            if (project.hasProperty('doAPIJar')) {
 //                addArtifact(apiJar) {
@@ -196,9 +196,9 @@ curseforge {
 
 publishing {
     publications {
-        silentsGems(MavenPublication) {
+        funOres(MavenPublication) {
             groupId 'net.silentchaos512'
-            artifactId 'silents-gems'
+            artifactId 'fun-ores'
             version "${versionInfo['version_short']}".toString()
 
             from components.java
@@ -212,17 +212,17 @@ publishing {
 bintray {
     user = secret.BINTRAY_USER ?: System.getenv('BINTRAY_USER')
     key = secret.BINTRAY_KEY ?: System.getenv('BINTRAY_KEY')
-    publications = ['silentsGems']
+    publications = ['funOres']
 
     pkg {
-        repo = 'silents-gems'
-        name = 'silents-gems'
+        repo = 'fun-ores'
+        name = 'fun-ores'
         licenses = ["LGPL-3.0"]
-        vcsUrl = 'https://github.com/SilentChaos512/SilentGems.git'
+        vcsUrl = 'https://github.com/SilentChaos512/FunOres.git'
 
         version {
             name = "${versionInfo['version_short']}".toString()
-            desc = "Silent's Gems (${project.mc_version}) ${versionInfo['version_short']}".toString()
+            desc = "Fun Ores (${project.mc_version}) ${versionInfo['version_short']}".toString()
             released = new Date()
             vcsTag = "v${versionInfo['version_short']}".toString()
         }

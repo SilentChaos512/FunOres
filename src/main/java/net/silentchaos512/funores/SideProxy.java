@@ -1,21 +1,55 @@
 package net.silentchaos512.funores;
 
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.DeferredWorkQueue;
+import net.minecraftforge.fml.event.lifecycle.*;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.silentchaos512.funores.init.ModBlocks;
+import net.silentchaos512.funores.init.ModItems;
+import net.silentchaos512.funores.world.FunOresWorldFeatures;
 
-public class SideProxy {
-    void preInit(FMLPreInitializationEvent event) { }
+class SideProxy {
+    SideProxy() {
+        getLifeCycleEventBus().addListener(this::commonSetup);
+        getLifeCycleEventBus().addListener(this::imcEnqueue);
+        getLifeCycleEventBus().addListener(this::imcProcess);
 
-    void init(FMLInitializationEvent event) { }
+        getLifeCycleEventBus().addListener(ModBlocks::registerAll);
+        getLifeCycleEventBus().addListener(ModItems::registerAll);
 
-    void postInit(FMLPostInitializationEvent event) { }
-
-    public static class Client extends SideProxy {
-        // empty
+//        ModLoot.init();
     }
 
-    public static class Server extends SideProxy {
-        // empty
+    private static IEventBus getLifeCycleEventBus() {
+        return FMLJavaModLoadingContext.get().getModEventBus();
+    }
+
+    private void commonSetup(FMLCommonSetupEvent event) {
+        DeferredWorkQueue.runLater(FunOresWorldFeatures::addFeaturesToBiomes);
+    }
+
+    private void imcEnqueue(InterModEnqueueEvent event) {
+    }
+
+    private void imcProcess(InterModProcessEvent event) {
+    }
+
+    static class Client extends SideProxy {
+        Client() {
+            SideProxy.getLifeCycleEventBus().addListener(this::clientSetup);
+        }
+
+        private void clientSetup(FMLClientSetupEvent event) {
+            FunOres.LOGGER.info("Gems clientSetup");
+        }
+    }
+
+    static class Server extends SideProxy {
+        Server() {
+            SideProxy.getLifeCycleEventBus().addListener(this::serverSetup);
+        }
+
+        private void serverSetup(FMLDedicatedServerSetupEvent event) {
+        }
     }
 }

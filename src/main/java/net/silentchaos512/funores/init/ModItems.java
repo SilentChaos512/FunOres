@@ -23,7 +23,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.silentchaos512.funores.FunOres;
 
 import java.util.ArrayList;
@@ -35,16 +35,17 @@ public final class ModItems {
     private ModItems() {}
 
     public static void registerAll(RegistryEvent.Register<Item> event) {
-        IForgeRegistry<Item> registry = event.getRegistry();
+        if (!event.getName().equals(ForgeRegistries.ITEMS.getRegistryName())) return;
 
-        final Item.Builder properties = new Item.Builder().group(ItemGroup.MATERIALS);
-        register(registry, "ender_shard", new Item(properties));
-        register(registry, "blaze_shard", new Item(properties));
-        register(registry, "ghast_shard", new Item(properties));
+        final Item.Properties properties = new Item.Properties().group(ItemGroup.MATERIALS);
+        register("ender_shard", new Item(properties));
+        register("blaze_shard", new Item(properties));
+        register("ghast_shard", new Item(properties));
+        register("wither_skull_shard", new Item(properties));
     }
 
-    private static void register(IForgeRegistry<Item> registry, String name, Item item) {
+    private static void register(String name, Item item) {
         item.setRegistryName(new ResourceLocation(FunOres.MOD_ID, name));
-        registry.register(item);
+        ForgeRegistries.ITEMS.register(item);
     }
 }

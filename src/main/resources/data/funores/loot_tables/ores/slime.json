@@ -1,0 +1,15 @@
+{
+    "pools": [
+        {
+            "name": "entity",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "loot_table",
+                    "name": "minecraft:entities/slime",
+                    "weight": 1
+                }
+            ]
+        }
+    ]
+}

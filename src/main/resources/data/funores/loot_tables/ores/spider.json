@@ -1,0 +1,20 @@
+{
+    "pools": [
+        {
+            "name": "entity",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "loot_table",
+                    "name": "minecraft:entities/cave_spider",
+                    "weight": 1
+                },
+                {
+                    "type": "loot_table",
+                    "name": "minecraft:entities/spider",
+                    "weight": 1
+                }
+            ]
+        }
+    ]
+}
