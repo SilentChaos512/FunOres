@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "funores:block/chicken_ore"
+    }
+  }
+}

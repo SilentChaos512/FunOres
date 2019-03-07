@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "funores:block/wither_skeleton_ore"
+    }
+  }
+}

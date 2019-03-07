@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "funores:block/rabbit_ore"
+    }
+  }
+}
