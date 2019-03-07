@@ -1,0 +1,12 @@
+{
+  "type": "crafting_shaped",
+  "pattern": ["##", "##"],
+  "key": {
+    "#": {
+      "item": "funores:wither_skull_shard"
+    }
+  },
+  "result": {
+    "item": "minecraft:wither_skeleton_skull"
+  }
+}

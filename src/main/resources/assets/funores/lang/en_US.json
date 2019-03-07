@@ -23,5 +23,6 @@
     "block.funores.zombie_pigman_ore": "Zombie Pigman Ore",
     "item.funores.blaze_shard": "Blaze Shard",
     "item.funores.ender_shard": "Ender Shard",
-    "item.funores.ghast_shard": "Ghast Shard"
+    "item.funores.ghast_shard": "Ghast Shard",
+    "item.funores.wither_skull_shard": "Wither Skull Shard"
 }

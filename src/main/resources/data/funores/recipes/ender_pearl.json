@@ -1,0 +1,12 @@
+{
+  "type": "crafting_shaped",
+  "pattern": ["##", "##"],
+  "key": {
+    "#": {
+      "item": "funores:ender_shard"
+    }
+  },
+  "result": {
+    "item": "minecraft:ender_pearl"
+  }
+}

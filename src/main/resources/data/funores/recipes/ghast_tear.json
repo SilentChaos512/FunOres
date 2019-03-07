@@ -1,0 +1,12 @@
+{
+  "type": "crafting_shaped",
+  "pattern": ["##", "##"],
+  "key": {
+    "#": {
+      "item": "funores:ghast_shard"
+    }
+  },
+  "result": {
+    "item": "minecraft:ghast_tear"
+  }
+}
