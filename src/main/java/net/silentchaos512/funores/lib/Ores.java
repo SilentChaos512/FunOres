@@ -40,7 +40,8 @@ public enum Ores implements IItemProvider {
     SALMON(() -> new LootDropOre(dropsTable("salmon"), EntitySalmon::new)),
     PUFFERFISH(() -> new LootDropOre(dropsTable("pufferfish"), EntityPufferFish::new)),
     // Hostile
-    BLAZE(() -> new LootDropOre(dropsTable("blaze"), EntityBlaze::new)),
+    BLAZE(() -> new LootDropOre(dropsTable("blaze"), EntityBlaze::new),
+            DimensionType.NETHER),
     CREEPER(() -> new LootDropOre(dropsTable("creeper"), EntityCreeper::new)),
     ENDERMAN(() -> new LootDropOreWithSpawn(dropsTable("enderman"), EntityEnderman::new) {
         @Nullable

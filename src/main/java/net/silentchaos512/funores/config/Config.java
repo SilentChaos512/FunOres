@@ -28,15 +28,12 @@ public final class Config {
     public static void init() {
         // Create needed directories, copy default configs if missing
         File directory = FMLPaths.CONFIGDIR.get().resolve("funores/ore_generation/").toFile();
-        File defaultOres = new File(directory.getPath(), "default/");
-        validateOreConfigFolder(defaultOres);
-        File customOres = new File(directory.getPath(), "custom/");
-        validateOreConfigFolder(customOres);
+        validateOreConfigFolder(directory);
 
         WRAPPER.validate();
         WRAPPER.validate();
 
-        loadOres(customOres);
+        loadOres(directory);
     }
 
     private static Path resolveAndCreate(String path) {
@@ -68,7 +65,7 @@ public final class Config {
                 OreFeatureConfig config = OreFeatureConfig.deserialize(id, json);
                 FunOres.LOGGER.info("Read ore config '{}'", file.getPath());
                 ORES.add(config);
-            } catch (JsonSyntaxException ex) {
+            } catch (JsonSyntaxException | NullPointerException ex) {
                 FunOres.LOGGER.error("Error reading ore config file: '{}'", file.getPath());
                 FunOres.LOGGER.catching(ex);
             } catch (FileNotFoundException ex) {
