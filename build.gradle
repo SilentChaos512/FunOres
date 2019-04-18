@@ -57,7 +57,7 @@ minecraft {
     runs {
         client = {
             // recommended logging data for a userdev environment
-            properties 'forge.logging.markers': 'SCAN,REGISTRIES,REGISTRYDUMP'
+//            properties 'forge.logging.markers': 'SCAN,REGISTRIES,REGISTRYDUMP'
             // recommended logging level for the console
             properties 'forge.logging.console.level': 'debug'
             workingDirectory project.file('run').canonicalPath
@@ -82,8 +82,9 @@ repositories {
 dependencies {
     minecraft "net.minecraftforge:forge:${project.forge_version}"
 
-    compile "com.udojava:EvalEx:2.1"
-    compile "net.silentchaos512:silent-lib:${project.sl_version}"
+    compile("net.silentchaos512:silent-lib:${project.sl_version}") {
+        exclude module: "forge"
+    }
 }
 
 jar {

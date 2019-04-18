@@ -9,7 +9,7 @@ import net.minecraft.item.Item;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
+import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.storage.loot.LootTableList;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.block.LootDropOre;
@@ -18,7 +18,6 @@ import net.silentchaos512.utils.Lazy;
 
 import javax.annotation.Nullable;
 import java.util.Locale;
-import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 public enum Ores implements IItemProvider {
@@ -53,34 +52,42 @@ public enum Ores implements IItemProvider {
         }
     }),
     GHAST(() -> new LootDropOre(dropsTable("ghast"), EntityGhast::new),
-            OreDimensionType.NETHER),
+            DimensionType.NETHER),
     GUARDIAN(() -> new LootDropOre(dropsTable("guardian"), EntityGuardian::new)),
     MAGMA_CUBE(() -> new LootDropOre(dropsTable("magma_cube"), EntityMagmaCube::new),
-            OreDimensionType.NETHER),
+            DimensionType.NETHER),
     SKELETON(() -> new LootDropOre(dropsTable("skeleton"), EntitySkeleton::new)),
     SLIME(() -> new LootDropOre(dropsTable("slime"), EntitySlime::new)),
     SPIDER(() -> new LootDropOre(dropsTable("spider"), EntitySpider::new)),
     WITCH(() -> new LootDropOre(dropsTable("witch"), EntityWitch::new)),
     WITHER_SKELETON(() -> new LootDropOre(dropsTable("wither_skeleton"), EntityWitherSkeleton::new),
-            OreDimensionType.NETHER),
+            DimensionType.NETHER),
     ZOMBIE(() -> new LootDropOre(dropsTable("zombie"), EntityZombie::new)),
     ZOMBIE_PIGMAN(() -> new LootDropOre(dropsTable("zombie_pigman"), EntityPigZombie::new),
-            OreDimensionType.NETHER);
+            DimensionType.NETHER);
 
     private final Lazy<LootDropOre> block;
-    private final OreDimensionType dimensionType;
+    private final DimensionType dimensionType;
 
     Ores(Supplier<LootDropOre> blockFactory) {
-        this(blockFactory, OreDimensionType.OVERWORLD);
+        this(blockFactory, DimensionType.OVERWORLD);
     }
 
-    Ores(Supplier<LootDropOre> blockFactory, OreDimensionType dim) {
+    Ores(Supplier<LootDropOre> blockFactory, DimensionType dim) {
         this.block = Lazy.of(blockFactory);
         this.dimensionType = dim;
     }
 
+    public String getName() {
+        return name().toLowerCase(Locale.ROOT);
+    }
+
     public String getBlockName() {
-        return name().toLowerCase(Locale.ROOT) + "_ore";
+        return getName() + "_ore";
+    }
+
+    public DimensionType getDimensionType() {
+        return dimensionType;
     }
 
     public Block asBlock() {
@@ -90,14 +97,6 @@ public enum Ores implements IItemProvider {
     @Override
     public Item asItem() {
         return asBlock().asItem();
-    }
-
-    public boolean canSpawnIn(Biome biome) {
-        return dimensionType.matches(biome);
-    }
-
-    public Predicate<IBlockState> getBlockToReplace() {
-        return dimensionType.blockToReplace();
     }
 
     private static ResourceLocation dropsTable(String name) {

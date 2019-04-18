@@ -1,0 +1,159 @@
+package net.silentchaos512.funores.config;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
+import net.minecraft.world.dimension.DimensionType;
+import net.minecraftforge.fml.loading.FMLPaths;
+import net.silentchaos512.funores.FunOres;
+import net.silentchaos512.funores.lib.Ores;
+import net.silentchaos512.utils.config.ConfigSpecWrapper;
+
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+
+public final class Config {
+    private static final Gson GSON = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
+
+    private static final ConfigSpecWrapper WRAPPER = ConfigSpecWrapper.create(resolveAndCreate("funores/common.toml"));
+
+    public static final List<OreFeatureConfig> ORES = new ArrayList<>();
+
+    private Config() {}
+
+    public static void init() {
+        // Create needed directories, copy default configs if missing
+        File directory = FMLPaths.CONFIGDIR.get().resolve("funores/ore_generation/").toFile();
+        File defaultOres = new File(directory.getPath(), "default/");
+        validateOreConfigFolder(defaultOres);
+        File customOres = new File(directory.getPath(), "custom/");
+        validateOreConfigFolder(customOres);
+
+        WRAPPER.validate();
+        WRAPPER.validate();
+
+        loadOres(customOres);
+    }
+
+    private static Path resolveAndCreate(String path) {
+        Path result = FMLPaths.CONFIGDIR.get().resolve(path);
+        //noinspection ResultOfMethodCallIgnored
+        result.toFile().getParentFile().mkdirs();
+        return result;
+    }
+
+    private static void loadOres(File directory) {
+        if (!directory.exists()) {
+            FunOres.LOGGER.fatal("Ore generation directory has vanished! Fun Ores will NOT load ore configs.");
+            return;
+        }
+
+        File[] files = directory.listFiles();
+        if (files == null) {
+            FunOres.LOGGER.fatal("'{}' is not a directory?", directory.getPath());
+            return;
+        }
+
+        ORES.clear();
+
+        for (File file : files) {
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
+                //noinspection DynamicRegexReplaceableByCompiledPattern
+                String id = file.getName().replace(".json", "");
+                JsonObject json = GSON.fromJson(reader, JsonObject.class);
+                OreFeatureConfig config = OreFeatureConfig.deserialize(id, json);
+                FunOres.LOGGER.info("Read ore config '{}'", file.getPath());
+                ORES.add(config);
+            } catch (JsonSyntaxException ex) {
+                FunOres.LOGGER.error("Error reading ore config file: '{}'", file.getPath());
+                FunOres.LOGGER.catching(ex);
+            } catch (FileNotFoundException ex) {
+                FunOres.LOGGER.error("File not found: '{}'", file.getPath());
+                FunOres.LOGGER.catching(ex);
+            } catch (IOException ex) {
+                FunOres.LOGGER.error("Could not read file: '{}'", file.getPath());
+                FunOres.LOGGER.catching(ex);
+            }
+        }
+    }
+
+    private static void validateOreConfigFolder(File directory) {
+        if (!directory.exists()) {
+            FunOres.LOGGER.info("Ore config directory '{}' does not exist, creating it now", directory.getPath());
+            if (!directory.mkdirs()) {
+                FunOres.LOGGER.fatal("Could not create directory {}", directory.getPath());
+                return;
+            }
+        }
+
+        File[] files = directory.listFiles();
+        if (files == null) {
+            FunOres.LOGGER.fatal("'{}' is not a directory?", directory.getPath());
+            return;
+        }
+
+        if (files.length == 0) {
+            createDefaultOreFiles(directory);
+        }
+    }
+
+    private static void createDefaultOreFiles(File directory) {
+        for (Ores ore : Ores.values()) {
+            createDefaultFile(directory, ore);
+        }
+        writeDefaultFile(directory, "extra_diamonds", OreFeatureConfig.createDefault(
+                "minecraft:diamond",
+                "tag", "forge:stone",
+                0.7, 1,
+                6,
+                0, 16,
+                0
+        ));
+        writeDefaultFile(directory, "extra_emeralds", OreFeatureConfig.createDefault(
+                "minecraft:emerald",
+                "tag", "forge:stone",
+                0.1, 1,
+                1,
+                16, 48,
+                0
+        ));
+        writeDefaultFile(directory, "extra_gold", OreFeatureConfig.createDefault(
+                "minecraft:gold",
+                "tag", "forge:stone",
+                1.0, 2,
+                8,
+                8, 32,
+                0
+        ));
+    }
+
+    private static void createDefaultFile(File directory, Ores ore) {
+        String replacesType = ore.getDimensionType() == DimensionType.NETHER ? "item" : "tag";
+        String replaces = ore.getDimensionType() == DimensionType.NETHER ? "minecraft:netherrack" : "forge:stone";
+        JsonObject json = OreFeatureConfig.createDefault(
+                "funores:" + ore.getBlockName(),
+                replacesType, replaces,
+                0.075, 1,
+                20,
+                24, 80,
+                ore.getDimensionType().getId()
+        );
+        writeDefaultFile(directory, ore.getName(), json);
+    }
+
+    private static void writeDefaultFile(File directory, String oreName, JsonObject json) {
+        String fileName = oreName + ".json";
+        File file = new File(directory.getPath(), fileName);
+
+        try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file, true), StandardCharsets.UTF_8))) {
+            writer.write(GSON.toJson(json));
+        } catch (IOException ex) {
+            FunOres.LOGGER.error("Could not write to file: '{}'", file.getPath());
+            FunOres.LOGGER.catching(ex);
+        }
+    }
+}

@@ -4,6 +4,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DeferredWorkQueue;
 import net.minecraftforge.fml.event.lifecycle.*;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.silentchaos512.funores.config.Config;
 import net.silentchaos512.funores.init.ModBlocks;
 import net.silentchaos512.funores.init.ModItems;
 import net.silentchaos512.funores.world.FunOresWorldFeatures;
@@ -17,7 +18,7 @@ class SideProxy {
         getLifeCycleEventBus().addListener(ModBlocks::registerAll);
         getLifeCycleEventBus().addListener(ModItems::registerAll);
 
-//        ModLoot.init();
+        Config.init();
     }
 
     private static IEventBus getLifeCycleEventBus() {

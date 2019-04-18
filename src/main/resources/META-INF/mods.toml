@@ -32,3 +32,9 @@ Former versions also added metals. This is no longer a feature of the mod.
     versionRange="[1.13.2]"
     ordering="NONE"
     side="BOTH"
+[[dependencies.funores]]
+    modId="silentlib"
+    mandatory=true
+    versionRange="[4,)"
+    ordering="NONE"
+    side="BOTH"
