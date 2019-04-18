@@ -49,7 +49,7 @@ public final class ModBlocks {
         itemBlock.setRegistryName(registryName);
         ForgeRegistries.ITEMS.register(itemBlock);
 
-        if (FunOres.RUN_GENERATORS) {
+        if (FunOres.RUN_GENERATORS && FunOres.isDevBuild()) {
             ModelGenerator.createFor(block);
         }
     }
