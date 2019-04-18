@@ -11,11 +11,13 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.Tag;
 import net.minecraft.util.JsonUtils;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.WeightedRandom;
 import net.minecraft.world.IWorldReaderBase;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.gen.placement.IPlacementConfig;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.silentchaos512.funores.FunOres;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -23,9 +25,7 @@ import java.util.function.Predicate;
 
 public class OreFeatureConfig implements IPlacementConfig {
     private final String configId;
-    // TODO: Maybe allow multiple blocks with varying probabilities?
-    //  Should probably load configs AFTER registry events in that case (load files in common setup)
-    private ResourceLocation blockId;
+    private List<WeightedBlock> blocks;
     private Predicate<Block> replacesBlock;
     private List<Predicate<DimensionType>> dimensionAllowed;
     private OreFrequency frequency;
@@ -43,7 +43,7 @@ public class OreFeatureConfig implements IPlacementConfig {
 
     @Nullable
     public Block getBlock() {
-        return ForgeRegistries.BLOCKS.getValue(this.blockId);
+        return WeightedRandom.getRandomItem(FunOres.RANDOM, this.blocks).getBlock();
     }
 
     public boolean canReplace(IBlockState state) {
@@ -88,7 +88,7 @@ public class OreFeatureConfig implements IPlacementConfig {
 
     public static OreFeatureConfig deserialize(String id, JsonObject json) throws JsonSyntaxException {
         OreFeatureConfig result = new OreFeatureConfig(id);
-        result.blockId = parseId(json, "block");
+        result.blocks = parseBlocksElement(json.get("blocks"));
         result.replacesBlock = parseReplacesElement(json.get("replaces"));
         result.frequency = OreFrequency.deserialize(json.get("frequency"));
         result.veinSize = JsonUtils.getInt(json, "size");
@@ -97,6 +97,18 @@ public class OreFeatureConfig implements IPlacementConfig {
         result.dimensionAllowed = parseDimensionsElement(json.get("dimensions"));
         // TODO: biomes
         return result;
+    }
+
+    private static List<WeightedBlock> parseBlocksElement(JsonElement json) {
+        if (json.isJsonArray()) {
+            List<WeightedBlock> list = new ArrayList<>();
+            JsonArray array = json.getAsJsonArray();
+            for (JsonElement je : array) {
+                list.add(WeightedBlock.deserialize(je));
+            }
+            return list;
+        }
+        throw new JsonSyntaxException("Expected 'blocks' to be array");
     }
 
     private static Predicate<Block> parseReplacesElement(JsonElement json) {
@@ -171,7 +183,12 @@ public class OreFeatureConfig implements IPlacementConfig {
         // Would love to just dump the files into data folder, but seems we can't read files from
         // the jar in 1.13. So, let's do this the hard way...
         JsonObject json = new JsonObject();
-        json.addProperty("block", blockId);
+        JsonArray blocksArray = new JsonArray();
+        JsonObject blocksElement = new JsonObject();
+        blocksElement.addProperty("block", blockId);
+        blocksElement.addProperty("weight", 1);
+        blocksArray.add(blocksElement);
+        json.add("blocks", blocksArray);
         JsonObject replacesObj = new JsonObject();
         replacesObj.addProperty(replacesType, replaces);
         json.add("replaces", replacesObj);

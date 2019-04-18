@@ -17,8 +17,6 @@ class SideProxy {
 
         getLifeCycleEventBus().addListener(ModBlocks::registerAll);
         getLifeCycleEventBus().addListener(ModItems::registerAll);
-
-        Config.init();
     }
 
     private static IEventBus getLifeCycleEventBus() {
@@ -26,6 +24,7 @@ class SideProxy {
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
+        Config.init();
         DeferredWorkQueue.runLater(FunOresWorldFeatures::addFeaturesToBiomes);
     }
 
