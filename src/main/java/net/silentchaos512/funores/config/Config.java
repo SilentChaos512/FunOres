@@ -103,7 +103,7 @@ public final class Config {
             createDefaultFile(directory, ore);
         }
         writeDefaultFile(directory, "extra_diamonds", OreFeatureConfig.createDefault(
-                "minecraft:diamond",
+                "minecraft:diamond_ore",
                 "tag", "forge:stone",
                 0.7, 1,
                 6,
@@ -111,7 +111,7 @@ public final class Config {
                 0
         ));
         writeDefaultFile(directory, "extra_emeralds", OreFeatureConfig.createDefault(
-                "minecraft:emerald",
+                "minecraft:emerald_ore",
                 "tag", "forge:stone",
                 0.1, 1,
                 1,
@@ -119,7 +119,7 @@ public final class Config {
                 0
         ));
         writeDefaultFile(directory, "extra_gold", OreFeatureConfig.createDefault(
-                "minecraft:gold",
+                "minecraft:gold_ore",
                 "tag", "forge:stone",
                 1.0, 2,
                 8,
