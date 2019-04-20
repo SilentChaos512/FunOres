@@ -25,7 +25,9 @@ public class OrePlacement extends BasePlacement<OreFeatureConfig> {
             int y = random.nextInt(placementConfig.getMaxHeight() - placementConfig.getMinHeight()) + placementConfig.getMinHeight();
             int z = random.nextInt(16);
             BlockPos pos1 = pos.add(x, y, z);
-            FunOres.LOGGER.debug("Placing ore '{}' at {}", placementConfig.getConfigId(), pos1);
+            if (FunOres.LOGGER.isDebugEnabled()) {
+                FunOres.LOGGER.debug("Placing ore '{}' at {}", placementConfig.getConfigId(), pos1);
+            }
             featureIn.place(worldIn, chunkGenerator, random, pos1, featureConfig);
         }
 

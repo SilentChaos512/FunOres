@@ -40,7 +40,6 @@ class SideProxy {
         }
 
         private void clientSetup(FMLClientSetupEvent event) {
-            FunOres.LOGGER.info("Gems clientSetup");
         }
     }
 

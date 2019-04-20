@@ -3,7 +3,6 @@ package net.silentchaos512.funores.world;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.config.Config;
 import net.silentchaos512.funores.config.OreFeatureConfig;
 import org.apache.logging.log4j.Marker;
@@ -25,7 +24,7 @@ public final class FunOresWorldFeatures {
     }
 
     private static void addOreToBiome(Biome biome, OreFeatureConfig config) {
-        FunOres.LOGGER.info(MARKER, "Add ore {} to biome {}", config.getConfigId(), biome.getRegistryName());
+//        FunOres.LOGGER.info(MARKER, "Add ore {} to biome {}", config.getConfigId(), biome.getRegistryName());
         biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Biome.createCompositeFeature(
                 MultiBlockMinableFeature.INSTANCE,
                 new MultiBlockMinableConfig(config),
