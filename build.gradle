@@ -14,7 +14,7 @@ plugins {
     id 'maven'
     id 'maven-publish'
     id "com.jfrog.bintray" version "1.8.4"
-    id "com.matthewprenger.cursegradle" version "1.1.2"
+    id "com.matthewprenger.cursegradle" version "1.2.0"
 }
 
 apply plugin: 'net.minecraftforge.gradle'
@@ -165,9 +165,9 @@ curseforge {
             addGameVersion(project.mc_version)
             mainArtifact(jar) {
 //                displayName = "$project.description $display_version"
-//                relations {
-//                    requiredLibrary 'silent-lib'
-//                }
+                relations {
+                    requiredDependency 'silent-lib'
+                }
             }
 //            if (project.hasProperty('doAPIJar')) {
 //                addArtifact(apiJar) {
