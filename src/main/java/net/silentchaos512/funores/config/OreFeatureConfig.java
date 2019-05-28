@@ -180,14 +180,25 @@ public class OreFeatureConfig implements IPlacementConfig {
     }
 
     public static JsonObject createDefault(String blockId, String replacesType, String replaces, double chance, int count, int size, int minHeight, int maxHeight, int dimension) {
+        Map<String, Integer> blocks = new HashMap<>();
+        blocks.put(blockId, 1);
+        return createDefault(blocks, replacesType, replaces, chance, count, size, minHeight, maxHeight, dimension);
+    }
+
+    public static JsonObject createDefault(Map<String, Integer> blocks, String replacesType, String replaces, double chance, int count, int size, int minHeight, int maxHeight, int dimension) {
         // Would love to just dump the files into data folder, but seems we can't read files from
         // the jar in 1.13. So, let's do this the hard way...
         JsonObject json = new JsonObject();
         JsonArray blocksArray = new JsonArray();
-        JsonObject blocksElement = new JsonObject();
-        blocksElement.addProperty("block", blockId);
-        blocksElement.addProperty("weight", 1);
-        blocksArray.add(blocksElement);
+        //noinspection OverlyLongLambda
+        blocks.forEach((blockId, weight) -> {
+            JsonObject blocksElement = new JsonObject();
+            if (!blockId.isEmpty()) {
+                blocksElement.addProperty("block", blockId);
+            }
+            blocksElement.addProperty("weight", weight);
+            blocksArray.add(blocksElement);
+        });
         json.add("blocks", blocksArray);
         JsonObject replacesObj = new JsonObject();
         replacesObj.addProperty(replacesType, replaces);

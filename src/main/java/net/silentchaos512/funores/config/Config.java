@@ -105,7 +105,7 @@ public final class Config {
         writeDefaultFile(directory, "extra_diamonds", OreFeatureConfig.createDefault(
                 "minecraft:diamond_ore",
                 "tag", "forge:stone",
-                0.7, 1,
+                0.5, 1,
                 6,
                 0, 16,
                 0
@@ -121,7 +121,7 @@ public final class Config {
         writeDefaultFile(directory, "extra_gold", OreFeatureConfig.createDefault(
                 "minecraft:gold_ore",
                 "tag", "forge:stone",
-                1.0, 2,
+                0.7, 2,
                 8,
                 8, 32,
                 0
@@ -132,11 +132,14 @@ public final class Config {
         String replacesType = ore.getDimensionType() == DimensionType.NETHER ? "item" : "tag";
         String replaces = ore.getDimensionType() == DimensionType.NETHER ? "minecraft:netherrack" : "forge:stone";
         JsonObject json = OreFeatureConfig.createDefault(
-                "funores:" + ore.getBlockName(),
+                ImmutableMap.of(
+                        "funores:" + ore.getBlockName(), 10,
+                        "", 3
+                ),
                 replacesType, replaces,
-                0.075, 1,
-                20,
-                24, 80,
+                0.05, 1,
+                22,
+                32, 84,
                 ore.getDimensionType().getId()
         );
         writeDefaultFile(directory, ore.getName(), json);
