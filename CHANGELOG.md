@@ -3,7 +3,11 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [2.1.1] - 2019-05-28
+### Added
+- Config to enable logging of ore spawns (for debugging purposes), off by default [#51]. Found in `config/funores/common.toml`.
+### Changed
+- Tweaked some default ore configs. These will regenerate if all ore config files are deleted.
 ### Fixed
 - More localization file errors
 

@@ -1,5 +1,6 @@
 package net.silentchaos512.funores.config;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -8,6 +9,7 @@ import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.fml.loading.FMLPaths;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.lib.Ores;
+import net.silentchaos512.utils.config.BooleanValue;
 import net.silentchaos512.utils.config.ConfigSpecWrapper;
 
 import java.io.*;
@@ -22,6 +24,21 @@ public final class Config {
     private static final ConfigSpecWrapper WRAPPER = ConfigSpecWrapper.create(resolveAndCreate("funores/common.toml"));
 
     public static final List<OreFeatureConfig> ORES = new ArrayList<>();
+
+    public static final Common COMMON = new Common(WRAPPER);
+
+    public static class Common {
+        public final BooleanValue logOreSpawns;
+
+        Common(ConfigSpecWrapper wrapper) {
+            logOreSpawns = wrapper
+                    .builder("logging.oreSpawns")
+                    .comment("If true, all ore spawns are logged. This could be useful for validating your configs,",
+                            "but will dump large amounts of text to your logs, slowing down the game.",
+                            "This should be set to 'false' most of the time!")
+                    .define(false);
+        }
+    }
 
     private Config() {}
 

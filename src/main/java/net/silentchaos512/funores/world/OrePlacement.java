@@ -1,6 +1,7 @@
 package net.silentchaos512.funores.world;
 
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.IChunkGenSettings;
 import net.minecraft.world.gen.IChunkGenerator;
@@ -8,6 +9,7 @@ import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.IFeatureConfig;
 import net.minecraft.world.gen.placement.BasePlacement;
 import net.silentchaos512.funores.FunOres;
+import net.silentchaos512.funores.config.Config;
 import net.silentchaos512.funores.config.OreFeatureConfig;
 
 import java.util.Random;
@@ -25,8 +27,8 @@ public class OrePlacement extends BasePlacement<OreFeatureConfig> {
             int y = random.nextInt(placementConfig.getMaxHeight() - placementConfig.getMinHeight()) + placementConfig.getMinHeight();
             int z = random.nextInt(16);
             BlockPos pos1 = pos.add(x, y, z);
-            if (FunOres.LOGGER.isDebugEnabled()) {
-                FunOres.LOGGER.debug("Placing ore '{}' at {}", placementConfig.getConfigId(), pos1);
+            if (Config.COMMON.logOreSpawns.get()) {
+                FunOres.LOGGER.info("Placing ore '{}' at {}, chunk {}", placementConfig.getConfigId(), pos1, new ChunkPos(pos1));
             }
             featureIn.place(worldIn, chunkGenerator, random, pos1, featureConfig);
         }
