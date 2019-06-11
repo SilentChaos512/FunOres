@@ -34,7 +34,7 @@ import java.util.Random;
 public class FunOres {
     public static final String MOD_ID = "funores";
     public static final String MOD_NAME = "Fun Ores";
-    public static final String VERSION = "2.1.1";
+    public static final String VERSION = "2.2.0";
     public static final boolean RUN_GENERATORS = false;
     public static final String RESOURCE_PREFIX = MOD_ID.toLowerCase(Locale.ROOT) + ":";
 

@@ -18,7 +18,7 @@
 
 package net.silentchaos512.funores.lib;
 
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
@@ -26,8 +26,8 @@ import javax.annotation.Nullable;
 
 public interface ILootTableDrops {
     @Nullable
-    EntityLivingBase getEntityLiving(World worldIn);
+    LivingEntity getEntityLiving(World worldIn);
 
     @Nullable
-    ResourceLocation getLootTable(EntityLivingBase entityLiving);
+    ResourceLocation getLootTable(LivingEntity entityLiving);
 }

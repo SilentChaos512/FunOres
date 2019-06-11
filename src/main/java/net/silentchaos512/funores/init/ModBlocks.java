@@ -19,8 +19,8 @@
 package net.silentchaos512.funores.init;
 
 import net.minecraft.block.Block;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
@@ -45,9 +45,9 @@ public final class ModBlocks {
         block.setRegistryName(registryName);
         ForgeRegistries.BLOCKS.register(block);
 
-        ItemBlock itemBlock = new ItemBlock(block, new Item.Properties().group(ItemGroup.BUILDING_BLOCKS));
-        itemBlock.setRegistryName(registryName);
-        ForgeRegistries.ITEMS.register(itemBlock);
+        BlockItem item = new BlockItem(block, new Item.Properties().group(ItemGroup.BUILDING_BLOCKS));
+        item.setRegistryName(registryName);
+        ModItems.blockItems.add(item);
 
         if (FunOres.RUN_GENERATORS && FunOres.isDevBuild()) {
             ModelGenerator.createFor(block);

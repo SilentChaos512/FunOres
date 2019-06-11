@@ -18,8 +18,8 @@
 
 package net.silentchaos512.funores.init;
 
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
@@ -27,15 +27,17 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.silentchaos512.funores.FunOres;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
 public final class ModItems {
-    static List<ItemBlock> itemBlocks = new ArrayList<>();
+    static Collection<BlockItem> blockItems = new ArrayList<>();
 
     private ModItems() {}
 
     public static void registerAll(RegistryEvent.Register<Item> event) {
         if (!event.getName().equals(ForgeRegistries.ITEMS.getRegistryName())) return;
+
+        blockItems.forEach(ForgeRegistries.ITEMS::register);
 
         final Item.Properties properties = new Item.Properties().group(ItemGroup.MATERIALS);
         register("ender_shard", new Item(properties));

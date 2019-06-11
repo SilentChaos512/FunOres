@@ -1,23 +1,35 @@
 package net.silentchaos512.funores.world;
 
+import com.mojang.datafixers.Dynamic;
+import net.minecraft.block.AirBlock;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockAir;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IWorld;
+import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.Heightmap;
-import net.minecraft.world.gen.IChunkGenSettings;
-import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraft.world.gen.feature.Feature;
+import net.silentchaos512.funores.config.OreFeatureConfig;
 
 import java.util.BitSet;
 import java.util.Random;
+import java.util.function.Function;
 
 // Copied from MinableFeature and modified
 public class MultiBlockMinableFeature extends Feature<MultiBlockMinableConfig> {
-    public static MultiBlockMinableFeature INSTANCE = new MultiBlockMinableFeature();
+    public static MultiBlockMinableFeature INSTANCE = new MultiBlockMinableFeature(dynamic -> new MultiBlockMinableConfig(new OreFeatureConfig("")));
+
+    public MultiBlockMinableFeature(Function<Dynamic<?>, ? extends MultiBlockMinableConfig> p_i49878_1_) {
+        super(p_i49878_1_);
+    }
+
+    public MultiBlockMinableFeature(Function<Dynamic<?>, ? extends MultiBlockMinableConfig> p_i49879_1_, boolean p_i49879_2_) {
+        super(p_i49879_1_, p_i49879_2_);
+    }
+
     @Override
-    public boolean place(IWorld worldIn, IChunkGenerator<? extends IChunkGenSettings> generator, Random rand, BlockPos pos, MultiBlockMinableConfig config) {
+    public boolean place(IWorld worldIn, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, MultiBlockMinableConfig config) {
         int size = config.config.getVeinSize();
         float f = rand.nextFloat() * (float) Math.PI;
         float f1 = size / 8.0F;
@@ -114,7 +126,7 @@ public class MultiBlockMinableFeature extends Feature<MultiBlockMinableConfig> {
                                             blockpos$mutableblockpos.setPos(l1, i2, j2);
                                             if (worldIn.getBlockState(blockpos$mutableblockpos).isReplaceableOreGen(worldIn.getWorld(), blockpos$mutableblockpos, config.config::canReplace)) {
                                                 Block block = config.config.getBlock();
-                                                if (block != null && !(block instanceof BlockAir)) {
+                                                if (block != null && !(block instanceof AirBlock)) {
                                                     worldIn.setBlockState(blockpos$mutableblockpos, block.getDefaultState(), 2);
                                                     ++i;
                                                 }

@@ -1,70 +1,82 @@
 package net.silentchaos512.funores.lib;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.*;
 import net.minecraft.entity.passive.*;
+import net.minecraft.entity.passive.fish.CodEntity;
+import net.minecraft.entity.passive.fish.PufferfishEntity;
+import net.minecraft.entity.passive.fish.SalmonEntity;
 import net.minecraft.item.Item;
-import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
-import net.minecraft.world.storage.loot.LootTableList;
+import net.minecraft.world.storage.loot.LootTables;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.block.LootDropOre;
 import net.silentchaos512.funores.block.LootDropOreWithSpawn;
+import net.silentchaos512.lib.block.IBlockProvider;
 import net.silentchaos512.utils.Lazy;
 
 import javax.annotation.Nullable;
 import java.util.Locale;
 import java.util.function.Supplier;
 
-public enum Ores implements IItemProvider {
+public enum Ores implements IBlockProvider {
     // Peaceful
-    BAT(() -> new LootDropOre(dropsTable("bat"), EntityBat::new)),
-    CHICKEN(() -> new LootDropOre(dropsTable("chicken"), EntityChicken::new)),
-    COW(() -> new LootDropOre(dropsTable("cow"), EntityCow::new)),
-    PIG(() -> new LootDropOre(dropsTable("pig"), EntityPig::new)),
-    RABBIT(() -> new LootDropOre(dropsTable("rabbit"), EntityRabbit::new)),
-    SHEEP(() -> new LootDropOre(LootTableList.ENTITIES_SHEEP, EntitySheep::new) {
-        @Nullable
+    BAT(() -> new LootDropOre(world -> new BatEntity(EntityType.BAT, world))),
+    CHICKEN(() -> new LootDropOre(world -> new ChickenEntity(EntityType.CHICKEN, world))),
+    COW(() -> new LootDropOre(world -> new CowEntity(EntityType.COW, world))),
+    PIG(() -> new LootDropOre(world -> new PigEntity(EntityType.PIG, world))),
+    RABBIT(() -> new LootDropOre(world -> new RabbitEntity(EntityType.RABBIT, world))),
+    SHEEP(() -> new LootDropOre(world -> new SheepEntity(EntityType.SHEEP, world)) {
         @Override
-        public ResourceLocation getLootTable(IBlockState state, @Nullable EntityLivingBase entity) {
+        public ResourceLocation getLootTable(BlockState state, @Nullable LivingEntity entity) {
             return getSheepLootTable(entity);
         }
     }),
-    SQUID(() -> new LootDropOre(dropsTable("squid"), EntitySquid::new)),
+    SQUID(() -> new LootDropOre(world -> new SquidEntity(EntityType.SQUID, world))),
     // Fish
-    COD(() -> new LootDropOre(dropsTable("cod"), EntityCod::new)),
-    SALMON(() -> new LootDropOre(dropsTable("salmon"), EntitySalmon::new)),
-    PUFFERFISH(() -> new LootDropOre(dropsTable("pufferfish"), EntityPufferFish::new)),
+    COD(() -> new LootDropOre(world -> new CodEntity(EntityType.COD, world))),
+    SALMON(() -> new LootDropOre(world -> new SalmonEntity(EntityType.SALMON, world))),
+    PUFFERFISH(() -> new LootDropOre(world -> new PufferfishEntity(EntityType.PUFFERFISH, world))),
     // Hostile
-    BLAZE(() -> new LootDropOre(dropsTable("blaze"), EntityBlaze::new),
-            DimensionType.NETHER),
-    CREEPER(() -> new LootDropOre(dropsTable("creeper"), EntityCreeper::new)),
-    ENDERMAN(() -> new LootDropOreWithSpawn(dropsTable("enderman"), EntityEnderman::new) {
+    CREEPER(() -> new LootDropOre(world -> new CreeperEntity(EntityType.CREEPER, world))),
+    ENDERMAN(() -> new LootDropOreWithSpawn(world -> new EndermanEntity(EntityType.ENDERMAN, world)) {
         @Nullable
         @Override
-        public EntityLivingBase getBreakSpawn(IBlockState state, World world) {
+        public LivingEntity getBreakSpawn(BlockState state, World world) {
             if (FunOres.RANDOM.nextFloat() < 0.25f) // TODO: config
-                return new EntityEndermite(world);
+                return new EndermiteEntity(EntityType.ENDERMITE, world);
             return null;
         }
     }),
-    GHAST(() -> new LootDropOre(dropsTable("ghast"), EntityGhast::new),
+    GUARDIAN(() -> new LootDropOre(world -> {
+        if (FunOres.RANDOM.nextFloat() < 0.01f)
+            return new ElderGuardianEntity(EntityType.ELDER_GUARDIAN, world);
+        return new GuardianEntity(EntityType.GUARDIAN, world);
+    })),
+    SKELETON(() -> new LootDropOre(world -> new SkeletonEntity(EntityType.SKELETON, world))),
+    SLIME(() -> new LootDropOre(world -> new SlimeEntity(EntityType.SLIME, world))),
+    SPIDER(() -> new LootDropOre(world -> {
+        if (FunOres.RANDOM.nextBoolean())
+            return new SpiderEntity(EntityType.SPIDER, world);
+        return new CaveSpiderEntity(EntityType.CAVE_SPIDER, world);
+    })),
+    WITCH(() -> new LootDropOre(world -> new WitchEntity(EntityType.WITCH, world))),
+    ZOMBIE(() -> new LootDropOre(Ores::selectZombie)),
+    // Hostile (Nether)
+    BLAZE(() -> new LootDropOre(world -> new BlazeEntity(EntityType.BLAZE, world)),
             DimensionType.NETHER),
-    GUARDIAN(() -> new LootDropOre(dropsTable("guardian"), EntityGuardian::new)),
-    MAGMA_CUBE(() -> new LootDropOre(dropsTable("magma_cube"), EntityMagmaCube::new),
+    GHAST(() -> new LootDropOre(world -> new GhastEntity(EntityType.GHAST, world)),
             DimensionType.NETHER),
-    SKELETON(() -> new LootDropOre(dropsTable("skeleton"), EntitySkeleton::new)),
-    SLIME(() -> new LootDropOre(dropsTable("slime"), EntitySlime::new)),
-    SPIDER(() -> new LootDropOre(dropsTable("spider"), EntitySpider::new)),
-    WITCH(() -> new LootDropOre(dropsTable("witch"), EntityWitch::new)),
-    WITHER_SKELETON(() -> new LootDropOre(dropsTable("wither_skeleton"), EntityWitherSkeleton::new),
+    MAGMA_CUBE(() -> new LootDropOre(world -> new MagmaCubeEntity(EntityType.MAGMA_CUBE, world)),
             DimensionType.NETHER),
-    ZOMBIE(() -> new LootDropOre(dropsTable("zombie"), EntityZombie::new)),
-    ZOMBIE_PIGMAN(() -> new LootDropOre(dropsTable("zombie_pigman"), EntityPigZombie::new),
+    WITHER_SKELETON(() -> new LootDropOre(world -> new WitherSkeletonEntity(EntityType.WITHER_SKELETON, world)),
+            DimensionType.NETHER),
+    ZOMBIE_PIGMAN(() -> new LootDropOre(world -> new ZombiePigmanEntity(EntityType.ZOMBIE_PIGMAN, world)),
             DimensionType.NETHER);
 
     private final Lazy<LootDropOre> block;
@@ -91,6 +103,7 @@ public enum Ores implements IItemProvider {
         return dimensionType;
     }
 
+    @Override
     public Block asBlock() {
         return block.get();
     }
@@ -100,52 +113,56 @@ public enum Ores implements IItemProvider {
         return asBlock().asItem();
     }
 
-    private static ResourceLocation dropsTable(String name) {
-        return new ResourceLocation(FunOres.MOD_ID, "ores/" + name);
+    private static ZombieEntity selectZombie(World world) {
+        if (FunOres.RANDOM.nextFloat() < 0.2f)
+            return new DrownedEntity(EntityType.DROWNED, world);
+        if (FunOres.RANDOM.nextFloat() < 0.1f)
+            return new HuskEntity(EntityType.HUSK, world);
+        return new ZombieEntity(EntityType.ZOMBIE, world);
     }
 
     @SuppressWarnings({"OverlyComplexMethod", "OverlyLongMethod"})
-    private static ResourceLocation getSheepLootTable(EntityLivingBase entity) {
-        if (!(entity instanceof EntitySheep)) return LootTableList.ENTITIES_SHEEP;
-        EntitySheep sheep = (EntitySheep) entity;
+    private static ResourceLocation getSheepLootTable(@Nullable LivingEntity entity) {
+        if (!(entity instanceof SheepEntity)) return LootTables.ENTITIES_SHEEP_WHITE;
+        SheepEntity sheep = (SheepEntity) entity;
 
         if (sheep.getSheared()) {
-            return LootTableList.ENTITIES_SHEEP;
+            return LootTables.ENTITIES_SHEEP_WHITE;
         } else {
             switch (sheep.getFleeceColor()) {
                 case WHITE:
                 default:
-                    return LootTableList.ENTITIES_SHEEP_WHITE;
+                    return LootTables.ENTITIES_SHEEP_WHITE;
                 case ORANGE:
-                    return LootTableList.ENTITIES_SHEEP_ORANGE;
+                    return LootTables.ENTITIES_SHEEP_ORANGE;
                 case MAGENTA:
-                    return LootTableList.ENTITIES_SHEEP_MAGENTA;
+                    return LootTables.ENTITIES_SHEEP_MAGENTA;
                 case LIGHT_BLUE:
-                    return LootTableList.ENTITIES_SHEEP_LIGHT_BLUE;
+                    return LootTables.ENTITIES_SHEEP_LIGHT_BLUE;
                 case YELLOW:
-                    return LootTableList.ENTITIES_SHEEP_YELLOW;
+                    return LootTables.ENTITIES_SHEEP_YELLOW;
                 case LIME:
-                    return LootTableList.ENTITIES_SHEEP_LIME;
+                    return LootTables.ENTITIES_SHEEP_LIME;
                 case PINK:
-                    return LootTableList.ENTITIES_SHEEP_PINK;
+                    return LootTables.ENTITIES_SHEEP_PINK;
                 case GRAY:
-                    return LootTableList.ENTITIES_SHEEP_GRAY;
+                    return LootTables.ENTITIES_SHEEP_GRAY;
                 case LIGHT_GRAY:
-                    return LootTableList.ENTITIES_SHEEP_LIGHT_GRAY;
+                    return LootTables.ENTITIES_SHEEP_LIGHT_GRAY;
                 case CYAN:
-                    return LootTableList.ENTITIES_SHEEP_CYAN;
+                    return LootTables.ENTITIES_SHEEP_CYAN;
                 case PURPLE:
-                    return LootTableList.ENTITIES_SHEEP_PURPLE;
+                    return LootTables.ENTITIES_SHEEP_PURPLE;
                 case BLUE:
-                    return LootTableList.ENTITIES_SHEEP_BLUE;
+                    return LootTables.ENTITIES_SHEEP_BLUE;
                 case BROWN:
-                    return LootTableList.ENTITIES_SHEEP_BROWN;
+                    return LootTables.ENTITIES_SHEEP_BROWN;
                 case GREEN:
-                    return LootTableList.ENTITIES_SHEEP_GREEN;
+                    return LootTables.ENTITIES_SHEEP_GREEN;
                 case RED:
-                    return LootTableList.ENTITIES_SHEEP_RED;
+                    return LootTables.ENTITIES_SHEEP_RED;
                 case BLACK:
-                    return LootTableList.ENTITIES_SHEEP_BLACK;
+                    return LootTables.ENTITIES_SHEEP_BLACK;
             }
         }
     }

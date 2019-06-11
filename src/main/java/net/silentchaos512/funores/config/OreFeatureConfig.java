@@ -5,14 +5,16 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
+import com.mojang.datafixers.Dynamic;
+import com.mojang.datafixers.types.DynamicOps;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.Tag;
-import net.minecraft.util.JsonUtils;
+import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.WeightedRandom;
-import net.minecraft.world.IWorldReaderBase;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.gen.placement.IPlacementConfig;
@@ -37,6 +39,11 @@ public class OreFeatureConfig implements IPlacementConfig {
         this.configId = configId;
     }
 
+    @Override
+    public <T> Dynamic<T> func_214719_a(DynamicOps<T> p_214719_1_) {
+        return null;
+    }
+
     public String getConfigId() {
         return configId;
     }
@@ -46,7 +53,7 @@ public class OreFeatureConfig implements IPlacementConfig {
         return WeightedRandom.getRandomItem(FunOres.RANDOM, this.blocks).getBlock();
     }
 
-    public boolean canReplace(IBlockState state) {
+    public boolean canReplace(BlockState state) {
         return this.replacesBlock.test(state.getBlock());
     }
 
@@ -55,7 +62,7 @@ public class OreFeatureConfig implements IPlacementConfig {
         return true;
     }
 
-    public boolean canSpawnIn(IWorldReaderBase world) {
+    public boolean canSpawnIn(IWorldReader world) {
         if (this.dimensionAllowed.isEmpty()) {
             return true;
         }
@@ -91,9 +98,9 @@ public class OreFeatureConfig implements IPlacementConfig {
         result.blocks = parseBlocksElement(json.get("blocks"));
         result.replacesBlock = parseReplacesElement(json.get("replaces"));
         result.frequency = OreFrequency.deserialize(json.get("frequency"));
-        result.veinSize = JsonUtils.getInt(json, "size");
-        result.minHeight = JsonUtils.getInt(json, "min_height");
-        result.maxHeight = JsonUtils.getInt(json, "max_height");
+        result.veinSize = JSONUtils.getInt(json, "size");
+        result.minHeight = JSONUtils.getInt(json, "min_height");
+        result.maxHeight = JSONUtils.getInt(json, "max_height");
         result.dimensionAllowed = parseDimensionsElement(json.get("dimensions"));
         // TODO: biomes
         return result;
@@ -171,7 +178,7 @@ public class OreFeatureConfig implements IPlacementConfig {
     }
 
     private static ResourceLocation parseId(JsonObject json, String key) {
-        String str = JsonUtils.getString(json, key);
+        String str = JSONUtils.getString(json, key);
         ResourceLocation id = ResourceLocation.tryCreate(str);
         if (id == null) {
             throw new JsonSyntaxException("Invalid ID: " + str);

@@ -3,7 +3,7 @@ package net.silentchaos512.funores.config;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
-import net.minecraft.util.JsonUtils;
+import net.minecraft.util.JSONUtils;
 
 import java.util.Random;
 
@@ -28,11 +28,11 @@ public final class OreFrequency {
         if (json.isJsonObject()) {
             JsonObject obj = json.getAsJsonObject();
             if (obj.has("chance") && obj.has("count"))
-                return new OreFrequency(JsonUtils.getFloat(obj, "chance"), JsonUtils.getInt(obj, "count"));
+                return new OreFrequency(JSONUtils.getFloat(obj, "chance"), JSONUtils.getInt(obj, "count"));
             if (obj.has("chance"))
-                return new OreFrequency(JsonUtils.getFloat(obj, "chance"), 1);
+                return new OreFrequency(JSONUtils.getFloat(obj, "chance"), 1);
             if (obj.has("count"))
-                return new OreFrequency(1, JsonUtils.getInt(obj, "count"));
+                return new OreFrequency(1, JSONUtils.getInt(obj, "count"));
             throw new JsonSyntaxException("Expected 'frequency' to contains either 'chance' or 'count'");
         }
         throw new JsonSyntaxException("Expected 'frequency' to be object");

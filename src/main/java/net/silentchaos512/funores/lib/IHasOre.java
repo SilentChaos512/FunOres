@@ -18,11 +18,11 @@
 
 package net.silentchaos512.funores.lib;
 
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.util.IStringSerializable;
 
 public interface IHasOre extends IStringSerializable {
-    IBlockState getOre();
+    BlockState getOre();
 
     int getDimension();
 }

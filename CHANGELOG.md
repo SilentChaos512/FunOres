@@ -3,6 +3,10 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.0] - 2019-06-11
+- Updated to Minecraft 1.14.2
+- Ore loot tables have moved, so you will need to update data packs if you customized them
+
 ## [2.1.1] - 2019-05-28
 ### Added
 - Config to enable logging of ore spawns (for debugging purposes), off by default [#51]. Found in `config/funores/common.toml`.

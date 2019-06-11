@@ -82,9 +82,7 @@ repositories {
 dependencies {
     minecraft "net.minecraftforge:forge:${project.forge_version}"
 
-    compile("net.silentchaos512:silent-lib:${project.sl_version}") {
-        exclude module: "forge"
-    }
+    compile "net.silentchaos512:silent-lib-${project.mc_version}:${project.sl_version}"
 }
 
 jar {
@@ -197,7 +195,7 @@ curseforge {
 
 publishing {
     publications {
-        funOres(MavenPublication) {
+        publication(MavenPublication) {
             groupId 'net.silentchaos512'
             artifactId 'fun-ores'
             version "${versionInfo['version_short']}".toString()
@@ -213,7 +211,7 @@ publishing {
 bintray {
     user = secret.BINTRAY_USER ?: System.getenv('BINTRAY_USER')
     key = secret.BINTRAY_KEY ?: System.getenv('BINTRAY_KEY')
-    publications = ['funOres']
+    publications = ['publication']
 
     pkg {
         repo = 'fun-ores'
