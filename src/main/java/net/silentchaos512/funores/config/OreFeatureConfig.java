@@ -40,7 +40,7 @@ public class OreFeatureConfig implements IPlacementConfig {
     }
 
     @Override
-    public <T> Dynamic<T> func_214719_a(DynamicOps<T> p_214719_1_) {
+    public <T> Dynamic<T> serialize(DynamicOps<T> p_214719_1_) {
         return null;
     }
 
@@ -164,14 +164,14 @@ public class OreFeatureConfig implements IPlacementConfig {
     }
 
     private static boolean testDimension(String str, DimensionType dimensionType) {
-        if ("overworld".equalsIgnoreCase(str) && dimensionType != DimensionType.NETHER && dimensionType != DimensionType.THE_END) {
+        if ("overworld".equalsIgnoreCase(str) && dimensionType != DimensionType.THE_NETHER && dimensionType != DimensionType.THE_END) {
             return true;
         }
         return str.equalsIgnoreCase(Objects.requireNonNull(dimensionType.getRegistryName()).toString());
     }
 
     private static boolean testDimension(int id, DimensionType dimensionType) {
-        if (id == 0 && dimensionType != DimensionType.NETHER && dimensionType != DimensionType.THE_END) {
+        if (id == 0 && dimensionType != DimensionType.THE_NETHER && dimensionType != DimensionType.THE_END) {
             return true;
         }
         return id == dimensionType.getId();

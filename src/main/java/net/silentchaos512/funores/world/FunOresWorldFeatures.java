@@ -25,7 +25,7 @@ public final class FunOresWorldFeatures {
 
     private static void addOreToBiome(Biome biome, OreFeatureConfig config) {
 //        FunOres.LOGGER.info(MARKER, "Add ore {} to biome {}", config.getConfigId(), biome.getRegistryName());
-        biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Biome.func_222280_a(
+        biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Biome.createDecoratedFeature(
                 MultiBlockMinableFeature.INSTANCE,
                 new MultiBlockMinableConfig(config),
                 OrePlacement.INSTANCE,

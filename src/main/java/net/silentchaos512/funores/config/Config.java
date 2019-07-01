@@ -146,8 +146,8 @@ public final class Config {
     }
 
     private static void createDefaultFile(File directory, Ores ore) {
-        String replacesType = ore.getDimensionType() == DimensionType.NETHER ? "item" : "tag";
-        String replaces = ore.getDimensionType() == DimensionType.NETHER ? "minecraft:netherrack" : "forge:stone";
+        String replacesType = ore.getDimensionType() == DimensionType.THE_NETHER ? "item" : "tag";
+        String replaces = ore.getDimensionType() == DimensionType.THE_NETHER ? "minecraft:netherrack" : "forge:stone";
         JsonObject json = OreFeatureConfig.createDefault(
                 ImmutableMap.of(
                         "funores:" + ore.getBlockName(), 10,

@@ -46,38 +46,36 @@ public class LootDropOre extends OreBlock {
     @SuppressWarnings("deprecation")
     @Override
     public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
-        ServerWorld world = builder.func_216018_a();
+        ServerWorld world = builder.getWorld();
         LivingEntity entity = getEntityLiving(state, world);
 
         FakePlayer fakePlayer = FakePlayerFactory.get(world, new GameProfile(null, "FakePlayerFunOres"));
-        ItemStack harvestTool = builder.get(LootParameters.field_216289_i);
+        ItemStack harvestTool = builder.get(LootParameters.TOOL);
         int fortune = harvestTool != null ? EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, harvestTool) : 0;
         ItemStack fakeSword = getFakeSword(fortune);
         fakePlayer.setHeldItem(Hand.MAIN_HAND, fakeSword);
 
         LootContext context;
         if (entity != null) {
-            // parameter set "entity": afc-deb
             DamageSource source = DamageSource.causePlayerDamage(fakePlayer);
             context = new LootContext.Builder(world)
-                    .withParameter(LootParameters.field_216281_a, entity)
-                    .withParameter(LootParameters.field_216283_c, source)
-                    .withParameter(LootParameters.field_216284_d, fakePlayer)
-                    .withParameter(LootParameters.field_216282_b, fakePlayer)
-                    .withNullableParameter(LootParameters.field_216285_e, source.getImmediateSource())
-                    .withNullableParameter(LootParameters.field_216286_f, builder.get(LootParameters.field_216286_f))
-                    .build(LootParameterSets.field_216263_d);
+                    .withParameter(LootParameters.THIS_ENTITY, entity)
+                    .withParameter(LootParameters.DAMAGE_SOURCE, source)
+                    .withParameter(LootParameters.KILLER_ENTITY, fakePlayer)
+                    .withParameter(LootParameters.LAST_DAMAGE_PLAYER, fakePlayer)
+                    .withNullableParameter(LootParameters.DIRECT_KILLER_ENTITY, source.getImmediateSource())
+                    .withNullableParameter(LootParameters.POSITION, builder.get(LootParameters.POSITION))
+                    .build(LootParameterSets.ENTITY);
         } else {
-            // parameter set "block": gfi-ahj
             context = builder
-                    .withParameter(LootParameters.field_216287_g, state)
-                    .withParameter(LootParameters.field_216289_i, fakeSword)
-                    .withParameter(LootParameters.field_216281_a, fakePlayer)
-                    .build(LootParameterSets.field_216267_h);
+                    .withParameter(LootParameters.BLOCK_STATE, state)
+                    .withParameter(LootParameters.TOOL, fakeSword)
+                    .withParameter(LootParameters.THIS_ENTITY, fakePlayer)
+                    .build(LootParameterSets.BLOCK);
         }
         ResourceLocation lootTableId = getLootTable(state, entity);
         LootTable lootTable = world.getServer().getLootTableManager().getLootTableFromLocation(lootTableId);
-        return lootTable.func_216113_a(context);
+        return lootTable.generate(context);
     }
 
     private static final ItemStack[] FAKE_SWORDS = new ItemStack[4];

@@ -69,15 +69,15 @@ public enum Ores implements IBlockProvider {
     ZOMBIE(() -> new LootDropOre(Ores::selectZombie)),
     // Hostile (Nether)
     BLAZE(() -> new LootDropOre(world -> new BlazeEntity(EntityType.BLAZE, world)),
-            DimensionType.NETHER),
+            DimensionType.THE_NETHER),
     GHAST(() -> new LootDropOre(world -> new GhastEntity(EntityType.GHAST, world)),
-            DimensionType.NETHER),
+            DimensionType.THE_NETHER),
     MAGMA_CUBE(() -> new LootDropOre(world -> new MagmaCubeEntity(EntityType.MAGMA_CUBE, world)),
-            DimensionType.NETHER),
+            DimensionType.THE_NETHER),
     WITHER_SKELETON(() -> new LootDropOre(world -> new WitherSkeletonEntity(EntityType.WITHER_SKELETON, world)),
-            DimensionType.NETHER),
+            DimensionType.THE_NETHER),
     ZOMBIE_PIGMAN(() -> new LootDropOre(world -> new ZombiePigmanEntity(EntityType.ZOMBIE_PIGMAN, world)),
-            DimensionType.NETHER);
+            DimensionType.THE_NETHER);
 
     private final Lazy<LootDropOre> block;
     private final DimensionType dimensionType;
