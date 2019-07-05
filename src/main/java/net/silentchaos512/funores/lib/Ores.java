@@ -10,13 +10,12 @@ import net.minecraft.entity.passive.fish.CodEntity;
 import net.minecraft.entity.passive.fish.PufferfishEntity;
 import net.minecraft.entity.passive.fish.SalmonEntity;
 import net.minecraft.item.Item;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
-import net.minecraft.world.storage.loot.LootTables;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.block.LootDropOre;
 import net.silentchaos512.funores.block.LootDropOreWithSpawn;
+import net.silentchaos512.funores.config.Config;
 import net.silentchaos512.lib.block.IBlockProvider;
 import net.silentchaos512.utils.Lazy;
 
@@ -31,12 +30,7 @@ public enum Ores implements IBlockProvider {
     COW(() -> new LootDropOre(world -> new CowEntity(EntityType.COW, world))),
     PIG(() -> new LootDropOre(world -> new PigEntity(EntityType.PIG, world))),
     RABBIT(() -> new LootDropOre(world -> new RabbitEntity(EntityType.RABBIT, world))),
-    SHEEP(() -> new LootDropOre(world -> new SheepEntity(EntityType.SHEEP, world)) {
-        @Override
-        public ResourceLocation getLootTable(BlockState state, @Nullable LivingEntity entity) {
-            return getSheepLootTable(entity);
-        }
-    }),
+    SHEEP(() -> new LootDropOre(world -> new SheepEntity(EntityType.SHEEP, world))),
     SQUID(() -> new LootDropOre(world -> new SquidEntity(EntityType.SQUID, world))),
     // Fish
     COD(() -> new LootDropOre(world -> new CodEntity(EntityType.COD, world))),
@@ -48,7 +42,7 @@ public enum Ores implements IBlockProvider {
         @Nullable
         @Override
         public LivingEntity getBreakSpawn(BlockState state, World world) {
-            if (FunOres.RANDOM.nextFloat() < 0.25f) // TODO: config
+            if (FunOres.RANDOM.nextFloat() < Config.COMMON.endermiteSpawnChance.get())
                 return new EndermiteEntity(EntityType.ENDERMITE, world);
             return null;
         }
@@ -119,51 +113,5 @@ public enum Ores implements IBlockProvider {
         if (FunOres.RANDOM.nextFloat() < 0.1f)
             return new HuskEntity(EntityType.HUSK, world);
         return new ZombieEntity(EntityType.ZOMBIE, world);
-    }
-
-    @SuppressWarnings({"OverlyComplexMethod", "OverlyLongMethod"})
-    private static ResourceLocation getSheepLootTable(@Nullable LivingEntity entity) {
-        if (!(entity instanceof SheepEntity)) return LootTables.ENTITIES_SHEEP_WHITE;
-        SheepEntity sheep = (SheepEntity) entity;
-
-        if (sheep.getSheared()) {
-            return LootTables.ENTITIES_SHEEP_WHITE;
-        } else {
-            switch (sheep.getFleeceColor()) {
-                case WHITE:
-                default:
-                    return LootTables.ENTITIES_SHEEP_WHITE;
-                case ORANGE:
-                    return LootTables.ENTITIES_SHEEP_ORANGE;
-                case MAGENTA:
-                    return LootTables.ENTITIES_SHEEP_MAGENTA;
-                case LIGHT_BLUE:
-                    return LootTables.ENTITIES_SHEEP_LIGHT_BLUE;
-                case YELLOW:
-                    return LootTables.ENTITIES_SHEEP_YELLOW;
-                case LIME:
-                    return LootTables.ENTITIES_SHEEP_LIME;
-                case PINK:
-                    return LootTables.ENTITIES_SHEEP_PINK;
-                case GRAY:
-                    return LootTables.ENTITIES_SHEEP_GRAY;
-                case LIGHT_GRAY:
-                    return LootTables.ENTITIES_SHEEP_LIGHT_GRAY;
-                case CYAN:
-                    return LootTables.ENTITIES_SHEEP_CYAN;
-                case PURPLE:
-                    return LootTables.ENTITIES_SHEEP_PURPLE;
-                case BLUE:
-                    return LootTables.ENTITIES_SHEEP_BLUE;
-                case BROWN:
-                    return LootTables.ENTITIES_SHEEP_BROWN;
-                case GREEN:
-                    return LootTables.ENTITIES_SHEEP_GREEN;
-                case RED:
-                    return LootTables.ENTITIES_SHEEP_RED;
-                case BLACK:
-                    return LootTables.ENTITIES_SHEEP_BLACK;
-            }
-        }
     }
 }

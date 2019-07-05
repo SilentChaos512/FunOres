@@ -1,6 +1,22 @@
 {
     "pools": [
         {
+            "name": "entity",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "loot_table",
+                    "name": "minecraft:entities/blaze",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "funores:replace_with_shards"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
             "name": "shards",
             "rolls": 1,
             "entries": [
@@ -12,7 +28,7 @@
                         {
                             "function": "set_count",
                             "count": {
-                                "min": 1,
+                                "min": 0,
                                 "max": 1
                             }
                         },

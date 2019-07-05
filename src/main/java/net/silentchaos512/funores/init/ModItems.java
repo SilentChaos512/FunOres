@@ -20,13 +20,13 @@ package net.silentchaos512.funores.init;
 
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.silentchaos512.funores.FunOres;
+import net.silentchaos512.funores.item.ShardItems;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 public final class ModItems {
@@ -35,19 +35,13 @@ public final class ModItems {
     private ModItems() {}
 
     public static void registerAll(RegistryEvent.Register<Item> event) {
-        if (!event.getName().equals(ForgeRegistries.ITEMS.getRegistryName())) return;
-
         blockItems.forEach(ForgeRegistries.ITEMS::register);
 
-        final Item.Properties properties = new Item.Properties().group(ItemGroup.MATERIALS);
-        register("ender_shard", new Item(properties));
-        register("blaze_shard", new Item(properties));
-        register("ghast_shard", new Item(properties));
-        register("wither_skull_shard", new Item(properties));
+        Arrays.stream(ShardItems.values()).forEach(shard -> register(shard.getName(), shard.asItem()));
     }
 
     private static void register(String name, Item item) {
-        item.setRegistryName(new ResourceLocation(FunOres.MOD_ID, name));
+        item.setRegistryName(FunOres.getId(name));
         ForgeRegistries.ITEMS.register(item);
     }
 }

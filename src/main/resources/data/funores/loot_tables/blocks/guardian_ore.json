@@ -7,6 +7,11 @@
                 {
                     "type": "loot_table",
                     "name": "minecraft:entities/guardian",
+                    "weight": 20
+                },
+                {
+                    "type": "loot_table",
+                    "name": "minecraft:entities/elder_guardian",
                     "weight": 1
                 }
             ]

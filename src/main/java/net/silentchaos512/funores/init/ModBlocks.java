@@ -27,17 +27,14 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.lib.Ores;
-import net.silentchaos512.funores.util.ModelGenerator;
+
+import java.util.Arrays;
 
 public final class ModBlocks {
     private ModBlocks() {}
 
     public static void registerAll(RegistryEvent.Register<Block> event) {
-        if (!event.getName().equals(ForgeRegistries.BLOCKS.getRegistryName())) return;
-
-        for (Ores ore : Ores.values()) {
-            register(ore.getBlockName(), ore.asBlock());
-        }
+        Arrays.stream(Ores.values()).forEach(ore -> register(ore.getBlockName(), ore.asBlock()));
     }
 
     private static void register(String name, Block block) {
@@ -48,9 +45,5 @@ public final class ModBlocks {
         BlockItem item = new BlockItem(block, new Item.Properties().group(ItemGroup.BUILDING_BLOCKS));
         item.setRegistryName(registryName);
         ModItems.blockItems.add(item);
-
-        if (FunOres.RUN_GENERATORS && FunOres.isDevBuild()) {
-            ModelGenerator.createFor(block);
-        }
     }
 }

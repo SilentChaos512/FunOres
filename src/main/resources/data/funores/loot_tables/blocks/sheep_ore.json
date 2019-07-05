@@ -6,7 +6,32 @@
             "entries": [
                 {
                     "type": "loot_table",
-                    "name": "minecraft:entities/sheep",
+                    "name": "minecraft:entities/sheep/white",
+                    "weight": 100
+                },
+                {
+                    "type": "loot_table",
+                    "name": "minecraft:entities/sheep/gray",
+                    "weight": 20
+                },
+                {
+                    "type": "loot_table",
+                    "name": "minecraft:entities/sheep/light_gray",
+                    "weight": 30
+                },
+                {
+                    "type": "loot_table",
+                    "name": "minecraft:entities/sheep/black",
+                    "weight": 15
+                },
+                {
+                    "type": "loot_table",
+                    "name": "minecraft:entities/sheep/brown",
+                    "weight": 10
+                },
+                {
+                    "type": "loot_table",
+                    "name": "minecraft:entities/sheep/pink",
                     "weight": 1
                 }
             ]

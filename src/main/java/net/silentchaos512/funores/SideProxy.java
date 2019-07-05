@@ -1,5 +1,8 @@
 package net.silentchaos512.funores;
 
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
+import net.minecraft.world.storage.loot.functions.LootFunctionManager;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DeferredWorkQueue;
 import net.minecraftforge.fml.event.lifecycle.*;
@@ -7,6 +10,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.silentchaos512.funores.config.Config;
 import net.silentchaos512.funores.init.ModBlocks;
 import net.silentchaos512.funores.init.ModItems;
+import net.silentchaos512.funores.loot.function.ReplaceWithShardsFunction;
 import net.silentchaos512.funores.world.FunOresWorldFeatures;
 
 class SideProxy {
@@ -15,8 +19,10 @@ class SideProxy {
         getLifeCycleEventBus().addListener(this::imcEnqueue);
         getLifeCycleEventBus().addListener(this::imcProcess);
 
-        getLifeCycleEventBus().addListener(ModBlocks::registerAll);
-        getLifeCycleEventBus().addListener(ModItems::registerAll);
+        getLifeCycleEventBus().addGenericListener(Block.class, ModBlocks::registerAll);
+        getLifeCycleEventBus().addGenericListener(Item.class, ModItems::registerAll);
+
+        LootFunctionManager.registerFunction(ReplaceWithShardsFunction.SERIALIZER);
     }
 
     private static IEventBus getLifeCycleEventBus() {

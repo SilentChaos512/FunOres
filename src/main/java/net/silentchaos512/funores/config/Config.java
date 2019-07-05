@@ -11,6 +11,7 @@ import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.lib.Ores;
 import net.silentchaos512.utils.config.BooleanValue;
 import net.silentchaos512.utils.config.ConfigSpecWrapper;
+import net.silentchaos512.utils.config.DoubleValue;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -28,9 +29,14 @@ public final class Config {
     public static final Common COMMON = new Common(WRAPPER);
 
     public static class Common {
+        public final DoubleValue endermiteSpawnChance;
         public final BooleanValue logOreSpawns;
 
         Common(ConfigSpecWrapper wrapper) {
+            endermiteSpawnChance = wrapper
+                    .builder("ores.enderman.endermiteSpawnChance")
+                    .comment("The chance that mining enderman ore will spawn an endermite. Range: [0, 1]")
+                    .defineInRange(0.25, 0, 1);
             logOreSpawns = wrapper
                     .builder("logging.oreSpawns")
                     .comment("If true, all ore spawns are logged. This could be useful for validating your configs,",

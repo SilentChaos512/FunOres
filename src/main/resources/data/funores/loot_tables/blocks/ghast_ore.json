@@ -1,6 +1,22 @@
 {
     "pools": [
         {
+            "name": "entity",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "loot_table",
+                    "name": "minecraft:entities/ghast",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "funores:replace_with_shards"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
             "name": "shards",
             "rolls": 1,
             "entries": [
@@ -12,35 +28,8 @@
                         {
                             "function": "set_count",
                             "count": {
-                                "min": 1,
-                                "max": 1
-                            }
-                        },
-                        {
-                            "function": "looting_enchant",
-                            "count": {
                                 "min": 0,
                                 "max": 1
-                            }
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "others",
-            "rolls": 1,
-            "entries": [
-                {
-                    "type": "item",
-                    "name": "minecraft:gunpowder",
-                    "weight": 1,
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 0,
-                                "max": 2
                             }
                         },
                         {

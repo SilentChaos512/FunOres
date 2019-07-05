@@ -7,7 +7,22 @@
                 {
                     "type": "loot_table",
                     "name": "minecraft:entities/zombie",
-                    "weight": 1
+                    "weight": 25
+                },
+                {
+                    "type": "loot_table",
+                    "name": "minecraft:entities/zombie_villager",
+                    "weight": 10
+                },
+                {
+                    "type": "loot_table",
+                    "name": "minecraft:entities/husk",
+                    "weight": 10
+                },
+                {
+                    "type": "loot_table",
+                    "name": "minecraft:entities/drowned",
+                    "weight": 5
                 }
             ]
         },
