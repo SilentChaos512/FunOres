@@ -45,7 +45,7 @@ public class OrePlacement extends SimplePlacement<OreFeatureConfig> {
     }
 
     @Override
-    protected Stream<BlockPos> func_212852_a_(Random random, OreFeatureConfig config, BlockPos pos) {
+    protected Stream<BlockPos> getPositions(Random random, OreFeatureConfig config, BlockPos pos) {
         return IntStream.range(0, config.getVeinSize()).mapToObj(k ->
                 pos.add(random.nextInt(16),
                         random.nextInt(config.getMaxHeight()) + config.getMinHeight(),
