@@ -2,6 +2,8 @@ package net.silentchaos512.funores;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.placement.Placement;
 import net.minecraft.world.storage.loot.functions.LootFunctionManager;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DeferredWorkQueue;
@@ -15,12 +17,16 @@ import net.silentchaos512.funores.world.FunOresWorldFeatures;
 
 class SideProxy {
     SideProxy() {
-        getLifeCycleEventBus().addListener(this::commonSetup);
-        getLifeCycleEventBus().addListener(this::imcEnqueue);
-        getLifeCycleEventBus().addListener(this::imcProcess);
+        IEventBus eventBus = getLifeCycleEventBus();
 
-        getLifeCycleEventBus().addGenericListener(Block.class, ModBlocks::registerAll);
-        getLifeCycleEventBus().addGenericListener(Item.class, ModItems::registerAll);
+        eventBus.addListener(this::commonSetup);
+        eventBus.addListener(this::imcEnqueue);
+        eventBus.addListener(this::imcProcess);
+
+        eventBus.addGenericListener(Block.class, ModBlocks::registerAll);
+        eventBus.addGenericListener(Feature.class, FunOresWorldFeatures::registerFeatures);
+        eventBus.addGenericListener(Item.class, ModItems::registerAll);
+        eventBus.addGenericListener(Placement.class, FunOresWorldFeatures::registerPlacements);
 
         LootFunctionManager.registerFunction(ReplaceWithShardsFunction.SERIALIZER);
     }

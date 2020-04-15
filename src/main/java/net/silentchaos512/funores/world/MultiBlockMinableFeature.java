@@ -18,14 +18,8 @@ import java.util.function.Function;
 
 // Copied from MinableFeature and modified
 public class MultiBlockMinableFeature extends Feature<MultiBlockMinableConfig> {
-    public static MultiBlockMinableFeature INSTANCE = new MultiBlockMinableFeature(dynamic -> new MultiBlockMinableConfig(new OreFeatureConfig("")));
-
     public MultiBlockMinableFeature(Function<Dynamic<?>, ? extends MultiBlockMinableConfig> p_i49878_1_) {
         super(p_i49878_1_);
-    }
-
-    public MultiBlockMinableFeature(Function<Dynamic<?>, ? extends MultiBlockMinableConfig> p_i49879_1_, boolean p_i49879_2_) {
-        super(p_i49879_1_, p_i49879_2_);
     }
 
     @Override
@@ -62,7 +56,7 @@ public class MultiBlockMinableFeature extends Feature<MultiBlockMinableConfig> {
         int size = config.config.getVeinSize();
         int i = 0;
         BitSet bitset = new BitSet(p_207803_19_ * p_207803_20_ * p_207803_19_);
-        BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
+        BlockPos.Mutable blockpos$mutableblockpos = new BlockPos.Mutable();
         double[] adouble = new double[size * 4];
 
         for (int j = 0; j < size; ++j) {

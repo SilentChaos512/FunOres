@@ -13,8 +13,8 @@ plugins {
     id 'io.franzbecker.gradle-lombok' version '2.0'
     id 'maven'
     id 'maven-publish'
-    id "com.jfrog.bintray" version "1.8.4"
-    id "com.matthewprenger.cursegradle" version "1.2.0"
+    id "com.jfrog.bintray" version "1.8.5"
+    id "com.matthewprenger.cursegradle" version "1.4.0"
 }
 
 apply plugin: 'net.minecraftforge.gradle'
@@ -55,21 +55,30 @@ minecraft {
     mappings channel: project.mcp_channel.toString(), version: project.mcp_mappings.toString()
 
     runs {
-        client = {
-            // recommended logging data for a userdev environment
-//            properties 'forge.logging.markers': 'SCAN,REGISTRIES,REGISTRYDUMP'
-            // recommended logging level for the console
-            properties 'forge.logging.console.level': 'debug'
-            workingDirectory project.file('run').canonicalPath
-            source sourceSets.main
+        client {
+            workingDirectory project.file('run')
+
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+            property 'forge.logging.console.level', 'debug'
+
+            mods {
+                silentgear {
+                    source sourceSets.main
+                }
+            }
         }
-        server = {
-            // recommended logging data for a userdev environment
-//            properties 'forge.logging.markers': 'SCAN,REGISTRIES,REGISTRYDUMP'
-            // recommended logging level for the console
-            properties 'forge.logging.console.level': 'debug'
-            workingDirectory project.file('run').canonicalPath
-            source sourceSets.main
+
+        server {
+            workingDirectory project.file('run')
+
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+            property 'forge.logging.console.level', 'debug'
+
+            mods {
+                silentgear {
+                    source sourceSets.main
+                }
+            }
         }
     }
 }
@@ -77,6 +86,10 @@ minecraft {
 repositories {
     jcenter()
     mavenLocal()
+        // Silent Lib
+    maven {
+        url  "https://dl.bintray.com/silentchaos512/silent-lib"
+    }
     maven {
         // location of the maven that hosts JEI files
         name = "Progwml6 maven"
@@ -95,18 +108,18 @@ repositories {
 dependencies {
     minecraft "net.minecraftforge:forge:${project.forge_version}"
 
-    compile("net.silentchaos512:silent-lib-${project.mc_version}:${project.sl_version}") {
+    // Silent Lib
+    compile fg.deobf("net.silentchaos512:silent-lib-${project.mc_version}:${project.sl_version}") {
         exclude module: "forge"
     }
 
     // JEI
-//    compile 'com.github.mezz:JustEnoughItems:1.13-SNAPSHOT'
-    // compile against the JEI API but do not include it at runtime
-    compileOnly fg.deobf("mezz.jei:jei-1.14.3:${project.jei_version}:api")
-    // at runtime, use the full JEI jar
-//    runtimeOnly fg.deobf("mezz.jei:jei-${project.mc_version}:${project.jei_version}")
-
-//    runtimeOnly 'net.silentchaos512:wit:1.+'
+    if (project.hasProperty('jei_version')) {
+        // compile against the JEI API but do not include it at runtime
+        compileOnly fg.deobf("mezz.jei:jei-${project.jei_version}:api")
+        // at runtime, use the full JEI jar
+        runtimeOnly fg.deobf("mezz.jei:jei-${project.jei_version}")
+    }
 }
 
 jar {
@@ -114,7 +127,7 @@ jar {
     manifest {
         attributes(["Specification-Title": project.mod_id,
                     "Specification-Vendor": "SilentChaos512",
-                    "Specification-Version": "2.4",
+                    "Specification-Version": "2.5",
                     "Implementation-Title": project.name,
                     "Implementation-Version": "${version}",
                     "Implementation-Vendor" :"SilentChaos512",
