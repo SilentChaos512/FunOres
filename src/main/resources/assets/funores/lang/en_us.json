@@ -11,6 +11,7 @@
     "block.funores.ghast_ore": "Ghast Ore",
     "block.funores.guardian_ore": "Guardian Ore",
     "block.funores.magma_cube_ore": "Magma Cube Ore",
+    "block.funores.phantom_ore": "Phantom Ore",
     "block.funores.pig_ore": "Pig Ore",
     "block.funores.pufferfish_ore": "Pufferfish Ore",
     "block.funores.rabbit_ore": "Rabbit Ore",
@@ -27,5 +28,6 @@
     "item.funores.blaze_shard": "Blaze Shard",
     "item.funores.ender_shard": "Ender Shard",
     "item.funores.ghast_shard": "Ghast Shard",
+    "item.funores.phantom_membrane_scrap": "Phantom Membrane Scrap",
     "item.funores.wither_skull_shard": "Wither Skull Shard"
 }

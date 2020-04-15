@@ -3,6 +3,21 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.5.1] - 2020-04-15
+Fixed regression in ore textures, missing phantom ore
+
+## [2.5.0] - 2020-04-15
+Updated for Minecraft 1.15.2
+
+## [2.4.1] - 2019-07-28
+### Added
+- Phantom ore and phantom membrane scraps
+### Changed
+- Updated ore textures (EnbyChu)
+
+## [2.4.0] - 2019-07-23
+- Updated to 1.14.4
+
 ## [2.3.1] - 2019-07-05
 - Updated zh_cn.json (XuyuEre)
 ### Added

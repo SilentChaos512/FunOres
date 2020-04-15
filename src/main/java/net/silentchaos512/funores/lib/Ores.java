@@ -52,6 +52,7 @@ public enum Ores implements IBlockProvider {
             return new ElderGuardianEntity(EntityType.ELDER_GUARDIAN, world);
         return new GuardianEntity(EntityType.GUARDIAN, world);
     })),
+    PHANTOM(() -> new LootDropOre(world -> new PhantomEntity(EntityType.PHANTOM, world))),
     SKELETON(() -> new LootDropOre(world -> new SkeletonEntity(EntityType.SKELETON, world))),
     SLIME(() -> new LootDropOre(world -> new SlimeEntity(EntityType.SLIME, world))),
     SPIDER(() -> new LootDropOre(world -> {
