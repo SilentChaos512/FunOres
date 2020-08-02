@@ -1,30 +1,29 @@
 package net.silentchaos512.funores.world;
 
-import com.mojang.datafixers.Dynamic;
-import net.minecraft.block.AirBlock;
-import net.minecraft.block.Block;
+import com.mojang.serialization.Codec;
+import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.silentchaos512.funores.config.OreFeatureConfig;
 
 import java.util.BitSet;
 import java.util.Random;
-import java.util.function.Function;
 
 // Copied from MinableFeature and modified
-public class MultiBlockMinableFeature extends Feature<MultiBlockMinableConfig> {
-    public MultiBlockMinableFeature(Function<Dynamic<?>, ? extends MultiBlockMinableConfig> p_i49878_1_) {
-        super(p_i49878_1_);
+public class MultiBlockMinableFeature extends Feature<OreFeatureConfig> {
+    public MultiBlockMinableFeature(Codec<OreFeatureConfig> p_i231953_1_) {
+        super(p_i231953_1_);
     }
 
     @Override
-    public boolean place(IWorld worldIn, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, MultiBlockMinableConfig config) {
-        int size = config.config.getVeinSize();
+    public boolean func_230362_a_(ISeedReader worldIn, StructureManager structureManager, ChunkGenerator chunkGenerator, Random rand, BlockPos pos, OreFeatureConfig config) {
+        int size = config.getVeinSize();
         float f = rand.nextFloat() * (float) Math.PI;
         float f1 = size / 8.0F;
         int i = MathHelper.ceil((size / 16.0F * 2.0F + 1.0F) / 2.0F);
@@ -52,8 +51,8 @@ public class MultiBlockMinableFeature extends Feature<MultiBlockMinableConfig> {
         return false;
     }
 
-    private boolean func_207803_a(IWorld worldIn, Random random, MultiBlockMinableConfig config, double p_207803_4_, double p_207803_6_, double p_207803_8_, double p_207803_10_, double p_207803_12_, double p_207803_14_, int p_207803_16_, int p_207803_17_, int p_207803_18_, int p_207803_19_, int p_207803_20_) {
-        int size = config.config.getVeinSize();
+    private boolean func_207803_a(IWorld worldIn, Random random, OreFeatureConfig config, double p_207803_4_, double p_207803_6_, double p_207803_8_, double p_207803_10_, double p_207803_12_, double p_207803_14_, int p_207803_16_, int p_207803_17_, int p_207803_18_, int p_207803_19_, int p_207803_20_) {
+        int size = config.getVeinSize();
         int i = 0;
         BitSet bitset = new BitSet(p_207803_19_ * p_207803_20_ * p_207803_19_);
         BlockPos.Mutable blockpos$mutableblockpos = new BlockPos.Mutable();
@@ -118,10 +117,10 @@ public class MultiBlockMinableFeature extends Feature<MultiBlockMinableConfig> {
                                         if (!bitset.get(k2)) {
                                             bitset.set(k2);
                                             blockpos$mutableblockpos.setPos(l1, i2, j2);
-                                            if (worldIn.getBlockState(blockpos$mutableblockpos).isReplaceableOreGen(worldIn.getWorld(), blockpos$mutableblockpos, config.config::canReplace)) {
-                                                Block block = config.config.getBlock();
-                                                if (block != null && !(block instanceof AirBlock)) {
-                                                    worldIn.setBlockState(blockpos$mutableblockpos, block.getDefaultState(), 2);
+                                            if (config.canReplace(worldIn.getBlockState(blockpos$mutableblockpos), random)) {
+                                                BlockState block = config.getBlock(random, blockpos$mutableblockpos);
+                                                if (!block.isAir(worldIn, blockpos$mutableblockpos)) {
+                                                    worldIn.setBlockState(blockpos$mutableblockpos, block, 2);
                                                     ++i;
                                                 }
                                             }

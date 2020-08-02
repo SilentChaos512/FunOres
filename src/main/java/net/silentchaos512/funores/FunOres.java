@@ -36,19 +36,14 @@ public class FunOres {
     public static final String MOD_NAME = "Fun Ores";
     public static final String VERSION = "2.5.0";
 
-    public static FunOres INSTANCE;
-    private static SideProxy PROXY;
-
-    public static Logger LOGGER = LogManager.getLogger(MOD_NAME);
-    public static Random RANDOM = new Random();
+    public static final Logger LOGGER = LogManager.getLogger(MOD_NAME);
+    public static final Random RANDOM = new Random();
 
 //    public static CreativeTabs tabFunOres = registry.makeCreativeTab("tabFunOres", () ->
 //            new ItemStack(ModBlocks.meatOre, 1, random.nextInt(EnumMeat.values().length)));
 
     public FunOres() {
-        INSTANCE = this;
-        //noinspection Convert2MethodRef
-        PROXY = DistExecutor.runForDist(() -> () -> new SideProxy.Client(), () -> () -> new SideProxy.Server());
+        DistExecutor.safeRunForDist(() -> SideProxy.Client::new, () -> SideProxy.Server::new);
     }
 
     public static String getVersion() {

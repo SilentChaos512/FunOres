@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[31,)"
+loaderVersion="[32,)"
 issueTrackerURL="https://github.com/SilentChaos512/FunOres/issues"
 displayURL="https://minecraft.curseforge.com/projects/fun-ores"
 #logoFile="examplemod.png" #optional
@@ -19,14 +19,14 @@ authors="SilentChaos512"
 [[dependencies.funores]]
     modId="forge"
     mandatory=true
-    versionRange="[31,)"
+    versionRange="[32,)"
     ordering="NONE"
     side="BOTH"
 
 [[dependencies.funores]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.15.2]"
+    versionRange="[1.16.1]"
     ordering="NONE"
     side="BOTH"
 [[dependencies.funores]]

@@ -10,7 +10,6 @@ buildscript {
 }
 
 plugins {
-    id 'io.franzbecker.gradle-lombok' version '2.0'
     id 'maven'
     id 'maven-publish'
     id "com.jfrog.bintray" version "1.8.5"
@@ -27,11 +26,6 @@ repositories {
     }
     mavenLocal()
     jcenter()
-}
-
-lombok {
-    version = '1.18.4'
-    sha256 = ""
 }
 
 tasks.withType(JavaCompile) {
@@ -58,11 +52,14 @@ minecraft {
         client {
             workingDirectory project.file('run')
 
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+            // Recommended logging data for a userdev environment
+//            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+
+            // Recommended logging level for the console
             property 'forge.logging.console.level', 'debug'
 
             mods {
-                silentgear {
+                funores {
                     source sourceSets.main
                 }
             }
@@ -71,16 +68,44 @@ minecraft {
         server {
             workingDirectory project.file('run')
 
+            // Recommended logging data for a userdev environment
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+
+            // Recommended logging level for the console
             property 'forge.logging.console.level', 'debug'
 
             mods {
-                silentgear {
+                funores {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        data {
+            workingDirectory project.file('run')
+
+            // Recommended logging data for a userdev environment
+//            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+
+            // Recommended logging level for the console
+            property 'forge.logging.console.level', 'debug'
+
+            args '--mod', project.mod_id, '--all',
+                    '--existing', file('src/main/resources').toString(),
+                    '--existing', file('src/generated/resources').toString(),
+                    '--output', file('src/generated/resources/')
+
+            mods {
+                funores {
                     source sourceSets.main
                 }
             }
         }
     }
+}
+
+sourceSets.main.resources {
+    srcDir 'src/generated/resources'
 }
 
 repositories {

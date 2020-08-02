@@ -5,9 +5,11 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.storage.loot.LootContext;
-import net.minecraft.world.storage.loot.functions.ILootFunction;
-import net.silentchaos512.funores.FunOres;
+import net.minecraft.loot.ILootSerializer;
+import net.minecraft.loot.LootContext;
+import net.minecraft.loot.LootFunctionType;
+import net.minecraft.loot.functions.ILootFunction;
+import net.silentchaos512.funores.init.ModLoot;
 import net.silentchaos512.funores.item.ShardItems;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -15,8 +17,6 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class ReplaceWithShardsFunction implements ILootFunction {
-    public static final Serializer SERIALIZER = new Serializer();
-
     @Override
     public ItemStack apply(ItemStack itemStack, LootContext lootContext) {
         for (ShardItems shard : ShardItems.values()) {
@@ -27,17 +27,18 @@ public class ReplaceWithShardsFunction implements ILootFunction {
         return itemStack;
     }
 
-    static class Serializer extends ILootFunction.Serializer<ReplaceWithShardsFunction> {
-        Serializer() {
-            super(FunOres.getId("replace_with_shards"), ReplaceWithShardsFunction.class);
+    @Override
+    public LootFunctionType func_230425_b_() {
+        return ModLoot.REPLACE_WITH_SHARDS;
+    }
+
+    public static class Serializer implements ILootSerializer<ReplaceWithShardsFunction> {
+        @Override
+        public void func_230424_a_(JsonObject json, ReplaceWithShardsFunction function, JsonSerializationContext context) {
         }
 
         @Override
-        public void serialize(JsonObject object, ReplaceWithShardsFunction functionClazz, JsonSerializationContext serializationContext) {
-        }
-
-        @Override
-        public ReplaceWithShardsFunction deserialize(JsonObject p_212870_1_, JsonDeserializationContext p_212870_2_) {
+        public ReplaceWithShardsFunction func_230423_a_(JsonObject json, JsonDeserializationContext context) {
             return new ReplaceWithShardsFunction();
         }
     }

@@ -5,7 +5,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
-import net.minecraft.world.dimension.DimensionType;
+import net.minecraft.world.World;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.fml.loading.FMLPaths;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.lib.Ores;
@@ -127,43 +128,41 @@ public final class Config {
         }
         writeDefaultFile(directory, "extra_diamonds", OreFeatureConfig.createDefault(
                 "minecraft:diamond_ore",
-                "tag", "forge:stone",
+                Tags.Blocks.STONE,
                 0.5, 1,
                 6,
                 0, 16,
-                0
+                World.field_234918_g_
         ));
         writeDefaultFile(directory, "extra_emeralds", OreFeatureConfig.createDefault(
                 "minecraft:emerald_ore",
-                "tag", "forge:stone",
+                Tags.Blocks.STONE,
                 0.1, 1,
                 1,
                 16, 48,
-                0
+                World.field_234918_g_
         ));
         writeDefaultFile(directory, "extra_gold", OreFeatureConfig.createDefault(
                 "minecraft:gold_ore",
-                "tag", "forge:stone",
+                Tags.Blocks.STONE,
                 0.7, 2,
                 8,
                 8, 32,
-                0
+                World.field_234918_g_
         ));
     }
 
     private static void createDefaultFile(File directory, Ores ore) {
-        String replacesType = ore.getDimensionType() == DimensionType.THE_NETHER ? "item" : "tag";
-        String replaces = ore.getDimensionType() == DimensionType.THE_NETHER ? "minecraft:netherrack" : "forge:stone";
         JsonObject json = OreFeatureConfig.createDefault(
                 ImmutableMap.of(
                         "funores:" + ore.getBlockName(), 10,
                         "", 3
                 ),
-                replacesType, replaces,
+                ore.getReplacesBlock(),
                 0.05, 1,
                 22,
                 32, 84,
-                ore.getDimensionType().getId()
+                ore.getDimensionType()
         );
         writeDefaultFile(directory, ore.getName(), json);
     }
