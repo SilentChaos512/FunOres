@@ -9,6 +9,7 @@ import net.minecraftforge.fml.DeferredWorkQueue;
 import net.minecraftforge.fml.event.lifecycle.*;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.silentchaos512.funores.config.Config;
+import net.silentchaos512.funores.data.DataGenerators;
 import net.silentchaos512.funores.init.ModBlocks;
 import net.silentchaos512.funores.init.ModItems;
 import net.silentchaos512.funores.init.ModLoot;
@@ -18,9 +19,9 @@ class SideProxy {
     SideProxy() {
         IEventBus eventBus = getLifeCycleEventBus();
 
+        eventBus.addListener(DataGenerators::gatherData);
+
         eventBus.addListener(this::commonSetup);
-        eventBus.addListener(this::imcEnqueue);
-        eventBus.addListener(this::imcProcess);
 
         eventBus.addGenericListener(Block.class, ModBlocks::registerAll);
         eventBus.addGenericListener(Feature.class, FunOresWorldFeatures::registerFeatures);
@@ -37,12 +38,6 @@ class SideProxy {
     private void commonSetup(FMLCommonSetupEvent event) {
         Config.init();
         DeferredWorkQueue.runLater(FunOresWorldFeatures::addFeaturesToBiomes);
-    }
-
-    private void imcEnqueue(InterModEnqueueEvent event) {
-    }
-
-    private void imcProcess(InterModProcessEvent event) {
     }
 
     static class Client extends SideProxy {

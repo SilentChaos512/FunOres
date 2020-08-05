@@ -12,7 +12,7 @@ import java.util.function.Function;
 
 public abstract class LootDropOreWithSpawn extends LootDropOre {
     public LootDropOreWithSpawn(Function<World, LivingEntity> entityFactory) {
-        super(entityFactory);
+        super();
     }
 
     @Nullable

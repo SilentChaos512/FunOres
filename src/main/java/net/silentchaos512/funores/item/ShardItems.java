@@ -4,7 +4,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.Items;
 import net.minecraft.util.IItemProvider;
-import net.minecraft.util.SharedConstants;
+import net.silentchaos512.funores.loot.ReplaceWithShardsFunction;
 import net.silentchaos512.utils.Lazy;
 
 import javax.annotation.Nonnull;
@@ -44,7 +44,7 @@ public enum ShardItems implements IItemProvider {
     }
 
     /**
-     * Gets the item these shards craft into. This is used in {@link net.silentchaos512.funores.loot.function.ReplaceWithShardsFunction}
+     * Gets the item these shards craft into. This is used in {@link ReplaceWithShardsFunction}
      * to replace a mob's drops without reconstructing their entire loot table.
      *
      * @return The item the shards craft into

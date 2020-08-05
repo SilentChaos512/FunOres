@@ -1,9 +1,8 @@
-package net.silentchaos512.funores.loot.function;
+package net.silentchaos512.funores.loot;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.ILootSerializer;
 import net.minecraft.loot.LootContext;
@@ -12,10 +11,6 @@ import net.minecraft.loot.functions.ILootFunction;
 import net.silentchaos512.funores.init.ModLoot;
 import net.silentchaos512.funores.item.ShardItems;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public class ReplaceWithShardsFunction implements ILootFunction {
     @Override
     public ItemStack apply(ItemStack itemStack, LootContext lootContext) {

@@ -30,9 +30,12 @@ secret.json
 libs/*
 !/libs/README.txt
 curse_logo.png
-CurseLogo.*
 image_test/
 
 .DS_Store
 
 version.properties
+*.png~
+
+todo_list\.md
+src/generated/resources/.cache/
