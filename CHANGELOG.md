@@ -3,6 +3,13 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.6.0] - 2020-08-05
+Ported to Minecraft 1.16.1
+### Changed
+- Loot tables redone. You can now specify different entity types to pull loot from. It's a weighted list.
+### Fixed
+- Silk touch not working on ores [#54]
+
 ## [2.5.1] - 2020-04-15
 Fixed regression in ore textures, missing phantom ore
 
