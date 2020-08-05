@@ -12,5 +12,8 @@ public final class DataGenerators {
         ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
 
         gen.addProvider(new ModLootTables(gen));
+
+        gen.addProvider(new ModBlockStatesProvider(gen, existingFileHelper));
+        gen.addProvider(new ModItemModelsProvider(gen, existingFileHelper));
     }
 }
