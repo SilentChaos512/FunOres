@@ -113,6 +113,9 @@ repositories {
     mavenLocal()
         // Silent Lib
     maven {
+        url  "https://dl.bintray.com/silentchaos512/silent-utils"
+    }
+    maven {
         url  "https://dl.bintray.com/silentchaos512/silent-lib"
     }
     maven {
@@ -134,7 +137,7 @@ dependencies {
     minecraft "net.minecraftforge:forge:${project.forge_version}"
 
     // Silent Lib
-    compile fg.deobf("net.silentchaos512:silent-lib-${project.mc_version}:${project.sl_version}") {
+    compile fg.deobf("net.silentchaos512:silent-lib-${project.sl_version}") {
         exclude module: "forge"
     }
 
@@ -223,6 +226,7 @@ curseforge {
             changelog = file(project.cf_changelog_filename)
             releaseType = project.cf_release_type
             addGameVersion(project.mc_version)
+            addGameVersion("1.16.4")
             mainArtifact(jar) {
 //                displayName = "$project.description $display_version"
                 relations {

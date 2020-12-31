@@ -90,7 +90,7 @@ public final class MobLootEntry extends StandaloneLootEntry {
                     .withParameter(LootParameters.KILLER_ENTITY, fakePlayer)
                     .withParameter(LootParameters.LAST_DAMAGE_PLAYER, fakePlayer)
                     .withNullableParameter(LootParameters.DIRECT_KILLER_ENTITY, source.getImmediateSource())
-                    .withNullableParameter(LootParameters.POSITION, context.get(LootParameters.POSITION))
+                    .withNullableParameter(LootParameters.field_237457_g_, context.get(LootParameters.field_237457_g_))
                     .build(LootParameterSets.ENTITY);
             ResourceLocation lootTableId = getLootTable(entity);
             LootTable lootTable = context.getLootTable(lootTableId);
@@ -128,8 +128,8 @@ public final class MobLootEntry extends StandaloneLootEntry {
 
     public static class Serializer extends StandaloneLootEntry.Serializer<MobLootEntry> {
         @Override
-        public void func_230422_a_(JsonObject json, MobLootEntry entry, JsonSerializationContext context) {
-            super.func_230422_a_(json, entry, context);
+        public void doSerialize(JsonObject json, MobLootEntry entry, JsonSerializationContext context) {
+            super.doSerialize(json, entry, context);
 
             JsonArray typesArray = new JsonArray();
             entry.typeMap.forEach((type, weight) -> {
@@ -142,7 +142,7 @@ public final class MobLootEntry extends StandaloneLootEntry {
         }
 
         @Override
-        protected MobLootEntry func_212829_b_(JsonObject json, JsonDeserializationContext context, int weightIn, int qualityIn, ILootCondition[] conditionsIn, ILootFunction[] functionsIn) {
+        protected MobLootEntry deserialize(JsonObject json, JsonDeserializationContext context, int weightIn, int qualityIn, ILootCondition[] conditions, ILootFunction[] functions) {
             Map<EntityType<?>, Integer> typeMap = new LinkedHashMap<>();
 
             JsonArray typesArray = JSONUtils.getJsonArray(json, "entity_types");
@@ -153,7 +153,7 @@ public final class MobLootEntry extends StandaloneLootEntry {
                 typeMap.put(type, weight);
             });
 
-            return new MobLootEntry(typeMap, weightIn, qualityIn, conditionsIn, functionsIn);
+            return new MobLootEntry(typeMap, weightIn, qualityIn, conditions, functions);
         }
     }
 }

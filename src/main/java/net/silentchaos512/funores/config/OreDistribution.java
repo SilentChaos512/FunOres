@@ -10,7 +10,7 @@ import java.util.Random;
 public final class OreDistribution {
     public static final Codec<OreDistribution> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(
-                    Codec.DOUBLE.fieldOf("chance").forGetter(o -> o.chance),
+                    Codec.INT.fieldOf("rarity").forGetter(o -> o.rarity),
                     Codec.INT.fieldOf("count").forGetter(o -> o.count),
                     Codec.INT.fieldOf("size").forGetter(o -> o.size),
                     Codec.INT.fieldOf("min_height").forGetter(o -> o.minHeight),
@@ -19,27 +19,29 @@ public final class OreDistribution {
 
     private static final Random RANDOM = new Random();
 
-    private final double chance;
+    private final int rarity;
     private final int count;
     private final int size;
     private final int minHeight;
     private final int maxHeight;
 
-    private OreDistribution(double chance, int count, int size, int minHeight, int maxHeight) {
-        this.chance = chance;
+    private OreDistribution(int rarity, int count, int size, int minHeight, int maxHeight) {
+        this.rarity = rarity;
         this.count = count;
         this.size = size;
         this.minHeight = minHeight;
         this.maxHeight = maxHeight;
     }
 
-    public int getVeinCount() {
-        double d = RANDOM.nextDouble();
-        boolean b = d < this.chance;
-        return b ? this.count : 0;
+    public int getRarity() {
+        return rarity;
     }
 
-    public int getVeinSize() {
+    public int getCount() {
+        return this.count;
+    }
+
+    public int getSize() {
         return this.size;
     }
 
@@ -52,11 +54,11 @@ public final class OreDistribution {
     }
 
     public static OreDistribution deserialize(JsonObject json) {
-        double chance = JSONUtils.getFloat(json, "chance", 1f);
+        int rarity = JSONUtils.getInt(json, "rarity", 1);
         int count = JSONUtils.getInt(json, "count", 1);
         int size = JSONUtils.getInt(json, "size");
         int minHeight = JSONUtils.getInt(json, "min_height");
         int maxHeight = JSONUtils.getInt(json, "max_height");
-        return new OreDistribution(chance, count, size, minHeight, maxHeight);
+        return new OreDistribution(rarity, count, size, minHeight, maxHeight);
     }
 }

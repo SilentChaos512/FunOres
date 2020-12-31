@@ -2,7 +2,7 @@ package net.silentchaos512.funores.data;
 
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
-import net.minecraftforge.client.model.generators.ExistingFileHelper;
+import net.minecraftforge.common.data.ExistingFileHelper;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.lib.Ores;
 

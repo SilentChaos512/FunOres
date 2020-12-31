@@ -25,7 +25,7 @@ public final class Config {
 
     private static final ConfigSpecWrapper WRAPPER = ConfigSpecWrapper.create(resolveAndCreate("funores/common.toml"));
 
-    public static final List<OreFeatureConfig> ORES = new ArrayList<>();
+    public static final List<OreConfig> ORES = new ArrayList<>();
 
     public static final Common COMMON = new Common(WRAPPER);
 
@@ -86,7 +86,7 @@ public final class Config {
                 //noinspection DynamicRegexReplaceableByCompiledPattern
                 String id = file.getName().replace(".json", "");
                 JsonObject json = GSON.fromJson(reader, JsonObject.class);
-                OreFeatureConfig config = OreFeatureConfig.deserialize(id, json);
+                OreConfig config = OreConfig.deserialize(id, json);
                 FunOres.LOGGER.info("Read ore config '{}'", file.getPath());
                 ORES.add(config);
             } catch (JsonSyntaxException | NullPointerException ex) {
@@ -126,40 +126,44 @@ public final class Config {
         for (Ores ore : Ores.values()) {
             createDefaultFile(directory, ore);
         }
-        writeDefaultFile(directory, "extra_diamonds", OreFeatureConfig.createDefault(
+        writeDefaultFile(directory, "extra_diamonds", OreConfig.createDefault(
                 "minecraft:diamond_ore",
                 Tags.Blocks.STONE,
-                0.5, 1,
+                2,
+                1,
                 6,
                 0, 16,
-                World.field_234918_g_
+                World.OVERWORLD
         ));
-        writeDefaultFile(directory, "extra_emeralds", OreFeatureConfig.createDefault(
+        writeDefaultFile(directory, "extra_emeralds", OreConfig.createDefault(
                 "minecraft:emerald_ore",
                 Tags.Blocks.STONE,
-                0.1, 1,
+                10,
+                1,
                 1,
                 16, 48,
-                World.field_234918_g_
+                World.OVERWORLD
         ));
-        writeDefaultFile(directory, "extra_gold", OreFeatureConfig.createDefault(
+        writeDefaultFile(directory, "extra_gold", OreConfig.createDefault(
                 "minecraft:gold_ore",
                 Tags.Blocks.STONE,
-                0.7, 2,
+                3,
+                3,
                 8,
                 8, 32,
-                World.field_234918_g_
+                World.OVERWORLD
         ));
     }
 
     private static void createDefaultFile(File directory, Ores ore) {
-        JsonObject json = OreFeatureConfig.createDefault(
+        JsonObject json = OreConfig.createDefault(
                 ImmutableMap.of(
                         "funores:" + ore.getBlockName(), 10,
                         "", 3
                 ),
                 ore.getReplacesBlock(),
-                0.05, 1,
+                20,
+                1,
                 22,
                 32, 84,
                 ore.getDimensionType()

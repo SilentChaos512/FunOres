@@ -16,28 +16,33 @@ import net.minecraft.util.JSONUtils;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.blockstateprovider.WeightedBlockStateProvider;
+import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.IFeatureConfig;
 import net.minecraft.world.gen.feature.template.TagMatchRuleTest;
+import net.minecraft.world.gen.placement.ChanceConfig;
 import net.minecraft.world.gen.placement.IPlacementConfig;
+import net.minecraft.world.gen.placement.Placement;
+import net.minecraft.world.gen.placement.TopSolidRangeConfig;
+import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.silentchaos512.funores.world.FunOresWorldFeatures;
+import net.silentchaos512.lib.util.Lazy;
 import net.silentchaos512.lib.util.NameUtils;
 
 import javax.annotation.Nullable;
 import java.util.*;
 
-public class OreFeatureConfig implements IFeatureConfig, IPlacementConfig {
-    public static final Codec<OreFeatureConfig> CODEC = RecordCodecBuilder.create(instance ->
+public class OreConfig implements IFeatureConfig, IPlacementConfig {
+    public static final Codec<OreConfig> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(
                     Codec.STRING.fieldOf("config_id").forGetter(o -> o.configId),
-                    WeightedBlockStateProvider.field_236811_b_.fieldOf("blocks").forGetter(o -> o.blocks),
+                    WeightedBlockStateProvider.CODEC.fieldOf("blocks").forGetter(o -> o.blocks),
                     TagMatchRuleTest.field_237161_a_.fieldOf("replaces").forGetter(o -> o.replacesBlock),
-                    Codec.list(ResourceLocation.RESOURCE_LOCATION_CODEC).fieldOf("dimensions").forGetter(o -> o.dimensionAllowed),
+                    Codec.list(ResourceLocation.CODEC).fieldOf("dimensions").forGetter(o -> o.dimensionAllowed),
                     OreDistribution.CODEC.fieldOf("distribution").forGetter(o -> o.distribution)
-            ).apply(instance, OreFeatureConfig::new));
+            ).apply(instance, OreConfig::new));
 
     private final String configId;
     private WeightedBlockStateProvider blocks;
@@ -45,11 +50,22 @@ public class OreFeatureConfig implements IFeatureConfig, IPlacementConfig {
     private List<ResourceLocation> dimensionAllowed;
     private OreDistribution distribution;
 
-    public OreFeatureConfig(String configId) {
+    private Lazy<ConfiguredFeature<?, ?>> configuredFeature = Lazy.of(() -> {
+                int bottom = this.distribution.getMinHeight();
+                return FunOresWorldFeatures.MULTI_BLOCK_ORE.get()
+                        .withConfiguration(this)
+                        .withPlacement(Placement.RANGE.configure(new TopSolidRangeConfig(bottom, bottom, this.distribution.getMaxHeight())))
+                        .withPlacement(Placement.CHANCE.configure(new ChanceConfig(this.distribution.getRarity())))
+                        .square()
+                        .func_242731_b(this.distribution.getCount());
+            }
+    );
+
+    public OreConfig(String configId) {
         this.configId = configId;
     }
 
-    public OreFeatureConfig(String configId, WeightedBlockStateProvider blocks, TagMatchRuleTest target, List<ResourceLocation> dimensions, OreDistribution distribution) {
+    public OreConfig(String configId, WeightedBlockStateProvider blocks, TagMatchRuleTest target, List<ResourceLocation> dimensions, OreDistribution distribution) {
         this.configId = configId;
         this.blocks = blocks;
         this.replacesBlock = target;
@@ -69,38 +85,30 @@ public class OreFeatureConfig implements IFeatureConfig, IPlacementConfig {
         return this.replacesBlock.test(state, random);
     }
 
-    public boolean canSpawnIn(Biome biome) {
+    public boolean canSpawnIn(BiomeLoadingEvent biome) {
         // TODO
         return true;
     }
 
-    public boolean canSpawnIn(IWorld world) {
+    public boolean canSpawnIn(World world) {
         if (this.dimensionAllowed.isEmpty()) {
             return true;
         }
 
-        RegistryKey<World> type = world.getWorld().func_234923_W_();
+        RegistryKey<World> type = world.getDimensionKey();
         return this.dimensionAllowed.stream().anyMatch(key -> key.equals(type.getRegistryName()));
     }
 
-    public int getVeinCount() {
-        return this.distribution.getVeinCount();
+    public int getSize() {
+        return this.distribution.getSize();
     }
 
-    public int getVeinSize() {
-        return this.distribution.getVeinSize();
+    public ConfiguredFeature<?, ?> getConfiguredFeature() {
+        return configuredFeature.get();
     }
 
-    public int getMinHeight() {
-        return this.distribution.getMinHeight();
-    }
-
-    public int getMaxHeight() {
-        return this.distribution.getMaxHeight();
-    }
-
-    public static OreFeatureConfig deserialize(String id, JsonObject json) throws JsonSyntaxException {
-        OreFeatureConfig result = new OreFeatureConfig(id);
+    public static OreConfig deserialize(String id, JsonObject json) throws JsonSyntaxException {
+        OreConfig result = new OreConfig(id);
         result.blocks = parseBlocksElement(json.get("blocks"));
         result.replacesBlock = parseReplacesElement(json);
         result.distribution = OreDistribution.deserialize(json);
@@ -180,18 +188,19 @@ public class OreFeatureConfig implements IFeatureConfig, IPlacementConfig {
         return id;
     }
 
-    public static JsonObject createDefault(String blockId, ITag.INamedTag<Block> replaces, double chance, int count, int size, int minHeight, int maxHeight, RegistryKey<World> dimension) {
+    @SuppressWarnings("MethodWithTooManyParameters")
+    public static JsonObject createDefault(String blockId, ITag.INamedTag<Block> replaces, int rarity, int count, int size, int minHeight, int maxHeight, RegistryKey<World> dimension) {
         Map<String, Integer> blocks = new HashMap<>();
         blocks.put(blockId, 1);
-        return createDefault(blocks, replaces, chance, count, size, minHeight, maxHeight, dimension);
+        return createDefault(blocks, replaces, rarity, count, size, minHeight, maxHeight, dimension);
     }
 
-    public static JsonObject createDefault(Map<String, Integer> blocks, ITag.INamedTag<Block> replaces, double chance, int count, int size, int minHeight, int maxHeight, RegistryKey<World> dimension) {
+    @SuppressWarnings("MethodWithTooManyParameters")
+    public static JsonObject createDefault(Map<String, Integer> blocks, ITag.INamedTag<Block> replaces, int rarity, int count, int size, int minHeight, int maxHeight, RegistryKey<World> dimension) {
         // Would love to just dump the files into data folder, but seems we can't read files from
         // the jar in 1.13. So, let's do this the hard way...
         JsonObject json = new JsonObject();
         JsonArray blocksArray = new JsonArray();
-        //noinspection OverlyLongLambda
         blocks.forEach((blockId, weight) -> {
             JsonObject blocksElement = new JsonObject();
             if (!blockId.isEmpty()) {
@@ -202,13 +211,13 @@ public class OreFeatureConfig implements IFeatureConfig, IPlacementConfig {
         });
         json.add("blocks", blocksArray);
         json.addProperty("replaces", replaces.getName().toString());
-        json.addProperty("chance", chance);
+        json.addProperty("rarity", rarity);
         json.addProperty("count", 1);
         json.addProperty("size", size);
         json.addProperty("min_height", minHeight);
         json.addProperty("max_height", maxHeight);
         JsonArray dimensionsArray = new JsonArray();
-        dimensionsArray.add(dimension.getRegistryName().toString());
+        dimensionsArray.add(dimension.getLocation().toString());
         json.add("dimensions", dimensionsArray);
         JsonArray biomesArray = new JsonArray();
         json.add("biomes", biomesArray);

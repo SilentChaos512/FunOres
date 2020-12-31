@@ -2,8 +2,8 @@ package net.silentchaos512.funores.data;
 
 import net.minecraft.data.DataGenerator;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.generators.ExistingFileHelper;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
+import net.minecraftforge.common.data.ExistingFileHelper;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.item.ShardItems;
 import net.silentchaos512.funores.lib.Ores;

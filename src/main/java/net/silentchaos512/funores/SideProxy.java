@@ -37,7 +37,6 @@ class SideProxy {
 
     private void commonSetup(FMLCommonSetupEvent event) {
         Config.init();
-        DeferredWorkQueue.runLater(FunOresWorldFeatures::addFeaturesToBiomes);
     }
 
     static class Client extends SideProxy {

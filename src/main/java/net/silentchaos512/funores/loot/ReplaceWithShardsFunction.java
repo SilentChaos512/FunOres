@@ -23,17 +23,17 @@ public class ReplaceWithShardsFunction implements ILootFunction {
     }
 
     @Override
-    public LootFunctionType func_230425_b_() {
+    public LootFunctionType getFunctionType() {
         return ModLoot.REPLACE_WITH_SHARDS;
     }
 
     public static class Serializer implements ILootSerializer<ReplaceWithShardsFunction> {
         @Override
-        public void func_230424_a_(JsonObject json, ReplaceWithShardsFunction function, JsonSerializationContext context) {
+        public void serialize(JsonObject p_230424_1_, ReplaceWithShardsFunction p_230424_2_, JsonSerializationContext p_230424_3_) {
         }
 
         @Override
-        public ReplaceWithShardsFunction func_230423_a_(JsonObject json, JsonDeserializationContext context) {
+        public ReplaceWithShardsFunction deserialize(JsonObject p_230423_1_, JsonDeserializationContext p_230423_2_) {
             return new ReplaceWithShardsFunction();
         }
     }

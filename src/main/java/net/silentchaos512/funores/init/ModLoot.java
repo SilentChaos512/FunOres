@@ -14,7 +14,7 @@ public final class ModLoot {
     private ModLoot() {}
 
     public static void init() {
-        Registry.register(Registry.field_239693_aY_, FunOres.getId("loot_mob"), MOB_LOOT);
-        Registry.register(Registry.field_239694_aZ_, FunOres.getId("replace_with_shards"), REPLACE_WITH_SHARDS);
+        Registry.register(Registry.LOOT_POOL_ENTRY_TYPE, FunOres.getId("loot_mob"), MOB_LOOT);
+        Registry.register(Registry.LOOT_FUNCTION_TYPE, FunOres.getId("replace_with_shards"), REPLACE_WITH_SHARDS);
     }
 }

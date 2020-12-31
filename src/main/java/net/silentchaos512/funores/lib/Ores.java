@@ -37,7 +37,7 @@ public enum Ores implements IBlockProvider {
     PUFFERFISH(EntityType.PUFFERFISH),
     // Hostile
     CREEPER(EntityType.CREEPER),
-    ENDERMAN(EntityType.ENDERMAN, World.field_234918_g_, () -> new LootDropOreWithSpawn(EntityType.ENDERMAN::create) {
+    ENDERMAN(EntityType.ENDERMAN, World.OVERWORLD, () -> new LootDropOreWithSpawn(EntityType.ENDERMAN::create) {
         @Nullable
         @Override
         public LivingEntity getBreakSpawn(BlockState state, World world) {
@@ -48,18 +48,18 @@ public enum Ores implements IBlockProvider {
     }),
     GUARDIAN(EntityType.GUARDIAN),
     PHANTOM(EntityType.PHANTOM),
-    SKELETON(EntityType.SKELETON, World.field_234918_g_),
+    SKELETON(EntityType.SKELETON, World.OVERWORLD),
     SLIME(EntityType.SLIME),
     SPIDER(EntityType.SPIDER),
     WITCH(EntityType.WITCH),
-    ZOMBIE(EntityType.ZOMBIE, World.field_234918_g_),
+    ZOMBIE(EntityType.ZOMBIE, World.OVERWORLD),
     // Hostile (Nether)
-    BLAZE(EntityType.BLAZE, World.field_234919_h_),
-    GHAST(EntityType.GHAST, World.field_234919_h_),
-    MAGMA_CUBE(EntityType.MAGMA_CUBE, World.field_234919_h_),
-    WITHER_SKELETON(EntityType.WITHER_SKELETON, World.field_234919_h_),
-    PIGLIN(EntityType.PIGLIN, World.field_234919_h_),
-    HOGLIN(EntityType.HOGLIN, World.field_234919_h_);
+    BLAZE(EntityType.BLAZE, World.THE_NETHER),
+    GHAST(EntityType.GHAST, World.THE_NETHER),
+    MAGMA_CUBE(EntityType.MAGMA_CUBE, World.THE_NETHER),
+    WITHER_SKELETON(EntityType.WITHER_SKELETON, World.THE_NETHER),
+    PIGLIN(EntityType.PIGLIN, World.THE_NETHER),
+    HOGLIN(EntityType.HOGLIN, World.THE_NETHER);
 
     private final EntityType<? extends MobEntity> entityType;
     private final Lazy<LootDropOre> block;
@@ -67,7 +67,7 @@ public enum Ores implements IBlockProvider {
     private final ITag.INamedTag<Block> replacesBlock;
 
     Ores(EntityType<? extends MobEntity> entityType) {
-        this(entityType, World.field_234918_g_, LootDropOre::new);
+        this(entityType, World.OVERWORLD, LootDropOre::new);
     }
 
     Ores(EntityType<? extends MobEntity> entityType, RegistryKey<World> dim) {
@@ -77,7 +77,7 @@ public enum Ores implements IBlockProvider {
     Ores(EntityType<? extends MobEntity> entityType, RegistryKey<World> dim, Supplier<LootDropOre> blockFactory) {
         this.block = Lazy.of(blockFactory);
         this.dimensionType = dim;
-        this.replacesBlock = this.dimensionType == World.field_234919_h_ ? Tags.Blocks.NETHERRACK : Tags.Blocks.STONE;
+        this.replacesBlock = this.dimensionType == World.THE_NETHER ? Tags.Blocks.NETHERRACK : Tags.Blocks.STONE;
         this.entityType = entityType;
     }
 

@@ -9,21 +9,21 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.structure.StructureManager;
-import net.silentchaos512.funores.config.OreFeatureConfig;
+import net.silentchaos512.funores.FunOres;
+import net.silentchaos512.funores.config.OreConfig;
 
 import java.util.BitSet;
 import java.util.Random;
 
 // Copied from MinableFeature and modified
-public class MultiBlockMinableFeature extends Feature<OreFeatureConfig> {
-    public MultiBlockMinableFeature(Codec<OreFeatureConfig> p_i231953_1_) {
+public class MultiBlockMinableFeature extends Feature<OreConfig> {
+    public MultiBlockMinableFeature(Codec<OreConfig> p_i231953_1_) {
         super(p_i231953_1_);
     }
 
     @Override
-    public boolean func_230362_a_(ISeedReader worldIn, StructureManager structureManager, ChunkGenerator chunkGenerator, Random rand, BlockPos pos, OreFeatureConfig config) {
-        int size = config.getVeinSize();
+    public boolean generate(ISeedReader worldIn, ChunkGenerator generator, Random rand, BlockPos pos, OreConfig config) {
+        int size = config.getSize();
         float f = rand.nextFloat() * (float) Math.PI;
         float f1 = size / 8.0F;
         int i = MathHelper.ceil((size / 16.0F * 2.0F + 1.0F) / 2.0F);
@@ -51,8 +51,8 @@ public class MultiBlockMinableFeature extends Feature<OreFeatureConfig> {
         return false;
     }
 
-    private boolean func_207803_a(IWorld worldIn, Random random, OreFeatureConfig config, double p_207803_4_, double p_207803_6_, double p_207803_8_, double p_207803_10_, double p_207803_12_, double p_207803_14_, int p_207803_16_, int p_207803_17_, int p_207803_18_, int p_207803_19_, int p_207803_20_) {
-        int size = config.getVeinSize();
+    private boolean func_207803_a(IWorld worldIn, Random random, OreConfig config, double p_207803_4_, double p_207803_6_, double p_207803_8_, double p_207803_10_, double p_207803_12_, double p_207803_14_, int p_207803_16_, int p_207803_17_, int p_207803_18_, int p_207803_19_, int p_207803_20_) {
+        int size = config.getSize();
         int i = 0;
         BitSet bitset = new BitSet(p_207803_19_ * p_207803_20_ * p_207803_19_);
         BlockPos.Mutable blockpos$mutableblockpos = new BlockPos.Mutable();
