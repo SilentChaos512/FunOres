@@ -33,6 +33,6 @@ authors="SilentChaos512"
 [[dependencies.funores]]
     modId="silentlib"
     mandatory=true
-    versionRange="[4,)"
+    versionRange="[4.9,4.10)"
     ordering="NONE"
     side="BOTH"
