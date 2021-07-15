@@ -23,7 +23,7 @@ public class ReplaceWithShardsFunction implements ILootFunction {
     }
 
     @Override
-    public LootFunctionType getFunctionType() {
+    public LootFunctionType getType() {
         return ModLoot.REPLACE_WITH_SHARDS;
     }
 

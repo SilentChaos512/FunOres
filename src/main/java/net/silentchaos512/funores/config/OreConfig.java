@@ -39,7 +39,7 @@ public class OreConfig implements IFeatureConfig, IPlacementConfig {
             instance.group(
                     Codec.STRING.fieldOf("config_id").forGetter(o -> o.configId),
                     WeightedBlockStateProvider.CODEC.fieldOf("blocks").forGetter(o -> o.blocks),
-                    TagMatchRuleTest.field_237161_a_.fieldOf("replaces").forGetter(o -> o.replacesBlock),
+                    TagMatchRuleTest.CODEC.fieldOf("replaces").forGetter(o -> o.replacesBlock),
                     Codec.list(ResourceLocation.CODEC).fieldOf("dimensions").forGetter(o -> o.dimensionAllowed),
                     OreDistribution.CODEC.fieldOf("distribution").forGetter(o -> o.distribution)
             ).apply(instance, OreConfig::new));
@@ -53,11 +53,11 @@ public class OreConfig implements IFeatureConfig, IPlacementConfig {
     private Lazy<ConfiguredFeature<?, ?>> configuredFeature = Lazy.of(() -> {
                 int bottom = this.distribution.getMinHeight();
                 return FunOresWorldFeatures.MULTI_BLOCK_ORE.get()
-                        .withConfiguration(this)
-                        .withPlacement(Placement.RANGE.configure(new TopSolidRangeConfig(bottom, bottom, this.distribution.getMaxHeight())))
-                        .withPlacement(Placement.CHANCE.configure(new ChanceConfig(this.distribution.getRarity())))
-                        .square()
-                        .func_242731_b(this.distribution.getCount());
+                        .configured(this)
+                        .decorated(Placement.RANGE.configured(new TopSolidRangeConfig(bottom, bottom, this.distribution.getMaxHeight())))
+                        .decorated(Placement.CHANCE.configured(new ChanceConfig(this.distribution.getRarity())))
+                        .squared()
+                        .count(this.distribution.getCount());
             }
     );
 
@@ -78,7 +78,7 @@ public class OreConfig implements IFeatureConfig, IPlacementConfig {
     }
 
     public BlockState getBlock(Random random, BlockPos pos) {
-        return this.blocks.getBlockState(random, pos);
+        return this.blocks.getState(random, pos);
     }
 
     public boolean canReplace(BlockState state, Random random) {
@@ -95,7 +95,7 @@ public class OreConfig implements IFeatureConfig, IPlacementConfig {
             return true;
         }
 
-        RegistryKey<World> type = world.getDimensionKey();
+        RegistryKey<World> type = world.dimension();
         return this.dimensionAllowed.stream().anyMatch(key -> key.equals(type.getRegistryName()));
     }
 
@@ -125,11 +125,11 @@ public class OreConfig implements IFeatureConfig, IPlacementConfig {
                 if (je.isJsonObject()) {
                     JsonObject jo = je.getAsJsonObject();
                     BlockState block = deserializeBlock(jo);
-                    int weight = JSONUtils.getInt(jo, "weight", 1);
-                    ret.addWeightedBlockstate(block, weight);
+                    int weight = JSONUtils.getAsInt(jo, "weight", 1);
+                    ret.add(block, weight);
                 } else if (je.isJsonPrimitive() && je.getAsJsonPrimitive().isString()) {
                     BlockState block = deserializeBlock(je);
-                    ret.addWeightedBlockstate(block, 1);
+                    ret.add(block, 1);
                 } else {
                     throw new JsonSyntaxException("Expected blocks array element to be object or string");
                 }
@@ -141,18 +141,18 @@ public class OreConfig implements IFeatureConfig, IPlacementConfig {
 
     private static BlockState deserializeBlock(JsonElement json) {
         String str = json.isJsonObject()
-                ? JSONUtils.getString(json.getAsJsonObject(), "block", NameUtils.from(Blocks.AIR).toString())
+                ? JSONUtils.getAsString(json.getAsJsonObject(), "block", NameUtils.from(Blocks.AIR).toString())
                 : json.getAsString();
         ResourceLocation blockId = new ResourceLocation(str);
         Block block = ForgeRegistries.BLOCKS.getValue(blockId);
         if (block == null) {
             throw new JsonSyntaxException("Unknown block: " + blockId);
         }
-        return block.getDefaultState();
+        return block.defaultBlockState();
     }
 
     private static TagMatchRuleTest parseReplacesElement(JsonObject json) {
-        return new TagMatchRuleTest(BlockTags.makeWrapperTag(JSONUtils.getString(json, "replaces")));
+        return new TagMatchRuleTest(BlockTags.bind(JSONUtils.getAsString(json, "replaces")));
     }
 
     private static List<ResourceLocation> parseDimensionsElement(@Nullable JsonElement json) {
@@ -180,8 +180,8 @@ public class OreConfig implements IFeatureConfig, IPlacementConfig {
     }
 
     private static ResourceLocation parseId(JsonObject json, String key) {
-        String str = JSONUtils.getString(json, key);
-        ResourceLocation id = ResourceLocation.tryCreate(str);
+        String str = JSONUtils.getAsString(json, key);
+        ResourceLocation id = ResourceLocation.tryParse(str);
         if (id == null) {
             throw new JsonSyntaxException("Invalid ID: " + str);
         }
@@ -217,7 +217,7 @@ public class OreConfig implements IFeatureConfig, IPlacementConfig {
         json.addProperty("min_height", minHeight);
         json.addProperty("max_height", maxHeight);
         JsonArray dimensionsArray = new JsonArray();
-        dimensionsArray.add(dimension.getLocation().toString());
+        dimensionsArray.add(dimension.location().toString());
         json.add("dimensions", dimensionsArray);
         JsonArray biomesArray = new JsonArray();
         json.add("biomes", biomesArray);

@@ -57,7 +57,7 @@ public final class FunOresWorldFeatures {
 
     private static void addOreToBiome(BiomeLoadingEvent biome, OreConfig config) {
 //        FunOres.LOGGER.info(MARKER, "Add ore {} to biome {}", config.getConfigId(), biome.getRegistryName());
-        biome.getGeneration().withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, config.getConfiguredFeature());
+        biome.getGeneration().addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, config.getConfiguredFeature());
     }
 
     private static void registerConfiguredFeatures() {

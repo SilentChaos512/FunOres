@@ -14,9 +14,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.loot.*;
 import net.minecraft.loot.conditions.ILootCondition;
 import net.minecraft.loot.conditions.MatchTool;
-import net.minecraft.loot.conditions.TableBonus;
 import net.minecraft.loot.functions.ApplyBonus;
-import net.minecraft.loot.functions.LootingEnchantBonus;
 import net.minecraft.loot.functions.SetCount;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
@@ -55,11 +53,11 @@ public class ModLootTables extends LootTableProvider {
 
     @Override
     protected void validate(Map<ResourceLocation, LootTable> map, ValidationTracker validationtracker) {
-        map.forEach((p_218436_2_, p_218436_3_) -> LootTableManager.validateLootTable(validationtracker, p_218436_2_, p_218436_3_));
+        map.forEach((p_218436_2_, p_218436_3_) -> LootTableManager.validate(validationtracker, p_218436_2_, p_218436_3_));
     }
 
     private static final class Blocks extends BlockLootTables {
-        private static final ILootCondition.IBuilder SILK_TOUCH = MatchTool.builder(ItemPredicate.Builder.create().enchantment(new EnchantmentPredicate(Enchantments.SILK_TOUCH, MinMaxBounds.IntBound.atLeast(1))));
+        private static final ILootCondition.IBuilder SILK_TOUCH = MatchTool.toolMatches(ItemPredicate.Builder.item().hasEnchantment(new EnchantmentPredicate(Enchantments.SILK_TOUCH, MinMaxBounds.IntBound.atLeast(1))));
 
         @Override
         protected void addTables() {
@@ -120,26 +118,26 @@ public class ModLootTables extends LootTableProvider {
 
         @SuppressWarnings("TypeMayBeWeakened")
         private void mobOre(Ores ore, StandaloneLootEntry.Builder<?> mobLoot, @Nullable IItemProvider bonusShards) {
-            LootTable.Builder builder = LootTable.builder()
-                    .addLootPool(LootPool.builder()
-                            .addEntry(AlternativesLootEntry.builder(
-                                    ItemLootEntry.builder(ore.asBlock())
-                                            .acceptCondition(SILK_TOUCH),
-                                    mobLoot.acceptFunction(ReplaceWithShardsFunction::new)
+            LootTable.Builder builder = LootTable.lootTable()
+                    .withPool(LootPool.lootPool()
+                            .add(AlternativesLootEntry.alternatives(
+                                    ItemLootEntry.lootTableItem(ore.asBlock())
+                                            .when(SILK_TOUCH),
+                                    mobLoot.apply(ReplaceWithShardsFunction::new)
                             ))
                     );
             if (bonusShards != null) {
-                builder.addLootPool(LootPool.builder()
-                        .addEntry(AlternativesLootEntry.builder(
-                                EmptyLootEntry.func_216167_a()
-                                        .acceptCondition(SILK_TOUCH),
-                                ItemLootEntry.builder(bonusShards)
-                                        .acceptFunction(SetCount.builder(RandomValueRange.of(0, 1)))
-                                        .acceptFunction(ApplyBonus.binomialWithBonusCount(Enchantments.FORTUNE, 0.5f, 1))
+                builder.withPool(LootPool.lootPool()
+                        .add(AlternativesLootEntry.alternatives(
+                                EmptyLootEntry.emptyItem()
+                                        .when(SILK_TOUCH),
+                                ItemLootEntry.lootTableItem(bonusShards)
+                                        .apply(SetCount.setCount(RandomValueRange.between(0, 1)))
+                                        .apply(ApplyBonus.addBonusBinomialDistributionCount(Enchantments.BLOCK_FORTUNE, 0.5f, 1))
                         ))
                 );
             }
-            this.registerLootTable(ore.asBlock(), builder);
+            this.add(ore.asBlock(), builder);
         }
 
         @Override

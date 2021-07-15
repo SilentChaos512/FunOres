@@ -1,13 +1,15 @@
 package net.silentchaos512.funores.loot;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.gson.*;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSerializationContext;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.passive.SheepEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -19,12 +21,9 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.ForgeRegistryEntry;
 import net.silentchaos512.funores.init.ModLoot;
-import net.silentchaos512.funores.lib.Ores;
 import net.silentchaos512.lib.util.NameUtils;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -37,12 +36,12 @@ public final class MobLootEntry extends StandaloneLootEntry {
 
     private MobLootEntry(Map<EntityType<?>, Integer> weightedTypesIn, int weightIn, int qualityIn, ILootCondition[] conditionsIn, ILootFunction[] functionsIn) {
         super(weightIn, qualityIn, conditionsIn, functionsIn);
-        weightedTypesIn.forEach(this.typeList::func_226313_a_);
+        weightedTypesIn.forEach(this.typeList::add);
         this.typeMap.putAll(weightedTypesIn);
     }
 
     public static StandaloneLootEntry.Builder<?> builder(EntityType<?> entityType) {
-        return builder((weightIn, qualityIn, conditionsIn, functionsIn) ->
+        return simpleBuilder((weightIn, qualityIn, conditionsIn, functionsIn) ->
                 new MobLootEntry(Collections.singletonMap(entityType, 1), weightIn, qualityIn, conditionsIn, functionsIn));
     }
 
@@ -51,7 +50,7 @@ public final class MobLootEntry extends StandaloneLootEntry {
                 .put(type1, weight1)
                 .put(type2, weight2)
                 .build();
-        return builder((weightIn, qualityIn, conditionsIn, functionsIn) ->
+        return simpleBuilder((weightIn, qualityIn, conditionsIn, functionsIn) ->
                 new MobLootEntry(map, weightIn, qualityIn, conditionsIn, functionsIn));
     }
 
@@ -61,52 +60,52 @@ public final class MobLootEntry extends StandaloneLootEntry {
                 .put(type2, weight2)
                 .put(type3, weight3)
                 .build();
-        return builder((weightIn, qualityIn, conditionsIn, functionsIn) ->
+        return simpleBuilder((weightIn, qualityIn, conditionsIn, functionsIn) ->
                 new MobLootEntry(map, weightIn, qualityIn, conditionsIn, functionsIn));
     }
 
     public static StandaloneLootEntry.Builder<?> builder(Map<EntityType<?>, Integer> typesIn) {
-        return builder((weightIn, qualityIn, conditionsIn, functionsIn) -> {
+        return simpleBuilder((weightIn, qualityIn, conditionsIn, functionsIn) -> {
             return new MobLootEntry(typesIn, weightIn, qualityIn, conditionsIn, functionsIn);
         });
     }
 
     @Override
-    protected void func_216154_a(Consumer<ItemStack> consumer, LootContext context) {
-        ItemStack tool = context.get(LootParameters.TOOL);
-        int fortune = tool != null ? EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, tool) : 0;
+    protected void createItemStack(Consumer<ItemStack> consumer, LootContext context) {
+        ItemStack tool = context.getParamOrNull(LootParameters.TOOL);
+        int fortune = tool != null ? EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BLOCK_FORTUNE, tool) : 0;
 
-        FakePlayer fakePlayer = FakePlayerFactory.get(context.getWorld(), new GameProfile(null, "FakePlayerFunOres"));
+        FakePlayer fakePlayer = FakePlayerFactory.get(context.getLevel(), new GameProfile(null, "FakePlayerFunOres"));
         ItemStack fakeSword = getFakeSword(fortune);
-        fakePlayer.setHeldItem(Hand.MAIN_HAND, fakeSword);
+        fakePlayer.setItemInHand(Hand.MAIN_HAND, fakeSword);
 
-        EntityType<?> entityType = this.typeList.func_226318_b_(context.getRandom());
-        Entity entity = entityType.create(context.getWorld());
+        EntityType<?> entityType = this.typeList.getOne(context.getRandom());
+        Entity entity = entityType.create(context.getLevel());
         if (entity != null) {
-            DamageSource source = DamageSource.causePlayerDamage(fakePlayer);
-            LootContext fakeContext = new LootContext.Builder(context.getWorld())
+            DamageSource source = DamageSource.playerAttack(fakePlayer);
+            LootContext fakeContext = new LootContext.Builder(context.getLevel())
                     .withParameter(LootParameters.THIS_ENTITY, entity)
                     .withParameter(LootParameters.DAMAGE_SOURCE, source)
                     .withParameter(LootParameters.KILLER_ENTITY, fakePlayer)
                     .withParameter(LootParameters.LAST_DAMAGE_PLAYER, fakePlayer)
-                    .withNullableParameter(LootParameters.DIRECT_KILLER_ENTITY, source.getImmediateSource())
-                    .withNullableParameter(LootParameters.field_237457_g_, context.get(LootParameters.field_237457_g_))
-                    .build(LootParameterSets.ENTITY);
+                    .withOptionalParameter(LootParameters.DIRECT_KILLER_ENTITY, source.getDirectEntity())
+                    .withOptionalParameter(LootParameters.ORIGIN, context.getParamOrNull(LootParameters.ORIGIN))
+                    .create(LootParameterSets.ENTITY);
             ResourceLocation lootTableId = getLootTable(entity);
             LootTable lootTable = context.getLootTable(lootTableId);
-            lootTable.recursiveGenerate(fakeContext, consumer);
+            lootTable.getRandomItemsRaw(fakeContext, consumer);
         }
     }
 
     private static ResourceLocation getLootTable(Entity entity) {
         // Sheep are a special case... No wool drops from the default loot table
         if (entity.getType() == EntityType.SHEEP)
-            return ((SheepEntity) entity).getLootTable();
-        return entity.getType().getLootTable();
+            return ((SheepEntity) entity).getDefaultLootTable();
+        return entity.getType().getDefaultLootTable();
     }
 
     @Override
-    public LootPoolEntryType func_230420_a_() {
+    public LootPoolEntryType getType() {
         return ModLoot.MOB_LOOT;
     }
 
@@ -119,7 +118,7 @@ public final class MobLootEntry extends StandaloneLootEntry {
         if (stack == null) {
             stack = new ItemStack(Items.DIAMOND_SWORD);
             if (lootingLevel > 0) {
-                stack.addEnchantment(Enchantments.LOOTING, lootingLevel);
+                stack.enchant(Enchantments.MOB_LOOTING, lootingLevel);
             }
             FAKE_SWORDS[index] = stack;
         }
@@ -128,8 +127,8 @@ public final class MobLootEntry extends StandaloneLootEntry {
 
     public static class Serializer extends StandaloneLootEntry.Serializer<MobLootEntry> {
         @Override
-        public void doSerialize(JsonObject json, MobLootEntry entry, JsonSerializationContext context) {
-            super.doSerialize(json, entry, context);
+        public void serializeCustom(JsonObject json, MobLootEntry entry, JsonSerializationContext context) {
+            super.serializeCustom(json, entry, context);
 
             JsonArray typesArray = new JsonArray();
             entry.typeMap.forEach((type, weight) -> {
@@ -145,11 +144,11 @@ public final class MobLootEntry extends StandaloneLootEntry {
         protected MobLootEntry deserialize(JsonObject json, JsonDeserializationContext context, int weightIn, int qualityIn, ILootCondition[] conditions, ILootFunction[] functions) {
             Map<EntityType<?>, Integer> typeMap = new LinkedHashMap<>();
 
-            JsonArray typesArray = JSONUtils.getJsonArray(json, "entity_types");
+            JsonArray typesArray = JSONUtils.getAsJsonArray(json, "entity_types");
             typesArray.forEach(je -> {
-                ResourceLocation typeId = new ResourceLocation(JSONUtils.getString(je.getAsJsonObject(), "entity"));
+                ResourceLocation typeId = new ResourceLocation(JSONUtils.getAsString(je.getAsJsonObject(), "entity"));
                 EntityType<?> type = ForgeRegistries.ENTITIES.getValue(typeId);
-                int weight = JSONUtils.getInt(je.getAsJsonObject(), "weight", 1);
+                int weight = JSONUtils.getAsInt(je.getAsJsonObject(), "weight", 1);
                 typeMap.put(type, weight);
             });
 

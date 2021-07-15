@@ -20,16 +20,16 @@ public abstract class LootDropOreWithSpawn extends LootDropOre {
     public abstract LivingEntity getBreakSpawn(BlockState state, World world);
 
     @Override
-    public void spawnAdditionalDrops(BlockState state, ServerWorld world, BlockPos pos, ItemStack stack) {
-        super.spawnAdditionalDrops(state, world, pos, stack);
+    public void spawnAfterBreak(BlockState state, ServerWorld world, BlockPos pos, ItemStack stack) {
+        super.spawnAfterBreak(state, world, pos, stack);
 
         LivingEntity entity = getBreakSpawn(state, world);
         if (entity != null) {
-            entity.setLocationAndAngles(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 0.0f, 0.0f);
-            world.addEntity(entity);
+            entity.moveTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 0.0f, 0.0f);
+            world.addFreshEntity(entity);
 
             if (entity instanceof CreatureEntity) {
-                ((CreatureEntity) entity).spawnExplosionParticle();
+                ((CreatureEntity) entity).spawnAnim();
             }
         }
     }

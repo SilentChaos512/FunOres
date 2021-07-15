@@ -9,7 +9,6 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.Feature;
-import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.config.OreConfig;
 
 import java.util.BitSet;
@@ -22,7 +21,7 @@ public class MultiBlockMinableFeature extends Feature<OreConfig> {
     }
 
     @Override
-    public boolean generate(ISeedReader worldIn, ChunkGenerator generator, Random rand, BlockPos pos, OreConfig config) {
+    public boolean place(ISeedReader worldIn, ChunkGenerator generator, Random rand, BlockPos pos, OreConfig config) {
         int size = config.getSize();
         float f = rand.nextFloat() * (float) Math.PI;
         float f1 = size / 8.0F;
@@ -43,7 +42,7 @@ public class MultiBlockMinableFeature extends Feature<OreConfig> {
         for (int l1 = k; l1 <= k + j1; ++l1) {
             for (int i2 = i1; i2 <= i1 + j1; ++i2) {
                 if (l <= worldIn.getHeight(Heightmap.Type.OCEAN_FLOOR_WG, l1, i2)) {
-                    return this.func_207803_a(worldIn, rand, config, d0, d1, d2, d3, d4, d5, k, l, i1, j1, k1);
+                    return this.doPlace(worldIn, rand, config, d0, d1, d2, d3, d4, d5, k, l, i1, j1, k1);
                 }
             }
         }
@@ -51,7 +50,7 @@ public class MultiBlockMinableFeature extends Feature<OreConfig> {
         return false;
     }
 
-    private boolean func_207803_a(IWorld worldIn, Random random, OreConfig config, double p_207803_4_, double p_207803_6_, double p_207803_8_, double p_207803_10_, double p_207803_12_, double p_207803_14_, int p_207803_16_, int p_207803_17_, int p_207803_18_, int p_207803_19_, int p_207803_20_) {
+    private boolean doPlace(IWorld worldIn, Random random, OreConfig config, double p_207803_4_, double p_207803_6_, double p_207803_8_, double p_207803_10_, double p_207803_12_, double p_207803_14_, int p_207803_16_, int p_207803_17_, int p_207803_18_, int p_207803_19_, int p_207803_20_) {
         int size = config.getSize();
         int i = 0;
         BitSet bitset = new BitSet(p_207803_19_ * p_207803_20_ * p_207803_19_);
@@ -116,11 +115,11 @@ public class MultiBlockMinableFeature extends Feature<OreConfig> {
                                         int k2 = l1 - p_207803_16_ + (i2 - p_207803_17_) * p_207803_19_ + (j2 - p_207803_18_) * p_207803_19_ * p_207803_20_;
                                         if (!bitset.get(k2)) {
                                             bitset.set(k2);
-                                            blockpos$mutableblockpos.setPos(l1, i2, j2);
+                                            blockpos$mutableblockpos.set(l1, i2, j2);
                                             if (config.canReplace(worldIn.getBlockState(blockpos$mutableblockpos), random)) {
                                                 BlockState block = config.getBlock(random, blockpos$mutableblockpos);
                                                 if (!block.isAir(worldIn, blockpos$mutableblockpos)) {
-                                                    worldIn.setBlockState(blockpos$mutableblockpos, block, 2);
+                                                    worldIn.setBlock(blockpos$mutableblockpos, block, 2);
                                                     ++i;
                                                 }
                                             }

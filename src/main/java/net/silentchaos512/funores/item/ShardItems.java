@@ -28,7 +28,7 @@ public enum ShardItems implements IItemProvider {
     }
 
     ShardItems(IItemProvider fullItem, String suffix) {
-        this.item = Lazy.of(() -> new Item(new Item.Properties().group(ItemGroup.MATERIALS)));
+        this.item = Lazy.of(() -> new Item(new Item.Properties().tab(ItemGroup.TAB_MATERIALS)));
         this.fullItem = fullItem;
         this.suffix = suffix;
     }

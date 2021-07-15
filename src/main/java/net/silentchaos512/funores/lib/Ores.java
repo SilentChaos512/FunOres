@@ -54,12 +54,12 @@ public enum Ores implements IBlockProvider {
     WITCH(EntityType.WITCH),
     ZOMBIE(EntityType.ZOMBIE, World.OVERWORLD),
     // Hostile (Nether)
-    BLAZE(EntityType.BLAZE, World.THE_NETHER),
-    GHAST(EntityType.GHAST, World.THE_NETHER),
-    MAGMA_CUBE(EntityType.MAGMA_CUBE, World.THE_NETHER),
-    WITHER_SKELETON(EntityType.WITHER_SKELETON, World.THE_NETHER),
-    PIGLIN(EntityType.PIGLIN, World.THE_NETHER),
-    HOGLIN(EntityType.HOGLIN, World.THE_NETHER);
+    BLAZE(EntityType.BLAZE, World.NETHER),
+    GHAST(EntityType.GHAST, World.NETHER),
+    MAGMA_CUBE(EntityType.MAGMA_CUBE, World.NETHER),
+    WITHER_SKELETON(EntityType.WITHER_SKELETON, World.NETHER),
+    PIGLIN(EntityType.PIGLIN, World.NETHER),
+    HOGLIN(EntityType.HOGLIN, World.NETHER);
 
     private final EntityType<? extends MobEntity> entityType;
     private final Lazy<LootDropOre> block;
@@ -77,7 +77,7 @@ public enum Ores implements IBlockProvider {
     Ores(EntityType<? extends MobEntity> entityType, RegistryKey<World> dim, Supplier<LootDropOre> blockFactory) {
         this.block = Lazy.of(blockFactory);
         this.dimensionType = dim;
-        this.replacesBlock = this.dimensionType == World.THE_NETHER ? Tags.Blocks.NETHERRACK : Tags.Blocks.STONE;
+        this.replacesBlock = this.dimensionType == World.NETHER ? Tags.Blocks.NETHERRACK : Tags.Blocks.STONE;
         this.entityType = entityType;
     }
 

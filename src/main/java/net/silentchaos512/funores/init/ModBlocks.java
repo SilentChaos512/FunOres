@@ -42,7 +42,7 @@ public final class ModBlocks {
         block.setRegistryName(registryName);
         ForgeRegistries.BLOCKS.register(block);
 
-        BlockItem item = new BlockItem(block, new Item.Properties().group(ItemGroup.BUILDING_BLOCKS));
+        BlockItem item = new BlockItem(block, new Item.Properties().tab(ItemGroup.TAB_BUILDING_BLOCKS));
         item.setRegistryName(registryName);
         ModItems.blockItems.add(item);
     }
