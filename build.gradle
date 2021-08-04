@@ -5,18 +5,18 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.+', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
     }
 }
 
 plugins {
-    id 'maven'
     id 'maven-publish'
     id "com.matthewprenger.cursegradle" version "1.4.0"
 }
 
 apply plugin: 'net.minecraftforge.gradle'
-apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply from: 'https://raw.githubusercontent.com/SizableShrimp/Forge-Class-Remapper/main/classremapper.gradle'
 
 repositories {
     flatDir {
@@ -47,10 +47,10 @@ def gpr_creds = { // Credentials for GitHub Packages, since this is used multipl
     password = property('gpr.token')
 }
 
-sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
+java.toolchain.languageVersion = JavaLanguageVersion.of(16)
 
 minecraft {
-    mappings channel: project.mappings_channel.toString(), version: project.mappings_version.toString()
+    mappings channel: 'official', version: mc_version
 
     runs {
         client {
@@ -127,7 +127,10 @@ dependencies {
     minecraft "net.minecraftforge:forge:${project.forge_version}"
 
     // Silent Lib
-    compile fg.deobf("net.silentchaos512:silent-lib:${project.sl_version}") {
+    compileOnly fg.deobf("net.silentchaos512:silent-lib:${project.sl_version}") {
+        exclude module: "forge"
+    }
+    runtimeOnly fg.deobf("net.silentchaos512:silent-lib:${project.sl_version}") {
         exclude module: "forge"
     }
 
@@ -174,8 +177,6 @@ curseforge {
             changelog = file(project.cf_changelog_filename)
             releaseType = project.cf_release_type
             addGameVersion(project.mc_version)
-            addGameVersion("1.16.4")
-            addGameVersion("1.16.3")
             mainArtifact(jar) {
 //                displayName = "$project.description $display_version"
                 relations {

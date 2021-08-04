@@ -1,15 +1,15 @@
 package net.silentchaos512.funores.init;
 
-import net.minecraft.loot.LootFunctionType;
-import net.minecraft.loot.LootPoolEntryType;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
+import net.minecraft.world.level.storage.loot.entries.LootPoolEntryType;
+import net.minecraft.core.Registry;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.loot.MobLootEntry;
 import net.silentchaos512.funores.loot.ReplaceWithShardsFunction;
 
 public final class ModLoot {
     public static final LootPoolEntryType MOB_LOOT = new LootPoolEntryType(new MobLootEntry.Serializer());
-    public static final LootFunctionType REPLACE_WITH_SHARDS = new LootFunctionType(new ReplaceWithShardsFunction.Serializer());
+    public static final LootItemFunctionType REPLACE_WITH_SHARDS = new LootItemFunctionType(new ReplaceWithShardsFunction.Serializer());
 
     private ModLoot() {}
 

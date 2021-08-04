@@ -5,7 +5,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.fml.loading.FMLPaths;
 import net.silentchaos512.funores.FunOres;
@@ -133,7 +133,7 @@ public final class Config {
                 1,
                 6,
                 0, 16,
-                World.OVERWORLD
+                Level.OVERWORLD
         ));
         writeDefaultFile(directory, "extra_emeralds", OreConfig.createDefault(
                 "minecraft:emerald_ore",
@@ -142,7 +142,7 @@ public final class Config {
                 1,
                 1,
                 16, 48,
-                World.OVERWORLD
+                Level.OVERWORLD
         ));
         writeDefaultFile(directory, "extra_gold", OreConfig.createDefault(
                 "minecraft:gold_ore",
@@ -151,7 +151,7 @@ public final class Config {
                 3,
                 8,
                 8, 32,
-                World.OVERWORLD
+                Level.OVERWORLD
         ));
     }
 

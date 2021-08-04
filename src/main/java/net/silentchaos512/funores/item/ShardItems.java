@@ -1,16 +1,16 @@
 package net.silentchaos512.funores.item;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.Items;
-import net.minecraft.util.IItemProvider;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.ItemLike;
 import net.silentchaos512.funores.loot.ReplaceWithShardsFunction;
 import net.silentchaos512.utils.Lazy;
 
 import javax.annotation.Nonnull;
 import java.util.Locale;
 
-public enum ShardItems implements IItemProvider {
+public enum ShardItems implements ItemLike {
     ENDER(Items.ENDER_PEARL),
     BLAZE(Items.BLAZE_ROD),
     GHAST(Items.GHAST_TEAR),
@@ -20,15 +20,15 @@ public enum ShardItems implements IItemProvider {
     // The shard item
     private final Lazy<Item> item;
     // The item the shards craft into
-    private final IItemProvider fullItem;
+    private final ItemLike fullItem;
     private final String suffix;
 
-    ShardItems(IItemProvider fullItem) {
+    ShardItems(ItemLike fullItem) {
         this(fullItem, "shard");
     }
 
-    ShardItems(IItemProvider fullItem, String suffix) {
-        this.item = Lazy.of(() -> new Item(new Item.Properties().tab(ItemGroup.TAB_MATERIALS)));
+    ShardItems(ItemLike fullItem, String suffix) {
+        this.item = Lazy.of(() -> new Item(new Item.Properties().tab(CreativeModeTab.TAB_MATERIALS)));
         this.fullItem = fullItem;
         this.suffix = suffix;
     }
@@ -49,7 +49,7 @@ public enum ShardItems implements IItemProvider {
      *
      * @return The item the shards craft into
      */
-    public IItemProvider getFullItem() {
+    public ItemLike getFullItem() {
         return fullItem;
     }
 }

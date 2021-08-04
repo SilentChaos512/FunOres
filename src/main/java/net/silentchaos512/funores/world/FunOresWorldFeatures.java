@@ -1,11 +1,11 @@
 package net.silentchaos512.funores.world;
 
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.WorldGenRegistries;
-import net.minecraft.world.gen.GenerationStage;
-import net.minecraft.world.gen.feature.ConfiguredFeature;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.placement.Placement;
+import net.minecraft.core.Registry;
+import net.minecraft.data.BuiltinRegistries;
+import net.minecraft.world.level.levelgen.GenerationStep;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.placement.FeatureDecorator;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -34,14 +34,14 @@ public final class FunOresWorldFeatures {
         event.getRegistry().register(MULTI_BLOCK_ORE.get().setRegistryName(FunOres.getId("multi_block_ore")));
     }
 
-    public static void registerPlacements(RegistryEvent.Register<Placement<?>> event) {
+    public static void registerPlacements(RegistryEvent.Register<FeatureDecorator<?>> event) {
 //        ORE_PLACEMENT = new OrePlacement(OreFeatureConfig.CODEC);
 //        ORE_PLACEMENT.setRegistryName(FunOres.getId("ore_placement"));
 //        event.getRegistry().register(ORE_PLACEMENT);
     }
 
     private static void registerConfiguredFeature(String name, ConfiguredFeature<?, ?> configuredFeature) {
-        Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, FunOres.getId(name), configuredFeature);
+        Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, FunOres.getId(name), configuredFeature);
     }
 
     @SubscribeEvent
@@ -57,7 +57,7 @@ public final class FunOresWorldFeatures {
 
     private static void addOreToBiome(BiomeLoadingEvent biome, OreConfig config) {
 //        FunOres.LOGGER.info(MARKER, "Add ore {} to biome {}", config.getConfigId(), biome.getRegistryName());
-        biome.getGeneration().addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, config.getConfiguredFeature());
+        biome.getGeneration().addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, config.getConfiguredFeature());
     }
 
     private static void registerConfiguredFeatures() {

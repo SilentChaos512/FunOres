@@ -1,19 +1,20 @@
 package net.silentchaos512.funores.lib;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.monster.EndermiteEntity;
-import net.minecraft.item.Item;
-import net.minecraft.tags.ITag;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.world.World;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.tags.Tag;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.monster.Endermite;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Material;
 import net.minecraftforge.common.Tags;
 import net.silentchaos512.funores.FunOres;
-import net.silentchaos512.funores.block.LootDropOre;
-import net.silentchaos512.funores.block.LootDropOreWithSpawn;
+import net.silentchaos512.funores.block.BreakSpawnBlock;
 import net.silentchaos512.funores.config.Config;
 import net.silentchaos512.lib.block.IBlockProvider;
 import net.silentchaos512.utils.Lazy;
@@ -37,51 +38,51 @@ public enum Ores implements IBlockProvider {
     PUFFERFISH(EntityType.PUFFERFISH),
     // Hostile
     CREEPER(EntityType.CREEPER),
-    ENDERMAN(EntityType.ENDERMAN, World.OVERWORLD, () -> new LootDropOreWithSpawn(EntityType.ENDERMAN::create) {
+    ENDERMAN(EntityType.ENDERMAN, Level.OVERWORLD, () -> new BreakSpawnBlock() {
         @Nullable
         @Override
-        public LivingEntity getBreakSpawn(BlockState state, World world) {
+        public LivingEntity getBreakSpawn(BlockState state, Level world) {
             if (FunOres.RANDOM.nextFloat() < Config.COMMON.endermiteSpawnChance.get())
-                return new EndermiteEntity(EntityType.ENDERMITE, world);
+                return new Endermite(EntityType.ENDERMITE, world);
             return null;
         }
     }),
     GUARDIAN(EntityType.GUARDIAN),
     PHANTOM(EntityType.PHANTOM),
-    SKELETON(EntityType.SKELETON, World.OVERWORLD),
+    SKELETON(EntityType.SKELETON, Level.OVERWORLD),
     SLIME(EntityType.SLIME),
     SPIDER(EntityType.SPIDER),
     WITCH(EntityType.WITCH),
-    ZOMBIE(EntityType.ZOMBIE, World.OVERWORLD),
+    ZOMBIE(EntityType.ZOMBIE, Level.OVERWORLD),
     // Hostile (Nether)
-    BLAZE(EntityType.BLAZE, World.NETHER),
-    GHAST(EntityType.GHAST, World.NETHER),
-    MAGMA_CUBE(EntityType.MAGMA_CUBE, World.NETHER),
-    WITHER_SKELETON(EntityType.WITHER_SKELETON, World.NETHER),
-    PIGLIN(EntityType.PIGLIN, World.NETHER),
-    HOGLIN(EntityType.HOGLIN, World.NETHER);
+    BLAZE(EntityType.BLAZE, Level.NETHER),
+    GHAST(EntityType.GHAST, Level.NETHER),
+    MAGMA_CUBE(EntityType.MAGMA_CUBE, Level.NETHER),
+    WITHER_SKELETON(EntityType.WITHER_SKELETON, Level.NETHER),
+    PIGLIN(EntityType.PIGLIN, Level.NETHER),
+    HOGLIN(EntityType.HOGLIN, Level.NETHER);
 
-    private final EntityType<? extends MobEntity> entityType;
-    private final Lazy<LootDropOre> block;
-    private final RegistryKey<World> dimensionType;
-    private final ITag.INamedTag<Block> replacesBlock;
+    private final EntityType<? extends Mob> entityType;
+    private final Lazy<Block> block;
+    private final ResourceKey<Level> dimensionType;
+    private final Tag.Named<Block> replacesBlock;
 
-    Ores(EntityType<? extends MobEntity> entityType) {
-        this(entityType, World.OVERWORLD, LootDropOre::new);
+    Ores(EntityType<? extends Mob> entityType) {
+        this(entityType, Level.OVERWORLD);
     }
 
-    Ores(EntityType<? extends MobEntity> entityType, RegistryKey<World> dim) {
-        this(entityType, dim, LootDropOre::new);
+    Ores(EntityType<? extends Mob> entityType, ResourceKey<Level> dim) {
+        this(entityType, dim, () -> new Block(BlockBehaviour.Properties.of(Material.STONE).strength(1.5f, 10f)));
     }
 
-    Ores(EntityType<? extends MobEntity> entityType, RegistryKey<World> dim, Supplier<LootDropOre> blockFactory) {
+    Ores(EntityType<? extends Mob> entityType, ResourceKey<Level> dim, Supplier<Block> blockFactory) {
         this.block = Lazy.of(blockFactory);
         this.dimensionType = dim;
-        this.replacesBlock = this.dimensionType == World.NETHER ? Tags.Blocks.NETHERRACK : Tags.Blocks.STONE;
+        this.replacesBlock = this.dimensionType == Level.NETHER ? Tags.Blocks.NETHERRACK : Tags.Blocks.STONE;
         this.entityType = entityType;
     }
 
-    public EntityType<? extends MobEntity> getEntityType() {
+    public EntityType<? extends Mob> getEntityType() {
         return entityType;
     }
 
@@ -93,11 +94,11 @@ public enum Ores implements IBlockProvider {
         return getName() + "_ore";
     }
 
-    public RegistryKey<World> getDimensionType() {
+    public ResourceKey<Level> getDimensionType() {
         return dimensionType;
     }
 
-    public ITag.INamedTag<Block> getReplacesBlock() {
+    public Tag.Named<Block> getReplacesBlock() {
         return replacesBlock;
     }
 

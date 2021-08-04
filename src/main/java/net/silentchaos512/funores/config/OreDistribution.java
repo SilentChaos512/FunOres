@@ -3,7 +3,7 @@ package net.silentchaos512.funores.config;
 import com.google.gson.JsonObject;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.util.JSONUtils;
+import net.minecraft.util.GsonHelper;
 
 import java.util.Random;
 
@@ -54,11 +54,11 @@ public final class OreDistribution {
     }
 
     public static OreDistribution deserialize(JsonObject json) {
-        int rarity = JSONUtils.getAsInt(json, "rarity", 1);
-        int count = JSONUtils.getAsInt(json, "count", 1);
-        int size = JSONUtils.getAsInt(json, "size");
-        int minHeight = JSONUtils.getAsInt(json, "min_height");
-        int maxHeight = JSONUtils.getAsInt(json, "max_height");
+        int rarity = GsonHelper.getAsInt(json, "rarity", 1);
+        int count = GsonHelper.getAsInt(json, "count", 1);
+        int size = GsonHelper.getAsInt(json, "size");
+        int minHeight = GsonHelper.getAsInt(json, "min_height");
+        int maxHeight = GsonHelper.getAsInt(json, "max_height");
         return new OreDistribution(rarity, count, size, minHeight, maxHeight);
     }
 }

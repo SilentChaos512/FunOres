@@ -3,15 +3,14 @@ package net.silentchaos512.funores.loot;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.loot.ILootSerializer;
-import net.minecraft.loot.LootContext;
-import net.minecraft.loot.LootFunctionType;
-import net.minecraft.loot.functions.ILootFunction;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
+import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
 import net.silentchaos512.funores.init.ModLoot;
 import net.silentchaos512.funores.item.ShardItems;
 
-public class ReplaceWithShardsFunction implements ILootFunction {
+public class ReplaceWithShardsFunction implements LootItemFunction {
     @Override
     public ItemStack apply(ItemStack itemStack, LootContext lootContext) {
         for (ShardItems shard : ShardItems.values()) {
@@ -23,11 +22,11 @@ public class ReplaceWithShardsFunction implements ILootFunction {
     }
 
     @Override
-    public LootFunctionType getType() {
+    public LootItemFunctionType getType() {
         return ModLoot.REPLACE_WITH_SHARDS;
     }
 
-    public static class Serializer implements ILootSerializer<ReplaceWithShardsFunction> {
+    public static class Serializer implements net.minecraft.world.level.storage.loot.Serializer<ReplaceWithShardsFunction> {
         @Override
         public void serialize(JsonObject p_230424_1_, ReplaceWithShardsFunction p_230424_2_, JsonSerializationContext p_230424_3_) {
         }

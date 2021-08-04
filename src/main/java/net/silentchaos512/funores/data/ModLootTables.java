@@ -2,22 +2,32 @@ package net.silentchaos512.funores.data;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
-import net.minecraft.advancements.criterion.EnchantmentPredicate;
-import net.minecraft.advancements.criterion.ItemPredicate;
-import net.minecraft.advancements.criterion.MinMaxBounds;
-import net.minecraft.block.Block;
+import net.minecraft.advancements.critereon.EnchantmentPredicate;
+import net.minecraft.advancements.critereon.ItemPredicate;
+import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.LootTableProvider;
-import net.minecraft.data.loot.BlockLootTables;
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.EntityType;
-import net.minecraft.loot.*;
-import net.minecraft.loot.conditions.ILootCondition;
-import net.minecraft.loot.conditions.MatchTool;
-import net.minecraft.loot.functions.ApplyBonus;
-import net.minecraft.loot.functions.SetCount;
-import net.minecraft.util.IItemProvider;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.data.loot.BlockLoot;
+import net.minecraft.data.loot.LootTableProvider;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.LootTables;
+import net.minecraft.world.level.storage.loot.ValidationContext;
+import net.minecraft.world.level.storage.loot.entries.AlternativesEntry;
+import net.minecraft.world.level.storage.loot.entries.EmptyLootItem;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer;
+import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
+import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSet;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraft.world.level.storage.loot.predicates.MatchTool;
+import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.silentchaos512.funores.FunOres;
 import net.silentchaos512.funores.item.ShardItems;
@@ -45,19 +55,19 @@ public class ModLootTables extends LootTableProvider {
     }
 
     @Override
-    protected List<Pair<Supplier<Consumer<BiConsumer<ResourceLocation, LootTable.Builder>>>, LootParameterSet>> getTables() {
+    protected List<Pair<Supplier<Consumer<BiConsumer<ResourceLocation, LootTable.Builder>>>, LootContextParamSet>> getTables() {
         return ImmutableList.of(
-                Pair.of(Blocks::new, LootParameterSets.BLOCK)
+                Pair.of(Blocks::new, LootContextParamSets.BLOCK)
         );
     }
 
     @Override
-    protected void validate(Map<ResourceLocation, LootTable> map, ValidationTracker validationtracker) {
-        map.forEach((p_218436_2_, p_218436_3_) -> LootTableManager.validate(validationtracker, p_218436_2_, p_218436_3_));
+    protected void validate(Map<ResourceLocation, LootTable> map, ValidationContext validationtracker) {
+        map.forEach((p_218436_2_, p_218436_3_) -> LootTables.validate(validationtracker, p_218436_2_, p_218436_3_));
     }
 
-    private static final class Blocks extends BlockLootTables {
-        private static final ILootCondition.IBuilder SILK_TOUCH = MatchTool.toolMatches(ItemPredicate.Builder.item().hasEnchantment(new EnchantmentPredicate(Enchantments.SILK_TOUCH, MinMaxBounds.IntBound.atLeast(1))));
+    private static final class Blocks extends BlockLoot {
+        private static final LootItemCondition.Builder SILK_TOUCH = MatchTool.toolMatches(ItemPredicate.Builder.item().hasEnchantment(new EnchantmentPredicate(Enchantments.SILK_TOUCH, MinMaxBounds.Ints.atLeast(1))));
 
         @Override
         protected void addTables() {
@@ -108,32 +118,32 @@ public class ModLootTables extends LootTableProvider {
             mobOre(ore, MobLootEntry.builder(ore.getEntityType()));
         }
 
-        private void mobOre(Ores ore, StandaloneLootEntry.Builder<?> mobLoot) {
+        private void mobOre(Ores ore, LootPoolSingletonContainer.Builder<?> mobLoot) {
             mobOre(ore, mobLoot, null);
         }
 
-        private void mobOre(Ores ore, IItemProvider bonusShards) {
+        private void mobOre(Ores ore, ItemLike bonusShards) {
             mobOre(ore, MobLootEntry.builder(ore.getEntityType()), bonusShards);
         }
 
         @SuppressWarnings("TypeMayBeWeakened")
-        private void mobOre(Ores ore, StandaloneLootEntry.Builder<?> mobLoot, @Nullable IItemProvider bonusShards) {
+        private void mobOre(Ores ore, LootPoolSingletonContainer.Builder<?> mobLoot, @Nullable ItemLike bonusShards) {
             LootTable.Builder builder = LootTable.lootTable()
                     .withPool(LootPool.lootPool()
-                            .add(AlternativesLootEntry.alternatives(
-                                    ItemLootEntry.lootTableItem(ore.asBlock())
+                            .add(AlternativesEntry.alternatives(
+                                    LootItem.lootTableItem(ore.asBlock())
                                             .when(SILK_TOUCH),
                                     mobLoot.apply(ReplaceWithShardsFunction::new)
                             ))
                     );
             if (bonusShards != null) {
                 builder.withPool(LootPool.lootPool()
-                        .add(AlternativesLootEntry.alternatives(
-                                EmptyLootEntry.emptyItem()
+                        .add(AlternativesEntry.alternatives(
+                                EmptyLootItem.emptyItem()
                                         .when(SILK_TOUCH),
-                                ItemLootEntry.lootTableItem(bonusShards)
-                                        .apply(SetCount.setCount(RandomValueRange.between(0, 1)))
-                                        .apply(ApplyBonus.addBonusBinomialDistributionCount(Enchantments.BLOCK_FORTUNE, 0.5f, 1))
+                                LootItem.lootTableItem(bonusShards)
+                                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(0, 1)))
+                                        .apply(ApplyBonusCount.addBonusBinomialDistributionCount(Enchantments.BLOCK_FORTUNE, 0.5f, 1))
                         ))
                 );
             }

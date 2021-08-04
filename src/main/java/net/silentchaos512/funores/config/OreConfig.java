@@ -7,24 +7,24 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.ITag;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.blockstateprovider.WeightedBlockStateProvider;
-import net.minecraft.world.gen.feature.ConfiguredFeature;
-import net.minecraft.world.gen.feature.IFeatureConfig;
-import net.minecraft.world.gen.feature.template.TagMatchRuleTest;
-import net.minecraft.world.gen.placement.ChanceConfig;
-import net.minecraft.world.gen.placement.IPlacementConfig;
-import net.minecraft.world.gen.placement.Placement;
-import net.minecraft.world.gen.placement.TopSolidRangeConfig;
+import net.minecraft.tags.Tag;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStateProvider;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
+import net.minecraft.world.level.levelgen.structure.templatesystem.TagMatchTest;
+import net.minecraft.world.level.levelgen.placement.ChanceDecoratorConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.DecoratorConfiguration;
+import net.minecraft.world.level.levelgen.placement.FeatureDecorator;
+import net.minecraft.world.level.levelgen.feature.configurations.RangeDecoratorConfiguration;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.silentchaos512.funores.world.FunOresWorldFeatures;
@@ -34,19 +34,19 @@ import net.silentchaos512.lib.util.NameUtils;
 import javax.annotation.Nullable;
 import java.util.*;
 
-public class OreConfig implements IFeatureConfig, IPlacementConfig {
+public class OreConfig implements FeatureConfiguration, DecoratorConfiguration {
     public static final Codec<OreConfig> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(
                     Codec.STRING.fieldOf("config_id").forGetter(o -> o.configId),
-                    WeightedBlockStateProvider.CODEC.fieldOf("blocks").forGetter(o -> o.blocks),
-                    TagMatchRuleTest.CODEC.fieldOf("replaces").forGetter(o -> o.replacesBlock),
+                    WeightedStateProvider.CODEC.fieldOf("blocks").forGetter(o -> o.blocks),
+                    TagMatchTest.CODEC.fieldOf("replaces").forGetter(o -> o.replacesBlock),
                     Codec.list(ResourceLocation.CODEC).fieldOf("dimensions").forGetter(o -> o.dimensionAllowed),
                     OreDistribution.CODEC.fieldOf("distribution").forGetter(o -> o.distribution)
             ).apply(instance, OreConfig::new));
 
     private final String configId;
-    private WeightedBlockStateProvider blocks;
-    private TagMatchRuleTest replacesBlock;
+    private WeightedStateProvider blocks;
+    private TagMatchTest replacesBlock;
     private List<ResourceLocation> dimensionAllowed;
     private OreDistribution distribution;
 
@@ -54,8 +54,8 @@ public class OreConfig implements IFeatureConfig, IPlacementConfig {
                 int bottom = this.distribution.getMinHeight();
                 return FunOresWorldFeatures.MULTI_BLOCK_ORE.get()
                         .configured(this)
-                        .decorated(Placement.RANGE.configured(new TopSolidRangeConfig(bottom, bottom, this.distribution.getMaxHeight())))
-                        .decorated(Placement.CHANCE.configured(new ChanceConfig(this.distribution.getRarity())))
+                        .decorated(FeatureDecorator.RANGE.configured(new RangeDecoratorConfiguration(bottom, bottom, this.distribution.getMaxHeight())))
+                        .decorated(FeatureDecorator.CHANCE.configured(new ChanceDecoratorConfiguration(this.distribution.getRarity())))
                         .squared()
                         .count(this.distribution.getCount());
             }
@@ -65,7 +65,7 @@ public class OreConfig implements IFeatureConfig, IPlacementConfig {
         this.configId = configId;
     }
 
-    public OreConfig(String configId, WeightedBlockStateProvider blocks, TagMatchRuleTest target, List<ResourceLocation> dimensions, OreDistribution distribution) {
+    public OreConfig(String configId, WeightedStateProvider blocks, TagMatchTest target, List<ResourceLocation> dimensions, OreDistribution distribution) {
         this.configId = configId;
         this.blocks = blocks;
         this.replacesBlock = target;
@@ -90,12 +90,12 @@ public class OreConfig implements IFeatureConfig, IPlacementConfig {
         return true;
     }
 
-    public boolean canSpawnIn(World world) {
+    public boolean canSpawnIn(Level world) {
         if (this.dimensionAllowed.isEmpty()) {
             return true;
         }
 
-        RegistryKey<World> type = world.dimension();
+        ResourceKey<Level> type = world.dimension();
         return this.dimensionAllowed.stream().anyMatch(key -> key.equals(type.getRegistryName()));
     }
 
@@ -117,15 +117,15 @@ public class OreConfig implements IFeatureConfig, IPlacementConfig {
         return result;
     }
 
-    private static WeightedBlockStateProvider parseBlocksElement(JsonElement json) {
+    private static WeightedStateProvider parseBlocksElement(JsonElement json) {
         if (json.isJsonArray()) {
-            WeightedBlockStateProvider ret = new WeightedBlockStateProvider();
+            WeightedStateProvider ret = new WeightedStateProvider();
             JsonArray array = json.getAsJsonArray();
             for (JsonElement je : array) {
                 if (je.isJsonObject()) {
                     JsonObject jo = je.getAsJsonObject();
                     BlockState block = deserializeBlock(jo);
-                    int weight = JSONUtils.getAsInt(jo, "weight", 1);
+                    int weight = GsonHelper.getAsInt(jo, "weight", 1);
                     ret.add(block, weight);
                 } else if (je.isJsonPrimitive() && je.getAsJsonPrimitive().isString()) {
                     BlockState block = deserializeBlock(je);
@@ -141,7 +141,7 @@ public class OreConfig implements IFeatureConfig, IPlacementConfig {
 
     private static BlockState deserializeBlock(JsonElement json) {
         String str = json.isJsonObject()
-                ? JSONUtils.getAsString(json.getAsJsonObject(), "block", NameUtils.from(Blocks.AIR).toString())
+                ? GsonHelper.getAsString(json.getAsJsonObject(), "block", NameUtils.from(Blocks.AIR).toString())
                 : json.getAsString();
         ResourceLocation blockId = new ResourceLocation(str);
         Block block = ForgeRegistries.BLOCKS.getValue(blockId);
@@ -151,8 +151,8 @@ public class OreConfig implements IFeatureConfig, IPlacementConfig {
         return block.defaultBlockState();
     }
 
-    private static TagMatchRuleTest parseReplacesElement(JsonObject json) {
-        return new TagMatchRuleTest(BlockTags.bind(JSONUtils.getAsString(json, "replaces")));
+    private static TagMatchTest parseReplacesElement(JsonObject json) {
+        return new TagMatchTest(BlockTags.bind(GsonHelper.getAsString(json, "replaces")));
     }
 
     private static List<ResourceLocation> parseDimensionsElement(@Nullable JsonElement json) {
@@ -180,7 +180,7 @@ public class OreConfig implements IFeatureConfig, IPlacementConfig {
     }
 
     private static ResourceLocation parseId(JsonObject json, String key) {
-        String str = JSONUtils.getAsString(json, key);
+        String str = GsonHelper.getAsString(json, key);
         ResourceLocation id = ResourceLocation.tryParse(str);
         if (id == null) {
             throw new JsonSyntaxException("Invalid ID: " + str);
@@ -189,14 +189,14 @@ public class OreConfig implements IFeatureConfig, IPlacementConfig {
     }
 
     @SuppressWarnings("MethodWithTooManyParameters")
-    public static JsonObject createDefault(String blockId, ITag.INamedTag<Block> replaces, int rarity, int count, int size, int minHeight, int maxHeight, RegistryKey<World> dimension) {
+    public static JsonObject createDefault(String blockId, Tag.Named<Block> replaces, int rarity, int count, int size, int minHeight, int maxHeight, ResourceKey<Level> dimension) {
         Map<String, Integer> blocks = new HashMap<>();
         blocks.put(blockId, 1);
         return createDefault(blocks, replaces, rarity, count, size, minHeight, maxHeight, dimension);
     }
 
     @SuppressWarnings("MethodWithTooManyParameters")
-    public static JsonObject createDefault(Map<String, Integer> blocks, ITag.INamedTag<Block> replaces, int rarity, int count, int size, int minHeight, int maxHeight, RegistryKey<World> dimension) {
+    public static JsonObject createDefault(Map<String, Integer> blocks, Tag.Named<Block> replaces, int rarity, int count, int size, int minHeight, int maxHeight, ResourceKey<Level> dimension) {
         // Would love to just dump the files into data folder, but seems we can't read files from
         // the jar in 1.13. So, let's do this the hard way...
         JsonObject json = new JsonObject();

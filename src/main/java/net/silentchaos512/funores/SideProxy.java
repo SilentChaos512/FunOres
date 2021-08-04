@@ -1,12 +1,13 @@
 package net.silentchaos512.funores;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.placement.Placement;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.placement.FeatureDecorator;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.DeferredWorkQueue;
-import net.minecraftforge.fml.event.lifecycle.*;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLDedicatedServerSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.silentchaos512.funores.config.Config;
 import net.silentchaos512.funores.data.DataGenerators;
@@ -26,7 +27,7 @@ class SideProxy {
         eventBus.addGenericListener(Block.class, ModBlocks::registerAll);
         eventBus.addGenericListener(Feature.class, FunOresWorldFeatures::registerFeatures);
         eventBus.addGenericListener(Item.class, ModItems::registerAll);
-        eventBus.addGenericListener(Placement.class, FunOresWorldFeatures::registerPlacements);
+        eventBus.addGenericListener(FeatureDecorator.class, FunOresWorldFeatures::registerPlacements);
 
         ModLoot.init();
     }

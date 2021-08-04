@@ -6,16 +6,16 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.mojang.authlib.GameProfile;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.passive.SheepEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.animal.Sheep;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.loot.*;
-import net.minecraft.loot.conditions.ILootCondition;
-import net.minecraft.loot.functions.ILootFunction;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
 import net.minecraft.util.*;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.util.FakePlayer;
@@ -29,23 +29,34 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
-public final class MobLootEntry extends StandaloneLootEntry {
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.ai.behavior.WeightedList;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.LootPoolEntryType;
+import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+
+public final class MobLootEntry extends LootPoolSingletonContainer {
     private final WeightedList<EntityType<?>> typeList = new WeightedList<>();
     // Weighted list seems to have no way to get the weights, so we can't serialize it...
     private final Map<EntityType<?>, Integer> typeMap = new LinkedHashMap<>();
 
-    private MobLootEntry(Map<EntityType<?>, Integer> weightedTypesIn, int weightIn, int qualityIn, ILootCondition[] conditionsIn, ILootFunction[] functionsIn) {
+    private MobLootEntry(Map<EntityType<?>, Integer> weightedTypesIn, int weightIn, int qualityIn, LootItemCondition[] conditionsIn, LootItemFunction[] functionsIn) {
         super(weightIn, qualityIn, conditionsIn, functionsIn);
         weightedTypesIn.forEach(this.typeList::add);
         this.typeMap.putAll(weightedTypesIn);
     }
 
-    public static StandaloneLootEntry.Builder<?> builder(EntityType<?> entityType) {
+    public static LootPoolSingletonContainer.Builder<?> builder(EntityType<?> entityType) {
         return simpleBuilder((weightIn, qualityIn, conditionsIn, functionsIn) ->
                 new MobLootEntry(Collections.singletonMap(entityType, 1), weightIn, qualityIn, conditionsIn, functionsIn));
     }
 
-    public static StandaloneLootEntry.Builder<?> builder(EntityType<?> type1, int weight1, EntityType<?> type2, int weight2) {
+    public static LootPoolSingletonContainer.Builder<?> builder(EntityType<?> type1, int weight1, EntityType<?> type2, int weight2) {
         Map<EntityType<?>, Integer> map = ImmutableMap.<EntityType<?>, Integer>builder()
                 .put(type1, weight1)
                 .put(type2, weight2)
@@ -54,7 +65,7 @@ public final class MobLootEntry extends StandaloneLootEntry {
                 new MobLootEntry(map, weightIn, qualityIn, conditionsIn, functionsIn));
     }
 
-    public static StandaloneLootEntry.Builder<?> builder(EntityType<?> type1, int weight1, EntityType<?> type2, int weight2, EntityType<?> type3, int weight3) {
+    public static LootPoolSingletonContainer.Builder<?> builder(EntityType<?> type1, int weight1, EntityType<?> type2, int weight2, EntityType<?> type3, int weight3) {
         Map<EntityType<?>, Integer> map = ImmutableMap.<EntityType<?>, Integer>builder()
                 .put(type1, weight1)
                 .put(type2, weight2)
@@ -64,7 +75,7 @@ public final class MobLootEntry extends StandaloneLootEntry {
                 new MobLootEntry(map, weightIn, qualityIn, conditionsIn, functionsIn));
     }
 
-    public static StandaloneLootEntry.Builder<?> builder(Map<EntityType<?>, Integer> typesIn) {
+    public static LootPoolSingletonContainer.Builder<?> builder(Map<EntityType<?>, Integer> typesIn) {
         return simpleBuilder((weightIn, qualityIn, conditionsIn, functionsIn) -> {
             return new MobLootEntry(typesIn, weightIn, qualityIn, conditionsIn, functionsIn);
         });
@@ -72,25 +83,25 @@ public final class MobLootEntry extends StandaloneLootEntry {
 
     @Override
     protected void createItemStack(Consumer<ItemStack> consumer, LootContext context) {
-        ItemStack tool = context.getParamOrNull(LootParameters.TOOL);
+        ItemStack tool = context.getParamOrNull(LootContextParams.TOOL);
         int fortune = tool != null ? EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BLOCK_FORTUNE, tool) : 0;
 
         FakePlayer fakePlayer = FakePlayerFactory.get(context.getLevel(), new GameProfile(null, "FakePlayerFunOres"));
         ItemStack fakeSword = getFakeSword(fortune);
-        fakePlayer.setItemInHand(Hand.MAIN_HAND, fakeSword);
+        fakePlayer.setItemInHand(InteractionHand.MAIN_HAND, fakeSword);
 
         EntityType<?> entityType = this.typeList.getOne(context.getRandom());
         Entity entity = entityType.create(context.getLevel());
         if (entity != null) {
             DamageSource source = DamageSource.playerAttack(fakePlayer);
             LootContext fakeContext = new LootContext.Builder(context.getLevel())
-                    .withParameter(LootParameters.THIS_ENTITY, entity)
-                    .withParameter(LootParameters.DAMAGE_SOURCE, source)
-                    .withParameter(LootParameters.KILLER_ENTITY, fakePlayer)
-                    .withParameter(LootParameters.LAST_DAMAGE_PLAYER, fakePlayer)
-                    .withOptionalParameter(LootParameters.DIRECT_KILLER_ENTITY, source.getDirectEntity())
-                    .withOptionalParameter(LootParameters.ORIGIN, context.getParamOrNull(LootParameters.ORIGIN))
-                    .create(LootParameterSets.ENTITY);
+                    .withParameter(LootContextParams.THIS_ENTITY, entity)
+                    .withParameter(LootContextParams.DAMAGE_SOURCE, source)
+                    .withParameter(LootContextParams.KILLER_ENTITY, fakePlayer)
+                    .withParameter(LootContextParams.LAST_DAMAGE_PLAYER, fakePlayer)
+                    .withOptionalParameter(LootContextParams.DIRECT_KILLER_ENTITY, source.getDirectEntity())
+                    .withOptionalParameter(LootContextParams.ORIGIN, context.getParamOrNull(LootContextParams.ORIGIN))
+                    .create(LootContextParamSets.ENTITY);
             ResourceLocation lootTableId = getLootTable(entity);
             LootTable lootTable = context.getLootTable(lootTableId);
             lootTable.getRandomItemsRaw(fakeContext, consumer);
@@ -100,7 +111,7 @@ public final class MobLootEntry extends StandaloneLootEntry {
     private static ResourceLocation getLootTable(Entity entity) {
         // Sheep are a special case... No wool drops from the default loot table
         if (entity.getType() == EntityType.SHEEP)
-            return ((SheepEntity) entity).getDefaultLootTable();
+            return ((Sheep) entity).getDefaultLootTable();
         return entity.getType().getDefaultLootTable();
     }
 
@@ -113,7 +124,7 @@ public final class MobLootEntry extends StandaloneLootEntry {
     private static final ItemStack[] FAKE_SWORDS = new ItemStack[MAX_LOOTING_LEVEL + 1];
 
     private static ItemStack getFakeSword(int lootingLevel) {
-        int index = MathHelper.clamp(lootingLevel, 0, MAX_LOOTING_LEVEL);
+        int index = Mth.clamp(lootingLevel, 0, MAX_LOOTING_LEVEL);
         ItemStack stack = FAKE_SWORDS[index];
         if (stack == null) {
             stack = new ItemStack(Items.DIAMOND_SWORD);
@@ -125,7 +136,7 @@ public final class MobLootEntry extends StandaloneLootEntry {
         return stack;
     }
 
-    public static class Serializer extends StandaloneLootEntry.Serializer<MobLootEntry> {
+    public static class Serializer extends LootPoolSingletonContainer.Serializer<MobLootEntry> {
         @Override
         public void serializeCustom(JsonObject json, MobLootEntry entry, JsonSerializationContext context) {
             super.serializeCustom(json, entry, context);
@@ -141,14 +152,14 @@ public final class MobLootEntry extends StandaloneLootEntry {
         }
 
         @Override
-        protected MobLootEntry deserialize(JsonObject json, JsonDeserializationContext context, int weightIn, int qualityIn, ILootCondition[] conditions, ILootFunction[] functions) {
+        protected MobLootEntry deserialize(JsonObject json, JsonDeserializationContext context, int weightIn, int qualityIn, LootItemCondition[] conditions, LootItemFunction[] functions) {
             Map<EntityType<?>, Integer> typeMap = new LinkedHashMap<>();
 
-            JsonArray typesArray = JSONUtils.getAsJsonArray(json, "entity_types");
+            JsonArray typesArray = GsonHelper.getAsJsonArray(json, "entity_types");
             typesArray.forEach(je -> {
-                ResourceLocation typeId = new ResourceLocation(JSONUtils.getAsString(je.getAsJsonObject(), "entity"));
+                ResourceLocation typeId = new ResourceLocation(GsonHelper.getAsString(je.getAsJsonObject(), "entity"));
                 EntityType<?> type = ForgeRegistries.ENTITIES.getValue(typeId);
-                int weight = JSONUtils.getAsInt(je.getAsJsonObject(), "weight", 1);
+                int weight = GsonHelper.getAsInt(je.getAsJsonObject(), "weight", 1);
                 typeMap.put(type, weight);
             });
 
